@@ -27,6 +27,27 @@
                     {% endif %}
                 </a>
             {% endfor %}
+            {% set accountUser = app_user() %}
+            {% set isPro = accountUser and accountUser.memberships is not empty %}
+            {% set isStaff = is_granted('ROLE_SUPPORT') %}
+            {% if isPro or isStaff %}
+                <span class="account-nav__separator" aria-hidden="true"></span>
+                {% if isPro %}
+                    <a href="{{ path('pro_dashboard') }}" class="account-nav__link account-nav__link--space">
+                        <i data-lucide="briefcase" class="account-nav__icon"></i>
+                        <span class="account-nav__label">Mon espace pro</span>
+                        <i data-lucide="arrow-up-right" class="account-nav__icon account-nav__icon--end"></i>
+                    </a>
+                {% endif %}
+                {% if isStaff %}
+                    <a href="{{ path('admin_dashboard') }}" class="account-nav__link account-nav__link--space">
+                        <i data-lucide="shield-check" class="account-nav__icon"></i>
+                        <span class="account-nav__label">Administration</span>
+                        <i data-lucide="arrow-up-right" class="account-nav__icon account-nav__icon--end"></i>
+                    </a>
+                {% endif %}
+                <span class="account-nav__separator" aria-hidden="true"></span>
+            {% endif %}
             <a href="{{ path('page_help') }}" class="account-nav__link">
                 <i data-lucide="life-buoy" class="account-nav__icon"></i>
                 <span class="account-nav__label">Aide</span>
