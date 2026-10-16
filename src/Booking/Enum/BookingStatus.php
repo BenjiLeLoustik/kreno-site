@@ -22,4 +22,18 @@ enum BookingStatus: string
             self::NO_SHOW => 'Client absent',
         };
     }
+
+    public function proClosedText(string $client): ?string
+    {
+        return match ($this) {
+            self::CONFIRMED => null,
+            self::HONORED => 'Rendez-vous marqué comme honoré.',
+            self::NO_SHOW => 'Absence enregistrée et signalée à Kréno.',
+            self::CANCELLED_BY_CUSTOMER => 'Le client a annulé ce rendez-vous.',
+            self::CANCELLED_BY_ESTABLISHMENT => sprintf(
+                'Rendez-vous annulé. %s est prévenu(e) par e-mail et d’autres créneaux lui sont proposés.',
+                $client,
+            ),
+        };
+    }
 }

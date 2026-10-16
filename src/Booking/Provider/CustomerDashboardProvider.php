@@ -19,6 +19,12 @@ use DateTimeImmutable;
 
 class CustomerDashboardProvider
 {
+    public const SAVINGS_LIMIT = 500;
+
+    public const PICKS = 3;
+
+    public const NOTIFICATIONS = 3;
+
     public function __construct(
         private BookingRepository $bookings,
         private UserNotificationRepository $notifications,
@@ -33,48 +39,148 @@ class CustomerDashboardProvider
     public function build(User $user, ?DateTimeImmutable $now = null): array
     {
         $now ??= new DateTimeImmutable();
-        $rule = $this->website->getRule();
         $upcoming = $this->bookings->findUpcomingForCustomer($user, $now);
         $savings = $this->savings($user);
-        $alert = null;
-
-        foreach ($user->getAlerts() as $candidate) {
-            if ($candidate instanceof UserAlert && $candidate->isEnabled()) {
-                $alert = $candidate;
-                break;
-            }
-        }
+        $notifications = $this->notifications->findLatestForUser($user, self::NOTIFICATIONS);
 
         return [
             'date' => CalendarHelper::longDate($now),
             'greeting' => sprintf('Bonjour %s', $user->getFirstName()),
-            'since' => $user->getCreatedAt() !== null ? 'depuis ' . CalendarHelper::monthYear($user->getCreatedAt()) : null,
+            'since' => $this->since($user),
             'savedTotal' => MoneyHelper::format($savings['saved']),
-            'next' => $upcoming !== [] ? $this->bookingPresenter->forCustomer($upcoming[0], $now) : null,
+            'next' => $this->next($upcoming, $now),
             'stats' => [
-                ['key' => 'bookings', 'label' => 'Réservations', 'value' => (string) $this->bookings->countKeptForCustomer($user), 'note' => sprintf('dont %d à venir', count($upcoming))],
-                ['key' => 'saved', 'label' => 'Économisé', 'value' => MoneyHelper::format($savings['saved']), 'note' => $savings['discount'] !== null ? sprintf('-%d %% en moyenne', $savings['discount']) : 'Pas encore de réservation'],
-                ['key' => 'noShows', 'label' => 'Absences', 'value' => (string) $this->bookings->countNoShowsSince($user, $now->modify(sprintf('-%d days', $rule->getNoShowWindowDays()))), 'note' => sprintf('/ %d tolérées sur les %d derniers jours', $rule->getToleratedNoShows(), $rule->getNoShowWindowDays())],
+                $this->bookingsStat($user, count($upcoming)),
+                $this->savedStat($savings),
+                $this->noShowsStat($user, $now),
             ],
-            'alert' => $alert !== null ? ['id' => $alert->getId(), 'summary' => $this->alerts->describe($alert)] : null,
-            'picks' => $this->slotPresenter->cards($this->alerts->picksFor($user, $now, 3), $now),
-            'notifications' => $this->notificationPresenter->presentAll($this->notifications->findLatestForUser($user, 3)),
+            'alert' => $this->alert($user),
+            'picks' => $this->slotPresenter->cards($this->alerts->picksFor($user, $now, self::PICKS), $now),
+            'notifications' => $this->notificationPresenter->presentAll($notifications),
             'unreadNotifications' => $this->notifications->countUnread($user),
         ];
+    }
+
+    private function since(User $user): ?string
+    {
+        $createdAt = $user->getCreatedAt();
+
+        if ($createdAt === null) {
+            return null;
+        }
+
+        return 'depuis ' . CalendarHelper::monthYear($createdAt);
+    }
+
+    private function next(array $upcoming, DateTimeImmutable $now): ?array
+    {
+        if ($upcoming === []) {
+            return null;
+        }
+
+        return $this->bookingPresenter->forCustomer($upcoming[0], $now);
+    }
+
+    private function bookingsStat(User $user, int $upcoming): array
+    {
+        $count = (string) $this->bookings->countKeptForCustomer($user);
+
+        return $this->stat(
+            'bookings',
+            'Réservations',
+            $count,
+            sprintf('dont %d à venir', $upcoming)
+        );
+    }
+
+    private function savedStat(array $savings): array
+    {
+        $note = 'Pas encore de réservation';
+
+        if ($savings['discount'] !== null) {
+            $note = sprintf('-%d %% en moyenne', $savings['discount']);
+        }
+
+        return $this->stat(
+            'saved',
+            'Économisé',
+            MoneyHelper::format($savings['saved']),
+            $note
+        );
+    }
+
+    private function noShowsStat(User $user, DateTimeImmutable $now): array
+    {
+        $rule = $this->website->getRule();
+        $windowDays = $rule->getNoShowWindowDays();
+        $count = $this->bookings->countNoShowsSince($user, $now->modify(sprintf('-%d days', $windowDays)));
+        $note = sprintf(
+            '/ %d tolérées sur les %d derniers jours',
+            $rule->getToleratedNoShows(),
+            $windowDays
+        );
+
+        return $this->stat(
+            'noShows',
+            'Absences',
+            (string) $count,
+            $note
+        );
+    }
+
+    private function stat(string $key, string $label, string $value, string $note): array
+    {
+        return [
+            'key' => $key,
+            'label' => $label,
+            'value' => $value,
+            'note' => $note
+        ];
+    }
+
+    private function alert(User $user): ?array
+    {
+        foreach ($user->getAlerts() as $alert) {
+            if ($alert instanceof UserAlert && $alert->isEnabled()) {
+                return [
+                    'id' => $alert->getId(),
+                    'summary' => $this->alerts->describe($alert)
+                ];
+            }
+        }
+
+        return null;
     }
 
     private function savings(User $user): array
     {
         $saved = 0;
         $discounts = [];
+        $statuses = [BookingStatus::CONFIRMED, BookingStatus::HONORED];
 
-        foreach ($this->bookings->findForCustomer($user, [BookingStatus::CONFIRMED, BookingStatus::HONORED], null, null, 500) as $booking) {
-            if ($booking instanceof Booking && $booking->getSlot() !== null) {
-                $saved += max(0, $booking->getSlot()->getOriginalPrice() - $booking->getPrice());
-                $discounts[] = $booking->getSlot()->getDiscount();
+        foreach ($this->bookings->findForCustomer($user, $statuses, null, null, self::SAVINGS_LIMIT) as $booking) {
+            $slot = $booking instanceof Booking ? $booking->getSlot() : null;
+
+            if ($slot === null) {
+                continue;
             }
+
+            $saved += max(0, $slot->getOriginalPrice() - $booking->getPrice());
+            $discounts[] = $slot->getDiscount();
         }
 
-        return ['saved' => $saved, 'discount' => $discounts !== [] ? (int) round(array_sum($discounts) / count($discounts)) : null];
+        return [
+            'saved' => $saved,
+            'discount' => $this->averageDiscount($discounts)
+        ];
+    }
+
+    private function averageDiscount(array $discounts): ?int
+    {
+        if ($discounts === []) {
+            return null;
+        }
+
+        return (int) round(array_sum($discounts) / count($discounts));
     }
 }

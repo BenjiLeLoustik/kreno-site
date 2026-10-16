@@ -5,9 +5,10 @@ namespace App\Booking\Service;
 use App\Booking\Enum\BookingStatus;
 use App\Booking\Event\BookingHonoredEvent;
 use App\Booking\Event\BookingNoShowEvent;
+use App\Booking\Exception\BookingAlreadyClosedException;
+use App\Booking\Exception\BookingNotStartedException;
 use App\Entity\Booking;
 use App\Repository\BookingRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\User\Service\SanctionService;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
@@ -29,7 +30,11 @@ class AttendanceService
     {
         $startsAt = $booking->getSlot()?->getStartsAt();
 
-        return $booking->getStatus() === BookingStatus::CONFIRMED && $startsAt !== null && $startsAt <= ($now ?? new DateTimeImmutable());
+        if ($booking->getStatus() !== BookingStatus::CONFIRMED || $startsAt === null) {
+            return false;
+        }
+
+        return $startsAt <= ($now ?? new DateTimeImmutable());
     }
 
     public function markHonored(Booking $booking): Booking
@@ -53,7 +58,8 @@ class AttendanceService
         $booking->setNoShowAt(new DateTimeImmutable());
         $this->orm->flush();
 
-        $suspended = $booking->getCustomer() !== null && $this->sanctions->applyNoShowPolicy($booking->getCustomer());
+        $customer = $booking->getCustomer();
+        $suspended = $customer !== null && $this->sanctions->applyNoShowPolicy($customer);
 
         $this->events->dispatch(new BookingNoShowEvent($booking, $suspended));
 
@@ -63,7 +69,8 @@ class AttendanceService
     public function closeFinished(?DateTimeImmutable $now = null): int
     {
         $now ??= new DateTimeImmutable();
-        $bookings = $this->bookings->findConfirmedEndedBefore($now->modify(sprintf('-%d hours', self::CLOSING_HOURS)));
+        $limit = $now->modify(sprintf('-%d hours', self::CLOSING_HOURS));
+        $bookings = $this->bookings->findConfirmedEndedBefore($limit);
 
         foreach ($bookings as $booking) {
             $booking->setStatus(BookingStatus::HONORED);
@@ -82,11 +89,11 @@ class AttendanceService
     private function assertMarkable(Booking $booking): void
     {
         if ($booking->getStatus() !== BookingStatus::CONFIRMED) {
-            throw new BusinessRuleException('Ce rendez-vous est déjà clôturé.');
+            throw new BookingAlreadyClosedException();
         }
 
         if (!$this->canMark($booking)) {
-            throw new BusinessRuleException('Le rendez-vous n\'a pas encore commencé.');
+            throw new BookingNotStartedException();
         }
     }
 }

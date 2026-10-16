@@ -12,7 +12,10 @@ use App\Website\Enum\PlanBilling;
 
 class FeeService
 {
-    public const BILLABLE_STATUSES = [SubscriptionStatus::ACTIVE, SubscriptionStatus::PAST_DUE];
+    public const BILLABLE_STATUSES = [
+        SubscriptionStatus::ACTIVE,
+        SubscriptionStatus::PAST_DUE
+    ];
 
     public function __construct(
         private CompanySubscriptionRepository $subscriptions,
@@ -31,27 +34,47 @@ class FeeService
         }
 
         if ($plan->getBilling() === PlanBilling::PER_BOOKING) {
-            return $plan->isCommissionFree() ? 0 : $subscription->getUnitPrice();
+            if ($plan->isCommissionFree()) {
+                return 0;
+            }
+
+            return $subscription->getUnitPrice();
         }
 
-        return $this->isCovered($subscription, $establishment) ? 0 : $this->catalog->defaultPerBooking()->getPrice();
+        if ($this->isCovered($subscription, $establishment)) {
+            return 0;
+        }
+
+        return $this->catalog->defaultPerBooking()->getPrice();
     }
 
     public function currentSubscription(CompanyEstablishment $establishment): ?CompanySubscription
     {
         $company = $establishment->getCompany();
-        $subscription = $company !== null ? $this->subscriptions->findCurrent($company) : null;
 
-        return $subscription !== null && in_array($subscription->getStatus(), self::BILLABLE_STATUSES, true) ? $subscription : null;
+        if ($company === null) {
+            return null;
+        }
+
+        $subscription = $this->subscriptions->findCurrent($company);
+
+        if ($subscription === null || !in_array($subscription->getStatus(), self::BILLABLE_STATUSES, true)) {
+            return null;
+        }
+
+        return $subscription;
     }
 
     public function isCovered(CompanySubscription $subscription, CompanyEstablishment $establishment): bool
     {
-        if ($subscription->getPlan()?->getBilling() !== PlanBilling::SUBSCRIPTION || $subscription->getCompany() === null) {
+        $company = $subscription->getCompany();
+
+        if ($subscription->getPlan()?->getBilling() !== PlanBilling::SUBSCRIPTION || $company === null) {
             return false;
         }
 
-        $index = array_search($establishment, $this->subscriptionService->billableEstablishments($subscription->getCompany()), true);
+        $establishments = $this->subscriptionService->billableEstablishments($company);
+        $index = array_search($establishment, $establishments, true);
 
         return $index !== false && $this->subscriptionService->covers($subscription, $index);
     }
