@@ -2,27 +2,27 @@
 
 {% set code = status ~ '' %}
 
-{% block title %}{{ page.name }} · {{ website().siteName }}{% endblock %}
+{% block title %}{{ error.name }} · {{ website().siteName }}{% endblock %}
 
 {% block content %}
     <div class="error-page">
         <div class="error-page__ticket">
-            {% embed 'components/ticket.html.twig' with { day: 'Erreur ' ~ code, time: code|slice(0, 1) ~ ':' ~ code|slice(1), duration: page.label, modifier: 'large' } %}
+            {% embed 'components/ticket.html.twig' with { day: 'Erreur ' ~ code, time: code|slice(0, 1) ~ ':' ~ code|slice(1), duration: error.label, modifier: 'large' } %}
                 {% block ticket_body %}
-                    <b class="ticket__name">{{ page.name }}</b>
-                    <span class="ticket__what">{{ page.hint }}</span>
+                    <b class="ticket__name">{{ error.name }}</b>
+                    <span class="ticket__what">{{ error.hint }}</span>
                 {% endblock %}
             {% endembed %}
         </div>
 
         <div class="error-page__text">
             <span class="error-page__eyebrow">Erreur {{ code }}</span>
-            <h1 class="error-page__title">{{ page.title }}</h1>
-            <p class="error-page__message">{{ page.text }}</p>
+            <h1 class="error-page__title">{{ error.title }}</h1>
+            <p class="error-page__message">{{ error.message }}</p>
             <div class="error-page__actions">
                 <a href="{{ path('search_index') }}" class="btn btn--primary">Voir les créneaux libres</a>
                 <a href="{{ path('home_index') }}" class="btn btn--outline">Retour à l'accueil</a>
-                {% if status >= 500 or status == 403 %}
+                {% if error.helpLink %}
                     <a href="{{ path('page_help') }}" class="btn btn--outline">Aide et contact</a>
                 {% endif %}
             </div>
