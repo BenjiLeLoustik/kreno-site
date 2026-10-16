@@ -21,7 +21,8 @@ class CompanyPermissionVoter extends AbstractVoter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, Permission::ALL, true) && ($subject instanceof Company || $subject instanceof CompanyEstablishment);
+        return in_array($attribute, Permission::ALL, true)
+            && ($subject instanceof Company || $subject instanceof CompanyEstablishment);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool

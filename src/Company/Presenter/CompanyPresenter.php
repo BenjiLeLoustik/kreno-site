@@ -3,6 +3,7 @@
 namespace App\Company\Presenter;
 
 use App\Entity\Company\Company;
+use App\Entity\Company\CompanyConfig;
 use App\Shared\Helper\DateHelper;
 
 class CompanyPresenter
@@ -21,11 +22,9 @@ class CompanyPresenter
 
     public function detail(Company $company): array
     {
-        $config = $company->getConfig();
-
         return $this->summary($company) + [
                 'siren' => $company->getSiren(),
-                'sirenLabel' => $company->getSiren() !== null ? trim(chunk_split($company->getSiren(), 3, ' ')) : null,
+                'sirenLabel' => $this->sirenLabel($company->getSiren()),
                 'vatNumber' => $company->getVatNumber(),
                 'address' => [
                     'line1' => $company->getAddressLine1(),
@@ -33,15 +32,33 @@ class CompanyPresenter
                     'locality' => $company->getLocality(),
                 ],
                 'verifiedAt' => DateHelper::iso($company->getVerifiedAt()),
-                'config' => $config === null ? null : [
-                    'defaultDiscount' => $config->getDefaultDiscount(),
-                    'billingName' => $config->getBillingName(),
-                    'billingEmail' => $config->getBillingEmail(),
-                    'bookingEmailNotifications' => $config->isBookingEmailNotifications(),
-                    'monthlyTips' => $config->isMonthlyTips(),
-                ],
+                'config' => $this->config($company->getConfig()),
                 'establishmentsCount' => $company->getEstablishments()->count(),
                 'membersCount' => $company->getMembers()->count(),
             ];
+    }
+
+    private function sirenLabel(?string $siren): ?string
+    {
+        if ($siren === null) {
+            return null;
+        }
+
+        return trim(chunk_split($siren, 3, ' '));
+    }
+
+    private function config(?CompanyConfig $config): ?array
+    {
+        if ($config === null) {
+            return null;
+        }
+
+        return [
+            'defaultDiscount' => $config->getDefaultDiscount(),
+            'billingName' => $config->getBillingName(),
+            'billingEmail' => $config->getBillingEmail(),
+            'bookingEmailNotifications' => $config->isBookingEmailNotifications(),
+            'monthlyTips' => $config->isMonthlyTips(),
+        ];
     }
 }

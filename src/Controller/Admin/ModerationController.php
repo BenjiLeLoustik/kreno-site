@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Company\Dto\ModerationInput;
+use App\Company\Enum\RejectionReason;
 use App\Company\Presenter\EstablishmentSummaryPresenter;
 use App\Company\Service\ModerationService;
 use App\Entity\Company\CompanyEstablishment;
@@ -95,7 +96,10 @@ class ModerationController extends AbstractAdminController
             'pending' => array_map($this->presenter->forModeration(...), $pending),
             'recent' => array_map($this->presenter->forModeration(...), $recent),
             'selected' => $selected !== null ? $this->presenter->forModeration($selected) : null,
-            'rejectionReasons' => array_map(static fn (string $key, string $label): array => ['value' => $key, 'label' => $label], array_keys(ModerationService::REJECTION_REASONS), ModerationService::REJECTION_REASONS),
+            'rejectionReasons' => array_map(
+                static fn (RejectionReason $reason): array => ['value' => $reason->value, 'label' => $reason->label()],
+                RejectionReason::cases(),
+            ),
         ]);
     }
 

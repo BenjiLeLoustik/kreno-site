@@ -25,6 +25,11 @@ class EstablishmentSlugListener
         }
 
         $city = $establishment->getCity();
-        $establishment->setSlug(StringHelper::uniqueSlug((string) $establishment->getName(), fn (string $slug): bool => $this->establishments->slugExistsInCity($city, $slug)));
+        $establishment->setSlug(
+            StringHelper::uniqueSlug(
+                (string) $establishment->getName(),
+                fn (string $slug): bool => $this->establishments->slugExistsInCity($city, $slug)
+            )
+        );
     }
 }

@@ -22,8 +22,10 @@ class PermissionResolver
         return null;
     }
 
-    public function findEstablishmentRole(CompanyMember $member, CompanyEstablishment $establishment): ?EstablishmentMember
-    {
+    public function findEstablishmentRole(
+        CompanyMember $member,
+        CompanyEstablishment $establishment
+    ): ?EstablishmentMember {
         foreach ($member->getEstablishmentRoles() as $role) {
             if ($role->getEstablishment() === $establishment) {
                 return $role;

@@ -27,6 +27,9 @@ class ProAccountInput
     public string $phone = '';
 
     #[Assert\NotBlank]
-    #[Assert\Regex(pattern: '/^(?=.*[A-Za-z])(?=.*\\d).{12,}$/', message: 'Le mot de passe doit faire au moins 12 caractères, avec des lettres et des chiffres.')]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[A-Za-z])(?=.*\\d).{12,}$/',
+        message: 'Le mot de passe doit faire au moins 12 caractères, avec des lettres et des chiffres.'
+    )]
     public string $password = '';
 }

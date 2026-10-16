@@ -12,13 +12,12 @@ use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Repository\CityRepository;
 use App\Repository\Company\CompanyEstablishmentRepository;
+use App\Shared\Helper\CoordinateHelper;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class CityService
 {
-    public const COORDINATE_DECIMALS = 7;
-
     public function __construct(
         private OrmManagerInterface $orm,
         private CityRepository $cities,
@@ -152,11 +151,11 @@ class CityService
         }
 
         if ($input->latitude !== null) {
-            $city->setLatitude($this->coordinate($input->latitude));
+            $city->setLatitude(CoordinateHelper::format($input->latitude));
         }
 
         if ($input->longitude !== null) {
-            $city->setLongitude($this->coordinate($input->longitude));
+            $city->setLongitude(CoordinateHelper::format($input->longitude));
         }
 
         if ($input->radiusKm !== null) {
@@ -166,11 +165,6 @@ class CityService
         if ($input->position !== null) {
             $city->setPosition($input->position);
         }
-    }
-
-    private function coordinate(float $value): string
-    {
-        return number_format($value, self::COORDINATE_DECIMALS, '.', '');
     }
 
     private function changeStatus(City $city, CityStatus $status): void

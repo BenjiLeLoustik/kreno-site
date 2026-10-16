@@ -9,10 +9,14 @@ use Throwable;
 
 class CompanyRegistryGateway
 {
+    public const TIMEOUT = 5;
+
     private const ENDPOINT = 'https://recherche-entreprises.api.gouv.fr/search';
 
+    private const ACTIVE = 'A';
+
     public function __construct(
-        private HttpClientManagerInterface $http
+        private HttpClientManagerInterface $http,
     ) {
     }
 
@@ -20,20 +24,8 @@ class CompanyRegistryGateway
     {
         $siret = SiretHelper::normalize($siret);
 
-        try {
-            $response = $this->http->get(self::ENDPOINT, ['query' => ['q' => $siret, 'per_page' => 1], 'timeout' => 5]);
-
-            if (!$response->isSuccessful()) {
-                return null;
-            }
-
-            $data = $response->toArray(false);
-        } catch (Throwable) {
-            return null;
-        }
-
-        foreach ($data['results'] ?? [] as $company) {
-            foreach (array_merge($company['matching_etablissements'] ?? [], [$company['siege'] ?? []]) as $establishment) {
+        foreach ($this->search($siret) as $company) {
+            foreach ($this->establishments($company) as $establishment) {
                 if (($establishment['siret'] ?? null) === $siret) {
                     return $this->map($company, $establishment);
                 }
@@ -41,6 +33,35 @@ class CompanyRegistryGateway
         }
 
         return null;
+    }
+
+    private function search(string $siret): array
+    {
+        try {
+            $response = $this->http->get(self::ENDPOINT, [
+                'query' => [
+                    'q' => $siret,
+                    'per_page' => 1
+                ],
+                'timeout' => self::TIMEOUT,
+            ]);
+
+            if (!$response->isSuccessful()) {
+                return [];
+            }
+
+            return $response->toArray(false)['results'] ?? [];
+        } catch (Throwable) {
+            return [];
+        }
+    }
+
+    private function establishments(array $company): array
+    {
+        return [
+            ...($company['matching_etablissements'] ?? []),
+            $company['siege'] ?? []
+        ];
     }
 
     private function map(array $company, array $establishment): RegistryEstablishment
@@ -55,9 +76,18 @@ class CompanyRegistryGateway
             locality: $establishment['libelle_commune'] ?? null,
             apeCode: $establishment['activite_principale'] ?? $company['activite_principale'] ?? null,
             apeLabel: $company['libelle_activite_principale'] ?? null,
-            active: ($establishment['etat_administratif'] ?? 'A') === 'A',
-            latitude: isset($establishment['latitude']) ? (float) $establishment['latitude'] : null,
-            longitude: isset($establishment['longitude']) ? (float) $establishment['longitude'] : null,
+            active: ($establishment['etat_administratif'] ?? self::ACTIVE) === self::ACTIVE,
+            latitude: $this->coordinate($establishment['latitude'] ?? null),
+            longitude: $this->coordinate($establishment['longitude'] ?? null),
         );
+    }
+
+    private function coordinate(mixed $value): ?float
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return (float) $value;
     }
 }

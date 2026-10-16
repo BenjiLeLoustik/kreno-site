@@ -8,9 +8,21 @@ use App\Company\Enum\CompanyRole;
 use App\Company\Enum\CompanyStatus;
 use App\Company\Enum\MemberStatus;
 use App\Company\Event\ProAccountCreatedEvent;
+use App\Company\Exception\AccountAlreadyLinkedException;
+use App\Company\Exception\CategoryRequiredException;
+use App\Company\Exception\CityUnavailableException;
+use App\Company\Exception\ClosedEstablishmentException;
+use App\Company\Exception\CompanyNotFoundException;
+use App\Company\Exception\EmailAlreadyRegisteredException;
+use App\Company\Exception\InvalidSiretException;
+use App\Company\Exception\SiretAlreadyRegisteredException;
+use App\Company\Exception\SiretNotFoundException;
+use App\Company\Exception\SiretRequiredException;
 use App\Company\Gateway\CompanyRegistryGateway;
 use App\Company\Helper\SiretHelper;
 use App\Company\Model\RegistryEstablishment;
+use App\Entity\Category;
+use App\Entity\City;
 use App\Entity\Company\Company;
 use App\Entity\Company\CompanyConfig;
 use App\Entity\Company\CompanyEstablishment;
@@ -21,10 +33,11 @@ use App\Repository\CategoryRepository;
 use App\Repository\CityRepository;
 use App\Repository\Company\CompanyEstablishmentRepository;
 use App\Repository\User\UserRepository;
-use App\Shared\Exception\BusinessRuleException;
-use App\User\Service\UserTokenService;
+use App\Shared\Helper\CoordinateHelper;
 use App\User\Enum\UserRole;
 use App\User\Enum\UserTokenType;
+use App\User\Exception\EmailAlreadyVerifiedException;
+use App\User\Service\UserTokenService;
 use App\Website\Provider\WebsiteProvider;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
@@ -52,28 +65,21 @@ class ProSignupService
         $email = mb_strtolower(trim($input->email));
 
         if ($existing === null && $this->users->emailExists($email)) {
-            throw new BusinessRuleException('Un compte existe déjà avec cette adresse : connectez-vous pour créer votre espace pro.');
+            throw new EmailAlreadyRegisteredException();
         }
 
         if ($existing !== null && !$existing->getMemberships()->isEmpty()) {
-            throw new BusinessRuleException('Votre compte est déjà rattaché à une entreprise.');
+            throw new AccountAlreadyLinkedException();
         }
 
-        $user = $existing ?? (new User())->setEmail($email)->setRoles([UserRole::USER->value]);
-        $user->setFirstName(trim($input->firstName))->setLastName(trim($input->lastName))->setPhone(trim($input->phone));
+        $user = $this->user($input, $email, $existing);
+        $company = $this->company($input, $email);
 
-        if ($existing === null) {
-            $user->setPassword($this->hasher->hashPassword($user, $input->password));
-        }
+        $member = (new CompanyMember())
+            ->setRole(CompanyRole::OWNER)
+            ->setStatus(MemberStatus::ACTIVE)
+            ->setJoinedAt(new DateTimeImmutable());
 
-        $company = (new Company())
-            ->setName(trim($input->firstName . ' ' . $input->lastName))
-            ->setKind($input->kind)
-            ->setStatus(CompanyStatus::ONBOARDING);
-
-        $company->setConfig((new CompanyConfig())->setDefaultDiscount($this->website->getRule()->getDefaultDiscount())->setBillingEmail($email));
-
-        $member = (new CompanyMember())->setRole(CompanyRole::OWNER)->setStatus(MemberStatus::ACTIVE)->setJoinedAt(new DateTimeImmutable());
         $company->addMember($member);
         $user->addMembership($member);
 
@@ -81,10 +87,7 @@ class ProSignupService
         $this->orm->persist($company);
         $this->orm->flush();
 
-        $code = $this->tokens->createCode($user, UserTokenType::EMAIL_VERIFICATION);
-        $this->orm->flush();
-
-        $this->events->dispatch(new ProAccountCreatedEvent($user, $company, $code));
+        $this->sendCode($user, $company);
 
         return $user;
     }
@@ -101,13 +104,10 @@ class ProSignupService
     public function resendCode(User $user, Company $company): void
     {
         if ($user->getEmailVerifiedAt() !== null) {
-            throw new BusinessRuleException('Votre adresse e-mail est déjà vérifiée.');
+            throw new EmailAlreadyVerifiedException();
         }
 
-        $code = $this->tokens->createCode($user, UserTokenType::EMAIL_VERIFICATION);
-        $this->orm->flush();
-
-        $this->events->dispatch(new ProAccountCreatedEvent($user, $company, $code));
+        $this->sendCode($user, $company);
     }
 
     public function lookupSiret(string $siret): RegistryEstablishment
@@ -115,17 +115,17 @@ class ProSignupService
         $siret = SiretHelper::normalize($siret);
 
         if (!SiretHelper::isValidSiret($siret)) {
-            throw new BusinessRuleException('Ce numéro SIRET n\'est pas valide. Il contient 14 chiffres, il figure sur votre Kbis ou votre avis de situation INSEE.');
+            throw new InvalidSiretException();
         }
 
         if ($this->establishments->findOneBySiret($siret) !== null) {
-            throw new BusinessRuleException('Cet établissement est déjà inscrit sur Kréno. Contactez pro@kreno.fr si vous pensez qu\'il s\'agit d\'une erreur.');
+            throw new SiretAlreadyRegisteredException();
         }
 
-        $result = $this->registry->findBySiret($siret) ?? throw new BusinessRuleException('Nous n\'avons pas trouvé ce SIRET dans le registre public des entreprises.');
+        $result = $this->registry->findBySiret($siret) ?? throw new SiretNotFoundException();
 
         if (!$result->active) {
-            throw new BusinessRuleException('Ce SIRET correspond à un établissement fermé.');
+            throw new ClosedEstablishmentException();
         }
 
         return $result;
@@ -133,45 +133,32 @@ class ProSignupService
 
     public function attachEstablishment(CompanyMember $owner, EstablishmentInput $input): CompanyEstablishment
     {
-        $company = $owner->getCompany() ?? throw new BusinessRuleException('Entreprise introuvable.');
+        $company = $owner->getCompany() ?? throw new CompanyNotFoundException();
 
         if ($input->siret === null) {
-            throw new BusinessRuleException('Le SIRET est obligatoire.');
+            throw new SiretRequiredException();
         }
 
         $registry = $this->lookupSiret($input->siret);
-        $city = $input->citySlug !== null ? $this->cities->findOneBySlug($input->citySlug) : null;
-
-        if ($city === null || !in_array($city, $this->cities->findAvailableForPros(), true)) {
-            throw new BusinessRuleException('Kréno n\'est pas encore disponible dans cette ville.');
-        }
-
-        $category = $input->categorySlug !== null ? $this->categories->findOneVisibleBySlug($input->categorySlug) : null;
-
-        if ($category === null) {
-            throw new BusinessRuleException('Choisissez la catégorie de votre établissement.');
-        }
-
-        $existing = $company->getEstablishments()->first();
-        $establishment = $existing instanceof CompanyEstablishment && $existing->getStatus() === EstablishmentStatus::DRAFT ? $existing : new CompanyEstablishment();
+        $establishment = $this->draftEstablishment($company);
 
         $establishment
             ->setName(trim($input->name ?? $registry->brandName ?? $registry->legalName))
             ->setSiret($registry->siret)
             ->setApeCode($registry->apeCode)
-            ->setCity($city)
-            ->setCategory($category)
+            ->setCity($this->availableCity($input->citySlug))
+            ->setCategory($this->category($input->categorySlug))
             ->setAddressLine1($input->addressLine1 ?? $registry->address)
             ->setPostalCode($input->postalCode ?? $registry->postalCode)
             ->setLocality($input->locality ?? $registry->locality)
             ->setPhone($input->phone)
             ->setStatus(EstablishmentStatus::DRAFT);
 
-        if ($registry->latitude !== null && $registry->longitude !== null) {
-            $establishment->setLatitude(number_format($registry->latitude, 7, '.', ''))->setLongitude(number_format($registry->longitude, 7, '.', ''));
-        }
+        $this->applyCoordinates($establishment, $registry);
 
-        $company->setSiren($company->getSiren() ?? $registry->siren)->setLegalName($company->getLegalName() ?? $registry->legalName);
+        $company
+            ->setSiren($company->getSiren() ?? $registry->siren)
+            ->setLegalName($company->getLegalName() ?? $registry->legalName);
 
         if ($company->getEstablishments()->count() <= 1) {
             $company->setName((string) $establishment->getName());
@@ -182,5 +169,91 @@ class ProSignupService
         $this->orm->flush();
 
         return $establishment;
+    }
+
+    private function user(ProAccountInput $input, string $email, ?User $existing): User
+    {
+        $user = $existing ?? (new User())->setEmail($email)->setRoles([UserRole::USER->value]);
+
+        $user
+            ->setFirstName(trim($input->firstName))
+            ->setLastName(trim($input->lastName))
+            ->setPhone(trim($input->phone));
+
+        if ($existing === null) {
+            $user->setPassword($this->hasher->hashPassword($user, $input->password));
+        }
+
+        return $user;
+    }
+
+    private function company(ProAccountInput $input, string $email): Company
+    {
+        $config = (new CompanyConfig())
+            ->setDefaultDiscount($this->website->getRule()->getDefaultDiscount())
+            ->setBillingEmail($email);
+
+        $company = (new Company())
+            ->setName(trim($input->firstName . ' ' . $input->lastName))
+            ->setKind($input->kind)
+            ->setStatus(CompanyStatus::ONBOARDING);
+
+        $company->setConfig($config);
+
+        return $company;
+    }
+
+    private function sendCode(User $user, Company $company): void
+    {
+        $code = $this->tokens->createCode($user, UserTokenType::EMAIL_VERIFICATION);
+        $this->orm->flush();
+
+        $this->events->dispatch(new ProAccountCreatedEvent($user, $company, $code));
+    }
+
+    private function availableCity(?string $slug): City
+    {
+        $city = null;
+
+        if ($slug !== null) {
+            $city = $this->cities->findOneBySlug($slug);
+        }
+
+        if ($city === null || !in_array($city, $this->cities->findAvailableForPros(), true)) {
+            throw new CityUnavailableException();
+        }
+
+        return $city;
+    }
+
+    private function category(?string $slug): Category
+    {
+        if ($slug === null) {
+            throw new CategoryRequiredException();
+        }
+
+        return $this->categories->findOneVisibleBySlug($slug) ?? throw new CategoryRequiredException();
+    }
+
+    private function draftEstablishment(Company $company): CompanyEstablishment
+    {
+        $existing = $company->getEstablishments()->first();
+
+        if ($existing instanceof CompanyEstablishment && $existing->getStatus() === EstablishmentStatus::DRAFT) {
+            return $existing;
+        }
+
+        return new CompanyEstablishment();
+    }
+
+    private function applyCoordinates(CompanyEstablishment $establishment, RegistryEstablishment $registry): void
+    {
+        if ($registry->latitude === null || $registry->longitude === null) {
+            return;
+        }
+
+        $establishment
+            ->setLatitude(CoordinateHelper::format($registry->latitude))
+            ->setLongitude(CoordinateHelper::format($registry->longitude));
     }
 }
