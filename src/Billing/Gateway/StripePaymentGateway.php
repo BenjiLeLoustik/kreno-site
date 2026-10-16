@@ -17,8 +17,6 @@ use Throwable;
 
 class StripePaymentGateway implements PaymentGatewayInterface
 {
-    public const API_URL = 'https://api.stripe.com/v1/';
-
     public const WEBHOOK_TOLERANCE = 300;
 
     public const DECLINE_MESSAGES = [
@@ -33,6 +31,8 @@ class StripePaymentGateway implements PaymentGatewayInterface
 
     public function __construct(
         private HttpClientManagerInterface $http,
+        #[Autowire(env: 'STRIPE_API_URL')]
+        private string $apiUrl,
         #[Autowire(env: 'STRIPE_SECRET_KEY')]
         private string $secretKey,
         #[Autowire(env: 'STRIPE_PUBLIC_KEY')]
@@ -228,7 +228,7 @@ class StripePaymentGateway implements PaymentGatewayInterface
         try {
             $options = ['auth_bearer' => $this->secretKey, 'timeout' => 20, 'headers' => $headers];
             $options[$method === 'GET' ? 'query' : 'body'] = $parameters;
-            $response = $this->http->request($method, self::API_URL . $path, $options);
+            $response = $this->http->request($method, $this->apiUrl . $path, $options);
 
             return [$response->isSuccessful(), $response->toArray(false)];
         } catch (Throwable $exception) {
