@@ -22,6 +22,9 @@ class GatewaySetup
 
     public function toArray(): array
     {
-        return ['reference' => $this->reference, 'clientSecret' => $this->clientSecret];
+        return [
+            'reference' => $this->reference,
+            'clientSecret' => $this->clientSecret
+        ];
     }
 }

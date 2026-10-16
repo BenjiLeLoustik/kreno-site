@@ -18,12 +18,19 @@ class PaymentMethodHelper
             return sprintf('Prélèvement SEPA •••• %s', $method->getLast4());
         }
 
-        return sprintf('%s •••• %s', $method->getBrand() ?? 'Carte', $method->getLast4());
+        $paymentMethod = $method->getBrand() ?? 'carte';
+
+        return sprintf('%s •••• %s', $paymentMethod, $method->getLast4());
     }
 
     public static function brand(CompanyPaymentMethod $method): string
     {
-        return $method->getType() === PaymentMethodType::SEPA_DEBIT ? 'SEPA' : mb_strtoupper($method->getBrand() ?? 'CB');
+        if ($method->getType() === PaymentMethodType::SEPA_DEBIT) {
+            return 'SEPA';
+        }
+
+        $paymentMethod = $method->getBrand() ?? 'CB';
+        return mb_strtoupper($paymentMethod);
     }
 
     public static function isExpired(CompanyPaymentMethod $method, ?DateTimeImmutable $now = null): bool
@@ -39,6 +46,10 @@ class PaymentMethodHelper
 
     public static function expiry(CompanyPaymentMethod $method): ?string
     {
-        return $method->getExpMonth() !== null && $method->getExpYear() !== null ? sprintf('%02d/%02d', $method->getExpMonth(), $method->getExpYear() % 100) : null;
+        if ($method->getExpMonth() !== null && $method->getExpYear() !== null) {
+            return sprintf('%02d/%02d', $method->getExpMonth(), $method->getExpYear());
+        }
+
+        return null;
     }
 }
