@@ -31,15 +31,12 @@ class BillingKpiProvider
     public function admin(DateTimeImmutable $month): array
     {
         [$from, $to] = PeriodHelper::monthBounds($month);
-        $subscribed = $this->subscriptions->findActiveByBilling(PlanBilling::SUBSCRIPTION);
-        $credits = $this->invoices->sumCreditNotesBetween($from, $to);
-        $creditCount = $this->invoices->countCreditNotesBetween($from, $to);
 
         return [
-            ['key' => 'cashed', 'label' => 'Encaissé ce mois', 'value' => MoneyHelper::format($this->invoices->sumPaidBetween($from, $to)), 'note' => 'abonnements et commissions', 'tone' => 'default'],
-            ['key' => 'subscribed', 'label' => 'Entreprises abonnées', 'value' => (string) count($subscribed), 'note' => sprintf('+%d ce mois', $this->subscriptions->countStartedBetween($from, $to, PlanBilling::SUBSCRIPTION)), 'tone' => 'default'],
-            ['key' => 'failed', 'label' => 'Paiements refusés', 'value' => (string) $this->payments->countFailedBetween($from, $to), 'note' => 'relances automatiques J+3, J+7', 'tone' => 'danger'],
-            ['key' => 'credits', 'label' => 'Avoirs émis', 'value' => MoneyHelper::format(abs($credits)), 'note' => sprintf('%d avoir%s', $creditCount, $creditCount > 1 ? 's' : ''), 'tone' => 'default'],
+            $this->cashed($from, $to),
+            $this->subscribedCompanies($from, $to),
+            $this->failedPayments($from, $to),
+            $this->creditNotes($from, $to),
         ];
     }
 
@@ -47,31 +44,196 @@ class BillingKpiProvider
     {
         $now ??= new DateTimeImmutable();
         [$from, $to] = PeriodHelper::monthBounds($now);
-        [$previousFrom, $previousTo] = PeriodHelper::previousMonthBounds($now);
         $subscriptions = $this->subscriptions->findActiveByBilling(PlanBilling::SUBSCRIPTION);
-        $mrr = array_sum(array_map(static fn (CompanySubscription $subscription): int => $subscription->getPeriod() === BillingPeriod::YEARLY ? (int) round($subscription->getUnitPrice() / 12) : $subscription->getUnitPrice(), $subscriptions));
+
+        return [
+            $this->monthlyRecurringRevenue($subscriptions),
+            $this->commissions($now),
+            $this->subscribedEstablishments($subscriptions),
+            $this->cancellations($from, $to, count($subscriptions)),
+        ];
+    }
+
+    private function cashed(DateTimeImmutable $from, DateTimeImmutable $to): array
+    {
+        $value = MoneyHelper::format($this->invoices->sumPaidBetween($from, $to));
+
+        return $this->kpi(
+            'cashed',
+            'Encaissé ce mois',
+            $value,
+            'abonnements et commissions'
+        );
+    }
+
+    private function subscribedCompanies(DateTimeImmutable $from, DateTimeImmutable $to): array
+    {
+        $count = count($this->subscriptions->findActiveByBilling(PlanBilling::SUBSCRIPTION));
+        $started = $this->subscriptions->countStartedBetween($from, $to, PlanBilling::SUBSCRIPTION);
+
+        return $this->kpi(
+            'subscribed',
+            'Entreprises abonnées',
+            (string) $count,
+            sprintf('+%d ce mois', $started)
+        );
+    }
+
+    private function failedPayments(DateTimeImmutable $from, DateTimeImmutable $to): array
+    {
+        $count = $this->payments->countFailedBetween($from, $to);
+
+        return $this->kpi(
+            'failed',
+            'Paiements refusés',
+            (string) $count,
+            'relances automatiques J+3, J+7',
+            'danger'
+        );
+    }
+
+    private function creditNotes(DateTimeImmutable $from, DateTimeImmutable $to): array
+    {
+        $value = MoneyHelper::format(abs($this->invoices->sumCreditNotesBetween($from, $to)));
+        $count = $this->invoices->countCreditNotesBetween($from, $to);
+        $note = sprintf('%d avoir', $count);
+
+        if ($count > 1) {
+            $note = sprintf('%d avoirs', $count);
+        }
+
+        return $this->kpi(
+            'credits',
+            'Avoirs émis',
+            $value,
+            $note
+        );
+    }
+
+    private function monthlyRecurringRevenue(array $subscriptions): array
+    {
+        $mrr = 0;
+
+        foreach ($subscriptions as $subscription) {
+            $mrr += $this->monthlyPrice($subscription);
+        }
+
+        $count = count($subscriptions);
+        $note = sprintf('%d abonnement actif', $count);
+
+        if ($count > 1) {
+            $note = sprintf('%d abonnements actifs', $count);
+        }
+
+        return $this->kpi(
+            'mrr',
+            'Revenu mensuel récurrent',
+            MoneyHelper::format($mrr),
+            $note
+        );
+    }
+
+    private function monthlyPrice(CompanySubscription $subscription): int
+    {
+        if ($subscription->getPeriod() === BillingPeriod::YEARLY) {
+            return (int) round($subscription->getUnitPrice() / 12);
+        }
+
+        return $subscription->getUnitPrice();
+    }
+
+    private function commissions(DateTimeImmutable $now): array
+    {
+        [$from, $to] = PeriodHelper::monthBounds($now);
+        [$previousFrom, $previousTo] = PeriodHelper::previousMonthBounds($now);
+        $current = MoneyHelper::format($this->bookings->sumFeesBetween($from, $to));
+        $previous = MoneyHelper::format($this->bookings->sumFeesBetween($previousFrom, $previousTo));
+        $booked = $this->bookings->countFeesBetween($from, $to);
+        $note = sprintf('%d créneaux réservés · %s le mois dernier', $booked, $previous);
+
+        return $this->kpi(
+            'commissions',
+            'Commissions du mois',
+            $current,
+            $note
+        );
+    }
+
+    private function subscribedEstablishments(array $subscriptions): array
+    {
         $covered = 0;
 
         foreach ($subscriptions as $subscription) {
-            if ($subscription->getCompany() === null) {
-                continue;
-            }
+            $covered += $this->coveredEstablishments($subscription);
+        }
 
-            foreach (array_keys($this->subscriptionService->billableEstablishments($subscription->getCompany())) as $index) {
-                $covered += $this->subscriptionService->covers($subscription, $index) ? 1 : 0;
+        $online = $this->establishments->count(['status' => EstablishmentStatus::ONLINE]);
+        $note = sprintf('sur %d actifs', $online);
+
+        return $this->kpi(
+            'subscribed',
+            'Établissements abonnés',
+            (string) $covered,
+            $note
+        );
+    }
+
+    private function coveredEstablishments(CompanySubscription $subscription): int
+    {
+        $company = $subscription->getCompany();
+
+        if ($company === null) {
+            return 0;
+        }
+
+        $covered = 0;
+
+        foreach (array_keys($this->subscriptionService->billableEstablishments($company)) as $index) {
+            if ($this->subscriptionService->covers($subscription, $index)) {
+                ++$covered;
             }
         }
 
-        $canceled = $this->subscriptions->countCanceledBetween($from, $to);
-        $base = count($subscriptions) + $canceled;
-        $commissions = $this->bookings->sumFeesBetween($from, $to);
-        $previousCommissions = $this->bookings->sumFeesBetween($previousFrom, $previousTo);
+        return $covered;
+    }
 
+    private function cancellations(DateTimeImmutable $from, DateTimeImmutable $to, int $active): array
+    {
+        $canceled = $this->subscriptions->countCanceledBetween($from, $to);
+        $tone = 'default';
+
+        if ($canceled > 0) {
+            $tone = 'danger';
+        }
+
+        $note = sprintf('%s %% ce mois', $this->cancellationRate($canceled, $active + $canceled));
+
+        return $this->kpi(
+            'canceled',
+            'Résiliations',
+            (string) $canceled,
+            $note,
+            $tone
+        );
+    }
+
+    private function cancellationRate(int $canceled, int $base): string
+    {
+        if ($base === 0) {
+            return '0';
+        }
+
+        return number_format($canceled / $base * 100, 1, ',', ' ');
+    }
+
+    private function kpi(string $key, string $label, string $value, string $note, string $tone = 'default'): array
+    {
         return [
-            ['key' => 'mrr', 'label' => 'Revenu mensuel récurrent', 'value' => MoneyHelper::format($mrr), 'note' => sprintf('%d abonnement%s actif%s', count($subscriptions), count($subscriptions) > 1 ? 's' : '', count($subscriptions) > 1 ? 's' : ''), 'tone' => 'default'],
-            ['key' => 'commissions', 'label' => 'Commissions du mois', 'value' => MoneyHelper::format($commissions), 'note' => sprintf('%d créneaux réservés · %s le mois dernier', $this->bookings->countFeesBetween($from, $to), MoneyHelper::format($previousCommissions)), 'tone' => 'default'],
-            ['key' => 'subscribed', 'label' => 'Établissements abonnés', 'value' => (string) $covered, 'note' => sprintf('sur %d actifs', $this->establishments->count(['status' => EstablishmentStatus::ONLINE])), 'tone' => 'default'],
-            ['key' => 'canceled', 'label' => 'Résiliations', 'value' => (string) $canceled, 'note' => $base > 0 ? sprintf('%s %% ce mois', number_format($canceled / $base * 100, 1, ',', ' ')) : '0 % ce mois', 'tone' => $canceled > 0 ? 'danger' : 'default'],
+            'key' => $key,
+            'label' => $label,
+            'value' => $value,
+            'note' => $note,
+            'tone' => $tone
         ];
     }
 }

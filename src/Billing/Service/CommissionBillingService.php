@@ -49,8 +49,12 @@ class CommissionBillingService
         return $count;
     }
 
-    private function invoiceCompany(Company $company, array $groups, DateTimeImmutable $from, DateTimeImmutable $to): bool
-    {
+    private function invoiceCompany(
+        Company $company,
+        array $groups,
+        DateTimeImmutable $from,
+        DateTimeImmutable $to
+    ): bool {
         if ($this->invoices->commissionInvoiceExists($company, $from)) {
             return false;
         }

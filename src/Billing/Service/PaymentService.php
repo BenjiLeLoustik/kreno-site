@@ -8,6 +8,9 @@ use App\Billing\Enum\SubscriptionStatus;
 use App\Billing\Event\PaymentActionRequiredEvent;
 use App\Billing\Event\PaymentFailedEvent;
 use App\Billing\Event\PaymentSucceededEvent;
+use App\Billing\Exception\ForeignPaymentMethodException;
+use App\Billing\Exception\InvoiceAlreadySettledException;
+use App\Billing\Exception\InvoiceWithoutCompanyException;
 use App\Billing\Gateway\PaymentGatewayInterface;
 use App\Billing\Model\GatewayPaymentResult;
 use App\Billing\Model\PaymentAttempt;
@@ -19,7 +22,6 @@ use App\Entity\User\User;
 use App\Repository\Company\CompanyPaymentMethodRepository;
 use App\Repository\Company\CompanyPaymentRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
-use App\Shared\Exception\BusinessRuleException;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
@@ -29,6 +31,11 @@ class PaymentService
     public const RETRY_DAYS = [3, 7];
 
     public const GRACE_DAYS = 17;
+
+    public const UNPAID_STATUSES = [
+        InvoiceStatus::OPEN,
+        InvoiceStatus::FAILED
+    ];
 
     public function __construct(
         private OrmManagerInterface $orm,
@@ -40,38 +47,38 @@ class PaymentService
     ) {
     }
 
-    public function collect(CompanyInvoice $invoice, ?CompanyPaymentMethod $method = null, ?User $initiatedBy = null, bool $offSession = true): ?PaymentAttempt
-    {
+    public function collect(
+        CompanyInvoice $invoice,
+        ?CompanyPaymentMethod $method = null,
+        ?User $initiatedBy = null,
+        bool $offSession = true,
+    ): ?PaymentAttempt {
         if (in_array($invoice->getStatus(), [InvoiceStatus::PAID, InvoiceStatus::VOID], true)) {
-            throw new BusinessRuleException('Cette facture est déjà réglée.');
+            throw new InvoiceAlreadySettledException();
         }
 
-        $company = $invoice->getCompany() ?? throw new BusinessRuleException('Facture sans entreprise.');
+        $company = $invoice->getCompany() ?? throw new InvoiceWithoutCompanyException();
 
         if ($method !== null && $method->getCompany() !== $company) {
-            throw new BusinessRuleException('Ce moyen de paiement n\'appartient pas à l\'entreprise.');
+            throw new ForeignPaymentMethodException();
         }
 
         $method ??= $this->methods->findDefault($company);
-        $now = new DateTimeImmutable();
-
-        $payment = new CompanyPayment();
-        $payment->setPaymentMethod($method);
-        $payment->setInitiatedBy($initiatedBy);
-        $payment->setAmount($invoice->getTotalIncludingTax());
-        $payment->setStatus(PaymentStatus::PENDING);
-        $payment->setAttemptedAt($now);
-        $invoice->addPayment($payment);
-        $this->orm->persist($payment);
-        $this->orm->flush();
+        $payment = $this->createPayment($invoice, $method, $initiatedBy);
 
         if ($method === null) {
-            $this->apply($payment, new GatewayPaymentResult(null, PaymentStatus::FAILED, null, 'missing_payment_method', 'aucun moyen de paiement enregistré'));
+            $this->apply($payment, $this->missingMethodResult());
 
             return new PaymentAttempt($payment);
         }
 
-        $result = $this->gateway->charge($method, $payment->getAmount(), sprintf('Facture %s', $invoice->getNumber()), sprintf('kreno-payment-%d', $payment->getId()), $offSession);
+        $result = $this->gateway->charge(
+            $method,
+            $payment->getAmount(),
+            sprintf('Facture %s', $invoice->getNumber()),
+            sprintf('kreno-payment-%d', $payment->getId()),
+            $offSession,
+        );
 
         return new PaymentAttempt($this->apply($payment, $result), $result->getClientSecret());
     }
@@ -95,7 +102,11 @@ class PaymentService
 
         $payment = $this->payments->findOneByProviderReference($result->getReference());
 
-        if ($payment === null || $payment->getStatus() === $result->getStatus() || $payment->getStatus() === PaymentStatus::SUCCEEDED) {
+        if ($payment === null || $payment->getStatus() === PaymentStatus::SUCCEEDED) {
+            return $payment;
+        }
+
+        if ($payment->getStatus() === $result->getStatus()) {
             return $payment;
         }
 
@@ -111,7 +122,7 @@ class PaymentService
             $this->orm->flush();
             $invoice = $payment->getInvoice();
 
-            if ($invoice !== null && in_array($invoice->getStatus(), [InvoiceStatus::OPEN, InvoiceStatus::FAILED], true)) {
+            if ($invoice !== null && in_array($invoice->getStatus(), self::UNPAID_STATUSES, true)) {
                 $this->collect($invoice);
                 ++$count;
             }
@@ -133,25 +144,7 @@ class PaymentService
         $payment->setStatus($result->getStatus());
 
         if ($result->getStatus() === PaymentStatus::SUCCEEDED) {
-            $payment->setSucceededAt($now);
-            $payment->setFailureCode(null);
-            $payment->setFailureMessage(null);
-            $invoice?->setStatus(InvoiceStatus::PAID);
-            $invoice?->setPaidAt($now);
-
-            foreach ($invoice?->getPayments() ?? [] as $other) {
-                $other->setNextRetryAt(null);
-            }
-
-            if ($subscription !== null && $subscription->getStatus() === SubscriptionStatus::PAST_DUE && $this->allPaid($subscription)) {
-                $subscription->setStatus(SubscriptionStatus::ACTIVE);
-                $subscription->setGraceUntil(null);
-            }
-
-            $this->orm->flush();
-            $this->events->dispatch(new PaymentSucceededEvent($payment));
-
-            return $payment;
+            return $this->succeed($payment, $invoice, $subscription, $now);
         }
 
         if ($result->getStatus() === PaymentStatus::PENDING) {
@@ -170,17 +163,71 @@ class PaymentService
             return $payment;
         }
 
+        return $this->fail($payment, $invoice, $result, $now);
+    }
+
+    private function createPayment(
+        CompanyInvoice $invoice,
+        ?CompanyPaymentMethod $method,
+        ?User $initiatedBy,
+    ): CompanyPayment {
+        $payment = new CompanyPayment();
+        $payment->setPaymentMethod($method);
+        $payment->setInitiatedBy($initiatedBy);
+        $payment->setAmount($invoice->getTotalIncludingTax());
+        $payment->setStatus(PaymentStatus::PENDING);
+        $payment->setAttemptedAt(new DateTimeImmutable());
+        $invoice->addPayment($payment);
+        $this->orm->persist($payment);
+        $this->orm->flush();
+
+        return $payment;
+    }
+
+    private function missingMethodResult(): GatewayPaymentResult
+    {
+        return new GatewayPaymentResult(
+            null,
+            PaymentStatus::FAILED,
+            null,
+            'missing_payment_method',
+            'aucun moyen de paiement enregistré',
+        );
+    }
+
+    private function succeed(
+        CompanyPayment $payment,
+        ?CompanyInvoice $invoice,
+        ?CompanySubscription $subscription,
+        DateTimeImmutable $now,
+    ): CompanyPayment {
+        $payment->setSucceededAt($now);
+        $payment->setFailureCode(null);
+        $payment->setFailureMessage(null);
+        $invoice?->setStatus(InvoiceStatus::PAID);
+        $invoice?->setPaidAt($now);
+        $this->clearRetries($invoice);
+        $this->reactivate($subscription);
+
+        $this->orm->flush();
+        $this->events->dispatch(new PaymentSucceededEvent($payment));
+
+        return $payment;
+    }
+
+    private function fail(
+        CompanyPayment $payment,
+        ?CompanyInvoice $invoice,
+        GatewayPaymentResult $result,
+        DateTimeImmutable $now,
+    ): CompanyPayment {
         $payment->setFailureCode($result->getFailureCode());
         $payment->setFailureMessage($result->getFailureMessage());
         $invoice?->setStatus(InvoiceStatus::FAILED);
+        $this->clearRetries($invoice);
 
-        foreach ($invoice?->getPayments() ?? [] as $other) {
-            $other->setNextRetryAt(null);
-        }
-
-        $failures = $invoice !== null ? $this->payments->countFailedForInvoice($invoice) + 1 : 1;
-        $retryDays = self::RETRY_DAYS[$failures - 1] ?? null;
-        $payment->setNextRetryAt($retryDays !== null && $payment->getInitiatedBy() === null ? $now->modify(sprintf('+%d days', $retryDays)) : null);
+        $retryDays = self::RETRY_DAYS[$this->failureCount($invoice) - 1] ?? null;
+        $payment->setNextRetryAt($this->nextRetryAt($payment, $retryDays, $now));
 
         $this->orm->flush();
         $this->events->dispatch(new PaymentFailedEvent($payment, $retryDays === null));
@@ -188,16 +235,49 @@ class PaymentService
         return $payment;
     }
 
-    private function markPastDue(?CompanySubscription $subscription, DateTimeImmutable $now): void
+    private function clearRetries(?CompanyInvoice $invoice): void
     {
-        if ($subscription === null || !in_array($subscription->getStatus(), [SubscriptionStatus::ACTIVE, SubscriptionStatus::PAST_DUE], true)) {
+        foreach ($invoice?->getPayments() ?? [] as $payment) {
+            $payment->setNextRetryAt(null);
+        }
+    }
+
+    private function failureCount(?CompanyInvoice $invoice): int
+    {
+        if ($invoice === null) {
+            return 1;
+        }
+
+        return $this->payments->countFailedForInvoice($invoice) + 1;
+    }
+
+    private function nextRetryAt(CompanyPayment $payment, ?int $retryDays, DateTimeImmutable $now): ?DateTimeImmutable
+    {
+        if ($retryDays === null || $payment->getInitiatedBy() !== null) {
+            return null;
+        }
+
+        return $now->modify(sprintf('+%d days', $retryDays));
+    }
+
+    private function reactivate(?CompanySubscription $subscription): void
+    {
+        if ($subscription?->getStatus() !== SubscriptionStatus::PAST_DUE || !$this->allPaid($subscription)) {
             return;
         }
 
-        if ($subscription->getStatus() === SubscriptionStatus::ACTIVE) {
-            $subscription->setStatus(SubscriptionStatus::PAST_DUE);
-            $subscription->setGraceUntil($now->modify(sprintf('+%d days', self::GRACE_DAYS)));
+        $subscription->setStatus(SubscriptionStatus::ACTIVE);
+        $subscription->setGraceUntil(null);
+    }
+
+    private function markPastDue(?CompanySubscription $subscription, DateTimeImmutable $now): void
+    {
+        if ($subscription?->getStatus() !== SubscriptionStatus::ACTIVE) {
+            return;
         }
+
+        $subscription->setStatus(SubscriptionStatus::PAST_DUE);
+        $subscription->setGraceUntil($now->modify(sprintf('+%d days', self::GRACE_DAYS)));
     }
 
     private function subscriptionOf(?CompanyInvoice $invoice): ?CompanySubscription
@@ -208,17 +288,31 @@ class PaymentService
 
         $subscription = $invoice->getSubscription();
 
-        if ($subscription !== null && in_array($subscription->getStatus(), CompanySubscriptionRepository::CURRENT_STATUSES, true)) {
-            return $subscription;
+        if ($subscription !== null) {
+            $current = in_array(
+                $subscription->getStatus(),
+                CompanySubscriptionRepository::CURRENT_STATUSES,
+                true
+            );
+
+            if ($current) {
+                return $subscription;
+            }
         }
 
-        return $invoice->getCompany() !== null ? $this->subscriptions->findCurrent($invoice->getCompany()) : null;
+        $company = $invoice->getCompany();
+
+        if ($company === null) {
+            return null;
+        }
+
+        return $this->subscriptions->findCurrent($company);
     }
 
     private function allPaid(CompanySubscription $subscription): bool
     {
         foreach ($subscription->getCompany()?->getInvoices() ?? [] as $invoice) {
-            if (in_array($invoice->getStatus(), [InvoiceStatus::OPEN, InvoiceStatus::FAILED], true)) {
+            if (in_array($invoice->getStatus(), self::UNPAID_STATUSES, true)) {
                 return false;
             }
         }

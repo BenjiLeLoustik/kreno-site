@@ -4,7 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Billing\Dto\AdminSubscriptionInput;
 use App\Billing\Dto\GraceInput;
+use App\Billing\Enum\BillingGesture;
 use App\Billing\Enum\BillingPeriod;
+use App\Billing\Enum\ChangeApplication;
 use App\Billing\Enum\PaymentStatus;
 use App\Billing\Helper\PeriodHelper;
 use App\Billing\Presenter\AdminBillingPresenter;
@@ -27,13 +29,6 @@ use NeoPHP\Component\Serializer\Attribute\MapRequestPayload;
 class BillingController extends AbstractAdminController
 {
     public const MONTHS = 6;
-
-    public const GESTURES = [
-        'none' => 'Aucun',
-        'free_month' => '1 mois offert',
-        'discount' => '-20 % pendant 3 mois',
-        'credit' => 'Avoir sur la dernière facture',
-    ];
 
     public function __construct(
         private CompanyRepository $companies,
@@ -144,11 +139,14 @@ class BillingController extends AbstractAdminController
             'company' => $company !== null ? ['id' => $company->getId(), 'name' => $company->getName()] : null,
             'selected' => $selected,
             'plans' => $this->planPresenter->offers($this->catalog->plans(), BillingPeriod::MONTHLY),
-            'applications' => [
-                ['key' => 'immediate', 'label' => 'Immédiatement, avec prorata'],
-                ['key' => 'renewal', 'label' => 'À la prochaine échéance'],
-            ],
-            'gestures' => array_map(static fn (string $key, string $label): array => ['key' => $key, 'label' => $label], array_keys(self::GESTURES), self::GESTURES),
+            'applications' => array_map(
+                static fn (ChangeApplication $application): array => ['key' => $application->value, 'label' => $application->label()],
+                ChangeApplication::cases(),
+            ),
+            'gestures' => array_map(
+                static fn (BillingGesture $gesture): array => ['key' => $gesture->value, 'label' => $gesture->label()],
+                BillingGesture::cases(),
+            ),
         ]);
     }
 

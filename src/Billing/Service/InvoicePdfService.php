@@ -30,13 +30,12 @@ class InvoicePdfService
             return (string) $invoice->getPdfPath();
         }
 
-        $company = $invoice->getCompany();
         $html = $this->views->render(self::TEMPLATE, [
-            'invoice' => $this->presenter->detail($invoice, $company !== null ? $this->billingInfo->billingEmail($company) : null),
-            'creditNote' => $invoice->getType() === InvoiceType::CREDIT_NOTE,
+            'invoice' => $this->presenter->detail($invoice, $this->billingEmail($invoice)),
+            'creditNote' => $this->isCreditNote($invoice),
         ]);
 
-        $path = $this->storage->write(sprintf('invoices/%s/%s.pdf', ($invoice->getIssuedAt() ?? $invoice->getCreatedAt())?->format('Y') ?? date('Y'), $invoice->getNumber()), $this->render($html));
+        $path = $this->storage->write($this->storagePath($invoice), $this->render($html));
         $invoice->setPdfPath($path);
         $this->orm->flush();
 
@@ -50,7 +49,35 @@ class InvoicePdfService
 
     public function fileName(CompanyInvoice $invoice): string
     {
-        return sprintf('%s-%s.pdf', $invoice->getType() === InvoiceType::CREDIT_NOTE ? 'avoir' : 'facture', $invoice->getNumber());
+        if ($this->isCreditNote($invoice)) {
+            return sprintf('avoir-%s.pdf', $invoice->getNumber());
+        }
+
+        return sprintf('facture-%s.pdf', $invoice->getNumber());
+    }
+
+    private function isCreditNote(CompanyInvoice $invoice): bool
+    {
+        return $invoice->getType() === InvoiceType::CREDIT_NOTE;
+    }
+
+    private function billingEmail(CompanyInvoice $invoice): ?string
+    {
+        $company = $invoice->getCompany();
+
+        if ($company === null) {
+            return null;
+        }
+
+        return $this->billingInfo->billingEmail($company);
+    }
+
+    private function storagePath(CompanyInvoice $invoice): string
+    {
+        $date = $invoice->getIssuedAt() ?? $invoice->getCreatedAt();
+        $year = $date?->format('Y') ?? date('Y');
+
+        return sprintf('invoices/%s/%s.pdf', $year, $invoice->getNumber());
     }
 
     private function render(string $html): string

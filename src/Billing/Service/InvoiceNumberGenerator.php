@@ -3,8 +3,8 @@
 namespace App\Billing\Service;
 
 use App\Billing\Enum\InvoiceType;
+use App\Billing\Exception\InvalidInvoicePrefixException;
 use App\Billing\Helper\InvoiceNumberHelper;
-use LogicException;
 use NeoPHP\Component\Container\Attribute\Autowire;
 
 class InvoiceNumberGenerator
@@ -23,10 +23,13 @@ class InvoiceNumberGenerator
     public function prefix(InvoiceType $type): string
     {
         $prefix = strtoupper(trim((string) ($this->prefixes[$type->value] ?? '')));
-        $prefix = $prefix !== '' ? $prefix : self::DEFAULT_PREFIXES[$type->value];
+
+        if ($prefix === '') {
+            $prefix = self::DEFAULT_PREFIXES[$type->value];
+        }
 
         if (!InvoiceNumberHelper::isValidPrefix($prefix)) {
-            throw new LogicException(sprintf('Préfixe de facturation invalide pour "%s" : "%s" (lettres majuscules, chiffres et tirets uniquement).', $type->value, $prefix));
+            throw new InvalidInvoicePrefixException($type, $prefix);
         }
 
         return $prefix;

@@ -2,17 +2,19 @@
 
 namespace App\Billing\Service;
 
-use App\Billing\Enum\PaymentMethodType;
 use App\Billing\Dto\PaymentMethodInput;
+use App\Billing\Enum\PaymentMethodType;
 use App\Billing\Event\PaymentMethodAddedEvent;
+use App\Billing\Exception\LastPaymentMethodException;
+use App\Billing\Exception\SepaMandateRequiredException;
 use App\Billing\Gateway\PaymentGatewayInterface;
+use App\Billing\Model\GatewayPaymentMethod;
 use App\Billing\Model\GatewaySetup;
 use App\Entity\Company\Company;
 use App\Entity\Company\CompanyPaymentMethod;
 use App\Entity\User\User;
 use App\Repository\Company\CompanyPaymentMethodRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
-use App\Shared\Exception\BusinessRuleException;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
@@ -38,28 +40,17 @@ class PaymentMethodService
         $details = $this->gateway->completeSetup((string) $input->setupReference);
 
         if ($details->getType() === PaymentMethodType::SEPA_DEBIT && !$input->mandateAccepted) {
-            throw new BusinessRuleException('Vous devez accepter le mandat de prélèvement SEPA.');
+            throw new SepaMandateRequiredException();
         }
 
-        $method = $this->methods->findOneByProviderReference($details->getReference());
+        $existing = $this->methods->findOneByProviderReference($details->getReference());
 
-        if ($method !== null) {
-            return $method;
+        if ($existing !== null) {
+            return $existing;
         }
 
         $first = $this->methods->findForCompany($company) === [];
-
-        $method = new CompanyPaymentMethod();
-        $method->setAddedBy($user);
-        $method->setType($details->getType());
-        $method->setProviderReference($details->getReference());
-        $method->setBrand($details->getBrand());
-        $method->setLast4($details->getLast4());
-        $method->setExpMonth($details->getExpMonth());
-        $method->setExpYear($details->getExpYear());
-        $method->setHolderName($details->getHolderName());
-        $method->setMandateReference($details->getMandateReference());
-        $method->setMandateAcceptedAt($details->getType() === PaymentMethodType::SEPA_DEBIT ? new DateTimeImmutable() : null);
+        $method = $this->createMethod($user, $details);
 
         $company->addPaymentMethod($method);
         $this->orm->persist($method);
@@ -83,10 +74,10 @@ class PaymentMethodService
 
     public function remove(Company $company, CompanyPaymentMethod $method): void
     {
-        $others = array_values(array_filter($this->methods->findForCompany($company), static fn (CompanyPaymentMethod $other): bool => $other !== $method));
+        $others = $this->otherMethods($company, $method);
 
         if ($others === [] && $this->subscriptions->findCurrent($company) !== null) {
-            throw new BusinessRuleException('Ajoutez un autre moyen de paiement avant de supprimer celui-ci.');
+            throw new LastPaymentMethodException();
         }
 
         $this->gateway->detach($method);
@@ -98,6 +89,39 @@ class PaymentMethodService
         }
 
         $this->orm->flush();
+    }
+
+    private function createMethod(User $user, GatewayPaymentMethod $details): CompanyPaymentMethod
+    {
+        $method = new CompanyPaymentMethod();
+        $method->setAddedBy($user);
+        $method->setType($details->getType());
+        $method->setProviderReference($details->getReference());
+        $method->setBrand($details->getBrand());
+        $method->setLast4($details->getLast4());
+        $method->setExpMonth($details->getExpMonth());
+        $method->setExpYear($details->getExpYear());
+        $method->setHolderName($details->getHolderName());
+        $method->setMandateReference($details->getMandateReference());
+
+        if ($details->getType() === PaymentMethodType::SEPA_DEBIT) {
+            $method->setMandateAcceptedAt(new DateTimeImmutable());
+        }
+
+        return $method;
+    }
+
+    private function otherMethods(Company $company, CompanyPaymentMethod $method): array
+    {
+        $others = [];
+
+        foreach ($this->methods->findForCompany($company) as $other) {
+            if ($other !== $method) {
+                $others[] = $other;
+            }
+        }
+
+        return $others;
     }
 
     private function makeDefault(Company $company, CompanyPaymentMethod $method, bool $flush): void

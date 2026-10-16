@@ -2,10 +2,11 @@
 
 namespace App\Billing\Service;
 
+use App\Billing\Exception\NoPerBookingPlanException;
+use App\Billing\Exception\PlanNotOfferedException;
 use App\Entity\Website\WebsitePlan;
-use App\Shared\Exception\BusinessRuleException;
-use App\Website\Provider\WebsiteProvider;
 use App\Website\Enum\PlanBilling;
+use App\Website\Provider\WebsiteProvider;
 
 class PlanCatalog
 {
@@ -32,14 +33,23 @@ class PlanCatalog
 
     public function get(string $code): WebsitePlan
     {
-        return $this->find($code) ?? throw new BusinessRuleException('Cette formule n\'est pas proposée.');
+        return $this->find($code) ?? throw new PlanNotOfferedException();
     }
 
     public function defaultPerBooking(): WebsitePlan
     {
-        $plans = array_filter($this->plans(), static fn (WebsitePlan $plan): bool => $plan->getBilling() === PlanBilling::PER_BOOKING);
-        usort($plans, static fn (WebsitePlan $a, WebsitePlan $b): int => $a->getPrice() <=> $b->getPrice());
+        $cheapest = null;
 
-        return $plans[0] ?? throw new BusinessRuleException('Aucune formule « à la réservation » n\'est proposée.');
+        foreach ($this->plans() as $plan) {
+            if ($plan->getBilling() !== PlanBilling::PER_BOOKING) {
+                continue;
+            }
+
+            if ($cheapest === null || $plan->getPrice() < $cheapest->getPrice()) {
+                $cheapest = $plan;
+            }
+        }
+
+        return $cheapest ?? throw new NoPerBookingPlanException();
     }
 }

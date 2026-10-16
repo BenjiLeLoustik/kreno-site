@@ -4,13 +4,17 @@ namespace App\Billing\Service;
 
 use App\Billing\Dto\PaymentMethodInput;
 use App\Billing\Dto\SignupPaymentInput;
+use App\Billing\Exception\BillingInfoRequiredException;
+use App\Billing\Exception\EstablishmentRequiredException;
+use App\Billing\Exception\PlanRequiredException;
 use App\Company\Enum\CompanyStatus;
+use App\Company\Exception\MemberWithoutCompanyException;
+use App\Company\Exception\MemberWithoutUserException;
 use App\Company\Service\EstablishmentRegistrationService;
 use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Company\CompanyMember;
 use App\Entity\Company\CompanySubscription;
 use App\Repository\Company\CompanySubscriptionRepository;
-use App\Shared\Exception\BusinessRuleException;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class SignupBillingService
@@ -27,17 +31,17 @@ class SignupBillingService
 
     public function complete(CompanyMember $member, SignupPaymentInput $input): CompanySubscription
     {
-        $company = $member->getCompany() ?? throw new BusinessRuleException('Aucune entreprise.');
-        $user = $member->getUser() ?? throw new BusinessRuleException('Aucun utilisateur.');
-        $subscription = $this->subscriptions->findPending($company) ?? throw new BusinessRuleException('Choisissez d\'abord votre formule.');
+        $company = $member->getCompany() ?? throw new MemberWithoutCompanyException();
+        $user = $member->getUser() ?? throw new MemberWithoutUserException();
+        $subscription = $this->subscriptions->findPending($company) ?? throw new PlanRequiredException();
         $establishment = $company->getEstablishments()->first();
 
         if (!$establishment instanceof CompanyEstablishment) {
-            throw new BusinessRuleException('Renseignez d\'abord votre établissement.');
+            throw new EstablishmentRequiredException();
         }
 
         if ($input->billing === null) {
-            throw new BusinessRuleException('Indiquez vos informations de facturation.');
+            throw new BillingInfoRequiredException();
         }
 
         $this->billingInfo->update($company, $input->billing);
@@ -46,12 +50,7 @@ class SignupBillingService
             $this->subscriptionService->applyPromo($subscription, $input->promoCode);
         }
 
-        $method = new PaymentMethodInput();
-        $method->setupReference = $input->setupReference;
-        $method->makeDefault = true;
-        $method->mandateAccepted = $input->mandateAccepted;
-        $this->methods->add($company, $user, $method);
-
+        $this->methods->add($company, $user, $this->paymentMethodInput($input));
         $this->registration->submit($establishment);
 
         if ($company->getStatus() === CompanyStatus::ONBOARDING) {
@@ -61,5 +60,15 @@ class SignupBillingService
         $this->orm->flush();
 
         return $subscription;
+    }
+
+    private function paymentMethodInput(SignupPaymentInput $input): PaymentMethodInput
+    {
+        $method = new PaymentMethodInput();
+        $method->setupReference = $input->setupReference;
+        $method->makeDefault = true;
+        $method->mandateAccepted = $input->mandateAccepted;
+
+        return $method;
     }
 }

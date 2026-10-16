@@ -2,19 +2,23 @@
 
 namespace App\Billing\Service;
 
-use App\Billing\Enum\BillingPeriod;
-use App\Billing\Enum\SubscriptionStatus;
 use App\Billing\Dto\RetentionOfferInput;
+use App\Billing\Enum\BillingPeriod;
+use App\Billing\Enum\CancelReason;
+use App\Billing\Enum\SubscriptionStatus;
 use App\Billing\Event\SubscriptionChangedEvent;
 use App\Billing\Event\SubscriptionPausedEvent;
+use App\Billing\Exception\OfferRequiresSubscriptionException;
+use App\Billing\Exception\OfferUnavailableException;
+use App\Billing\Exception\PauseNotAllowedException;
+use App\Billing\Exception\UnknownOfferException;
 use App\Billing\Helper\PeriodHelper;
 use App\Entity\Company\CompanySubscription;
 use App\Entity\User\User;
 use App\Repository\Company\CompanySubscriptionRepository;
-use App\Shared\Exception\BusinessRuleException;
-use App\Website\Provider\WebsiteProvider;
 use App\Website\Enum\PlanBilling;
 use App\Website\Enum\PriceChangePolicy;
+use App\Website\Provider\WebsiteProvider;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
@@ -52,36 +56,17 @@ class RenewalService
     public function renew(CompanySubscription $subscription, DateTimeImmutable $now): CompanySubscription
     {
         $end = $subscription->getCurrentPeriodEnd() ?? $now;
-        $company = $subscription->getCompany();
-        $successor = $company !== null ? $this->subscriptions->findPending($company) : null;
+        $successor = $this->successor($subscription);
 
-        if ($successor !== null && $successor->getPrevious() === $subscription) {
-            $subscription->setStatus(SubscriptionStatus::CANCELED);
-            $subscription->setCanceledAt($end);
-
-            if ($successor->getPlan()?->getBilling() === PlanBilling::SUBSCRIPTION) {
-                $subscription->setCancellationReason(SubscriptionService::REASON_CHANGED);
-            }
-
-            $this->subscriptionService->start($successor, $end, PeriodHelper::end($end, $successor->getPeriod()));
-            $this->orm->flush();
-            $this->subscriptionService->billPeriod($successor);
-            $this->events->dispatch(new SubscriptionChangedEvent($successor, $subscription));
-
-            return $successor;
+        if ($successor !== null) {
+            return $this->switchTo($subscription, $successor, $end);
         }
 
         if ($subscription->getStatus() === SubscriptionStatus::PAUSED) {
             $subscription->setStatus(SubscriptionStatus::ACTIVE);
             $subscription->setPausedUntil(null);
-        } elseif ($subscription->getPausedUntil() !== null && $subscription->getPausedUntil() > $end) {
-            $subscription->setStatus(SubscriptionStatus::PAUSED);
-            $subscription->setCurrentPeriodStart($end);
-            $subscription->setCurrentPeriodEnd($subscription->getPausedUntil());
-            $this->orm->flush();
-            $this->events->dispatch(new SubscriptionPausedEvent($subscription));
-
-            return $subscription;
+        } elseif ($this->pauseStartsAt($subscription, $end)) {
+            return $this->startPause($subscription, $end);
         }
 
         $this->refreshPrice($subscription, $now);
@@ -93,42 +78,109 @@ class RenewalService
         return $subscription;
     }
 
-    public function applyOffer(CompanySubscription $subscription, User $user, RetentionOfferInput $input): CompanySubscription
-    {
+    public function applyOffer(
+        CompanySubscription $subscription,
+        User $user,
+        RetentionOfferInput $input,
+    ): CompanySubscription {
         if ($subscription->getPlan()?->getBilling() !== PlanBilling::SUBSCRIPTION) {
-            throw new BusinessRuleException('Cette offre concerne les abonnements.');
+            throw new OfferRequiresSubscriptionException();
         }
 
-        return match ($input->offer) {
-            'price' => $this->applyRetentionDiscount($subscription),
-            'volume' => $this->switchToPerBooking($subscription, $user),
-            'pause' => $this->pause($subscription),
-            default => throw new BusinessRuleException('Offre inconnue.'),
+        return match (CancelReason::tryFrom((string) $input->offer)) {
+            CancelReason::PRICE => $this->applyRetentionDiscount($subscription),
+            CancelReason::VOLUME => $this->switchToPerBooking($subscription, $user),
+            CancelReason::PAUSE => $this->pause($subscription),
+            default => throw new UnknownOfferException(),
         };
     }
 
     public function retentionPromoAvailable(CompanySubscription $subscription): bool
     {
+        $plan = $subscription->getPlan();
+
+        if ($plan === null || $subscription->getPromoCode() !== null) {
+            return false;
+        }
+
         $promo = $this->promos->find(self::RETENTION_PROMO_CODE);
 
-        return $promo !== null && $subscription->getPlan() !== null && $this->promos->isUsable($promo, $subscription->getPlan()) && $subscription->getPromoCode() === null;
+        return $promo !== null && $this->promos->isUsable($promo, $plan);
     }
 
     public function pause(CompanySubscription $subscription): CompanySubscription
     {
-        if ($subscription->getStatus() !== SubscriptionStatus::ACTIVE || $subscription->getCurrentPeriodEnd() === null) {
-            throw new BusinessRuleException('Seul un abonnement actif peut être mis en pause.');
+        $end = $subscription->getCurrentPeriodEnd();
+
+        if ($subscription->getStatus() !== SubscriptionStatus::ACTIVE || $end === null) {
+            throw new PauseNotAllowedException();
         }
 
-        $subscription->setPausedUntil($subscription->getCurrentPeriodEnd()->modify(sprintf('+%d months', self::PAUSE_MONTHS)));
+        $subscription->setPausedUntil($end->modify(sprintf('+%d months', self::PAUSE_MONTHS)));
         $this->orm->flush();
+
+        return $subscription;
+    }
+
+    private function successor(CompanySubscription $subscription): ?CompanySubscription
+    {
+        $company = $subscription->getCompany();
+
+        if ($company === null) {
+            return null;
+        }
+
+        $pending = $this->subscriptions->findPending($company);
+
+        if ($pending === null || $pending->getPrevious() !== $subscription) {
+            return null;
+        }
+
+        return $pending;
+    }
+
+    private function switchTo(
+        CompanySubscription $subscription,
+        CompanySubscription $successor,
+        DateTimeImmutable $end,
+    ): CompanySubscription {
+        $subscription->setStatus(SubscriptionStatus::CANCELED);
+        $subscription->setCanceledAt($end);
+
+        if ($successor->getPlan()?->getBilling() === PlanBilling::SUBSCRIPTION) {
+            $subscription->setCancellationReason(SubscriptionService::REASON_CHANGED);
+        }
+
+        $this->subscriptionService->start($successor, $end, PeriodHelper::end($end, $successor->getPeriod()));
+        $this->orm->flush();
+        $this->subscriptionService->billPeriod($successor);
+        $this->events->dispatch(new SubscriptionChangedEvent($successor, $subscription));
+
+        return $successor;
+    }
+
+    private function pauseStartsAt(CompanySubscription $subscription, DateTimeImmutable $end): bool
+    {
+        $pausedUntil = $subscription->getPausedUntil();
+
+        return $pausedUntil !== null && $pausedUntil > $end;
+    }
+
+    private function startPause(CompanySubscription $subscription, DateTimeImmutable $end): CompanySubscription
+    {
+        $subscription->setStatus(SubscriptionStatus::PAUSED);
+        $subscription->setCurrentPeriodStart($end);
+        $subscription->setCurrentPeriodEnd($subscription->getPausedUntil());
+        $this->orm->flush();
+        $this->events->dispatch(new SubscriptionPausedEvent($subscription));
 
         return $subscription;
     }
 
     private function switchToPerBooking(CompanySubscription $subscription, User $user): CompanySubscription
     {
-        $this->subscriptionService->schedule($subscription, $user, $this->catalog->defaultPerBooking(), BillingPeriod::MONTHLY, null);
+        $plan = $this->catalog->defaultPerBooking();
+        $this->subscriptionService->schedule($subscription, $user, $plan, BillingPeriod::MONTHLY, null);
 
         return $subscription;
     }
@@ -136,7 +188,7 @@ class RenewalService
     private function applyRetentionDiscount(CompanySubscription $subscription): CompanySubscription
     {
         if (!$this->retentionPromoAvailable($subscription)) {
-            throw new BusinessRuleException('Cette offre n\'est plus disponible.');
+            throw new OfferUnavailableException();
         }
 
         $promo = $this->promos->find(self::RETENTION_PROMO_CODE);
@@ -151,19 +203,30 @@ class RenewalService
     private function refreshPrice(CompanySubscription $subscription, DateTimeImmutable $now): void
     {
         $plan = $subscription->getPlan();
-        $live = $plan !== null ? $this->catalog->find((string) $plan->getCode()) : null;
 
-        if ($live === null || $live === $plan) {
+        if ($plan === null) {
             return;
         }
 
-        $policy = $this->website->getLive()->getPriceChangePolicy();
+        $live = $this->catalog->find((string) $plan->getCode());
 
-        if ($policy === PriceChangePolicy::KEEP_TWELVE_MONTHS && $subscription->getStartedAt() !== null && $subscription->getStartedAt() > $now->modify('-12 months')) {
+        if ($live === null || $live === $plan || $this->keepsCurrentPrice($subscription, $now)) {
             return;
         }
 
         $subscription->setPlan($live);
         $subscription->setUnitPrice($this->prices->planPrice($live, $subscription->getPeriod()));
+    }
+
+    private function keepsCurrentPrice(CompanySubscription $subscription, DateTimeImmutable $now): bool
+    {
+        $policy = $this->website->getLive()->getPriceChangePolicy();
+        $startedAt = $subscription->getStartedAt();
+
+        if ($policy !== PriceChangePolicy::KEEP_TWELVE_MONTHS || $startedAt === null) {
+            return false;
+        }
+
+        return $startedAt > $now->modify('-12 months');
     }
 }

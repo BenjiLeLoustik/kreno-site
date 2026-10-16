@@ -7,6 +7,7 @@ use App\Billing\Enum\PaymentStatus;
 use App\Billing\Helper\PaymentMethodHelper;
 use App\Billing\Helper\PeriodHelper;
 use App\Billing\Service\PaymentService;
+use App\Entity\Company\CompanyInvoice;
 use App\Entity\Company\CompanyPayment;
 use App\Entity\Company\CompanyPaymentMethod;
 use App\Entity\Company\CompanySubscription;
@@ -26,11 +27,7 @@ class PaymentPresenter
             'brand' => PaymentMethodHelper::brand($method),
             'label' => PaymentMethodHelper::label($method),
             'holderName' => $method->getHolderName(),
-            'note' => match (true) {
-                $method->getType() === PaymentMethodType::SEPA_DEBIT => $method->getMandateAcceptedAt() !== null ? 'Mandat signé le ' . PeriodHelper::shortDay($method->getMandateAcceptedAt()) : 'Mandat SEPA',
-                $expired => 'Expirée',
-                default => 'Expire ' . PaymentMethodHelper::expiry($method),
-            },
+            'note' => $this->methodNote($method, $expired),
             'expired' => $expired,
             'isDefault' => $method->isDefaultMethod(),
             'canDefault' => !$method->isDefaultMethod() && !$expired,
@@ -44,8 +41,6 @@ class PaymentPresenter
 
     public function payment(CompanyPayment $payment): array
     {
-        $invoice = $payment->getInvoice();
-
         return [
             'id' => $payment->getId(),
             'status' => $payment->getStatus()->value,
@@ -54,56 +49,194 @@ class PaymentPresenter
             'amountCents' => $payment->getAmount(),
             'method' => PaymentMethodHelper::label($payment->getPaymentMethod()),
             'attemptedAt' => DateHelper::iso($payment->getAttemptedAt()),
-            'date' => $payment->getAttemptedAt() !== null ? sprintf('%s, %s', PeriodHelper::day($payment->getAttemptedAt()), $payment->getAttemptedAt()->format('H:i')) : null,
+            'date' => $this->attemptDate($payment),
             'reason' => $payment->getFailureMessage(),
             'nextRetryAt' => PeriodHelper::shortDay($payment->getNextRetryAt()),
-            'invoice' => $invoice === null ? null : ['number' => $invoice->getNumber(), 'status' => $invoice->getStatus()->value],
+            'invoice' => $this->invoice($payment->getInvoice()),
         ];
     }
 
     public function result(CompanyPayment $payment, ?CompanySubscription $subscription, array $methods = []): array
     {
         $data = $this->payment($payment);
-        $invoice = $payment->getInvoice();
 
         if ($payment->getStatus() === PaymentStatus::SUCCEEDED) {
-            $data['facts'] = array_values(array_filter([
-                ['label' => 'Montant', 'value' => $data['amount']],
-                ['label' => 'Moyen de paiement', 'value' => $data['method']],
-                ['label' => 'Date', 'value' => $data['date']],
-                $subscription?->getPlan() !== null ? ['label' => 'Formule', 'value' => $subscription->getPlan()->getName()] : null,
-                $invoice?->getPeriodStart() !== null && $invoice->getPeriodEnd() !== null ? ['label' => 'Période', 'value' => PeriodHelper::label($invoice->getPeriodStart(), $invoice->getPeriodEnd())] : null,
-                $subscription?->getCurrentPeriodEnd() !== null && $subscription->getCancelAt() === null ? ['label' => 'Prochaine échéance', 'value' => PeriodHelper::shortDay($subscription->getCurrentPeriodEnd())] : null,
-            ]));
+            $data['facts'] = $this->facts($data, $payment->getInvoice(), $subscription);
 
             return $data;
         }
 
-        $failedAt = $payment->getAttemptedAt();
-        $graceUntil = $subscription?->getGraceUntil();
+        $data['timeline'] = $this->timeline($payment->getAttemptedAt(), $subscription?->getGraceUntil());
+        $data['retryOptions'] = $this->retryOptions($payment, $methods);
+
+        return $data;
+    }
+
+    private function methodNote(CompanyPaymentMethod $method, bool $expired): string
+    {
+        if ($method->getType() === PaymentMethodType::SEPA_DEBIT) {
+            return $this->mandateNote($method);
+        }
+
+        if ($expired) {
+            return 'Expirée';
+        }
+
+        return 'Expire ' . PaymentMethodHelper::expiry($method);
+    }
+
+    private function mandateNote(CompanyPaymentMethod $method): string
+    {
+        $acceptedAt = $method->getMandateAcceptedAt();
+
+        if ($acceptedAt === null) {
+            return 'Mandat SEPA';
+        }
+
+        return 'Mandat signé le ' . PeriodHelper::shortDay($acceptedAt);
+    }
+
+    private function attemptDate(CompanyPayment $payment): ?string
+    {
+        $attemptedAt = $payment->getAttemptedAt();
+
+        if ($attemptedAt === null) {
+            return null;
+        }
+
+        return sprintf('%s, %s', PeriodHelper::day($attemptedAt), $attemptedAt->format('H:i'));
+    }
+
+    private function invoice(?CompanyInvoice $invoice): ?array
+    {
+        if ($invoice === null) {
+            return null;
+        }
+
+        return ['number' => $invoice->getNumber(), 'status' => $invoice->getStatus()->value];
+    }
+
+    private function facts(array $data, ?CompanyInvoice $invoice, ?CompanySubscription $subscription): array
+    {
+        $facts = [
+            $this->fact('Montant', $data['amount']),
+            $this->fact('Moyen de paiement', $data['method']),
+            $this->fact('Date', $data['date']),
+        ];
+
+        $plan = $subscription?->getPlan();
+
+        if ($plan !== null) {
+            $facts[] = $this->fact('Formule', $plan->getName());
+        }
+
+        $start = $invoice?->getPeriodStart();
+        $end = $invoice?->getPeriodEnd();
+
+        if ($start !== null && $end !== null) {
+            $facts[] = $this->fact('Période', PeriodHelper::label($start, $end));
+        }
+
+        $periodEnd = $subscription?->getCurrentPeriodEnd();
+
+        if ($periodEnd !== null && $subscription->getCancelAt() === null) {
+            $facts[] = $this->fact('Prochaine échéance', PeriodHelper::shortDay($periodEnd));
+        }
+
+        return $facts;
+    }
+
+    private function fact(string $label, ?string $value): array
+    {
+        return [
+            'label' => $label,
+            'value' => $value
+        ];
+    }
+
+    private function timeline(?DateTimeImmutable $failedAt, ?DateTimeImmutable $graceUntil): array
+    {
         $timeline = [];
 
         if ($failedAt !== null) {
-            $timeline[] = ['date' => PeriodHelper::shortDay($failedAt), 'text' => 'Paiement refusé. E-mail envoyé au propriétaire et à la comptabilité.', 'tone' => 'danger'];
-        }
+            $refused = 'Paiement refusé. E-mail envoyé au propriétaire et à la comptabilité.';
+            $retry = 'Nouvelle tentative automatique sur le moyen par défaut.';
+            $timeline[] = $this->step($failedAt, $refused, 'danger');
 
-        foreach (PaymentService::RETRY_DAYS as $days) {
-            if ($failedAt !== null && ($graceUntil === null || $failedAt->modify(sprintf('+%d days', $days)) < $graceUntil)) {
-                $timeline[] = ['date' => PeriodHelper::shortDay($failedAt->modify(sprintf('+%d days', $days))), 'text' => 'Nouvelle tentative automatique sur le moyen par défaut.', 'tone' => 'warning'];
+            foreach ($this->retryDates($failedAt, $graceUntil) as $retryAt) {
+                $timeline[] = $this->step($retryAt, $retry, 'warning');
             }
         }
 
         if ($graceUntil !== null) {
-            $timeline[] = ['date' => PeriodHelper::shortDay($graceUntil->modify('-7 days')), 'text' => 'Dernier rappel par e-mail et dans votre espace.', 'tone' => 'warning'];
-            $timeline[] = ['date' => PeriodHelper::shortDay($graceUntil), 'text' => 'Vos créneaux ne sont plus publiés jusqu\'au règlement. Vos données sont conservées.', 'tone' => 'muted'];
+            $reminder = 'Dernier rappel par e-mail et dans votre espace.';
+            $suspended = 'Vos créneaux ne sont plus publiés jusqu\'au règlement. Vos données sont conservées.';
+            $timeline[] = $this->step($graceUntil->modify('-7 days'), $reminder, 'warning');
+            $timeline[] = $this->step($graceUntil, $suspended, 'muted');
         }
 
-        $data['timeline'] = $timeline;
-        $data['retryOptions'] = array_values(array_map(fn (CompanyPaymentMethod $method): array => $this->method($method) + [
-                'retryLabel' => $method->getType() === PaymentMethodType::SEPA_DEBIT ? sprintf('Payer %s par prélèvement', MoneyHelper::formatExact($payment->getAmount())) : sprintf('Réessayer le paiement de %s', MoneyHelper::formatExact($payment->getAmount())),
-                'retryNote' => $method === $payment->getPaymentMethod() ? 'Refusée aujourd\'hui · réessayer la même carte' : ($method->getType() === PaymentMethodType::SEPA_DEBIT ? 'Débité sous 2 jours ouvrés, sans validation bancaire' : null),
-            ], $methods));
+        return $timeline;
+    }
 
-        return $data;
+    private function retryDates(DateTimeImmutable $failedAt, ?DateTimeImmutable $graceUntil): array
+    {
+        $dates = [];
+
+        foreach (PaymentService::RETRY_DAYS as $days) {
+            $retryAt = $failedAt->modify(sprintf('+%d days', $days));
+
+            if ($graceUntil === null || $retryAt < $graceUntil) {
+                $dates[] = $retryAt;
+            }
+        }
+
+        return $dates;
+    }
+
+    private function step(DateTimeImmutable $date, string $text, string $tone): array
+    {
+        return [
+            'date' => PeriodHelper::shortDay($date),
+            'text' => $text,
+            'tone' => $tone
+        ];
+    }
+
+    private function retryOptions(CompanyPayment $payment, array $methods): array
+    {
+        $options = [];
+
+        foreach ($methods as $method) {
+            $options[] = $this->method($method) + [
+                    'retryLabel' => $this->retryLabel($method, $payment),
+                    'retryNote' => $this->retryNote($method, $payment),
+                ];
+        }
+
+        return $options;
+    }
+
+    private function retryLabel(CompanyPaymentMethod $method, CompanyPayment $payment): string
+    {
+        $amount = MoneyHelper::formatExact($payment->getAmount());
+
+        if ($method->getType() === PaymentMethodType::SEPA_DEBIT) {
+            return sprintf('Payer %s par prélèvement', $amount);
+        }
+
+        return sprintf('Réessayer le paiement de %s', $amount);
+    }
+
+    private function retryNote(CompanyPaymentMethod $method, CompanyPayment $payment): ?string
+    {
+        if ($method === $payment->getPaymentMethod()) {
+            return 'Refusée aujourd\'hui · réessayer la même carte';
+        }
+
+        if ($method->getType() === PaymentMethodType::SEPA_DEBIT) {
+            return 'Débité sous 2 jours ouvrés, sans validation bancaire';
+        }
+
+        return null;
     }
 }
