@@ -2,120 +2,117 @@
 
 namespace App\Controller\Front;
 
-use App\User\Dto\ForgotPasswordInput;
-use App\User\Dto\ResetPasswordInput;
+use App\User\Enum\PasswordSpace;
+use App\User\Mapper\PasswordRequestMapper;
+use App\User\Provider\PasswordPageProvider;
 use App\User\Service\PasswordService;
-use App\Shared\Exception\BusinessRuleException;
 use NeoPHP\Component\Csrf\Attribute\Csrf;
 use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Component\Http\Response\RedirectResponse;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
-use NeoPHP\Component\Serializer\Attribute\MapRequestPayload;
 
 class PasswordController extends AbstractFrontController
 {
-    public function __construct(private PasswordService $passwords)
-    {
+    public function __construct(
+        private PasswordService $passwords,
+        private PasswordPageProvider $pages,
+    ) {
     }
 
     #[Route('/forgot-password', name: 'app_forgot_password', methods: ['GET'])]
     public function forgotForm(Request $request): Response
     {
-        return $this->forgotPage($request, false);
+        $page = $this->pages->forgot($request, PasswordSpace::CLIENT, $this->optionalUser());
+
+        return $this->render('front/security/forgot_password.html.twig', $page);
     }
 
     #[Route('/pro/forgot-password', name: 'pro_forgot_password', methods: ['GET'])]
     public function proForgotForm(Request $request): Response
     {
-        return $this->forgotPage($request, true);
+        $page = $this->pages->forgot($request, PasswordSpace::PRO, $this->optionalUser());
+
+        return $this->render('front/security/forgot_password.html.twig', $page);
     }
 
     #[Csrf('account')]
     #[Route('/forgot-password', name: 'app_forgot_password_submit', methods: ['POST'])]
-    public function forgot(#[MapRequestPayload(validate: false)] ForgotPasswordInput $input): RedirectResponse
+    public function forgot(Request $request): RedirectResponse
     {
-        return $this->requestReset($input, false);
+        $input = PasswordRequestMapper::forgot($request);
+
+        if ($this->invalid($input)) {
+            return $this->redirectToRoute(PasswordSpace::CLIENT->forgotRoute(), ['email' => $input->email]);
+        }
+
+        $this->passwords->requestReset($input->email, PasswordSpace::CLIENT->value);
+
+        return $this->redirectToRoute(PasswordSpace::CLIENT->forgotRoute(), ['sent' => 1, 'email' => $input->email]);
     }
 
     #[Csrf('account')]
     #[Route('/pro/forgot-password', name: 'pro_forgot_password_submit', methods: ['POST'])]
-    public function proForgot(#[MapRequestPayload(validate: false)] ForgotPasswordInput $input): RedirectResponse
+    public function proForgot(Request $request): RedirectResponse
     {
-        return $this->requestReset($input, true);
+        $input = PasswordRequestMapper::forgot($request);
+
+        if ($this->invalid($input)) {
+            return $this->redirectToRoute(PasswordSpace::PRO->forgotRoute(), ['email' => $input->email]);
+        }
+
+        $this->passwords->requestReset($input->email, PasswordSpace::PRO->value);
+
+        return $this->redirectToRoute(PasswordSpace::PRO->forgotRoute(), ['sent' => 1, 'email' => $input->email]);
     }
 
     #[Route('/reset-password/{token}', name: 'app_reset_password', methods: ['GET'])]
     public function check(string $token): Response
     {
-        return $this->resetPage($token, false);
+        $page = $this->pages->reset($token, PasswordSpace::CLIENT);
+
+        return $this->render('front/security/reset_password.html.twig', $page);
     }
 
     #[Route('/pro/reset-password/{token}', name: 'pro_reset_password', methods: ['GET'])]
     public function proCheck(string $token): Response
     {
-        return $this->resetPage($token, true);
+        $page = $this->pages->reset($token, PasswordSpace::PRO);
+
+        return $this->render('front/security/reset_password.html.twig', $page);
     }
 
     #[Csrf('account')]
     #[Route('/reset-password/{token}', name: 'app_reset_password_submit', methods: ['POST'])]
-    public function reset(string $token, #[MapRequestPayload(validate: false)] ResetPasswordInput $input): RedirectResponse
+    public function reset(Request $request, string $token): RedirectResponse
     {
-        return $this->resetPassword($token, $input, false);
+        $input = PasswordRequestMapper::reset($request);
+        $space = PasswordSpace::CLIENT;
+
+        if (!$this->invalid($input) && $this->attempt(
+                fn () => $this->passwords->reset($token, $input),
+                $space->resetFlash(),
+            )) {
+            return $this->redirectToRoute($space->loginRoute());
+        }
+
+        return $this->redirectToRoute($space->resetRoute(), ['token' => $token]);
     }
 
     #[Csrf('account')]
     #[Route('/pro/reset-password/{token}', name: 'pro_reset_password_submit', methods: ['POST'])]
-    public function proReset(string $token, #[MapRequestPayload(validate: false)] ResetPasswordInput $input): RedirectResponse
+    public function proReset(Request $request, string $token): RedirectResponse
     {
-        return $this->resetPassword($token, $input, true);
-    }
+        $input = PasswordRequestMapper::reset($request);
+        $space = PasswordSpace::PRO;
 
-    private function forgotPage(Request $request, bool $pro): Response
-    {
-        return $this->render('front/security/forgot_password.html.twig', [
-            'pro' => $pro,
-            'sent' => $request->query->getBoolean('sent'),
-            'email' => $request->query->getString('email') ?: $this->optionalUser()?->getEmail(),
-        ]);
-    }
-
-    private function requestReset(ForgotPasswordInput $input, bool $pro): RedirectResponse
-    {
-        $input->email = mb_strtolower(trim($input->email));
-        $route = $pro ? 'pro_forgot_password' : 'app_forgot_password';
-
-        if ($this->invalid($input)) {
-            return $this->redirectToRoute($route, ['email' => $input->email]);
+        if (!$this->invalid($input) && $this->attempt(
+                fn () => $this->passwords->reset($token, $input),
+                $space->resetFlash(),
+            )) {
+            return $this->redirectToRoute($space->loginRoute());
         }
 
-        $this->passwords->requestReset($input->email, $pro ? 'pro' : 'client');
-
-        return $this->redirectToRoute($route, ['sent' => 1, 'email' => $input->email]);
-    }
-
-    private function resetPage(string $token, bool $pro): Response
-    {
-        try {
-            $email = $this->passwords->checkResetToken($token)->getEmail();
-        } catch (BusinessRuleException) {
-            $email = null;
-        }
-
-        return $this->render('front/security/reset_password.html.twig', [
-            'pro' => $pro,
-            'token' => $token,
-            'valid' => $email !== null,
-            'email' => $email,
-        ]);
-    }
-
-    private function resetPassword(string $token, ResetPasswordInput $input, bool $pro): RedirectResponse
-    {
-        if (!$this->invalid($input) && $this->attempt(fn () => $this->passwords->reset($token, $input), $pro ? 'Votre mot de passe a été modifié. Vous pouvez vous connecter.' : 'Ton mot de passe a été modifié. Tu peux te connecter.')) {
-            return $this->redirectToRoute($pro ? 'pro_login' : 'app_login');
-        }
-
-        return $this->redirectToRoute($pro ? 'pro_reset_password' : 'app_reset_password', ['token' => $token]);
+        return $this->redirectToRoute($space->resetRoute(), ['token' => $token]);
     }
 }

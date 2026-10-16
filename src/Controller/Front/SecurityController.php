@@ -2,16 +2,12 @@
 
 namespace App\Controller\Front;
 
+use App\User\Enum\LoginError;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
 
 class SecurityController extends AbstractFrontController
 {
-    private const ERRORS = [
-        'Invalid credentials.' => 'Adresse e-mail ou mot de passe incorrect.',
-        'Invalid CSRF token.' => 'La page a expiré. Recharge-la et réessaie.',
-    ];
-
     #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(): Response
     {
@@ -21,7 +17,7 @@ class SecurityController extends AbstractFrontController
 
         return $this->render('front/security/login.html.twig', [
             'lastUsername' => $this->getLastUsername(),
-            'error' => $this->errorMessage($this->getLastAuthenticationError()),
+            'error' => LoginError::message($this->getLastAuthenticationError()),
         ]);
     }
 
@@ -34,21 +30,8 @@ class SecurityController extends AbstractFrontController
 
         return $this->render('pro/security/login.html.twig', [
             'lastUsername' => $this->getLastUsername(),
-            'error' => $this->errorMessage($this->getLastAuthenticationError()),
+            'error' => LoginError::message($this->getLastAuthenticationError()),
             'targetPath' => $this->generateUrl('pro_dashboard'),
         ]);
-    }
-
-    private function errorMessage(?string $error): ?string
-    {
-        if ($error === null) {
-            return null;
-        }
-
-        if (str_starts_with($error, 'Too many failed login attempts')) {
-            return 'Trop de tentatives. Réessaie dans une minute.';
-        }
-
-        return self::ERRORS[$error] ?? $error;
     }
 }

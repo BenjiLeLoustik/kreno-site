@@ -18,7 +18,8 @@ class BillingWebhookController extends AbstractController
     #[Route('/billing/webhook', name: 'billing_webhook', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
     {
-        $payment = $this->payments->handleWebhook($request->getContent(), (string) $request->headers->get('Stripe-Signature', ''));
+        $signature = (string) $request->headers->get('Stripe-Signature', '');
+        $payment = $this->payments->handleWebhook($request->getContent(), $signature);
 
         return $this->json(['received' => true, 'payment' => $payment?->getId()]);
     }

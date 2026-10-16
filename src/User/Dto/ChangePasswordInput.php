@@ -13,4 +13,6 @@ class ChangePasswordInput
     #[Assert\NotBlank]
     #[Assert\Regex(pattern: ValidationPattern::PASSWORD, message: ValidationPattern::PASSWORD_MESSAGE)]
     public string $newPassword = '';
+
+    public ?string $newPasswordConfirmation = null;
 }

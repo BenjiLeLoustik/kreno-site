@@ -25,7 +25,11 @@ abstract class AbstractFrontController extends AbstractController
     {
         $user = $this->getUser();
 
-        return $user instanceof User ? $user : null;
+        if (!$user instanceof User) {
+            return null;
+        }
+
+        return $user;
     }
 
     protected function invalid(object $input): bool
@@ -39,6 +43,17 @@ abstract class AbstractFrontController extends AbstractController
         $this->addFlash('error', $error);
 
         return true;
+    }
+
+    protected function invalidAll(array $inputs): bool
+    {
+        foreach ($inputs as $input) {
+            if ($this->invalid($input)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function attempt(callable $action, ?string $success = null): bool

@@ -79,6 +79,10 @@ class PasswordService
 
     public function change(User $user, ChangePasswordInput $input): User
     {
+        if ($input->newPasswordConfirmation !== null && $input->newPasswordConfirmation !== $input->newPassword) {
+            throw new PasswordMismatchException();
+        }
+
         if (!$this->hasher->isPasswordValid($user, $input->currentPassword)) {
             throw new WrongCurrentPasswordException();
         }

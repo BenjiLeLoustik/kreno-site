@@ -2,43 +2,31 @@
 
 namespace App\Controller\Front;
 
-use App\Booking\Dto\BookingInput;
-use App\Booking\Dto\CancellationInput;
-use App\Booking\Enum\BookingStatus;
-use App\Booking\Helper\IcsHelper;
+use App\Booking\Enum\BookingFlash;
 use App\Booking\Helper\ReferenceHelper;
+use App\Booking\Mapper\BookingRequestMapper;
 use App\Booking\Presenter\BookingPresenter;
+use App\Booking\Provider\CustomerBookingsProvider;
+use App\Booking\Service\BookingCalendarService;
 use App\Booking\Service\BookingService;
+use App\Booking\Service\GuestBookingService;
 use App\Entity\Booking;
-use App\Entity\Establishment\EstablishmentSlot;
-use App\Entity\User\User;
-use App\Repository\BookingRepository;
-use App\Repository\Establishment\EstablishmentSlotRepository;
-use App\Shared\Exception\BusinessRuleException;
-use App\User\Service\GuestAccountService;
-use DateTimeImmutable;
+use App\Establishment\Provider\SlotPageProvider;
 use NeoPHP\Component\Csrf\Attribute\Csrf;
 use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Component\Http\Response\RedirectResponse;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
-use NeoPHP\Component\Session\SessionManagerInterface;
 
 class BookingController extends AbstractFrontController
 {
-    public const TABS = [
-        'upcoming' => 'À venir',
-        'past' => 'Passées',
-        'cancelled' => 'Annulées',
-    ];
-
     public function __construct(
         private BookingService $bookingService,
-        private GuestAccountService $guests,
-        private BookingRepository $bookings,
-        private EstablishmentSlotRepository $slots,
+        private GuestBookingService $guestBookings,
+        private CustomerBookingsProvider $customerBookings,
+        private BookingCalendarService $calendar,
         private BookingPresenter $presenter,
-        private SessionManagerInterface $session,
+        private SlotPageProvider $slotPages,
     ) {
     }
 
@@ -46,17 +34,8 @@ class BookingController extends AbstractFrontController
     #[Route('/slot/{id}/book', name: 'slot_book', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function book(Request $request, int $id): RedirectResponse
     {
-        $slot = $this->slots->find($id);
-
-        if (!$slot instanceof EstablishmentSlot) {
-            throw $this->createNotFoundException('Ce créneau n\'existe pas.');
-        }
-
-        $input = new BookingInput();
-        $input->firstName = trim($request->request->getString('firstName')) ?: null;
-        $input->phone = trim($request->request->getString('phone')) ?: null;
-        $input->email = trim($request->request->getString('email')) ?: null;
-        $input->note = trim($request->request->getString('note')) ?: null;
+        $slot = $this->guestBookings->slot($id);
+        $input = BookingRequestMapper::booking($request);
         $booking = null;
 
         if (!$this->invalid($input)) {
@@ -64,13 +43,9 @@ class BookingController extends AbstractFrontController
                 $customer = $this->optionalUser();
 
                 if ($customer === null) {
-                    if ($input->email === null || $input->firstName === null || $input->phone === null) {
-                        throw new BusinessRuleException('Indique ton prénom, ton téléphone et ton adresse e-mail, ou connecte-toi.');
-                    }
-
-                    $customer = $this->guests->create($input->email, $input->firstName, $input->phone);
+                    $customer = $this->guestBookings->guest($input);
                     $this->loginUser($customer);
-                    $this->addFlash('info', sprintf('Ton compte Kréno est créé : un e-mail t\'attend à %s pour choisir ton mot de passe.', $input->email));
+                    $this->addFlash('info', BookingFlash::GUEST_ACCOUNT_CREATED->text((string) $input->email));
                 }
 
                 $booking = $this->bookingService->book($slot, $customer, $input);
@@ -78,7 +53,7 @@ class BookingController extends AbstractFrontController
         }
 
         if (!$booking instanceof Booking) {
-            $this->session->set(ShopController::OLD_BOOKING, ['slot' => $id, 'values' => ['firstName' => $input->firstName, 'phone' => $input->phone, 'email' => $input->email, 'note' => $input->note]]);
+            $this->slotPages->remember(BookingRequestMapper::oldBooking($id, $input));
 
             return $this->redirectToRoute('slot_show', ['id' => $id]);
         }
@@ -86,92 +61,80 @@ class BookingController extends AbstractFrontController
         return $this->redirectToRoute('booking_confirmed', ['reference' => $booking->getReference()]);
     }
 
-    #[Route('/booking/{reference}/confirmed', name: 'booking_confirmed', methods: ['GET'], requirements: ['reference' => ReferenceHelper::PATTERN])]
+    #[Route(
+        '/booking/{reference}/confirmed',
+        name: 'booking_confirmed',
+        methods: ['GET'],
+        requirements: ['reference' => ReferenceHelper::PATTERN],
+    )]
     public function confirmed(string $reference): Response
     {
+        $booking = $this->customerBookings->owned($reference, $this->currentUser());
+
         return $this->render('front/booking/confirmed.html.twig', [
-            'booking' => $this->presenter->confirmation($this->findOwned($reference)),
+            'booking' => $this->presenter->confirmation($booking),
         ]);
     }
 
     #[Route('/account/bookings', name: 'account_bookings', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        $user = $this->currentUser();
-        $tab = $request->query->getString('tab', 'upcoming');
-        $tab = isset(self::TABS[$tab]) ? $tab : 'upcoming';
-        $now = new DateTimeImmutable();
-        $lists = [
-            'upcoming' => fn (): array => $this->bookings->findForCustomer($user, [BookingStatus::CONFIRMED], $now),
-            'past' => fn (): array => $this->bookings->findForCustomer($user, [BookingStatus::CONFIRMED, BookingStatus::HONORED, BookingStatus::NO_SHOW], null, $now),
-            'cancelled' => fn (): array => $this->bookings->findForCustomer($user, BookingRepository::CANCELLED_STATUSES),
-        ];
+        $page = $this->customerBookings->index($this->currentUser(), $request->query->getString('tab'));
 
-        return $this->render('front/account/booking/index.html.twig', [
-            'tab' => $tab,
-            'tabs' => array_map(static fn (string $key, string $label): array => ['key' => $key, 'label' => $label, 'selected' => $key === $tab], array_keys(self::TABS), self::TABS),
-            'bookings' => $this->presenter->forCustomerList($lists[$tab](), $now),
-        ]);
+        return $this->render('front/account/booking/index.html.twig', $page);
     }
 
-    #[Route('/account/bookings/{reference}', name: 'account_booking_show', methods: ['GET'], requirements: ['reference' => ReferenceHelper::PATTERN])]
+    #[Route(
+        '/account/bookings/{reference}',
+        name: 'account_booking_show',
+        methods: ['GET'],
+        requirements: ['reference' => ReferenceHelper::PATTERN],
+    )]
     public function show(string $reference): Response
     {
+        $booking = $this->customerBookings->owned($reference, $this->currentUser());
+
         return $this->render('front/account/booking/show.html.twig', [
-            'booking' => $this->presenter->forCustomerDetail($this->findOwned($reference)),
+            'booking' => $this->presenter->forCustomerDetail($booking),
         ]);
     }
 
     #[Csrf('account')]
-    #[Route('/account/bookings/{reference}/cancel', name: 'account_booking_cancel', methods: ['POST'], requirements: ['reference' => ReferenceHelper::PATTERN])]
+    #[Route(
+        '/account/bookings/{reference}/cancel',
+        name: 'account_booking_cancel',
+        methods: ['POST'],
+        requirements: ['reference' => ReferenceHelper::PATTERN],
+    )]
     public function cancel(Request $request, string $reference): RedirectResponse
     {
-        $booking = $this->findOwned($reference);
-        $input = new CancellationInput();
-        $input->reason = trim($request->request->getString('reason')) ?: null;
+        $user = $this->currentUser();
+        $booking = $this->customerBookings->owned($reference, $user);
+        $input = BookingRequestMapper::cancellation($request);
 
         if (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->bookingService->cancelByCustomer($booking, $this->currentUser(), $input->reason), 'Réservation annulée, sans frais.');
+            $this->attempt(
+                fn () => $this->bookingService->cancelByCustomer($booking, $user, $input->reason),
+                BookingFlash::CANCELLED->text(),
+            );
         }
 
         return $this->redirectToRoute('account_booking_show', ['reference' => $reference]);
     }
 
-    #[Route('/account/bookings/{reference}/calendar.ics', name: 'account_booking_calendar', methods: ['GET'], requirements: ['reference' => ReferenceHelper::PATTERN])]
+    #[Route(
+        '/account/bookings/{reference}/calendar.ics',
+        name: 'account_booking_calendar',
+        methods: ['GET'],
+        requirements: ['reference' => ReferenceHelper::PATTERN],
+    )]
     public function calendar(string $reference): Response
     {
-        $booking = $this->findOwned($reference);
-        $slot = $booking->getSlot();
-        $establishment = $slot?->getEstablishment();
+        $booking = $this->customerBookings->owned($reference, $this->currentUser());
 
-        if ($slot?->getStartsAt() === null || $slot->getEndsAt() === null || $booking->getStatus() !== BookingStatus::CONFIRMED) {
-            throw $this->createNotFoundException('Cette réservation n\'est plus active.');
-        }
-
-        $content = IcsHelper::event(
-            $booking->getReference() . '@kreno.fr',
-            $slot->getStartsAt(),
-            $slot->getEndsAt(),
-            sprintf('%s chez %s', $slot->getService()?->getName(), $establishment?->getName()),
-            $establishment !== null ? trim(sprintf('%s, %s %s', $establishment->getAddressLine1(), $establishment->getPostalCode(), $establishment->getLocality()), ', ') : null,
-            sprintf('Réservation %s · paiement sur place', $booking->getReference()),
-        );
-
-        return new Response($content, 200, [
-            'Content-Type' => 'text/calendar; charset=utf-8',
-            'Content-Disposition' => sprintf('attachment; filename="%s.ics"', $booking->getReference()),
+        return new Response($this->calendar->ics($booking), 200, [
+            'Content-Type' => BookingCalendarService::CONTENT_TYPE,
+            'Content-Disposition' => sprintf('attachment; filename="%s"', $this->calendar->fileName($booking)),
         ]);
-    }
-
-    private function findOwned(string $reference): Booking
-    {
-        $user = $this->currentUser();
-        $booking = $this->bookings->findOneByReference($reference);
-
-        if (!$booking instanceof Booking || !$booking->getCustomer() instanceof User || $booking->getCustomer() !== $user) {
-            throw $this->createNotFoundException('Réservation introuvable.');
-        }
-
-        return $booking;
     }
 }

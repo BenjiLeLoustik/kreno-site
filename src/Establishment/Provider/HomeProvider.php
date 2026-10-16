@@ -2,8 +2,13 @@
 
 namespace App\Establishment\Provider;
 
+use App\Catalog\Presenter\CityPresenter;
 use App\Entity\Booking;
+use App\Entity\City;
+use App\Establishment\Dto\SlotSearchInput;
 use App\Establishment\Enum\HomeStep;
+use App\Establishment\Presenter\SlotPresenter;
+use App\Establishment\Service\SlotSearchService;
 use App\Repository\BookingRepository;
 use App\Shared\Helper\DurationHelper;
 use App\Shared\Helper\MoneyHelper;
@@ -15,11 +20,16 @@ class HomeProvider
 {
     public const DELAY_DAYS = 30;
 
+    public const HOME_SLOTS = 6;
+
     private ?array $facts = null;
 
     public function __construct(
         private WebsiteProvider $website,
         private BookingRepository $bookings,
+        private SlotSearchService $search,
+        private SlotPresenter $slotPresenter,
+        private CityPresenter $cityPresenter,
     ) {
     }
 
@@ -34,26 +44,55 @@ class HomeProvider
         return $steps;
     }
 
+    public function page(string $city): array
+    {
+        $now = new DateTimeImmutable();
+        $input = new SlotSearchInput();
+        $input->limit = self::HOME_SLOTS;
+
+        if ($city !== '') {
+            $input->where = $city;
+        }
+
+        $result = $this->search->search($input, $now);
+
+        return [
+            'city' => $this->city($result->getCity()),
+            'slots' => $this->slotPresenter->cards($result->getMatches(), $now),
+            'steps' => self::steps(),
+            'proFacts' => $this->proFacts(),
+        ];
+    }
+
     public function proFacts(): array
     {
         return $this->facts ??= [
             [
                 'value' => '30 s',
-                'label' => 'pour publier un créneau libéré'
+                'label' => 'pour publier un créneau libéré',
             ],
             [
                 'value' => '0 €',
-                'label' => 'si personne ne réserve'
+                'label' => 'si personne ne réserve',
             ],
             [
                 'value' => $this->commission(),
-                'label' => 'de commission par réservation'
+                'label' => 'de commission par réservation',
             ],
             [
                 'value' => $this->averageDelay(),
-                'label' => 'en moyenne pour trouver preneur'
+                'label' => 'en moyenne pour trouver preneur',
             ],
         ];
+    }
+
+    private function city(?City $city): ?array
+    {
+        if ($city === null) {
+            return null;
+        }
+
+        return $this->cityPresenter->summary($city);
     }
 
     private function commission(): ?string

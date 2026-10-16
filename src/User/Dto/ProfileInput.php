@@ -7,7 +7,8 @@ use NeoPHP\Component\Validator\Constraint as Assert;
 
 class ProfileInput
 {
-    #[Assert\Length(min: 1, max: 80)]
+    #[Assert\NotBlank(message: 'Indiquez votre prénom.')]
+    #[Assert\Length(max: 80)]
     public ?string $firstName = null;
 
     #[Assert\Length(max: 80)]
@@ -16,6 +17,7 @@ class ProfileInput
     #[Assert\Regex(pattern: ValidationPattern::PHONE)]
     public ?string $phone = null;
 
+    #[Assert\NotBlank(message: 'Indiquez votre adresse e-mail.')]
     #[Assert\Email]
     #[Assert\Length(max: 180)]
     public ?string $email = null;
