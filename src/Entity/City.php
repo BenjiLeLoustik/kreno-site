@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Catalog\Enum\CityStatus;
 use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Trait\PositionTrait;
 use App\Entity\Trait\SlugTrait;
-use App\Enum\City\CityStatus;
 use App\Repository\CityRepository;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\Collection\ArrayCollection;

@@ -3,11 +3,11 @@
 namespace App\Catalog\Service;
 
 use App\Catalog\Dto\CityInput;
+use App\Catalog\Enum\CityStatus;
 use App\Catalog\Exception\CityNameRequiredException;
 use App\Catalog\Exception\CityNotEmptyException;
 use App\Entity\City;
 use App\Entity\User\User;
-use App\Enum\City\CityStatus;
 use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Repository\CityRepository;
