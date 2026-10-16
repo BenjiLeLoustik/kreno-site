@@ -4,6 +4,7 @@ namespace App\Billing\Gateway;
 
 use App\Billing\Enum\PaymentMethodType;
 use App\Billing\Enum\PaymentStatus;
+use App\Billing\Enum\Stripe\DeclineMessage;
 use App\Billing\Exception\PaymentGatewayException;
 use App\Billing\Model\GatewayPaymentMethod;
 use App\Billing\Model\GatewayPaymentResult;
@@ -18,16 +19,6 @@ use Throwable;
 class StripePaymentGateway implements PaymentGatewayInterface
 {
     public const WEBHOOK_TOLERANCE = 300;
-
-    public const DECLINE_MESSAGES = [
-        'insufficient_funds' => 'provision insuffisante',
-        'expired_card' => 'carte expirée',
-        'card_declined' => 'paiement refusé par la banque',
-        'authentication_required' => 'authentification 3D Secure non validée',
-        'incorrect_cvc' => 'code de sécurité incorrect',
-        'processing_error' => 'erreur de traitement chez la banque',
-        'card_velocity_exceeded' => 'plafond de paiement atteint',
-    ];
 
     public function __construct(
         private HttpClientManagerInterface $http,
@@ -137,7 +128,7 @@ class StripePaymentGateway implements PaymentGatewayInterface
 
         $code = $error['decline_code'] ?? $error['code'] ?? 'card_declined';
 
-        return new GatewayPaymentResult(null, PaymentStatus::FAILED, null, $code, self::DECLINE_MESSAGES[$code] ?? self::DECLINE_MESSAGES['card_declined']);
+        return new GatewayPaymentResult(null, PaymentStatus::FAILED, null, $code, DeclineMessage::fromCode($code)->message());
     }
 
     public function retrieveCharge(string $reference): GatewayPaymentResult
@@ -202,7 +193,7 @@ class StripePaymentGateway implements PaymentGatewayInterface
             $status,
             $status === PaymentStatus::REQUIRES_ACTION ? ($intent['client_secret'] ?? null) : null,
             $status === PaymentStatus::FAILED ? ($code ?? 'card_declined') : null,
-            $status === PaymentStatus::FAILED ? (self::DECLINE_MESSAGES[$code ?? 'card_declined'] ?? self::DECLINE_MESSAGES['card_declined']) : null,
+            $status === PaymentStatus::FAILED ? DeclineMessage::fromCode($code)->message() : null,
         );
     }
 
@@ -217,7 +208,7 @@ class StripePaymentGateway implements PaymentGatewayInterface
         $error = is_array($data['error'] ?? null) ? $data['error'] : [];
 
         if (($error['type'] ?? null) === 'card_error') {
-            throw new BusinessRuleException(self::DECLINE_MESSAGES[$error['decline_code'] ?? $error['code'] ?? 'card_declined'] ?? self::DECLINE_MESSAGES['card_declined']);
+            throw new BusinessRuleException(DeclineMessage::fromCode($error['decline_code'] ?? $error['code'] ?? null)->message());
         }
 
         throw new PaymentGatewayException(sprintf('Le prestataire de paiement a refusé la requête : %s', $error['message'] ?? 'erreur inconnue'));
