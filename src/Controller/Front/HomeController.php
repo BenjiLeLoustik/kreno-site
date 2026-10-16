@@ -36,7 +36,7 @@ class HomeController extends AbstractFrontController
         return $this->render('front/home/index.html.twig', [
             'city' => $result->getCity() !== null ? $this->cityPresenter->summary($result->getCity()) : null,
             'slots' => $this->slotPresenter->cards($result->getMatches(), $now),
-            'steps' => HomeProvider::STEPS,
+            'steps' => HomeProvider::steps(),
             'proFacts' => $this->home->proFacts(),
         ]);
     }
