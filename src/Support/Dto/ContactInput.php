@@ -2,12 +2,13 @@
 
 namespace App\Support\Dto;
 
+use App\Support\Enum\ContactTopic;
 use NeoPHP\Component\Validator\Constraint as Assert;
 
 class ContactInput
 {
     #[Assert\NotBlank]
-    #[Assert\Choice(choices: ['booking', 'account', 'report', 'other'])]
+    #[Assert\Choice(callback: [ContactTopic::class, 'values'])]
     public ?string $topic = null;
 
     #[Assert\Regex(pattern: '/^KR-\d{6}$/')]

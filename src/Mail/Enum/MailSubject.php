@@ -55,6 +55,9 @@ enum MailSubject
     case PASSWORD_CHANGED;
     case ACCOUNT_DELETED;
     case ACCOUNT_SUSPENDED;
+    case CONTACT_REPLY;
+    case SUPPORT_CONTACT;
+    case SUPPORT_FOLLOW_UP;
 
     public function text(string|int|null ...$values): string
     {
@@ -115,6 +118,9 @@ enum MailSubject
             self::PASSWORD_CHANGED => 'Ton mot de passe Kréno a été modifié',
             self::ACCOUNT_DELETED => 'Ton compte Kréno est supprimé',
             self::ACCOUNT_SUSPENDED => 'Ton compte Kréno est suspendu',
+            self::CONTACT_REPLY => 'Réponse à votre demande · %s',
+            self::SUPPORT_CONTACT => 'Contact · %s · %s',
+            self::SUPPORT_FOLLOW_UP => 'Réponse client · %s · %s',
         };
     }
 }

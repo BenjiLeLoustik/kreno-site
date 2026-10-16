@@ -5,6 +5,7 @@ namespace App\Controller\Front;
 use App\Entity\AppContact;
 use App\Report\Service\ReportService;
 use App\Support\Dto\ContactInput;
+use App\Support\Enum\ContactTopic;
 use App\Support\Service\ContactService;
 use App\Website\Provider\WebsiteProvider;
 use NeoPHP\Component\Container\Attribute\Autowire;
@@ -79,7 +80,7 @@ class PageController extends AbstractFrontController
 
         return $this->render('front/page/help.html.twig', [
             'faq' => $this->faq($rules),
-            'topics' => array_map(static fn (string $key, string $label): array => ['value' => $key, 'label' => $label], array_keys(ContactService::TOPICS), ContactService::TOPICS),
+            'topics' => ContactTopic::choices(),
             'form' => [
                 'topic' => $old['topic'] ?? null,
                 'reference' => $old['reference'] ?? null,

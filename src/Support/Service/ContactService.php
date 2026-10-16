@@ -4,13 +4,18 @@ namespace App\Support\Service;
 
 use App\Entity\AppContact;
 use App\Entity\AppContactMessage;
+use App\Entity\Booking;
 use App\Entity\User\User;
 use App\Enum\Contact\AppContactAuthor;
 use App\Enum\Contact\AppContactStatus;
+use App\Mail\Enum\MailSubject;
+use App\Mail\Enum\MailText;
 use App\Mail\Service\MailService;
 use App\Repository\BookingRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\Support\Dto\ContactInput;
+use App\Support\Enum\ContactTopic;
+use App\Support\Exception\ContactClosedException;
+use App\Support\Exception\ContactClosedForTeamException;
 use App\User\Helper\TokenHelper;
 use App\User\Helper\UserNameHelper;
 use DateTimeImmutable;
@@ -19,13 +24,6 @@ use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class ContactService
 {
-    public const TOPICS = [
-        'booking' => 'Une réservation',
-        'account' => 'Mon compte',
-        'report' => 'Signaler un établissement',
-        'other' => 'Autre',
-    ];
-
     public function __construct(
         private MailService $mail,
         private BookingRepository $bookings,
@@ -35,26 +33,19 @@ class ContactService
     ) {
     }
 
-    public static function topicLabel(?string $topic): string
-    {
-        return self::TOPICS[(string) $topic] ?? self::TOPICS['other'];
-    }
-
     public function send(ContactInput $input, ?User $user = null): AppContact
     {
-        $now = new DateTimeImmutable();
         $reference = strtoupper(trim((string) $input->reference));
-        $booking = $reference !== '' ? $this->bookings->findOneByReference($reference) : null;
 
         $contact = (new AppContact())
-            ->setTopic(isset(self::TOPICS[(string) $input->topic]) ? (string) $input->topic : 'other')
+            ->setTopic(ContactTopic::of($input->topic)->value)
             ->setEmail(mb_strtolower(trim((string) $input->email)))
             ->setUser($user)
-            ->setBooking($booking)
-            ->setReference($reference !== '' ? $reference : null)
+            ->setBooking($this->booking($reference))
+            ->setReference($this->nullable($reference))
             ->setStatus(AppContactStatus::NEW)
             ->setToken(TokenHelper::generate())
-            ->setLastMessageAt($now);
+            ->setLastMessageAt(new DateTimeImmutable());
 
         $message = (new AppContactMessage())
             ->setAuthorType(AppContactAuthor::CUSTOMER)
@@ -72,7 +63,7 @@ class ContactService
     public function reply(AppContact $contact, User $admin, string $body): AppContactMessage
     {
         if ($contact->getStatus() === AppContactStatus::CLOSED) {
-            throw new BusinessRuleException('Cette demande est fermée : rouvrez-la pour répondre.');
+            throw new ContactClosedForTeamException();
         }
 
         $message = (new AppContactMessage())
@@ -83,16 +74,8 @@ class ContactService
         $contact->addMessage($message);
         $contact->setStatus(AppContactStatus::ANSWERED)->setLastMessageAt(new DateTimeImmutable());
         $this->orm->flush();
-        $first = $contact->getMessages()->first();
 
-        $this->mail->send(MailService::SUPPORT, (string) $contact->getEmail(), sprintf('Réponse à votre demande · %s', self::topicLabel($contact->getTopic())), 'contact-reply', [
-            'firstName' => $contact->getUser()?->getFirstName(),
-            'topic' => self::topicLabel($contact->getTopic()),
-            'reply' => $message->getBody(),
-            'original' => $first instanceof AppContactMessage && $first !== $message ? $first->getBody() : null,
-            'reference' => $contact->getReference(),
-            'url' => $this->mail->url('page_contact_show', ['token' => $contact->getToken()]),
-        ], $this->supportAddress);
+        $this->notifyCustomer($contact, $message);
 
         return $message;
     }
@@ -100,7 +83,7 @@ class ContactService
     public function customerReply(AppContact $contact, string $body): AppContactMessage
     {
         if ($contact->getStatus() === AppContactStatus::CLOSED) {
-            throw new BusinessRuleException('Cette demande est fermée. Écrivez-nous depuis la page d\'aide pour en ouvrir une nouvelle.');
+            throw new ContactClosedException();
         }
 
         $message = (new AppContactMessage())
@@ -128,31 +111,102 @@ class ContactService
         $this->orm->flush();
     }
 
+    private function booking(string $reference): ?Booking
+    {
+        if ($reference === '') {
+            return null;
+        }
+
+        return $this->bookings->findOneByReference($reference);
+    }
+
+    private function nullable(string $value): ?string
+    {
+        if ($value === '') {
+            return null;
+        }
+
+        return $value;
+    }
+
+    private function notifyCustomer(AppContact $contact, AppContactMessage $message): void
+    {
+        $topic = ContactTopic::of($contact->getTopic())->label();
+        $subject = MailSubject::CONTACT_REPLY->text($topic);
+
+        $this->mail->send(MailService::SUPPORT, (string) $contact->getEmail(), $subject, 'contact-reply', [
+            'firstName' => $contact->getUser()?->getFirstName(),
+            'topic' => $topic,
+            'reply' => $message->getBody(),
+            'original' => $this->originalMessage($contact, $message),
+            'reference' => $contact->getReference(),
+            'url' => $this->mail->url('page_contact_show', ['token' => $contact->getToken()]),
+        ], $this->supportAddress);
+    }
+
+    private function originalMessage(AppContact $contact, AppContactMessage $reply): ?string
+    {
+        $first = $contact->getMessages()->first();
+
+        if (!$first instanceof AppContactMessage || $first === $reply) {
+            return null;
+        }
+
+        return $first->getBody();
+    }
+
     private function notifyTeam(AppContact $contact, AppContactMessage $message, bool $followUp): void
     {
-        $booking = $contact->getBooking();
-        $user = $contact->getUser();
-        $topic = self::topicLabel($contact->getTopic());
+        $topic = ContactTopic::of($contact->getTopic())->label();
+        $subject = $this->teamSubject($followUp)->text($topic, $contact->getEmail());
+        $now = new DateTimeImmutable();
 
-        $this->mail->send(MailService::SUPPORT, $this->supportAddress, sprintf('%s · %s · %s', $followUp ? 'Réponse client' : 'Contact', $topic, $contact->getEmail()), 'support-contact', [
+        $this->mail->send(MailService::SUPPORT, $this->supportAddress, $subject, 'support-contact', [
             'followUp' => $followUp,
             'topic' => $topic,
             'email' => $contact->getEmail(),
             'message' => $message->getBody(),
             'reference' => $contact->getReference(),
-            'booking' => $booking === null ? null : [
-                'reference' => $booking->getReference(),
-                'establishment' => $booking->getSlot()?->getEstablishment()?->getName(),
-                'customerEmail' => $booking->getCustomer()?->getEmail(),
-                'status' => $booking->getStatus()->label(),
-            ],
-            'user' => $user === null ? null : [
-                'id' => $user->getId(),
-                'name' => UserNameHelper::fullName($user),
-                'email' => $user->getEmail(),
-            ],
-            'sentAt' => (new DateTimeImmutable())->format('d/m/Y à H:i'),
+            'booking' => $this->bookingContext($contact->getBooking()),
+            'user' => $this->userContext($contact->getUser()),
+            'sentAt' => MailText::DATE_AT_TIME->text($now->format('d/m/Y'), $now->format('H:i')),
             'adminUrl' => $this->mail->url('admin_contact_show', ['id' => $contact->getId()]),
         ], $contact->getEmail());
+    }
+
+    private function teamSubject(bool $followUp): MailSubject
+    {
+        if ($followUp) {
+            return MailSubject::SUPPORT_FOLLOW_UP;
+        }
+
+        return MailSubject::SUPPORT_CONTACT;
+    }
+
+    private function bookingContext(?Booking $booking): ?array
+    {
+        if ($booking === null) {
+            return null;
+        }
+
+        return [
+            'reference' => $booking->getReference(),
+            'establishment' => $booking->getSlot()?->getEstablishment()?->getName(),
+            'customerEmail' => $booking->getCustomer()?->getEmail(),
+            'status' => $booking->getStatus()->label(),
+        ];
+    }
+
+    private function userContext(?User $user): ?array
+    {
+        if ($user === null) {
+            return null;
+        }
+
+        return [
+            'id' => $user->getId(),
+            'name' => UserNameHelper::fullName($user),
+            'email' => $user->getEmail(),
+        ];
     }
 }
