@@ -26,19 +26,35 @@ class InvoiceService
         private EventManagerInterface $events,
         private CompanyInvoiceRepository $invoices,
         private BillingInfoService $billingInfo,
+        private InvoiceNumberGenerator $numberGenerator,
     ) {
     }
 
-    public function issue(Company $company, array $lines, DateTimeImmutable $periodStart, DateTimeImmutable $periodEnd, ?CompanySubscription $subscription = null, InvoiceType $type = InvoiceType::INVOICE, ?CompanyInvoice $credited = null): CompanyInvoice
-    {
+    public function issue(
+        Company $company,
+        array $lines,
+        DateTimeImmutable $periodStart,
+        DateTimeImmutable $periodEnd,
+        ?CompanySubscription $subscription = null,
+        InvoiceType $type = InvoiceType::INVOICE,
+        ?CompanyInvoice $credited = null
+    ): CompanyInvoice {
         $now = new DateTimeImmutable();
         $taxRate = $subscription?->getPlan()?->getVatRate() ?? $credited?->getTaxRate() ?? self::DEFAULT_TAX_RATE;
+        $year = (int) $now->format('Y');
+
+        $number = $this->numberGenerator->next(
+            $type,
+            $year,
+            $this->invoices->countNumbered($type, $year),
+            fn (string $number): bool => $this->invoices->numberExists($number),
+        );
 
         $invoice = new CompanyInvoice();
         $invoice->setSubscription($subscription);
         $invoice->setCreditedInvoice($credited);
         $invoice->setType($type);
-        $invoice->setNumber(InvoiceNumberHelper::next($type, (int) $now->format('Y'), $this->invoices->countNumbered($type, (int) $now->format('Y')), fn (string $number): bool => $this->invoices->numberExists($number)));
+        $invoice->setNumber($number);
         $invoice->setPeriodStart($periodStart);
         $invoice->setPeriodEnd($periodEnd);
         $invoice->setIssuedAt($now);
@@ -84,11 +100,28 @@ class InvoiceService
         return $invoice;
     }
 
-    public function issueForSubscription(CompanySubscription $subscription, int $amount, string $label, DateTimeImmutable $periodStart, DateTimeImmutable $periodEnd, array $extraLines = []): CompanyInvoice
-    {
+    public function issueForSubscription(
+        CompanySubscription $subscription,
+        int $amount,
+        string $label,
+        DateTimeImmutable $periodStart,
+        DateTimeImmutable $periodEnd,
+        array $extraLines = []
+    ): CompanyInvoice {
         $company = $subscription->getCompany() ?? throw new BusinessRuleException('Abonnement sans entreprise.');
 
-        return $this->issue($company, [['label' => $label, 'unitPrice' => $amount], ...$extraLines], $periodStart, $periodEnd, $subscription);
+        return $this->issue(
+            $company, [
+                [
+                    'label' => $label,
+                    'unitPrice' => $amount
+                ],
+                ...$extraLines
+            ],
+            $periodStart,
+            $periodEnd,
+            $subscription
+        );
     }
 
     public function credit(CompanyInvoice $invoice, ?int $amount, string $label): CompanyInvoice
@@ -101,7 +134,18 @@ class InvoiceService
 
         $amount = min($amount ?? $invoice->getTotalExcludingTax(), $invoice->getTotalExcludingTax());
 
-        return $this->issue($company, [['label' => $label, 'unitPrice' => -$amount]], $invoice->getPeriodStart() ?? new DateTimeImmutable(), $invoice->getPeriodEnd() ?? new DateTimeImmutable(), $invoice->getSubscription(), InvoiceType::CREDIT_NOTE, $invoice);
+        return $this->issue(
+            $company, [
+                [
+                    'label' => $label,
+                    'unitPrice' => -$amount
+                ]
+            ],
+            $invoice->getPeriodStart() ?? new DateTimeImmutable(),
+            $invoice->getPeriodEnd() ?? new DateTimeImmutable(),
+            $invoice->getSubscription(),
+            InvoiceType::CREDIT_NOTE, $invoice
+        );
     }
 
     public function void(CompanyInvoice $invoice): void
