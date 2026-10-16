@@ -28,6 +28,10 @@ class ErrorPageListener
         ContextDefault::class,
     ];
 
+    public const SERVER_ERROR = 500;
+
+    public const TEMPLATE = 'errors/error.html.twig';
+
     public function __construct(
         private ViewManagerInterface $view,
         private ExceptionManager $exceptions,
@@ -39,32 +43,69 @@ class ErrorPageListener
     #[AsListener(ExceptionEvent::class, priority: -100)]
     public function onException(ExceptionEvent $event): void
     {
-        $request = $event->getRequest();
         $throwable = $event->getThrowable();
         $status = $this->exceptions->getStatusCode($throwable);
 
-        if ($status >= 500) {
-            $this->recorder->record($throwable, $request, $status, $this->userId(), $event->getKernel()->getRootPath());
+        if ($status >= self::SERVER_ERROR) {
+            $this->record($event, $throwable, $status);
         }
 
         $context = $this->context($throwable, $status);
 
-        if ($context === null || $request->wantsJson() || $request->isJson() || ($status >= 500 && $event->getKernel()->isDebug())) {
+        if ($context === null || !$this->shouldRender($event, $status)) {
             return;
         }
 
-        try {
-            $content = $this->view->render('errors/error.html.twig', [
-                'status' => $status,
-                'error' => $context,
-            ]);
-        } catch (Throwable $exception) {
-            error_log(sprintf('[ErrorPageListener] %s: %s in %s:%d', $exception::class, $exception->getMessage(), $exception->getFile(), $exception->getLine()));
+        $content = $this->render($status, $context);
 
+        if ($content === null) {
             return;
         }
 
         $event->setResponse(new Response($content, $status, $this->exceptions->getHeaders($throwable)));
+    }
+
+    private function record(ExceptionEvent $event, Throwable $throwable, int $status): void
+    {
+        $root = $event->getKernel()->getRootPath();
+
+        $this->recorder->record($throwable, $event->getRequest(), $status, $this->userId(), $root);
+    }
+
+    private function shouldRender(ExceptionEvent $event, int $status): bool
+    {
+        $request = $event->getRequest();
+
+        if ($request->wantsJson() || $request->isJson()) {
+            return false;
+        }
+
+        return $status < self::SERVER_ERROR || !$event->getKernel()->isDebug();
+    }
+
+    private function render(int $status, ErrorContextInterface $context): ?string
+    {
+        try {
+            return $this->view->render(self::TEMPLATE, [
+                'status' => $status,
+                'error' => $context,
+            ]);
+        } catch (Throwable $exception) {
+            error_log($this->failure($exception));
+
+            return null;
+        }
+    }
+
+    private function failure(Throwable $exception): string
+    {
+        return sprintf(
+            '[ErrorPageListener] %s: %s in %s:%d',
+            $exception::class,
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine(),
+        );
     }
 
     private function context(Throwable $throwable, int $status): ?ErrorContextInterface
@@ -88,6 +129,10 @@ class ErrorPageListener
             return null;
         }
 
-        return $user instanceof User ? $user->getId() : null;
+        if (!$user instanceof User) {
+            return null;
+        }
+
+        return $user->getId();
     }
 }
