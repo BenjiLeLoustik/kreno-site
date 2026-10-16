@@ -2,6 +2,7 @@
 
 namespace App\Establishment\Presenter;
 
+use App\Catalog\Presenter\CategoryPresenter;
 use App\Company\Presenter\EstablishmentSummaryPresenter;
 use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Establishment\EstablishmentImage;
@@ -26,6 +27,7 @@ class EstablishmentPagePresenter
         private EstablishmentSlotRepository $slots,
         private EstablishmentClosureRepository $closures,
         private EstablishmentFollowerRepository $followers,
+        private CategoryPresenter $categoryPresenter
     ) {
     }
 
@@ -115,7 +117,7 @@ class EstablishmentPagePresenter
 
         return [
             'services' => $services,
-            'suggestions' => ServiceSuggestionHelper::for($establishment->getCategory()?->getSlug()),
+            'suggestions' => $this->categoryPresenter->suggestions($establishment->getCategory()),
             'categoryName' => $establishment->getCategory()?->getName(),
             'durations' => ServiceSuggestionHelper::DURATIONS,
             'defaultDiscount' => $discount,

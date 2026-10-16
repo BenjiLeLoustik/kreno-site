@@ -13,14 +13,21 @@ class OpeningHoursPresenter
     public function week(array $hours): array
     {
         $week = OpeningHoursHelper::byWeekday($hours);
+        $days = [];
 
-        return array_map(static fn (Weekday $weekday): array => [
-            'weekday' => $weekday->value,
-            'day' => $weekday->label(),
-            'ranges' => array_map(static fn (array $range): array => ['opensAt' => $range[0], 'closesAt' => $range[1]], $week[$weekday->value]),
-            'hours' => OpeningHoursHelper::rangesLabel($week[$weekday->value]),
-            'closed' => $week[$weekday->value] === [],
-        ], Weekday::cases());
+        foreach (Weekday::cases() as $weekday) {
+            $ranges = $week[$weekday->value];
+
+            $days[] = [
+                'weekday' => $weekday->value,
+                'day' => $weekday->label(),
+                'ranges' => $this->ranges($ranges),
+                'hours' => OpeningHoursHelper::rangesLabel($ranges),
+                'closed' => $ranges === [],
+            ];
+        }
+
+        return $days;
     }
 
     public function grouped(array $hours): array
@@ -40,21 +47,40 @@ class OpeningHoursPresenter
 
     public function closure(EstablishmentClosure $closure): array
     {
-        $sameDay = $closure->getStartsOn()?->format('Y-m-d') === $closure->getEndsOn()?->format('Y-m-d');
-
         return [
             'id' => $closure->getId(),
             'startsOn' => DateHelper::day($closure->getStartsOn()),
             'endsOn' => DateHelper::day($closure->getEndsOn()),
             'reason' => $closure->getReason(),
-            'label' => $sameDay
-                ? sprintf('Le %s', $closure->getStartsOn()?->format('d/m/Y'))
-                : sprintf('Du %s au %s', $closure->getStartsOn()?->format('d/m/Y'), $closure->getEndsOn()?->format('d/m/Y')),
+            'label' => $this->closureLabel($closure),
         ];
     }
 
     public function closures(array $closures): array
     {
         return array_values(array_map($this->closure(...), $closures));
+    }
+
+    private function ranges(array $ranges): array
+    {
+        $result = [];
+
+        foreach ($ranges as [$opensAt, $closesAt]) {
+            $result[] = ['opensAt' => $opensAt, 'closesAt' => $closesAt];
+        }
+
+        return $result;
+    }
+
+    private function closureLabel(EstablishmentClosure $closure): string
+    {
+        $startsOn = $closure->getStartsOn()?->format('d/m/Y');
+        $endsOn = $closure->getEndsOn()?->format('d/m/Y');
+
+        if ($startsOn === $endsOn) {
+            return sprintf('Le %s', $startsOn);
+        }
+
+        return sprintf('Du %s au %s', $startsOn, $endsOn);
     }
 }

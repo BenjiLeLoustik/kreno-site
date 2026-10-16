@@ -19,7 +19,7 @@ class ServicePresenter
             'duration' => $service->getDuration(),
             'durationLabel' => DurationHelper::format($service->getDuration()),
             'defaultDiscount' => $service->getDefaultDiscount(),
-            'discountLabel' => $service->getDefaultDiscount() !== null ? sprintf('-%d %%', $service->getDefaultDiscount()) : null,
+            'discountLabel' => $this->discountLabel($service->getDefaultDiscount()),
             'active' => $service->isActive(),
             'position' => $service->getPosition(),
         ];
@@ -28,5 +28,14 @@ class ServicePresenter
     public function summaries(array $services): array
     {
         return array_values(array_map($this->summary(...), $services));
+    }
+
+    private function discountLabel(?int $discount): ?string
+    {
+        if ($discount === null) {
+            return null;
+        }
+
+        return sprintf('-%d %%', $discount);
     }
 }

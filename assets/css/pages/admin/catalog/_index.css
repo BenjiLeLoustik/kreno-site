@@ -22,4 +22,24 @@
     .catalog-switch--on .catalog-switch__knob {
         @apply translate-x-5;
     }
+
+    .catalog-suggestions {
+        @apply flex flex-col gap-2 border-t border-sand pt-3;
+    }
+
+    .catalog-suggestions__title {
+        @apply text-sm font-semibold;
+    }
+
+    .catalog-suggestion {
+        @apply flex items-end gap-2;
+    }
+
+    .catalog-suggestion__form {
+        @apply grid flex-1 items-end gap-2 sm:grid-cols-[minmax(0,1fr)_7rem_7rem_auto];
+    }
+
+    .catalog-suggestion__name {
+        @apply min-w-0;
+    }
 }

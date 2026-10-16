@@ -3,7 +3,6 @@
 namespace App\Establishment\Provider;
 
 use App\Entity\Company\CompanyEstablishment;
-use App\Entity\Establishment\EstablishmentService;
 use App\Entity\User\User;
 use App\Establishment\Enum\EstablishmentStatus;
 use App\Repository\Establishment\EstablishmentSlotRepository;
@@ -14,6 +13,8 @@ class ProWelcomeProvider
 {
     public const RECOMMENDED_IMAGES = 4;
 
+    private const EVER = '2000-01-01';
+
     public function __construct(
         private EstablishmentSlotRepository $slots,
         private RoutingManagerInterface $routing,
@@ -22,22 +23,15 @@ class ProWelcomeProvider
 
     public function build(CompanyEstablishment $establishment, User $user): array
     {
-        $services = array_filter($establishment->getServices()->toArray(), static fn (EstablishmentService $service): bool => $service->isActive());
-        $images = $establishment->getImages()->count();
-        $published = $this->slots->countCreatedSince($establishment, new DateTimeImmutable('2000-01-01')) > 0;
         $online = $establishment->getStatus() === EstablishmentStatus::ONLINE;
-
         $tasks = [
-            $this->task('account', $user->getEmailVerifiedAt() !== null, 'Créer votre compte', 'Identité et e-mail vérifiés', 'pro_company', 'Voir'),
-            $this->task('verified', $online, 'Établissement vérifié', $online ? 'SIRET contrôlé par l’équipe Kréno' : 'Vérification en cours par l’équipe Kréno', 'pro_establishment', 'Voir'),
-            $this->task('services', $services !== [], 'Ajouter vos prestations', $services !== [] ? sprintf('%d prestation%s · remise par défaut −%d %%', count($services), count($services) > 1 ? 's' : '', (int) $establishment->getDefaultDiscount()) : 'Ce que vous proposez, avec durée et prix', 'pro_services', $services !== [] ? 'Modifier' : 'Ajouter'),
-            $this->task('images', $images >= self::RECOMMENDED_IMAGES, 'Ajouter des photos', $images >= self::RECOMMENDED_IMAGES ? sprintf('%d photos en ligne', $images) : sprintf('Les pages avec %d photos ou plus sont 2× plus réservées', self::RECOMMENDED_IMAGES), 'pro_establishment', 'Ajouter'),
-            $this->task('slot', $published, 'Publier votre premier créneau', $published ? 'Votre premier créneau est publié' : 'Un trou dans l’agenda ? C’est le moment.', 'pro_slot_new', 'Publier'),
+            $this->accountTask($user),
+            $this->verifiedTask($online),
+            $this->servicesTask($establishment),
+            $this->imagesTask($establishment->getImages()->count()),
+            $this->slotTask($establishment),
         ];
-
-        $done = count(array_filter($tasks, static fn (array $task): bool => $task['done']));
-        $city = $establishment->getCity()?->getSlug();
-        $slug = $establishment->getSlug();
+        $done = $this->doneCount($tasks);
 
         return [
             'firstName' => $user->getFirstName(),
@@ -51,9 +45,135 @@ class ProWelcomeProvider
             'total' => count($tasks),
             'progress' => (int) round($done / count($tasks) * 100),
             'completed' => $done === count($tasks),
-            'shareUrl' => $online && $city !== null && $slug !== null ? $this->routing->generate('shop_show', ['city' => $city, 'slug' => $slug], true) : null,
+            'shareUrl' => $this->shareUrl($establishment, $online),
             'publishUrl' => $this->routing->generate('pro_slot_new'),
         ];
+    }
+
+    private function accountTask(User $user): array
+    {
+        $done = $user->getEmailVerifiedAt() !== null;
+        $text = 'Identité et e-mail vérifiés';
+
+        return $this->task('account', $done, 'Créer votre compte', $text, 'pro_company', 'Voir');
+    }
+
+    private function verifiedTask(bool $online): array
+    {
+        $text = 'Vérification en cours par l’équipe Kréno';
+
+        if ($online) {
+            $text = 'SIRET contrôlé par l’équipe Kréno';
+        }
+
+        return $this->task(
+            'verified',
+            $online,
+            'Établissement vérifié',
+            $text,
+            'pro_establishment',
+            'Voir'
+        );
+    }
+
+    private function servicesTask(CompanyEstablishment $establishment): array
+    {
+        $count = $this->activeServices($establishment);
+        $title = 'Ajouter vos prestations';
+
+        if ($count === 0) {
+            $text = 'Ce que vous proposez, avec durée et prix';
+
+            return $this->task('services', false, $title, $text, 'pro_services', 'Ajouter');
+        }
+
+        $discount = (int) $establishment->getDefaultDiscount();
+        $text = sprintf('%d prestation · remise par défaut −%d %%', $count, $discount);
+
+        if ($count > 1) {
+            $text = sprintf('%d prestations · remise par défaut −%d %%', $count, $discount);
+        }
+
+        return $this->task('services', true, $title, $text, 'pro_services', 'Modifier');
+    }
+
+    private function imagesTask(int $images): array
+    {
+        $done = $images >= self::RECOMMENDED_IMAGES;
+        $text = sprintf(
+            'Les pages avec %d photos ou plus sont 2× plus réservées',
+            self::RECOMMENDED_IMAGES
+        );
+
+        if ($done) {
+            $text = sprintf('%d photos en ligne', $images);
+        }
+
+        return $this->task(
+            'images',
+            $done,
+            'Ajouter des photos',
+            $text,
+            'pro_establishment',
+            'Ajouter'
+        );
+    }
+
+    private function slotTask(CompanyEstablishment $establishment): array
+    {
+        $published = $this->slots->countCreatedSince($establishment, new DateTimeImmutable(self::EVER)) > 0;
+        $text = 'Un trou dans l’agenda ? C’est le moment.';
+
+        if ($published) {
+            $text = 'Votre premier créneau est publié';
+        }
+
+        return $this->task(
+            'slot',
+            $published,
+            'Publier votre premier créneau',
+            $text,
+            'pro_slot_new',
+            'Publier'
+        );
+    }
+
+    private function activeServices(CompanyEstablishment $establishment): int
+    {
+        $count = 0;
+
+        foreach ($establishment->getServices() as $service) {
+            if ($service->isActive()) {
+                ++$count;
+            }
+        }
+
+        return $count;
+    }
+
+    private function doneCount(array $tasks): int
+    {
+        $done = 0;
+
+        foreach ($tasks as $task) {
+            if ($task['done']) {
+                ++$done;
+            }
+        }
+
+        return $done;
+    }
+
+    private function shareUrl(CompanyEstablishment $establishment, bool $online): ?string
+    {
+        $city = $establishment->getCity()?->getSlug();
+        $slug = $establishment->getSlug();
+
+        if (!$online || $city === null || $slug === null) {
+            return null;
+        }
+
+        return $this->routing->generate('shop_show', ['city' => $city, 'slug' => $slug], true);
     }
 
     private function task(string $key, bool $done, string $title, string $text, string $route, string $cta): array

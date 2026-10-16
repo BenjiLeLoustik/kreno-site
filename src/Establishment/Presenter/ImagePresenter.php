@@ -32,6 +32,10 @@ class ImagePresenter
 
     public function url(?EstablishmentImage $image): ?string
     {
-        return $image !== null ? $this->uploads->url($image->getPath()) : null;
+        if ($image === null) {
+            return null;
+        }
+
+        return $this->uploads->url($image->getPath());
     }
 }

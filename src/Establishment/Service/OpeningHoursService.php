@@ -6,8 +6,9 @@ use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Establishment\EstablishmentOpeningHour;
 use App\Enum\Calendar\Weekday;
 use App\Establishment\Dto\OpeningHourInput;
+use App\Establishment\Exception\OpeningHourOrderException;
+use App\Establishment\Exception\OpeningHourOverlapException;
 use App\Repository\Establishment\EstablishmentOpeningHourRepository;
-use App\Shared\Exception\BusinessRuleException;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
@@ -58,24 +59,57 @@ class OpeningHoursService
             }
 
             $weekday = Weekday::from((int) $input->weekday);
-            $opensAt = DateTimeImmutable::createFromFormat('!H:i', (string) $input->opensAt);
-            $closesAt = DateTimeImmutable::createFromFormat('!H:i', (string) $input->closesAt);
+            $opensAt = $this->time($input->opensAt);
+            $closesAt = $this->time($input->closesAt);
 
-            if ($opensAt === false || $closesAt === false || $opensAt >= $closesAt) {
-                throw new BusinessRuleException('{day} : l\'heure d\'ouverture doit précéder l\'heure de fermeture.', ['day' => $weekday->label()]);
+            if ($opensAt === null || $closesAt === null || $opensAt >= $closesAt) {
+                throw new OpeningHourOrderException($weekday->label());
             }
 
-            foreach ($byDay[$weekday->value] ?? [] as [$otherOpensAt, $otherClosesAt]) {
-                if ($opensAt < $otherClosesAt && $closesAt > $otherOpensAt) {
-                    throw new BusinessRuleException('{day} : deux plages horaires se chevauchent.', ['day' => $weekday->label()]);
-                }
-            }
+            $this->assertNoOverlap($weekday, $byDay[$weekday->value] ?? [], $opensAt, $closesAt);
 
             $byDay[$weekday->value][] = [$opensAt, $closesAt];
             $ranges[] = [$weekday, $opensAt, $closesAt];
         }
 
-        usort($ranges, static fn (array $a, array $b): int => [$a[0]->value, $a[1]] <=> [$b[0]->value, $b[1]]);
+        return $this->sortRanges($ranges);
+    }
+
+    private function time(?string $value): ?DateTimeImmutable
+    {
+        $time = DateTimeImmutable::createFromFormat('!H:i', (string) $value);
+
+        if ($time === false) {
+            return null;
+        }
+
+        return $time;
+    }
+
+    private function assertNoOverlap(
+        Weekday $weekday,
+        array $dayRanges,
+        DateTimeImmutable $opensAt,
+        DateTimeImmutable $closesAt,
+    ): void {
+        foreach ($dayRanges as [$otherOpensAt, $otherClosesAt]) {
+            if ($opensAt < $otherClosesAt && $closesAt > $otherOpensAt) {
+                throw new OpeningHourOverlapException($weekday->label());
+            }
+        }
+    }
+
+    private function sortRanges(array $ranges): array
+    {
+        usort($ranges,
+            static function (array $a, array $b): int {
+                return [
+                        $a[0]->value,
+                        $a[1]] <=> [$b[0]->value,
+                        $b[1]
+                    ];
+            }
+        );
 
         return $ranges;
     }

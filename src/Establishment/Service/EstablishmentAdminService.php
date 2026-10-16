@@ -7,9 +7,10 @@ use App\Entity\User\User;
 use App\Establishment\Enum\EstablishmentStatus;
 use App\Establishment\Event\EstablishmentResumedEvent;
 use App\Establishment\Event\EstablishmentSuspendedEvent;
+use App\Establishment\Exception\ResumeNotAllowedException;
+use App\Establishment\Exception\SuspensionNotAllowedException;
 use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
-use App\Shared\Exception\BusinessRuleException;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
@@ -26,7 +27,7 @@ class EstablishmentAdminService
     public function suspend(CompanyEstablishment $establishment, User $admin, string $reason): CompanyEstablishment
     {
         if ($establishment->getStatus() !== EstablishmentStatus::ONLINE) {
-            throw new BusinessRuleException('Seul un établissement en ligne peut être suspendu.');
+            throw new SuspensionNotAllowedException();
         }
 
         $reason = trim($reason);
@@ -34,7 +35,13 @@ class EstablishmentAdminService
         $this->orm->transactional(function () use ($establishment, $admin, $reason): void {
             $establishment->setStatus(EstablishmentStatus::PAUSED);
             $withdrawn = $this->publication->withdrawAll($establishment, $admin);
-            $this->logger->log(ActivityType::MODERATION, sprintf('Établissement « %s » suspendu', $establishment->getName()), $admin, null, $establishment, ['reason' => $reason, 'withdrawnSlots' => $withdrawn]);
+            $message = sprintf('Établissement « %s » suspendu', $establishment->getName());
+            $context = [
+                'reason' => $reason,
+                'withdrawnSlots' => $withdrawn
+            ];
+
+            $this->logger->log(ActivityType::MODERATION, $message, $admin, null, $establishment, $context);
             $this->orm->flush();
         });
 
@@ -46,11 +53,13 @@ class EstablishmentAdminService
     public function resume(CompanyEstablishment $establishment, User $admin): CompanyEstablishment
     {
         if ($establishment->getStatus() !== EstablishmentStatus::PAUSED) {
-            throw new BusinessRuleException('Seul un établissement suspendu peut être remis en ligne.');
+            throw new ResumeNotAllowedException();
         }
 
         $establishment->setStatus(EstablishmentStatus::ONLINE);
-        $this->logger->log(ActivityType::MODERATION, sprintf('Établissement « %s » remis en ligne', $establishment->getName()), $admin, null, $establishment);
+
+        $message = sprintf('Établissement « %s » remis en ligne', $establishment->getName());
+        $this->logger->log(ActivityType::MODERATION, $message, $admin, null, $establishment);
         $this->orm->flush();
 
         $this->events->dispatch(new EstablishmentResumedEvent($establishment));

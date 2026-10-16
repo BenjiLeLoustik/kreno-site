@@ -3,6 +3,7 @@
 namespace App\Establishment\Service;
 
 use App\Entity\City;
+use App\Entity\Establishment\EstablishmentSlot;
 use App\Establishment\Dto\SlotSearchInput;
 use App\Establishment\Helper\GeoHelper;
 use App\Establishment\Helper\TimeWindowHelper;
@@ -32,16 +33,13 @@ class SlotSearchService
             return new SlotSearchResult(null, $categories, []);
         }
 
-        $latitude = $input->latitude ?? ($city->getLatitude() !== null ? (float) $city->getLatitude() : null);
-        $longitude = $input->longitude ?? ($city->getLongitude() !== null ? (float) $city->getLongitude() : null);
+        $latitude = $input->latitude ?? $this->coordinate($city->getLatitude());
+        $longitude = $input->longitude ?? $this->coordinate($city->getLongitude());
         [$from, $to] = TimeWindowHelper::range($input->when, $now);
         $matches = [];
 
         foreach ($this->slots->search($city, $categories, $from, $to, $now) as $slot) {
-            $establishment = $slot->getEstablishment();
-            $distance = $latitude !== null && $longitude !== null && $establishment?->getLatitude() !== null && $establishment->getLongitude() !== null
-                ? GeoHelper::distanceKm($latitude, $longitude, (float) $establishment->getLatitude(), (float) $establishment->getLongitude())
-                : null;
+            $distance = $this->distance($slot, $latitude, $longitude);
 
             if ($input->distance !== null && $distance !== null && $distance > $input->distance) {
                 continue;
@@ -50,13 +48,15 @@ class SlotSearchService
             $matches[] = new SlotMatch($slot, $distance);
         }
 
-        usort($matches, match ($input->sort) {
-            'nearest' => static fn (SlotMatch $a, SlotMatch $b): int => [$a->getDistance() ?? PHP_FLOAT_MAX, $a->getSlot()->getStartsAt()] <=> [$b->getDistance() ?? PHP_FLOAT_MAX, $b->getSlot()->getStartsAt()],
-            'discount' => static fn (SlotMatch $a, SlotMatch $b): int => [$b->getSlot()->getDiscount(), $a->getSlot()->getStartsAt()] <=> [$a->getSlot()->getDiscount(), $b->getSlot()->getStartsAt()],
-            default => static fn (SlotMatch $a, SlotMatch $b): int => $a->getSlot()->getStartsAt() <=> $b->getSlot()->getStartsAt(),
-        });
+        usort($matches, $this->comparator($input->sort));
 
-        return new SlotSearchResult($city, $categories, array_slice($matches, 0, $input->limit), $latitude, $longitude);
+        return new SlotSearchResult(
+            $city,
+            $categories,
+            array_slice($matches, 0, $input->limit),
+            $latitude,
+            $longitude
+        );
     }
 
     public function resolveCity(?string $slug): ?City
@@ -85,5 +85,64 @@ class SlotSearchService
         }
 
         return array_values($categories);
+    }
+
+    private function coordinate(mixed $value): ?float
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return (float) $value;
+    }
+
+    private function distance(EstablishmentSlot $slot, ?float $latitude, ?float $longitude): ?float
+    {
+        $establishment = $slot->getEstablishment();
+
+        if ($latitude === null || $longitude === null || $establishment === null) {
+            return null;
+        }
+
+        if ($establishment->getLatitude() === null || $establishment->getLongitude() === null) {
+            return null;
+        }
+
+        return GeoHelper::distanceKm(
+            $latitude,
+            $longitude,
+            (float) $establishment->getLatitude(),
+            (float) $establishment->getLongitude(),
+        );
+    }
+
+    private function comparator(string $sort): callable
+    {
+        return match ($sort) {
+            'nearest' => self::byNearest(...),
+            'discount' => self::byDiscount(...),
+            default => self::bySoonest(...),
+        };
+    }
+
+    private static function byNearest(SlotMatch $a, SlotMatch $b): int
+    {
+        $left = [$a->getDistance() ?? PHP_FLOAT_MAX, $a->getSlot()->getStartsAt()];
+        $right = [$b->getDistance() ?? PHP_FLOAT_MAX, $b->getSlot()->getStartsAt()];
+
+        return $left <=> $right;
+    }
+
+    private static function byDiscount(SlotMatch $a, SlotMatch $b): int
+    {
+        $left = [$b->getSlot()->getDiscount(), $a->getSlot()->getStartsAt()];
+        $right = [$a->getSlot()->getDiscount(), $b->getSlot()->getStartsAt()];
+
+        return $left <=> $right;
+    }
+
+    private static function bySoonest(SlotMatch $a, SlotMatch $b): int
+    {
+        return $a->getSlot()->getStartsAt() <=> $b->getSlot()->getStartsAt();
     }
 }

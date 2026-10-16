@@ -2,6 +2,7 @@
 
 namespace App\Establishment\Dto;
 
+use App\Establishment\Enum\TimeWindow;
 use NeoPHP\Component\Validator\Constraint as Assert;
 
 class SlotSearchInput
@@ -15,7 +16,7 @@ class SlotSearchInput
     #[Assert\All([new Assert\Regex(pattern: '/^[a-z0-9-]+$/')])]
     public array $categories = [];
 
-    #[Assert\Choice(choices: ['now', 'morning', 'afternoon', 'evening', 'tomorrow', 'week'])]
+    #[Assert\Choice(callback: [TimeWindow::class, 'values'])]
     public string $when = 'now';
 
     #[Assert\Range(min: 0.5, max: 50)]

@@ -6,8 +6,8 @@ use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Establishment\EstablishmentFollower;
 use App\Entity\User\User;
 use App\Establishment\Enum\EstablishmentStatus;
+use App\Establishment\Exception\EstablishmentUnavailableException;
 use App\Repository\Establishment\EstablishmentFollowerRepository;
-use App\Shared\Exception\BusinessRuleException;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class FollowService
@@ -21,7 +21,7 @@ class FollowService
     public function follow(CompanyEstablishment $establishment, User $user): EstablishmentFollower
     {
         if ($establishment->getStatus() !== EstablishmentStatus::ONLINE) {
-            throw new BusinessRuleException('Cet établissement n\'est pas disponible.');
+            throw new EstablishmentUnavailableException();
         }
 
         $follower = $this->followers->findOneFor($establishment, $user);
@@ -43,11 +43,13 @@ class FollowService
     {
         $follower = $this->followers->findOneFor($establishment, $user);
 
-        if ($follower !== null) {
-            $establishment->removeFollower($follower);
-            $this->orm->remove($follower);
-            $this->orm->flush();
+        if ($follower === null) {
+            return;
         }
+
+        $establishment->removeFollower($follower);
+        $this->orm->remove($follower);
+        $this->orm->flush();
     }
 
     public function toggle(CompanyEstablishment $establishment, User $user): bool

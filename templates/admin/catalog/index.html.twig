@@ -22,6 +22,19 @@
     {% endif %}
 {% endmacro %}
 
+{% macro suggestionFields(suggestion, durations) %}
+    <label class="admin-field catalog-suggestion__name">Prestation<input type="text" name="name" value="{{ suggestion.name ?? '' }}" required minlength="2" maxlength="120" placeholder="Coupe + brushing" class="admin-input"></label>
+    <label class="admin-field">
+        Durée
+        <select name="duration" class="admin-input">
+            {% for minutes in durations %}
+                <option value="{{ minutes }}"{{ (suggestion.duration ?? 30) == minutes ? ' selected' : '' }}>{{ minutes }} min</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label class="admin-field">Prix (€)<input type="number" name="price" value="{{ suggestion.priceInput ?? '' }}" min="0" step="0.01" required class="admin-input"></label>
+{% endmacro %}
+
 {% block title %}Catégories et villes · Administration Kréno{% endblock %}
 
 {% block content %}
@@ -61,6 +74,30 @@
                                         <button type="submit" class="admin-button admin-button--primary">Enregistrer</button>
                                     </div>
                                 </form>
+                                <div class="catalog-suggestions">
+                                    <span class="catalog-suggestions__title">Suggestions de prestations</span>
+                                    <span class="admin-subtitle">Proposées aux pros de cette catégorie quand ils ajoutent leurs prestations.</span>
+                                    {% for suggestion in category.suggestions %}
+                                        <div class="catalog-suggestion">
+                                            <form method="post" action="{{ path('admin_catalog_suggestion_update', { id: suggestion.id }) }}" class="catalog-suggestion__form">
+                                                {{ csrf_field('admin_catalog')|raw }}
+                                                {{ catalog.suggestionFields(suggestion, durations) }}
+                                                <button type="submit" class="admin-button admin-button--small">Enregistrer</button>
+                                            </form>
+                                            <form method="post" action="{{ path('admin_catalog_suggestion_delete', { id: suggestion.id }) }}">
+                                                {{ csrf_field('admin_catalog')|raw }}
+                                                <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger" aria-label="Supprimer {{ suggestion.name }}" data-admin-confirm="Supprimer la suggestion {{ suggestion.name }} ?"><i data-lucide="trash-2" class="admin-nav__icon"></i></button>
+                                            </form>
+                                        </div>
+                                    {% else %}
+                                        <span class="admin-subtitle">Aucune suggestion pour le moment.</span>
+                                    {% endfor %}
+                                    <form method="post" action="{{ path('admin_catalog_suggestion_create', { slug: category.slug }) }}" class="catalog-suggestion__form">
+                                        {{ csrf_field('admin_catalog')|raw }}
+                                        {{ catalog.suggestionFields({}, durations) }}
+                                        <button type="submit" class="admin-button admin-button--small admin-button--primary">Ajouter</button>
+                                    </form>
+                                </div>
                                 <form method="post" action="{{ path('admin_catalog_category_delete', { slug: category.slug }) }}">
                                     {{ csrf_field('admin_catalog')|raw }}
                                     <button type="submit" class="admin-button admin-button--ghost-danger"{{ category.establishmentsCount > 0 ? ' disabled title="Des établissements utilisent cette catégorie"' : '' }} data-admin-confirm="Supprimer la catégorie {{ category.name }} ?">Supprimer</button>

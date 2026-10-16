@@ -10,6 +10,7 @@ use App\Booking\Service\ReminderService;
 use App\Entity\Booking;
 use App\Entity\Company\CompanyEstablishment;
 use App\Entity\User\User;
+use App\Enum\Calendar\Weekday;
 use App\Establishment\Helper\CalendarHelper;
 use App\Repository\BookingRepository;
 use App\Shared\Helper\DateHelper;
@@ -233,7 +234,7 @@ class BookingPresenter
             return null;
         }
 
-        $weekday = CalendarHelper::SHORT_WEEKDAYS[(int) $startsAt->format('N')];
+        $weekday = Weekday::of($startsAt)->short();
 
         return sprintf(
             '%s %d · %s',
