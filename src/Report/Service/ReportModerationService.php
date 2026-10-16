@@ -9,11 +9,16 @@ use App\Establishment\Service\EstablishmentAdminService;
 use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Report\Dto\ReportDecisionInput;
+use App\Report\Enum\ReportDecision;
 use App\Report\Enum\ReportDirection;
 use App\Report\Enum\ReportStatus;
+use App\Report\Enum\ReportText;
 use App\Report\Event\ReportDecidedEvent;
+use App\Report\Exception\EstablishmentNotOnlineException;
+use App\Report\Exception\NoCustomerToSuspendException;
+use App\Report\Exception\NoEstablishmentToSuspendException;
+use App\Report\Exception\ReportAlreadyClosedException;
 use App\Report\Helper\ReportStatusHelper;
-use App\Shared\Exception\BusinessRuleException;
 use App\User\Enum\NotificationType;
 use App\User\Service\NotificationService;
 use App\User\Service\SanctionService;
@@ -58,34 +63,25 @@ class ReportModerationService
     public function decide(Report $report, User $admin, ReportDecisionInput $input): Report
     {
         if (!ReportStatusHelper::isOpen($report)) {
-            throw new BusinessRuleException('Ce signalement est déjà clos.');
+            throw new ReportAlreadyClosedException();
         }
 
+        $decision = ReportDecision::tryFrom((string) $input->decision) ?? ReportDecision::RESOLVE;
         $message = trim((string) $input->message);
-        $fromCustomer = $report->getDirection() === ReportDirection::FROM_CUSTOMER;
+        $resolution = $decision->resolution($report->getDirection(), $input->days);
 
-        [$status, $resolution] = match ($input->decision) {
-            'dismiss' => [ReportStatus::DISMISSED, 'Classé sans suite'],
-            'warn' => [ReportStatus::RESOLVED, 'Avertissement envoyé'],
-            'suspend' => [ReportStatus::RESOLVED, $fromCustomer ? 'Établissement suspendu' : sprintf('Compte client suspendu %d jours', $input->days)],
-            default => [ReportStatus::RESOLVED, 'Traité'],
-        };
-
-        if ($input->decision === 'suspend') {
+        if ($decision === ReportDecision::SUSPEND) {
             $this->suspendTarget($report, $admin, $message, $input->days);
         }
 
         $this->reports->post($report, $admin, $message);
-        $report->setStatus($status);
+        $report->setStatus($decision->status());
         $report->setResolution($resolution);
         $report->setHandledBy($admin);
         $report->setHandledAt(new DateTimeImmutable());
 
-        $this->logger->log(ActivityType::MODERATION, sprintf('Signalement %s : %s', ReportStatusHelper::reference($report), $resolution), $admin, null, $report, ['decision' => $input->decision, 'message' => $message]);
-
-        if ($report->getReporter() !== null) {
-            $this->notifications->notify($report->getReporter(), NotificationType::REPORT, sprintf('Signalement %s : %s', ReportStatusHelper::reference($report), mb_strtolower($resolution)), $message, null, false);
-        }
+        $this->log($report, $admin, (string) $input->decision, $resolution, $message);
+        $this->notifyReporter($report, $resolution, $message);
 
         $this->orm->flush();
         $this->events->dispatch(new ReportDecidedEvent($report, (string) $input->decision));
@@ -96,18 +92,59 @@ class ReportModerationService
     private function suspendTarget(Report $report, User $admin, string $reason, int $days): void
     {
         if ($report->getDirection() === ReportDirection::FROM_CUSTOMER) {
-            $establishment = $report->getEstablishment() ?? throw new BusinessRuleException('Aucun établissement à suspendre.');
-
-            if ($establishment->getStatus() !== EstablishmentStatus::ONLINE) {
-                throw new BusinessRuleException('Cet établissement n\'est pas en ligne.');
-            }
-
-            $this->establishments->suspend($establishment, $admin, $reason);
+            $this->suspendEstablishment($report, $admin, $reason);
 
             return;
         }
 
-        $user = $report->getReportedUser() ?? throw new BusinessRuleException('Aucun client à suspendre.');
+        $user = $report->getReportedUser();
+
+        if ($user === null) {
+            throw new NoCustomerToSuspendException();
+        }
+
         $this->sanctions->suspend($user, $days, $reason, $admin);
+    }
+
+    private function suspendEstablishment(Report $report, User $admin, string $reason): void
+    {
+        $establishment = $report->getEstablishment();
+
+        if ($establishment === null) {
+            throw new NoEstablishmentToSuspendException();
+        }
+
+        if ($establishment->getStatus() !== EstablishmentStatus::ONLINE) {
+            throw new EstablishmentNotOnlineException();
+        }
+
+        $this->establishments->suspend($establishment, $admin, $reason);
+    }
+
+    private function log(Report $report, User $admin, string $decision, string $resolution, string $message): void
+    {
+        $text = sprintf('Signalement %s : %s', ReportStatusHelper::reference($report), $resolution);
+        $context = [
+            'decision' => $decision,
+            'message' => $message
+        ];
+
+        $this->logger->log(ActivityType::MODERATION, $text, $admin, null, $report, $context);
+    }
+
+    private function notifyReporter(Report $report, string $resolution, string $message): void
+    {
+        $reporter = $report->getReporter();
+
+        if ($reporter === null) {
+            return;
+        }
+
+        $title = ReportText::DECISION_NOTIFICATION->text(
+            ReportStatusHelper::reference($report),
+            mb_strtolower($resolution),
+        );
+
+        $this->notifications->notify($reporter, NotificationType::REPORT, $title, $message, null, false);
     }
 }

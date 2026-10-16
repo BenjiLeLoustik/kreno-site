@@ -2,6 +2,7 @@
 
 namespace App\Report\Dto;
 
+use App\Report\Enum\ReportReason;
 use NeoPHP\Component\Validator\Constraint as Assert;
 
 class EstablishmentReportInput
@@ -11,7 +12,7 @@ class EstablishmentReportInput
     public ?int $bookingId = null;
 
     #[Assert\NotBlank(message: 'Choisissez un motif.')]
-    #[Assert\Choice(choices: ['no_show', 'late', 'behavior', 'other'])]
+    #[Assert\Choice(callback: [ReportReason::class, 'establishmentValues'])]
     public ?string $reason = null;
 
     #[Assert\NotBlank(message: 'Décrivez ce qui s\'est passé.')]

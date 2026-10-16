@@ -5,9 +5,11 @@ namespace App\Report\Presenter;
 use App\Entity\Booking;
 use App\Entity\Report\Report;
 use App\Entity\Report\ReportMessage;
+use App\Entity\User\User;
 use App\Establishment\Helper\CalendarHelper;
 use App\Report\Enum\ReportDirection;
-use App\Report\Helper\ReportReasonHelper;
+use App\Report\Enum\ReportPriority;
+use App\Report\Enum\ReportText;
 use App\Report\Helper\ReportStatusHelper;
 use App\Report\Service\ReportService;
 use App\Repository\Report\ReportRepository;
@@ -21,6 +23,12 @@ class ReportPresenter
 {
     public const HISTORY_DAYS = 30;
 
+    public const STAFF_ROLES = [
+        'ROLE_SUPPORT',
+        'ROLE_MODERATOR',
+        'ROLE_ADMIN'
+    ];
+
     public function __construct(
         private ReportRepository $reports,
         private ReportService $reportService,
@@ -29,29 +37,29 @@ class ReportPresenter
 
     public function bookingLabel(?Booking $booking): ?string
     {
-        $slot = $booking?->getSlot();
+        $startsAt = $booking?->getSlot()?->getStartsAt();
 
-        if ($booking === null || $slot?->getStartsAt() === null) {
+        if ($booking === null || $startsAt === null) {
             return null;
         }
 
-        $startsAt = $slot->getStartsAt();
-
-        return sprintf('%s · %s · %s %s', $booking->getReference(), $slot->getService()?->getName(), mb_strtolower(CalendarHelper::shortDate($startsAt)), $startsAt->format('H:i'));
+        return sprintf(
+            '%s · %s · %s',
+            $booking->getReference(),
+            $booking->getSlot()->getService()?->getName(),
+            $this->dateLabel($startsAt),
+        );
     }
 
     public function proBookingLabel(Booking $booking): string
     {
-        $startsAt = $booking->getSlot()?->getStartsAt();
+        $date = $this->dateLabel($booking->getSlot()?->getStartsAt()) ?? '';
 
-        return sprintf('%s · %s · %s', $booking->getReference(), $booking->getCustomer() !== null ? UserNameHelper::shortName($booking->getCustomer()) : '—', $startsAt !== null ? mb_strtolower(CalendarHelper::shortDate($startsAt)) . ' ' . $startsAt->format('H:i') : '');
+        return sprintf('%s · %s · %s', $booking->getReference(), $this->shortName($booking->getCustomer()), $date);
     }
 
     public function base(Report $report): array
     {
-        $booking = $report->getBooking();
-        $establishment = $report->getEstablishment();
-
         return [
             'id' => $report->getId(),
             'reference' => ReportStatusHelper::reference($report),
@@ -60,38 +68,29 @@ class ReportPresenter
             'reasonLabel' => $report->getReason()?->label(),
             'description' => $report->getDescription(),
             'createdAt' => DateHelper::iso($report->getCreatedAt()),
-            'when' => $report->getCreatedAt() !== null ? mb_strtolower(CalendarHelper::shortDate($report->getCreatedAt())) : null,
+            'when' => $this->shortDate($report->getCreatedAt()),
             'kind' => ReportStatusHelper::kind($report),
             'open' => ReportStatusHelper::isOpen($report),
             'resolution' => $report->getResolution(),
             'handledAt' => DateHelper::iso($report->getHandledAt()),
-            'booking' => $booking === null ? null : [
-                'id' => $booking->getId(),
-                'reference' => $booking->getReference(),
-                'label' => $this->bookingLabel($booking),
-                'price' => MoneyHelper::format($booking->getPrice()),
-                'status' => $booking->getStatus()->value,
-            ],
-            'establishment' => $establishment === null ? null : [
-                'id' => $establishment->getId(),
-                'name' => $establishment->getName(),
-                'locality' => $establishment->getLocality(),
-            ],
-            'attachment' => $report->getAttachmentPath() === null ? null : [
-                'type' => pathinfo($report->getAttachmentPath(), PATHINFO_EXTENSION) === 'pdf' ? 'pdf' : 'image',
-                'name' => $this->reportService->attachmentName($report),
-            ],
+            'booking' => $this->booking($report->getBooking()),
+            'establishment' => $this->establishment($report),
+            'attachment' => $this->attachment($report),
         ];
     }
 
     public function forCustomer(Report $report): array
     {
-        $establishment = $report->getEstablishment();
+        $detail = array_filter([
+            $report->getEstablishment()?->getName(),
+            $report->getBooking()?->getReference(),
+            $report->getResolution() ?? $this->relative($report->getCreatedAt()),
+        ]);
 
         return $this->base($report) + [
                 'title' => $report->getReason()?->label(),
                 'status' => ReportStatusHelper::customerLabel($report),
-                'detail' => implode(' · ', array_filter([$establishment?->getName(), $report->getBooking()?->getReference(), $report->getResolution() ?? ($report->getCreatedAt() !== null ? CalendarHelper::relative($report->getCreatedAt()) : null)])),
+                'detail' => implode(' · ', $detail),
                 'messages' => $this->messages($report, false),
                 'canReply' => ReportStatusHelper::isOpen($report),
             ];
@@ -104,17 +103,17 @@ class ReportPresenter
 
     public function forProMine(Report $report): array
     {
-        $customer = $report->getReportedUser();
-        $startsAt = $report->getBooking()?->getSlot()?->getStartsAt();
+        $customer = $this->shortName($report->getReportedUser(), ReportText::CUSTOMER);
+        $detail = array_filter([
+            $report->getBooking()?->getReference(),
+            $this->dateLabel($report->getBooking()?->getSlot()?->getStartsAt()),
+            $report->getResolution() ?? $report->getDescription(),
+        ]);
 
         return $this->base($report) + [
-                'title' => sprintf('%s · %s', $report->getReason()?->label(), $customer !== null ? UserNameHelper::shortName($customer) : 'client'),
+                'title' => sprintf('%s · %s', $report->getReason()?->label(), $customer),
                 'status' => ReportStatusHelper::proLabel($report),
-                'detail' => implode(' · ', array_filter([
-                    $report->getBooking()?->getReference(),
-                    $startsAt !== null ? mb_strtolower(CalendarHelper::shortDate($startsAt)) . ' ' . $startsAt->format('H:i') : null,
-                    $report->getResolution() ?? $report->getDescription(),
-                ])),
+                'detail' => implode(' · ', $detail),
                 'canAnswer' => false,
                 'messages' => $this->messages($report, false),
             ];
@@ -122,16 +121,15 @@ class ReportPresenter
 
     public function forProReceived(Report $report): array
     {
-        $reporter = $report->getReporter();
         $deadline = $this->reportService->replyDeadline($report);
 
         return $this->base($report) + [
                 'title' => $report->getReason()?->label(),
                 'status' => ReportStatusHelper::proLabel($report),
-                'detail' => sprintf('Signalé par %s%s · « %s »', $reporter !== null ? UserNameHelper::shortName($reporter) : 'un client', $report->getBooking() !== null ? ' · ' . $report->getBooking()->getReference() : '', $report->getDescription()),
+                'detail' => $this->receivedDetail($report),
                 'canAnswer' => ReportStatusHelper::isOpen($report),
                 'replyDeadline' => DateHelper::iso($deadline),
-                'replyRemaining' => $deadline !== null && $deadline > new DateTimeImmutable() ? DurationHelper::remaining($deadline) : null,
+                'replyRemaining' => $this->remaining($deadline),
                 'messages' => $this->messages($report, false),
             ];
     }
@@ -139,18 +137,14 @@ class ReportPresenter
     public function forAdmin(Report $report): array
     {
         $similar = $this->similar($report);
-        $priority = $report->getReason() !== null ? ReportReasonHelper::priority($report->getReason(), $similar) : 'low';
+        $priority = ReportPriority::of($report->getReason(), $similar);
 
         return $this->base($report) + [
-                'target' => $report->getDirection() === ReportDirection::FROM_CUSTOMER
-                    ? $report->getEstablishment()?->getName()
-                    : 'client ' . ($report->getReportedUser() !== null ? UserNameHelper::shortName($report->getReportedUser()) : '—'),
-                'by' => $report->getDirection() === ReportDirection::FROM_CUSTOMER
-                    ? ($report->getReporter() !== null ? UserNameHelper::shortName($report->getReporter()) : '—')
-                    : $report->getEstablishment()?->getName(),
-                'date' => $report->getCreatedAt() !== null ? CalendarHelper::relative($report->getCreatedAt()) : null,
-                'priority' => $priority,
-                'priorityLabel' => ReportStatusHelper::PRIORITY_LABELS[$priority],
+                'target' => $this->target($report),
+                'by' => $this->by($report),
+                'date' => $this->relative($report->getCreatedAt()),
+                'priority' => $priority->value,
+                'priorityLabel' => $priority->label(),
                 'status' => ReportStatusHelper::adminLabel($report),
                 'similar' => $similar,
             ];
@@ -168,17 +162,159 @@ class ReportPresenter
 
         return $row + [
                 'message' => $report->getDescription(),
-                'history' => match (true) {
-                    $row['similar'] === 0 => $fromCustomer ? 'Premier signalement pour cet établissement.' : 'Premier signalement pour ce client.',
-                    default => sprintf('%d signalement%s similaire%s ces %d derniers jours.', $row['similar'], $row['similar'] > 1 ? 's' : '', $row['similar'] > 1 ? 's' : '', self::HISTORY_DAYS),
-                },
-                'reporter' => $report->getReporter() === null ? null : ['id' => $report->getReporter()->getId(), 'name' => UserNameHelper::fullName($report->getReporter()), 'email' => $report->getReporter()->getEmail()],
-                'reportedUser' => $report->getReportedUser() === null ? null : ['id' => $report->getReportedUser()->getId(), 'name' => UserNameHelper::fullName($report->getReportedUser()), 'status' => $report->getReportedUser()->getStatus()->value],
-                'handledBy' => $report->getHandledBy() !== null ? UserNameHelper::fullName($report->getHandledBy()) : null,
+                'history' => $this->history($row['similar'], $fromCustomer),
+                'reporter' => $this->reporter($report->getReporter()),
+                'reportedUser' => $this->reportedUser($report->getReportedUser()),
+                'handledBy' => $this->fullName($report->getHandledBy()),
                 'messages' => $this->messages($report, true),
                 'canDecide' => ReportStatusHelper::isOpen($report),
-                'suspendLabel' => $fromCustomer ? 'Suspendre l\'établissement' : 'Suspendre le client 30 jours',
+                'suspendLabel' => $this->suspendLabel($fromCustomer),
             ];
+    }
+
+    private function booking(?Booking $booking): ?array
+    {
+        if ($booking === null) {
+            return null;
+        }
+
+        return [
+            'id' => $booking->getId(),
+            'reference' => $booking->getReference(),
+            'label' => $this->bookingLabel($booking),
+            'price' => MoneyHelper::format($booking->getPrice()),
+            'status' => $booking->getStatus()->value,
+        ];
+    }
+
+    private function establishment(Report $report): ?array
+    {
+        $establishment = $report->getEstablishment();
+
+        if ($establishment === null) {
+            return null;
+        }
+
+        return [
+            'id' => $establishment->getId(),
+            'name' => $establishment->getName(),
+            'locality' => $establishment->getLocality(),
+        ];
+    }
+
+    private function attachment(Report $report): ?array
+    {
+        $path = $report->getAttachmentPath();
+
+        if ($path === null) {
+            return null;
+        }
+
+        return [
+            'type' => $this->attachmentType($path),
+            'name' => $this->reportService->attachmentName($report),
+        ];
+    }
+
+    private function attachmentType(string $path): string
+    {
+        if (pathinfo($path, PATHINFO_EXTENSION) === 'pdf') {
+            return 'pdf';
+        }
+
+        return 'image';
+    }
+
+    private function receivedDetail(Report $report): string
+    {
+        $booking = '';
+
+        if ($report->getBooking() !== null) {
+            $booking = ' · ' . $report->getBooking()->getReference();
+        }
+
+        $reporter = $this->shortName($report->getReporter(), ReportText::A_CUSTOMER);
+
+        return ReportText::REPORTED_BY->text($reporter, $booking, $report->getDescription());
+    }
+
+    private function remaining(?DateTimeImmutable $deadline): ?string
+    {
+        if ($deadline === null || $deadline <= new DateTimeImmutable()) {
+            return null;
+        }
+
+        return DurationHelper::remaining($deadline);
+    }
+
+    private function target(Report $report): ?string
+    {
+        if ($report->getDirection() === ReportDirection::FROM_CUSTOMER) {
+            return $report->getEstablishment()?->getName();
+        }
+
+        return ReportText::CUSTOMER_NAMED->text($this->shortName($report->getReportedUser()));
+    }
+
+    private function by(Report $report): ?string
+    {
+        if ($report->getDirection() === ReportDirection::FROM_CUSTOMER) {
+            return $this->shortName($report->getReporter());
+        }
+
+        return $report->getEstablishment()?->getName();
+    }
+
+    private function history(int $similar, bool $fromCustomer): string
+    {
+        if ($similar > 1) {
+            return ReportText::SIMILAR_MANY->text($similar, self::HISTORY_DAYS);
+        }
+
+        if ($similar === 1) {
+            return ReportText::SIMILAR_ONE->text($similar, self::HISTORY_DAYS);
+        }
+
+        if ($fromCustomer) {
+            return ReportText::FIRST_ABOUT_ESTABLISHMENT->text();
+        }
+
+        return ReportText::FIRST_ABOUT_CUSTOMER->text();
+    }
+
+    private function reporter(?User $reporter): ?array
+    {
+        if ($reporter === null) {
+            return null;
+        }
+
+        return [
+            'id' => $reporter->getId(),
+            'name' => UserNameHelper::fullName($reporter),
+            'email' => $reporter->getEmail(),
+        ];
+    }
+
+    private function reportedUser(?User $user): ?array
+    {
+        if ($user === null) {
+            return null;
+        }
+
+        return [
+            'id' => $user->getId(),
+            'name' => UserNameHelper::fullName($user),
+            'status' => $user->getStatus()->value,
+        ];
+    }
+
+    private function suspendLabel(bool $fromCustomer): string
+    {
+        if ($fromCustomer) {
+            return ReportText::SUSPEND_ESTABLISHMENT->text();
+        }
+
+        return ReportText::SUSPEND_CUSTOMER->text();
     }
 
     private function messages(Report $report, bool $withInternal): array
@@ -190,10 +326,9 @@ class ReportPresenter
                 continue;
             }
 
-            $author = $message->getAuthor();
             $messages[] = [
                 'id' => $message->getId(),
-                'author' => $author === null ? 'Kréno' : ($author === $report->getReporter() ? UserNameHelper::shortName($author) : ($this->isStaff($author->getRoles()) ? 'Équipe Kréno' : ($report->getEstablishment()?->getName() ?? UserNameHelper::shortName($author)))),
+                'author' => $this->author($report, $message->getAuthor()),
                 'body' => $message->getBody(),
                 'internal' => $message->isInternal(),
                 'createdAt' => DateHelper::iso($message->getCreatedAt()),
@@ -203,9 +338,26 @@ class ReportPresenter
         return $messages;
     }
 
+    private function author(Report $report, ?User $author): string
+    {
+        if ($author === null) {
+            return ReportText::KRENO->text();
+        }
+
+        if ($author === $report->getReporter()) {
+            return UserNameHelper::shortName($author);
+        }
+
+        if ($this->isStaff($author->getRoles())) {
+            return ReportText::KRENO_TEAM->text();
+        }
+
+        return $report->getEstablishment()?->getName() ?? UserNameHelper::shortName($author);
+    }
+
     private function isStaff(array $roles): bool
     {
-        return array_intersect($roles, ['ROLE_SUPPORT', 'ROLE_MODERATOR', 'ROLE_ADMIN']) !== [];
+        return array_intersect($roles, self::STAFF_ROLES) !== [];
     }
 
     private function similar(Report $report): int
@@ -213,9 +365,67 @@ class ReportPresenter
         $since = ($report->getCreatedAt() ?? new DateTimeImmutable())->modify(sprintf('-%d days', self::HISTORY_DAYS));
 
         if ($report->getDirection() === ReportDirection::FROM_CUSTOMER) {
-            return $report->getEstablishment() !== null ? $this->reports->countAboutEstablishmentSince($report->getEstablishment(), $since, $report) : 0;
+            return $this->similarAboutEstablishment($report, $since);
         }
 
-        return $report->getReportedUser() !== null ? $this->reports->countAboutUserSince($report->getReportedUser(), $since, $report) : 0;
+        if ($report->getReportedUser() === null) {
+            return 0;
+        }
+
+        return $this->reports->countAboutUserSince($report->getReportedUser(), $since, $report);
+    }
+
+    private function similarAboutEstablishment(Report $report, DateTimeImmutable $since): int
+    {
+        if ($report->getEstablishment() === null) {
+            return 0;
+        }
+
+        return $this->reports->countAboutEstablishmentSince($report->getEstablishment(), $since, $report);
+    }
+
+    private function dateLabel(?DateTimeImmutable $date): ?string
+    {
+        if ($date === null) {
+            return null;
+        }
+
+        return mb_strtolower(CalendarHelper::shortDate($date)) . ' ' . $date->format('H:i');
+    }
+
+    private function shortDate(?DateTimeImmutable $date): ?string
+    {
+        if ($date === null) {
+            return null;
+        }
+
+        return mb_strtolower(CalendarHelper::shortDate($date));
+    }
+
+    private function relative(?DateTimeImmutable $date): ?string
+    {
+        if ($date === null) {
+            return null;
+        }
+
+        return CalendarHelper::relative($date);
+    }
+
+    private function shortName(?User $user, ReportText $fallback = ReportText::NONE): string
+    {
+        if ($user === null) {
+            return $fallback->text();
+        }
+
+        return UserNameHelper::shortName($user);
+    }
+
+    private function fullName(?User $user): ?string
+    {
+        if ($user === null) {
+            return null;
+        }
+
+        return UserNameHelper::fullName($user);
     }
 }

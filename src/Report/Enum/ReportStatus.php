@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Report\Enum;
 
 enum ReportStatus: string
@@ -21,5 +19,41 @@ enum ReportStatus: string
             self::RESOLVED => 'Traité',
             self::DISMISSED => 'Classé',
         };
+    }
+
+    public function customerLabel(): string
+    {
+        return match ($this) {
+            self::SENT => 'Envoyé',
+            self::IN_REVIEW, self::AWAITING_REPLY => 'En cours',
+            self::RESOLVED => 'Résolu',
+            self::DISMISSED => 'Classé',
+        };
+    }
+
+    public function adminLabel(): string
+    {
+        return match ($this) {
+            self::SENT, self::IN_REVIEW => 'Ouvert',
+            self::AWAITING_REPLY => 'En attente de l’établissement',
+            self::RESOLVED => 'Traité',
+            self::DISMISSED => 'Classé',
+        };
+    }
+
+    public function kind(): string
+    {
+        return match ($this) {
+            self::SENT => 'sent',
+            self::IN_REVIEW => 'review',
+            self::AWAITING_REPLY => 'answer',
+            self::RESOLVED => 'done',
+            self::DISMISSED => 'closed',
+        };
+    }
+
+    public function isOpen(): bool
+    {
+        return $this !== self::RESOLVED && $this !== self::DISMISSED;
     }
 }

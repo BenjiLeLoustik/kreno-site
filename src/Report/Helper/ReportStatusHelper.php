@@ -7,8 +7,6 @@ use App\Report\Enum\ReportStatus;
 
 class ReportStatusHelper
 {
-    public const PRIORITY_LABELS = ['high' => 'Haute', 'mid' => 'Moyenne', 'low' => 'Basse'];
-
     public static function reference(Report $report): string
     {
         return sprintf('SG-%04d', $report->getId());
@@ -16,12 +14,7 @@ class ReportStatusHelper
 
     public static function customerLabel(Report $report): string
     {
-        return match ($report->getStatus()) {
-            ReportStatus::SENT => 'Envoyé',
-            ReportStatus::IN_REVIEW, ReportStatus::AWAITING_REPLY => 'En cours',
-            ReportStatus::RESOLVED => 'Résolu',
-            ReportStatus::DISMISSED => 'Classé',
-        };
+        return $report->getStatus()->customerLabel();
     }
 
     public static function proLabel(Report $report): string
@@ -31,27 +24,20 @@ class ReportStatusHelper
 
     public static function adminLabel(Report $report): string
     {
-        return match ($report->getStatus()) {
-            ReportStatus::SENT, ReportStatus::IN_REVIEW => 'Ouvert',
-            ReportStatus::AWAITING_REPLY => 'En attente de l’établissement',
-            ReportStatus::DISMISSED => 'Classé',
-            ReportStatus::RESOLVED => $report->getResolution() ?? 'Traité',
-        };
+        if ($report->getStatus() === ReportStatus::RESOLVED && $report->getResolution() !== null) {
+            return $report->getResolution();
+        }
+
+        return $report->getStatus()->adminLabel();
     }
 
     public static function kind(Report $report): string
     {
-        return match ($report->getStatus()) {
-            ReportStatus::SENT => 'sent',
-            ReportStatus::IN_REVIEW => 'review',
-            ReportStatus::AWAITING_REPLY => 'answer',
-            ReportStatus::RESOLVED => 'done',
-            ReportStatus::DISMISSED => 'closed',
-        };
+        return $report->getStatus()->kind();
     }
 
     public static function isOpen(Report $report): bool
     {
-        return !in_array($report->getStatus(), [ReportStatus::RESOLVED, ReportStatus::DISMISSED], true);
+        return $report->getStatus()->isOpen();
     }
 }

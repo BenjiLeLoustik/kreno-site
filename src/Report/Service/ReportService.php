@@ -17,11 +17,27 @@ use App\Report\Enum\ReportReason;
 use App\Report\Enum\ReportStatus;
 use App\Report\Event\ReportCreatedEvent;
 use App\Report\Event\ReportMessagePostedEvent;
+use App\Report\Exception\AppointmentNotPassedException;
+use App\Report\Exception\BookingAlreadyReportedException;
+use App\Report\Exception\BookingRequiredForReasonException;
+use App\Report\Exception\CancelledByEstablishmentReasonException;
+use App\Report\Exception\CustomerAlreadyReportedException;
+use App\Report\Exception\HonoredBookingNoShowException;
+use App\Report\Exception\InvalidAttachmentException;
+use App\Report\Exception\MissingAttachmentException;
+use App\Report\Exception\NotCancelledByEstablishmentException;
+use App\Report\Exception\NotReportOwnerException;
+use App\Report\Exception\ReplyNotExpectedException;
+use App\Report\Exception\ReportBookingNotFoundException;
+use App\Report\Exception\ReportClosedException;
+use App\Report\Exception\ReportedBookingCancelledException;
+use App\Report\Exception\ReportEstablishmentNotFoundException;
+use App\Report\Exception\ReportTargetRequiredException;
+use App\Report\Exception\ReportWindowClosedException;
 use App\Report\Helper\ReportStatusHelper;
 use App\Repository\BookingRepository;
 use App\Repository\Company\CompanyEstablishmentRepository;
 use App\Repository\Report\ReportRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\Shared\Exception\StorageException;
 use App\Shared\Storage\PrivateStorage;
 use DateTimeImmutable;
@@ -37,7 +53,18 @@ class ReportService
 
     public const ATTACHMENT_MAX_SIZE = 5242880;
 
-    public const ATTACHMENT_TYPES = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'application/pdf' => 'pdf'];
+    public const ATTACHMENT_TYPES = [
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/webp' => 'webp',
+        'application/pdf' => 'pdf',
+    ];
+
+    public const REPORTABLE_BOOKING_STATUSES = [
+        BookingStatus::CONFIRMED,
+        BookingStatus::HONORED,
+        BookingStatus::NO_SHOW,
+    ];
 
     public function __construct(
         private OrmManagerInterface $orm,
@@ -50,33 +77,13 @@ class ReportService
     ) {
     }
 
-    public function createFromCustomer(User $customer, CustomerReportInput $input, ?UploadedFile $attachment = null): Report
-    {
+    public function createFromCustomer(
+        User $customer,
+        CustomerReportInput $input,
+        ?UploadedFile $attachment = null,
+    ): Report {
         $reason = ReportReason::from((string) $input->reason);
-        $booking = null;
-
-        if ($input->booking !== null && $input->booking !== '') {
-            $booking = $this->bookings->findOneByReference($input->booking);
-
-            if (!$booking instanceof Booking || $booking->getCustomer() !== $customer) {
-                throw new BusinessRuleException('Réservation introuvable.');
-            }
-
-            $this->assertCustomerCanReport($booking, $reason);
-            $establishment = $booking->getSlot()?->getEstablishment();
-        } elseif ($input->establishmentId !== null) {
-            $establishment = $this->establishments->find($input->establishmentId);
-
-            if (!$establishment instanceof CompanyEstablishment || $establishment->getStatus() !== EstablishmentStatus::ONLINE) {
-                throw new BusinessRuleException('Établissement introuvable.');
-            }
-
-            if ($reason === ReportReason::LAST_MINUTE_CANCELLATION) {
-                throw new BusinessRuleException('Ce motif concerne une réservation : choisis-la.');
-            }
-        } else {
-            throw new BusinessRuleException('Choisis la réservation ou l\'établissement concerné.');
-        }
+        [$booking, $establishment] = $this->customerTarget($customer, $input, $reason);
 
         $report = new Report();
         $report->setReporter($customer);
@@ -85,37 +92,27 @@ class ReportService
         $report->setDirection(ReportDirection::FROM_CUSTOMER);
         $report->setReason($reason);
         $report->setDescription(trim((string) $input->description));
-        $report->setStatus($booking !== null ? ReportStatus::AWAITING_REPLY : ReportStatus::SENT);
+        $report->setStatus($this->customerReportStatus($booking));
 
         return $this->save($report, $attachment);
     }
 
-    public function createFromEstablishment(CompanyEstablishment $establishment, User $author, EstablishmentReportInput $input): Report
-    {
+    public function createFromEstablishment(
+        CompanyEstablishment $establishment,
+        User $author,
+        EstablishmentReportInput $input,
+    ): Report {
         $reason = ReportReason::from((string) $input->reason);
-        $booking = $this->bookings->findOneInEstablishment($establishment, (int) $input->bookingId) ?? throw new BusinessRuleException('Réservation introuvable.');
-        $startsAt = $booking->getSlot()?->getStartsAt();
+        $booking = $this->bookings->findOneInEstablishment($establishment, (int) $input->bookingId);
 
-        if ($startsAt === null || $startsAt > new DateTimeImmutable()) {
-            throw new BusinessRuleException('Vous pourrez signaler ce client une fois l\'heure du rendez-vous passée.');
+        if ($booking === null) {
+            throw new ReportBookingNotFoundException();
         }
 
-        if (!in_array($booking->getStatus(), [BookingStatus::CONFIRMED, BookingStatus::HONORED, BookingStatus::NO_SHOW], true)) {
-            throw new BusinessRuleException('Cette réservation a été annulée.');
-        }
-
-        if ($this->reports->existsForBooking($booking, ReportDirection::FROM_ESTABLISHMENT)) {
-            throw new BusinessRuleException('Ce client a déjà été signalé pour cette réservation.');
-        }
+        $this->assertEstablishmentCanReport($booking);
 
         if ($reason === ReportReason::NO_SHOW) {
-            if ($booking->getStatus() === BookingStatus::HONORED) {
-                throw new BusinessRuleException('Ce rendez-vous a été marqué comme honoré : il ne peut plus être déclaré en absence.');
-            }
-
-            if ($booking->getStatus() === BookingStatus::CONFIRMED) {
-                $this->attendance->markNoShow($booking);
-            }
+            $this->declareNoShow($booking);
         }
 
         $report = new Report();
@@ -134,7 +131,7 @@ class ReportService
     public function replyAsReporter(Report $report, User $author, string $body): ReportMessage
     {
         if ($report->getReporter() !== $author) {
-            throw new BusinessRuleException('Ce signalement ne vous appartient pas.');
+            throw new NotReportOwnerException();
         }
 
         return $this->post($report, $author, $body);
@@ -143,7 +140,7 @@ class ReportService
     public function replyAsEstablishment(Report $report, User $author, string $body): ReportMessage
     {
         if ($report->getDirection() !== ReportDirection::FROM_CUSTOMER) {
-            throw new BusinessRuleException('Ce signalement n\'attend pas de réponse de votre part.');
+            throw new ReplyNotExpectedException();
         }
 
         $message = $this->post($report, $author, $body, false);
@@ -159,7 +156,7 @@ class ReportService
     public function post(Report $report, ?User $author, string $body, bool $internal = false): ReportMessage
     {
         if (!$internal && !ReportStatusHelper::isOpen($report)) {
-            throw new BusinessRuleException('Ce signalement est clos.');
+            throw new ReportClosedException();
         }
 
         $message = new ReportMessage();
@@ -184,7 +181,8 @@ class ReportService
 
     public function escalateUnanswered(?DateTimeImmutable $now = null): int
     {
-        $reports = $this->reports->findAwaitingReplyBefore(($now ?? new DateTimeImmutable())->modify(sprintf('-%d hours', self::REPLY_WINDOW_HOURS)));
+        $limit = ($now ?? new DateTimeImmutable())->modify(sprintf('-%d hours', self::REPLY_WINDOW_HOURS));
+        $reports = $this->reports->findAwaitingReplyBefore($limit);
 
         foreach ($reports as $report) {
             $report->setStatus(ReportStatus::IN_REVIEW);
@@ -197,45 +195,162 @@ class ReportService
 
     public function canCustomerReport(Booking $booking, ?DateTimeImmutable $now = null): bool
     {
-        $reference = $booking->getStatus() === BookingStatus::CANCELLED_BY_ESTABLISHMENT ? $booking->getCancelledAt() : $booking->getSlot()?->getStartsAt();
+        $reference = $this->reportReference($booking);
 
-        return $booking->getStatus() !== BookingStatus::CANCELLED_BY_CUSTOMER
-            && $reference !== null
-            && $reference->modify(sprintf('+%d hours', self::CUSTOMER_WINDOW_HOURS)) > ($now ?? new DateTimeImmutable())
-            && !$this->reports->existsForBooking($booking, ReportDirection::FROM_CUSTOMER);
+        if ($booking->getStatus() === BookingStatus::CANCELLED_BY_CUSTOMER || $reference === null) {
+            return false;
+        }
+
+        $closesAt = $reference->modify(sprintf('+%d hours', self::CUSTOMER_WINDOW_HOURS));
+
+        if ($closesAt <= ($now ?? new DateTimeImmutable())) {
+            return false;
+        }
+
+        return !$this->reports->existsForBooking($booking, ReportDirection::FROM_CUSTOMER);
     }
 
     public function attachment(Report $report): string
     {
-        if ($report->getAttachmentPath() === null || !$this->storage->exists($report->getAttachmentPath())) {
-            throw new BusinessRuleException('Ce signalement n\'a pas de pièce jointe.');
+        $path = $report->getAttachmentPath();
+
+        if ($path === null || !$this->storage->exists($path)) {
+            throw new MissingAttachmentException();
         }
 
-        return $this->storage->read($report->getAttachmentPath());
+        return $this->storage->read($path);
     }
 
     public function attachmentName(Report $report): string
     {
-        return sprintf('%s-piece-jointe.%s', ReportStatusHelper::reference($report), pathinfo((string) $report->getAttachmentPath(), PATHINFO_EXTENSION));
+        $extension = pathinfo((string) $report->getAttachmentPath(), PATHINFO_EXTENSION);
+
+        return sprintf('%s-piece-jointe.%s', ReportStatusHelper::reference($report), $extension);
+    }
+
+    private function customerTarget(User $customer, CustomerReportInput $input, ReportReason $reason): array
+    {
+        if ($input->booking !== null && $input->booking !== '') {
+            $booking = $this->customerBooking($customer, $input->booking, $reason);
+
+            return [
+                $booking,
+                $booking->getSlot()?->getEstablishment()
+            ];
+        }
+
+        return [
+            null,
+            $this->reportableEstablishment($input->establishmentId, $reason)
+        ];
+    }
+
+    private function customerBooking(User $customer, string $reference, ReportReason $reason): Booking
+    {
+        $booking = $this->bookings->findOneByReference($reference);
+
+        if (!$booking instanceof Booking || $booking->getCustomer() !== $customer) {
+            throw new ReportBookingNotFoundException();
+        }
+
+        $this->assertCustomerCanReport($booking, $reason);
+
+        return $booking;
+    }
+
+    private function reportableEstablishment(?int $id, ReportReason $reason): CompanyEstablishment
+    {
+        if ($id === null) {
+            throw new ReportTargetRequiredException();
+        }
+
+        $establishment = $this->establishments->find($id);
+
+        if (!$establishment instanceof CompanyEstablishment) {
+            throw new ReportEstablishmentNotFoundException();
+        }
+
+        if ($establishment->getStatus() !== EstablishmentStatus::ONLINE) {
+            throw new ReportEstablishmentNotFoundException();
+        }
+
+        if ($reason === ReportReason::LAST_MINUTE_CANCELLATION) {
+            throw new BookingRequiredForReasonException();
+        }
+
+        return $establishment;
+    }
+
+    private function customerReportStatus(?Booking $booking): ReportStatus
+    {
+        if ($booking === null) {
+            return ReportStatus::SENT;
+        }
+
+        return ReportStatus::AWAITING_REPLY;
     }
 
     private function assertCustomerCanReport(Booking $booking, ReportReason $reason): void
     {
         if ($this->reports->existsForBooking($booking, ReportDirection::FROM_CUSTOMER)) {
-            throw new BusinessRuleException('Tu as déjà signalé un problème sur cette réservation : ajoute un message à ton signalement.');
+            throw new BookingAlreadyReportedException();
         }
 
         if (!$this->canCustomerReport($booking)) {
-            throw new BusinessRuleException('Le signalement est possible dans les {hours} h qui suivent le rendez-vous.', ['hours' => self::CUSTOMER_WINDOW_HOURS]);
+            throw new ReportWindowClosedException(self::CUSTOMER_WINDOW_HOURS);
         }
 
-        if ($reason === ReportReason::LAST_MINUTE_CANCELLATION && $booking->getStatus() !== BookingStatus::CANCELLED_BY_ESTABLISHMENT) {
-            throw new BusinessRuleException('Cette réservation n\'a pas été annulée par l\'établissement.');
+        $cancelledByEstablishment = $booking->getStatus() === BookingStatus::CANCELLED_BY_ESTABLISHMENT;
+
+        if ($reason === ReportReason::LAST_MINUTE_CANCELLATION && !$cancelledByEstablishment) {
+            throw new NotCancelledByEstablishmentException();
         }
 
-        if ($booking->getStatus() === BookingStatus::CANCELLED_BY_ESTABLISHMENT && $reason !== ReportReason::LAST_MINUTE_CANCELLATION && $reason !== ReportReason::OTHER) {
-            throw new BusinessRuleException('Cette réservation a été annulée par l\'établissement : choisis « {reason} ».', ['reason' => ReportReason::LAST_MINUTE_CANCELLATION->label()]);
+        if ($cancelledByEstablishment && !$this->fitsEstablishmentCancellation($reason)) {
+            throw new CancelledByEstablishmentReasonException(ReportReason::LAST_MINUTE_CANCELLATION->label());
         }
+    }
+
+    private function fitsEstablishmentCancellation(ReportReason $reason): bool
+    {
+        return $reason === ReportReason::LAST_MINUTE_CANCELLATION || $reason === ReportReason::OTHER;
+    }
+
+    private function assertEstablishmentCanReport(Booking $booking): void
+    {
+        $startsAt = $booking->getSlot()?->getStartsAt();
+
+        if ($startsAt === null || $startsAt > new DateTimeImmutable()) {
+            throw new AppointmentNotPassedException();
+        }
+
+        if (!in_array($booking->getStatus(), self::REPORTABLE_BOOKING_STATUSES, true)) {
+            throw new ReportedBookingCancelledException();
+        }
+
+        if ($this->reports->existsForBooking($booking, ReportDirection::FROM_ESTABLISHMENT)) {
+            throw new CustomerAlreadyReportedException();
+        }
+    }
+
+    private function declareNoShow(Booking $booking): void
+    {
+        if ($booking->getStatus() === BookingStatus::HONORED) {
+            throw new HonoredBookingNoShowException();
+        }
+
+        if ($booking->getStatus() === BookingStatus::CONFIRMED) {
+            $this->attendance->markNoShow($booking);
+        }
+    }
+
+    private function reportReference(Booking $booking): ?DateTimeImmutable
+    {
+        if ($booking->getStatus() === BookingStatus::CANCELLED_BY_ESTABLISHMENT) {
+            return $booking->getCancelledAt();
+        }
+
+        return $booking->getSlot()?->getStartsAt();
     }
 
     private function save(Report $report, ?UploadedFile $attachment = null): Report
@@ -244,16 +359,24 @@ class ReportService
         $this->orm->flush();
 
         if ($attachment !== null) {
-            try {
-                $report->setAttachmentPath($this->storage->store($attachment, 'reports/' . date('Y/m'), self::ATTACHMENT_MAX_SIZE, self::ATTACHMENT_TYPES));
-                $this->orm->flush();
-            } catch (StorageException) {
-                throw new BusinessRuleException('La pièce jointe doit être une image ou un PDF de moins de 5 Mo.');
-            }
+            $this->storeAttachment($report, $attachment);
         }
 
         $this->events->dispatch(new ReportCreatedEvent($report));
 
         return $report;
+    }
+
+    private function storeAttachment(Report $report, UploadedFile $attachment): void
+    {
+        $directory = 'reports/' . date('Y/m');
+
+        try {
+            $path = $this->storage->store($attachment, $directory, self::ATTACHMENT_MAX_SIZE, self::ATTACHMENT_TYPES);
+            $report->setAttachmentPath($path);
+            $this->orm->flush();
+        } catch (StorageException) {
+            throw new InvalidAttachmentException();
+        }
     }
 }
