@@ -1,0 +1,97 @@
+{% extends 'layouts/front.html.twig' %}
+
+{% set cover = slot.establishment.cover %}
+{% set shopUrl = path('shop_show', { city: slot.establishment.city, slug: slot.establishment.slug }) %}
+
+{% block title %}{{ slot.what }} à {{ slot.time }} chez {{ slot.pro }} : {{ slot.price }} au lieu de {{ slot.old }} · {{ website().siteName }}{% endblock %}
+
+{% block meta_description %}{{ slot.day }} à {{ slot.time }} : {{ slot.what }} chez {{ slot.pro }}, {{ slot.establishment.locality }}. {{ slot.price }} au lieu de {{ slot.old }}, paiement sur place.{% endblock %}
+
+{% block header_class %}site-header--compact{% endblock %}
+
+{% block content %}
+    <div class="slot-page">
+        {% include 'components/breadcrumb.html.twig' with { items: breadcrumb } %}
+
+        <div class="slot-page__layout">
+            <div class="slot-page__main">
+                {% if cover %}
+                    <img src="{{ cover }}" alt="{{ slot.pro }}" class="slot-page__cover">
+                {% else %}
+                    <div class="slot-page__cover slot-page__cover--empty" aria-hidden="true"><i data-lucide="store" class="slot-page__cover-icon"></i></div>
+                {% endif %}
+
+                <div class="slot-intro">
+                    <span class="slot-intro__eyebrow">{{ [slot.category, slot.distance]|filter(value => value)|join(' · ') }}</span>
+                    <h1 class="slot-intro__title">{{ slot.what }} chez {{ slot.pro }}</h1>
+                    <span class="slot-intro__address">{{ slot.address }} · <a href="{{ shopUrl }}" class="slot-intro__link">Voir l'établissement</a></span>
+                </div>
+
+                <ul class="slot-infos">
+                    {% for info in slot.infos %}
+                        <li class="slot-infos__item">
+                            <b>{{ info.title }}</b>
+                            <span class="slot-infos__text">{{ info.text }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {% if others is not empty %}
+                    <section class="slot-others">
+                        <h2 class="slot-others__title">Autres créneaux chez {{ slot.pro }} {{ slot.day|lower }}</h2>
+                        <div class="slot-others__list">
+                            {% for other in others %}
+                                <a href="{{ path('slot_show', { id: other.id }) }}" class="slot-others__item">{{ other.time }} · {{ other.what }} · <span class="slot-others__price">{{ other.price }}</span></a>
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endif %}
+            </div>
+
+            <aside class="slot-book">
+                {% embed 'components/ticket.html.twig' with { day: slot.day, today: slot.today, time: slot.time, duration: slot.duration } %}
+                    {% block ticket_body %}
+                        <span class="ticket__prices"><s class="ticket__old">{{ slot.old }}</s> <b class="ticket__price">{{ slot.price }}</b></span>
+                        <span class="ticket__badge ticket__badge--{{ slot.urgency }}">{{ slot.discountLabel }}</span>
+                    {% endblock %}
+                {% endembed %}
+
+                {% if slot.bookable %}
+                    <div class="slot-book__remaining">
+                        <span class="slot-book__gauge" aria-hidden="true"><span class="slot-book__gauge-fill" style="--value: {{ slot.visibility }}%"></span></span>
+                        <span>Offre visible {{ slot.remaining|lower }}</span>
+                    </div>
+
+                    <form method="post" action="{{ path('slot_book', { id: slot.id }) }}" class="form slot-book__form">
+                        {{ csrf_field('booking')|raw }}
+                        {% if user %}
+                            <p class="slot-book__identity">Réservation au nom de <b>{{ user.firstName }}</b> · {{ user.email }}</p>
+                            <label for="book-phone" class="form-field">Téléphone<input id="book-phone" type="tel" name="phone" value="{{ form.phone }}" autocomplete="tel" placeholder="06 00 00 00 00" class="form-input"></label>
+                        {% else %}
+                            <div class="slot-book__row">
+                                <label for="book-first" class="form-field">Prénom<input id="book-first" type="text" name="firstName" value="{{ form.firstName }}" required maxlength="80" autocomplete="given-name" class="form-input"></label>
+                                <label for="book-phone" class="form-field">Téléphone<input id="book-phone" type="tel" name="phone" value="{{ form.phone }}" required autocomplete="tel" placeholder="06 00 00 00 00" class="form-input"></label>
+                            </div>
+                            <label for="book-email" class="form-field">Adresse e-mail<input id="book-email" type="email" name="email" value="{{ form.email }}" required maxlength="180" autocomplete="email" placeholder="toi@exemple.fr" class="form-input"></label>
+                        {% endif %}
+                        <label for="book-note" class="form-field">
+                            <span class="form-field__head">Un mot pour {{ slot.pro }}<span class="slot-book__optional">facultatif</span></span>
+                            <textarea id="book-note" name="note" rows="2" maxlength="500" class="form-input slot-book__note">{{ form.note }}</textarea>
+                        </label>
+                        {% if not user %}
+                            <span class="slot-book__hint">Déjà inscrit ? <a href="{{ path('app_login') }}">Connecte-toi</a> pour réserver plus vite. Sinon, un compte est créé avec ton e-mail.</span>
+                        {% endif %}
+                        <button type="submit" class="btn btn--primary form-submit">Confirmer la réservation</button>
+                        <span class="slot-book__footnote">Paiement sur place{% if slot.freeCancellation %} · annulation gratuite jusqu'à {{ slot.freeCancellationUntil }}{% endif %}</span>
+                    </form>
+                {% else %}
+                    <div class="slot-book__closed">
+                        <b>Ce créneau n'est plus réservable.</b>
+                        <span>Il a déjà trouvé preneur ou il est trop proche de l'heure du rendez-vous.</span>
+                        <a href="{{ shopUrl }}" class="btn btn--ink">Voir les autres créneaux de {{ slot.pro }}</a>
+                    </div>
+                {% endif %}
+            </aside>
+        </div>
+    </div>
+{% endblock %}

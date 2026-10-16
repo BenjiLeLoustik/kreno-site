@@ -1,0 +1,400 @@
+@layer components {
+    .layout-signup {
+        @apply bg-cream text-[15px] leading-normal text-ink;
+    }
+
+    .signup {
+        @apply flex min-h-screen flex-col lg:flex-row;
+    }
+
+    .signup-side {
+        @apply flex flex-col gap-7 bg-ink p-6 text-frost lg:sticky lg:top-0 lg:h-screen lg:w-[400px] lg:flex-none lg:gap-9 lg:overflow-y-auto lg:p-10;
+    }
+
+    .signup-side__brand {
+        @apply self-start no-underline;
+    }
+
+    .signup-side__intro {
+        @apply flex flex-col gap-1.5;
+    }
+
+    .signup-side__title {
+        @apply font-display text-[26px] font-extrabold tracking-[-0.02em] lg:text-[30px];
+    }
+
+    .signup-side__lead {
+        @apply text-mist;
+    }
+
+    .signup-side__note {
+        @apply mt-auto hidden flex-col gap-1.5 rounded-2xl bg-ink-soft p-[18px] lg:flex;
+    }
+
+    .signup-side__note-text {
+        @apply text-sm text-[#C9CCE0];
+    }
+
+    .signup-side__contact {
+        @apply text-[13px] text-mist;
+    }
+
+    .signup-steps {
+        @apply m-0 flex list-none gap-3 overflow-x-auto p-0 lg:flex-col lg:gap-[18px] lg:overflow-visible;
+    }
+
+    .signup-steps__item {
+        @apply grid flex-none grid-cols-[32px_minmax(0,1fr)] items-center gap-3.5;
+    }
+
+    .signup-steps__mark {
+        @apply grid size-8 place-items-center rounded-full border-[1.5px] border-[#3B4275] text-sm font-bold text-mist;
+    }
+
+    .signup-steps__item--done .signup-steps__mark {
+        @apply border-transparent bg-mint text-mint-ink;
+    }
+
+    .signup-steps__item--current .signup-steps__mark {
+        @apply border-transparent bg-coral text-white;
+    }
+
+    .signup-steps__text {
+        @apply hidden flex-col lg:flex;
+    }
+
+    .signup-steps__item--current .signup-steps__text {
+        @apply flex;
+    }
+
+    .signup-steps__label {
+        @apply font-bold text-[#8A8FA8] no-underline;
+    }
+
+    .signup-steps__item--done .signup-steps__label {
+        @apply text-[#C9CCE0] hover:text-white;
+    }
+
+    .signup-steps__item--current .signup-steps__label {
+        @apply text-white;
+    }
+
+    .signup-steps__sub {
+        @apply text-[13px] text-[#8A8FA8];
+    }
+
+    .signup-main {
+        @apply flex flex-1 justify-center px-5 py-8 md:px-12 lg:px-24 lg:py-14;
+    }
+
+    .signup-panel {
+        @apply flex w-full max-w-[680px] flex-col gap-6;
+    }
+
+    .signup-top {
+        @apply flex flex-wrap items-center justify-between gap-3;
+    }
+
+    .signup-top__step {
+        @apply text-[13px] font-semibold tracking-[0.12em] text-coral uppercase;
+    }
+
+    .signup-top__login {
+        @apply text-sm text-muted;
+    }
+
+    .signup-top__link {
+        @apply font-semibold;
+    }
+
+    .signup-top__logout {
+        @apply cursor-pointer border-0 bg-transparent p-0 font-sans text-sm font-semibold text-muted underline hover:text-coral;
+    }
+
+    .signup-head {
+        @apply flex flex-col gap-1.5;
+    }
+
+    .signup-title {
+        @apply font-display text-[32px] leading-tight font-extrabold tracking-[-0.03em] md:text-[40px];
+    }
+
+    .signup-lead {
+        @apply text-body;
+    }
+
+    .signup-form {
+        @apply flex flex-col gap-5;
+    }
+
+    .signup-fieldset {
+        @apply m-0 flex min-w-0 flex-col gap-3 border-0 p-0;
+    }
+
+    .signup-legend {
+        @apply mb-2.5 text-sm font-semibold;
+    }
+
+    .signup-section {
+        @apply flex flex-col gap-3;
+    }
+
+    .signup-section__head {
+        @apply flex flex-wrap items-baseline justify-between gap-2;
+    }
+
+    .signup-choices {
+        @apply grid gap-3 sm:grid-cols-2;
+    }
+
+    .signup-choice {
+        @apply flex cursor-pointer flex-col gap-0.5 rounded-2xl border-2 border-sand bg-white p-4 transition-colors hover:border-ink has-checked:border-coral has-checked:bg-[#FFF3EF];
+    }
+
+    .signup-choice__input {
+        @apply sr-only;
+    }
+
+    .signup-choice__text {
+        @apply text-[13px] text-muted;
+    }
+
+    .signup-chips {
+        @apply flex flex-wrap gap-2;
+    }
+
+    .signup-chip {
+        @apply inline-flex min-h-10 cursor-pointer items-center rounded-full border-[1.5px] border-sand bg-white px-4 font-sans text-sm font-semibold text-ink transition-colors hover:border-ink has-checked:border-ink has-checked:bg-ink has-checked:text-white;
+    }
+
+    .signup-chip--button {
+        @apply disabled:cursor-default disabled:opacity-40;
+    }
+
+    .signup-chip__input {
+        @apply sr-only;
+    }
+
+    .signup-meter {
+        @apply -mt-2 flex flex-col gap-1.5;
+    }
+
+    .signup-meter__bars {
+        @apply grid grid-cols-4 gap-1.5;
+    }
+
+    .signup-meter__bar {
+        @apply h-[5px] rounded-full bg-sand;
+    }
+
+    .signup-meter__bar[data-level="1"] {
+        @apply bg-[#E8452A];
+    }
+
+    .signup-meter__bar[data-level="2"],
+    .signup-meter__bar[data-level="3"] {
+        @apply bg-amber;
+    }
+
+    .signup-meter__bar[data-level="4"] {
+        @apply bg-mint;
+    }
+
+    .signup-meter__text {
+        @apply text-[13px] text-muted;
+    }
+
+    .signup-meter__text[data-level="1"] {
+        @apply text-[#E8452A];
+    }
+
+    .signup-meter__text[data-level="2"],
+    .signup-meter__text[data-level="3"] {
+        @apply text-amber-ink;
+    }
+
+    .signup-meter__text[data-level="4"] {
+        @apply text-mint-ink;
+    }
+
+    .signup-code {
+        @apply max-w-[240px] text-center text-[28px] font-bold tracking-[0.4em] tabular-nums;
+    }
+
+    .signup-resend {
+        @apply flex flex-wrap items-center gap-2 text-sm text-muted;
+    }
+
+    .signup-resend__button {
+        @apply cursor-pointer border-0 bg-transparent p-0 font-sans text-sm font-semibold text-ink underline hover:text-coral;
+    }
+
+    .signup-siret {
+        @apply flex flex-wrap items-end gap-3;
+    }
+
+    .signup-siret__field {
+        @apply min-w-[220px] flex-1;
+    }
+
+    .signup-siret__button {
+        @apply min-h-12;
+    }
+
+    .signup-registry {
+        @apply flex flex-col gap-3 rounded-2xl border border-mint/60 bg-mint/10 p-4;
+    }
+
+    .signup-registry__title {
+        @apply inline-flex items-center gap-2 text-sm font-semibold text-mint-ink;
+    }
+
+    .signup-suggestions {
+        @apply flex flex-col;
+    }
+
+    .signup-services {
+        @apply flex flex-col gap-2;
+    }
+
+    .signup-services__rows {
+        @apply flex flex-col gap-2;
+    }
+
+    .signup-service {
+        @apply grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:grid-cols-[minmax(0,1fr)_120px_130px_36px];
+    }
+
+    .signup-service--head {
+        @apply hidden text-xs font-semibold tracking-[0.06em] text-muted uppercase md:grid;
+    }
+
+    .signup-service__price {
+        @apply relative;
+    }
+
+    .signup-service__price .pro-input {
+        @apply pr-8;
+    }
+
+    .signup-service__unit {
+        @apply pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-muted;
+    }
+
+    .signup-service__remove {
+        @apply grid size-9 cursor-pointer place-items-center rounded-full border-0 bg-frost font-sans text-lg text-muted hover:text-coral-dark;
+    }
+
+    .signup-services__add {
+        @apply cursor-pointer self-start border-0 bg-transparent p-0 font-sans text-sm font-semibold text-coral-dark hover:text-coral;
+    }
+
+    .signup-discount {
+        @apply flex flex-col gap-2 rounded-2xl bg-[#F7F2EC] p-4;
+    }
+
+    .signup-discount__value {
+        @apply text-lg text-coral-dark tabular-nums;
+    }
+
+    .signup-recap {
+        @apply flex flex-col rounded-2xl border border-sand bg-white px-4;
+    }
+
+    .signup-recap__row {
+        @apply grid grid-cols-[110px_minmax(0,1fr)_auto] items-baseline gap-3 border-t border-[#F1E8DE] py-2.5 text-sm first:border-t-0;
+    }
+
+    .signup-recap__label {
+        @apply text-muted;
+    }
+
+    .signup-recap__value {
+        @apply min-w-0 font-medium;
+    }
+
+    .signup-recap__edit {
+        @apply text-[13px] font-semibold;
+    }
+
+    .signup-summary {
+        @apply flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-ink p-4 text-frost;
+    }
+
+    .signup-summary .pro-row__meta {
+        @apply text-mist;
+    }
+
+    .signup-summary__main,
+    .signup-summary__aside {
+        @apply flex flex-col;
+    }
+
+    .signup-summary__aside {
+        @apply items-end text-right;
+    }
+
+    .signup-promo {
+        @apply flex flex-wrap items-end gap-3;
+    }
+
+    .signup-promo__field {
+        @apply min-w-[200px] flex-1;
+    }
+
+    .signup-promo__result[data-state="success"] {
+        @apply font-semibold text-mint-ink;
+    }
+
+    .signup-promo__result[data-state="error"] {
+        @apply font-semibold text-coral-dark;
+    }
+
+    .signup-actions {
+        @apply mt-2 flex flex-wrap items-center justify-between gap-3 border-t border-sand pt-6;
+    }
+
+    .signup-actions__back {
+        @apply font-semibold;
+    }
+
+    .signup-actions__end {
+        @apply flex flex-wrap items-center gap-3;
+    }
+
+    .signup-actions__next {
+        @apply min-h-[52px] px-7 text-base;
+    }
+
+    .signup-timeline {
+        @apply m-0 flex list-none flex-col gap-4 p-0;
+    }
+
+    .signup-timeline__item {
+        @apply grid grid-cols-[32px_minmax(0,1fr)] items-start gap-3.5;
+    }
+
+    .signup-timeline__item > span:last-child {
+        @apply flex flex-col;
+    }
+
+    .signup-timeline__mark {
+        @apply grid size-8 place-items-center rounded-full border-[1.5px] border-sand text-sm font-bold text-muted;
+    }
+
+    .signup-timeline__item--done .signup-timeline__mark {
+        @apply border-transparent bg-mint text-mint-ink;
+    }
+
+    .signup-timeline__item--current .signup-timeline__mark {
+        @apply border-transparent bg-coral text-white;
+    }
+
+    .signup-next {
+        @apply grid gap-3 sm:grid-cols-2;
+    }
+
+    .signup-next__card {
+        @apply flex flex-col gap-1 rounded-2xl border border-sand bg-white p-4 text-ink no-underline transition-colors hover:border-ink hover:text-ink;
+    }
+}

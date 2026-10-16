@@ -1,0 +1,77 @@
+@layer components {
+    .layout-install {
+        @apply bg-[#F6F1EA] text-[15px] leading-normal text-ink;
+    }
+
+    .install {
+        @apply mx-auto flex max-w-[860px] flex-col gap-5 px-5 py-8 md:py-12;
+    }
+
+    .install-header {
+        @apply flex items-center gap-3;
+    }
+
+    .install-header__badge {
+        @apply rounded-full bg-ink px-3 py-1 text-xs font-bold tracking-[0.08em] text-white uppercase;
+    }
+
+    .install-intro {
+        @apply flex flex-col gap-2;
+    }
+
+    .install-intro__title {
+        @apply font-display text-[32px] leading-tight font-extrabold tracking-[-0.03em] md:text-[40px];
+    }
+
+    .install-intro__lead {
+        @apply text-body;
+    }
+
+    .install-login {
+        @apply mx-auto w-full max-w-[460px];
+    }
+
+    .install-form {
+        @apply flex flex-col gap-5;
+    }
+
+    .install-step {
+        @apply flex items-center gap-3;
+    }
+
+    .install-step__number {
+        @apply grid size-8 flex-none place-items-center rounded-full bg-coral text-sm font-bold text-white;
+    }
+
+    .install-rules {
+        @apply grid gap-4 sm:grid-cols-2;
+    }
+
+    .install-rule__input {
+        @apply flex items-center gap-2.5;
+    }
+
+    .install-rule__input .pro-input {
+        @apply max-w-[110px];
+    }
+
+    .install-rule__unit {
+        @apply text-sm font-normal text-muted;
+    }
+
+    .install-plans {
+        @apply grid gap-4;
+    }
+
+    .install-plan {
+        @apply m-0 flex min-w-0 flex-col gap-3.5 rounded-2xl border border-sand p-4;
+    }
+
+    .install-plan__legend {
+        @apply px-1.5 text-sm font-bold;
+    }
+
+    .install-submit {
+        @apply flex justify-end;
+    }
+}

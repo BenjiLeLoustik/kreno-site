@@ -1,0 +1,61 @@
+@layer components {
+    .settings-form {
+        @apply grid gap-4 sm:grid-cols-2;
+    }
+
+    .settings-form--single {
+        @apply sm:max-w-[420px] sm:grid-cols-1;
+    }
+
+    .settings-form__group {
+        @apply flex flex-col gap-2;
+    }
+
+    .settings-form__hint {
+        @apply text-[13px] font-medium text-muted;
+    }
+
+    .settings-form__hint--warning {
+        @apply text-amber-ink;
+    }
+
+    .settings-form__actions {
+        @apply sm:col-span-2;
+    }
+
+    .settings-form--single .settings-form__actions {
+        @apply sm:col-span-1;
+    }
+
+    .settings-switch {
+        @apply flex flex-col items-start gap-3;
+    }
+
+    .settings-switch__hint {
+        @apply text-[13px] text-muted;
+    }
+
+    .settings-danger {
+        @apply border-[#F3C9BF];
+    }
+
+    .settings-danger__details {
+        @apply flex flex-col;
+    }
+
+    .settings-danger__toggle {
+        @apply cursor-pointer list-none self-start text-sm font-semibold text-[#C93A22] underline [&::-webkit-details-marker]:hidden;
+    }
+
+    .settings-danger__details[open] .settings-danger__toggle {
+        @apply hidden;
+    }
+
+    .settings-danger__form {
+        @apply flex max-w-[420px] flex-col gap-3;
+    }
+
+    .settings-danger__submit {
+        @apply border-0 bg-[#C93A22] text-white hover:bg-[#A92F1B];
+    }
+}

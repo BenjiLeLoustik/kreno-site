@@ -1,0 +1,65 @@
+@layer components {
+    .report-form {
+        @apply flex flex-col gap-4;
+    }
+
+    .report-form__reasons {
+        @apply m-0 grid gap-2 border-0 p-0 sm:grid-cols-2;
+    }
+
+    .report-form__legend {
+        @apply mb-2 p-0 text-sm font-semibold;
+    }
+
+    .report-form__area {
+        @apply min-h-0 resize-y py-2.5;
+    }
+
+    .report-form__muted {
+        @apply font-normal text-muted;
+    }
+
+    .report-form__file {
+        @apply text-sm font-medium text-body file:mr-3 file:cursor-pointer file:rounded-xl file:border-[1.5px] file:border-solid file:border-sand file:bg-white file:px-4 file:py-2 file:font-sans file:font-semibold file:text-ink;
+    }
+
+    .report-reason {
+        @apply flex cursor-pointer items-start gap-3 rounded-[14px] border-[1.5px] border-sand bg-white p-3 transition-colors has-[:checked]:border-ink;
+    }
+
+    .report-reason__input {
+        @apply mt-1 size-4 shrink-0 accent-coral;
+    }
+
+    .report-reason__text {
+        @apply flex flex-col;
+    }
+
+    .report-reason__label {
+        @apply text-sm;
+    }
+
+    .report-reason__hint {
+        @apply text-[13px] text-muted;
+    }
+
+    .report-list {
+        @apply flex flex-col overflow-hidden rounded-[18px] border border-sand bg-white;
+    }
+
+    .report-list__item {
+        @apply flex items-center justify-between gap-3 border-b border-[#F1E8DE] px-5 py-4 text-ink no-underline transition-colors last:border-b-0 hover:bg-cream;
+    }
+
+    .report-list__text {
+        @apply flex min-w-0 flex-col;
+    }
+
+    .report-list__title {
+        @apply font-semibold;
+    }
+
+    .report-list__meta {
+        @apply truncate text-sm text-muted;
+    }
+}

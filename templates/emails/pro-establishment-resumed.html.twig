@@ -1,0 +1,11 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>{{ establishment.name }} est de nouveau en ligne sur Kréno.</p>
+    <p>Votre page est à nouveau visible et vous pouvez publier vos créneaux libérés.</p>
+    <p style="{{ styles.actions }}"><a href="{{ slotUrl }}" style="{{ styles.button }}">Publier un créneau</a><a href="{{ dashboardUrl }}" style="{{ styles.buttonSecondary }}">Ouvrir Kréno Pro</a></p>
+
+{% endblock %}

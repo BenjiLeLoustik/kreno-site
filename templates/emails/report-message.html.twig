@@ -1,0 +1,11 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'default' %}
+
+{% block mailContent %}
+
+    <p>{{ report.establishment.name }} a répondu à ton signalement {{ report.reference }} :</p>
+    <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
+    <p style="{{ styles.actions }}"><a href="{{ report.url }}" style="{{ styles.button }}">Répondre ou voir l’échange</a></p>
+
+{% endblock %}

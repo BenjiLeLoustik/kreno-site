@@ -1,0 +1,20 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>Un nouveau moyen de paiement a été enregistré sur votre compte Kréno Pro :</p>
+    <ul style="{{ styles.list }}">
+        <li style="{{ styles.item }}">{{ paymentMethod.label }}{% if paymentMethod.expiry %} (expire {{ paymentMethod.expiry }}){% endif %}</li>
+        {% if addedBy %}
+            <li style="{{ styles.item }}">Ajouté par {{ addedBy }} le {{ addedAt }}</li>
+        {% endif %}
+        {% if default %}
+            <li style="{{ styles.item }}">Il sera utilisé pour vos prochains prélèvements.</li>
+        {% endif %}
+    </ul>
+    <p>Si vous n’êtes pas à l’origine de cet ajout, contactez-nous en répondant à cet e-mail.</p>
+    <p style="{{ styles.actions }}"><a href="{{ billingUrl }}" style="{{ styles.button }}">Facturation</a></p>
+
+{% endblock %}

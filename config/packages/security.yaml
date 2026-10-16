@@ -1,0 +1,66 @@
+# Security (key packages.security). `php bin/neo make:user` then `make:auth` configure a real login.
+providers:
+    # Where the users come from. With an entity (after make:user):
+    # users:
+    #     entity:
+    #         class: App\Entity\User
+    #         property: email
+    users:
+        entity:
+            class: App\Entity\User\User
+            property: email
+
+password_hashers:
+    # auto = best algorithm available (bcrypt / argon2), rehashed automatically on login
+    # default: auto
+    App\Entity\User\User: auto
+
+firewalls:
+    # Public files: no security at all
+    assets:
+        pattern: ^/builds/
+        security: false
+    main:
+        pattern: ^/
+        provider: users
+        user_checker: App\User\Security\UserChecker
+        form_login:
+            login_path: app_login
+            check_path: app_login
+            username_parameter: email
+            password_parameter: password
+            enable_csrf: true
+            default_target_path: /account
+            target_path_parameter: _target_path
+        logout:
+            path: /logout
+            # Page displayed after the logout
+            target: /
+            # A CSRF token is required and only POST is accepted: another site cannot log your users out.
+            # In the templates: {{ logout_form('Logout') }} (a small form with a button)
+            enable_csrf: true
+            methods: [ POST ]
+        remember_me:
+            # "Remember me" checkbox (_remember_me): 604800 s = 7 days
+            lifetime: 2592000
+            # database = one token per device in the remember_me_tokens table (revocable), signature = cookie only
+            # storage: database
+        login_throttling:
+            # Attempts per IP + identifier during interval seconds (5 x more per IP)
+            max_attempts: 5
+            interval: 60
+
+role_hierarchy:
+    ROLE_SUPPORT: [ROLE_USER]
+    ROLE_MODERATOR: [ROLE_SUPPORT]
+    ROLE_ADMIN: [ROLE_MODERATOR]
+
+# Access rules, the first matching one is used, e.g.
+# access_control:
+#     - { path: ^/admin, roles: ROLE_ADMIN }
+#     - { path: ^/account, roles: ROLE_USER }
+access_control:
+    - { path: ^/admin, roles: ROLE_SUPPORT }
+    - { path: ^/account, roles: IS_AUTHENTICATED }
+    - { path: ^/pro/(login|signup|forgot-password|reset-password), roles: PUBLIC_ACCESS }
+    - { path: ^/pro/, roles: IS_AUTHENTICATED }

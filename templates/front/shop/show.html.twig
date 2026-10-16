@@ -1,0 +1,196 @@
+{% extends 'layouts/front.html.twig' %}
+
+{% set shop = establishment %}
+{% set cover = shop.images|first %}
+{% set thumbnails = shop.images|slice(1, 2) %}
+{% set eyebrow = [shop.category ? shop.category.name : null, shop.location.locality]|filter(value => value) %}
+
+{% block title %}{{ shop.name }}{% if shop.location.locality %}, {{ shop.location.locality }}{% endif %} : créneaux libérés à prix réduit · Kréno{% endblock %}
+
+{% block meta_description %}{{ shop.description ? shop.description|slice(0, 150) : shop.name ~ ' : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.' }}{% endblock %}
+
+{% block header_class %}site-header--compact{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/pages/shop/show.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+    <div class="shop">
+        {% include 'components/breadcrumb.html.twig' with { items: breadcrumb } %}
+
+        <div class="shop-gallery{{ thumbnails is empty ? ' shop-gallery--single' : '' }}">
+            {% if cover %}
+                <img src="{{ cover.url }}" alt="{{ cover.alt ?: shop.name }}" class="shop-gallery__cover"{% if cover.width %} width="{{ cover.width }}"{% endif %}{% if cover.height %} height="{{ cover.height }}"{% endif %}>
+            {% else %}
+                <div class="shop-gallery__placeholder" aria-hidden="true">
+                    <i data-lucide="store" class="shop-gallery__icon"></i>
+                </div>
+            {% endif %}
+            {% if thumbnails is not empty %}
+                <div class="shop-gallery__side">
+                    {% for image in thumbnails %}
+                        <img src="{{ image.url }}" alt="{{ image.alt ?: shop.name }}" class="shop-gallery__thumbnail" loading="lazy">
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="shop-layout">
+            <div class="shop-main">
+                <div class="shop-intro">
+                    {% if eyebrow is not empty %}
+                        <span class="shop-intro__eyebrow">{{ eyebrow|join(' · ') }}</span>
+                    {% endif %}
+                    <h1 class="shop-intro__title">{{ shop.name }}</h1>
+                    <span class="shop-intro__status{{ shop.openNow.open ? ' shop-intro__status--open' : '' }}">
+                        <span class="shop-intro__dot" aria-hidden="true"></span>
+                        {{ shop.openNow.label }}
+                    </span>
+                    {% if shop.description %}
+                        <p class="shop-intro__description">{{ shop.description }}</p>
+                    {% endif %}
+                </div>
+
+                <section class="shop-section">
+                    <h2 class="shop-section__title">Prochains créneaux libres</h2>
+                    {% if shop.slots is not empty %}
+                        <div class="shop-slots">
+                            {% for slot in shop.slots %}
+                                <a href="{{ path('slot_show', { id: slot.id }) }}" class="shop-slot">
+                                    <span class="shop-slot__when">
+                                        <span class="shop-slot__day{{ slot.today ? ' shop-slot__day--today' : '' }}">{{ slot.day }}</span>
+                                        <strong class="shop-slot__time">{{ slot.time }}</strong>
+                                        <span class="shop-slot__duration">{{ slot.duration }}</span>
+                                    </span>
+                                    <span class="shop-slot__body">
+                                        <span class="shop-slot__what">{{ slot.what }}</span>
+                                        <span class="shop-slot__prices">
+                                            <s class="shop-slot__old">{{ slot.old }}</s>
+                                            <b class="shop-slot__price">{{ slot.price }}</b>
+                                        </span>
+                                        <span class="shop-slot__badge shop-slot__badge--{{ slot.urgency }}">{{ slot.badge }}</span>
+                                    </span>
+                                    <span class="shop-slot__notch shop-slot__notch--top" aria-hidden="true"></span>
+                                    <span class="shop-slot__notch shop-slot__notch--bottom" aria-hidden="true"></span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="shop-empty">
+                            <b>Aucun créneau libre pour le moment</b>
+                            <span class="shop-empty__text">Suis {{ shop.name }} pour être prévenu dès qu'un créneau se libère.</span>
+                        </div>
+                    {% endif %}
+                </section>
+
+                {% if shop.services is not empty %}
+                    <section class="shop-section">
+                        <h2 class="shop-section__title">Prestations</h2>
+                        <ul class="shop-services">
+                            {% for service in shop.services %}
+                                <li class="shop-services__item">
+                                    <span class="shop-services__label">
+                                        <b class="shop-services__name">{{ service.name }}</b>
+                                        <span class="shop-services__duration">· {{ service.durationLabel }}</span>
+                                        {% if service.description %}
+                                            <span class="shop-services__description">{{ service.description }}</span>
+                                        {% endif %}
+                                    </span>
+                                    <span class="shop-services__price">{{ service.priceLabel }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <span class="shop-section__note">Prix habituels. Les créneaux Kréno sont proposés avec une remise choisie par le salon.</span>
+                    </section>
+                {% endif %}
+            </div>
+
+            <aside class="shop-aside">
+                <div class="shop-aside__block">
+                    <b class="shop-aside__title">Adresse</b>
+                    <span class="shop-aside__text">
+                        {{ shop.location.addressLine1 }}{% if shop.location.addressLine2 %}, {{ shop.location.addressLine2 }}{% endif %}<br>
+                        {{ shop.location.postalCode }} {{ shop.location.locality }}
+                    </span>
+                    {% if shop.location.distance %}
+                        <span class="shop-aside__muted">À {{ shop.location.distance }}</span>
+                    {% endif %}
+                    {% if shop.location.latitude is not null and shop.location.longitude is not null %}
+                        <a href="https://www.google.com/maps/dir/?api=1&amp;destination={{ shop.location.latitude }},{{ shop.location.longitude }}" class="shop-aside__link" target="_blank" rel="noopener">
+                            <i data-lucide="navigation" class="shop-aside__icon"></i>
+                            Itinéraire
+                        </a>
+                    {% endif %}
+                </div>
+
+                {% if shop.hours is not empty %}
+                    <div class="shop-aside__block">
+                        <b class="shop-aside__title">Horaires</b>
+                        <ul class="shop-hours">
+                            {% for hour in shop.hours %}
+                                <li class="shop-hours__row{{ hour.closed ? ' shop-hours__row--closed' : '' }}">
+                                    <span>{{ hour.day }}</span>
+                                    <span>{{ hour.time }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if shop.closures is not empty %}
+                    <div class="shop-aside__block">
+                        <b class="shop-aside__title">Fermetures exceptionnelles</b>
+                        <ul class="shop-hours">
+                            {% for closure in shop.closures %}
+                                <li class="shop-hours__row shop-hours__row--closed">
+                                    <span>{{ closure.label }}</span>
+                                    {% if closure.reason %}<span>{{ closure.reason }}</span>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if shop.contact.phone or shop.contact.website %}
+                    <div class="shop-aside__block">
+                        <b class="shop-aside__title">Contact</b>
+                        {% if shop.contact.phone %}
+                            <a href="tel:{{ shop.contact.phone|replace({ ' ': '', '.': '' }) }}" class="shop-aside__link">
+                                <i data-lucide="phone" class="shop-aside__icon"></i>
+                                {{ shop.contact.phone }}
+                            </a>
+                        {% endif %}
+                        {% if shop.contact.website %}
+                            <a href="{{ shop.contact.website }}" class="shop-aside__link" target="_blank" rel="noopener">
+                                <i data-lucide="globe" class="shop-aside__icon"></i>
+                                {{ shop.contact.websiteLabel }}
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                <div class="shop-follow">
+                    {% if app_user() %}
+                        <button type="button" class="shop-follow__button{{ shop.following ? ' shop-follow__button--active' : '' }}" aria-pressed="{{ shop.following ? 'true' : 'false' }}" data-shop-follow data-url="{{ path('shop_follow', { city: shop.city.slug, slug: shop.slug }) }}">
+                            <span data-shop-follow-label>{{ shop.following ? 'Salon suivi ✓' : 'Suivre ce salon' }}</span>
+                        </button>
+                    {% else %}
+                        <a href="{{ path('app_login') }}" class="shop-follow__button">Suivre ce salon</a>
+                    {% endif %}
+                    <span class="shop-follow__text">
+                        <span data-shop-followers>{{ shop.followersCount }} abonné{{ shop.followersCount > 1 ? 's' : '' }}</span>. Suis le salon pour être prévenu dès qu'un créneau se libère.
+                    </span>
+                </div>
+            </aside>
+        </div>
+
+        <div class="shop-footer">
+            <span class="shop-footer__verified">
+                <i data-lucide="badge-check" class="shop-aside__icon"></i>
+                Établissement vérifié par Kréno
+            </span>
+            <a href="{{ path('page_help') }}" class="shop-footer__link">Signaler un problème</a>
+        </div>
+    </div>
+{% endblock %}

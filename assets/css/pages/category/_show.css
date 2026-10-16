@@ -1,0 +1,57 @@
+@layer components {
+    .category-hero {
+        @apply mx-auto flex max-w-[1200px] flex-col gap-[18px] px-6 pt-8 pb-10;
+    }
+
+    .category-hero__title {
+        @apply max-w-[820px] font-display text-[36px] leading-[1.04] font-extrabold tracking-[-0.035em] md:text-[56px];
+    }
+
+    .category-hero__lead {
+        @apply max-w-[680px] text-lg text-body;
+    }
+
+    .category-section-title {
+        @apply text-2xl font-bold;
+    }
+
+    .category-cities {
+        @apply mx-auto flex max-w-[1200px] flex-col gap-4 px-6 pb-14;
+    }
+
+    .category-cities__grid {
+        @apply grid grid-cols-1 gap-3.5 sm:grid-cols-2 md:grid-cols-3;
+    }
+
+    .category-city {
+        @apply relative flex flex-col gap-1 rounded-card bg-white p-5 pr-12 no-underline shadow-card;
+    }
+
+    .category-city:hover {
+        @apply text-ink;
+    }
+
+    .category-city__name {
+        @apply text-lg text-ink;
+    }
+
+    .category-city__count {
+        @apply text-sm font-semibold text-muted;
+    }
+
+    .category-city__count--open {
+        @apply text-mint-ink;
+    }
+
+    .category-city__arrow {
+        @apply absolute top-1/2 right-5 size-5 -translate-y-1/2 text-coral;
+    }
+
+    .category-cities__empty {
+        @apply rounded-[18px] border border-dashed border-sand bg-white p-8 text-center text-muted;
+    }
+
+    .category-more {
+        @apply mx-auto flex max-w-[1200px] flex-col gap-3 px-6 pb-[72px];
+    }
+}

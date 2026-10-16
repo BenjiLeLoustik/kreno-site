@@ -1,0 +1,25 @@
+@layer components {
+    .shop-tile {
+        @apply flex flex-col gap-1 rounded-2xl border border-sand bg-cream p-4 no-underline;
+    }
+
+    .shop-tile:hover {
+        @apply border-ink;
+    }
+
+    .shop-tile__name {
+        @apply text-ink;
+    }
+
+    .shop-tile__meta {
+        @apply text-sm text-muted;
+    }
+
+    .shop-tile__free {
+        @apply text-[13px] font-semibold text-muted;
+    }
+
+    .shop-tile__free--open {
+        @apply text-mint-ink;
+    }
+}

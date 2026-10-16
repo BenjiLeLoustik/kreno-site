@@ -1,0 +1,29 @@
+@layer components {
+    .dashboard-period {
+        @apply mt-2 text-[13px];
+    }
+
+    .dashboard-booking {
+        @apply flex flex-col gap-0.5 rounded-[14px] bg-ink-soft px-3.5 py-3 text-frost no-underline transition-colors hover:bg-[#2F3563] hover:text-frost;
+    }
+
+    .dashboard-booking__head {
+        @apply flex justify-between gap-2;
+    }
+
+    .dashboard-booking__when {
+        @apply text-[13px] text-mist;
+    }
+
+    .dashboard-booking__what {
+        @apply text-sm text-mist;
+    }
+
+    .dashboard-booking__price {
+        @apply text-[#FF7A61];
+    }
+
+    .dashboard-booking__empty {
+        @apply text-sm text-mist;
+    }
+}

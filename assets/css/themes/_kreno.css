@@ -1,0 +1,28 @@
+@theme {
+    --color-coral: #FF5A3C;
+    --color-coral-dark: #E8452A;
+    --color-ink: #1B1F3B;
+    --color-ink-soft: #262B52;
+    --color-ink-line: #5A6094;
+    --color-night: #12152B;
+    --color-cream: #FFF8F1;
+    --color-sand: #EADFD4;
+    --color-mint: #2ECC9A;
+    --color-mint-ink: #0F3B2E;
+    --color-amber: #FFB020;
+    --color-amber-ink: #3D2A00;
+    --color-slate: #8A8FA8;
+    --color-muted: #6A6F8C;
+    --color-body: #4A4F6E;
+    --color-mist: #C9CCE0;
+    --color-frost: #F4F1FA;
+    --color-line: rgb(138 143 168 / 0.2);
+
+    --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-display: "Bricolage Grotesque", "Arial Rounded MT Bold", system-ui, sans-serif;
+
+    --shadow-card: 0 8px 24px rgb(27 31 59 / 0.08);
+    --shadow-search: 0 22px 48px rgb(27 31 59 / 0.12);
+
+    --radius-card: 20px;
+}

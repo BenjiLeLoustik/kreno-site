@@ -1,0 +1,11 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>Votre accès à {{ company }} sur Kréno Pro a été retiré par un administrateur de l’entreprise.</p>
+    <p>Vous ne pouvez plus consulter ni gérer ses créneaux et réservations. Votre compte personnel reste actif.</p>
+    <p>Vous pensez qu’il s’agit d’une erreur ? Rapprochez-vous de l’entreprise ou écrivez-nous à {{ supportEmail }}.</p>
+
+{% endblock %}

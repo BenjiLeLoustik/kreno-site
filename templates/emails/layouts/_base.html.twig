@@ -1,0 +1,66 @@
+{% set theme = {
+    default: { header: '#1B1F3B', button: '#FF5A3C' },
+    pro: { header: '#1B1F3B', button: '#1B1F3B' },
+    moderation: { header: '#12152B', button: '#1B1F3B' },
+}[mailType] ?? { header: '#1B1F3B', button: '#FF5A3C' } %}
+{% set styles = {
+    actions: 'margin: 24px 0 16px;',
+    button: 'display: inline-block; margin: 0 8px 8px 0; padding: 14px 24px; border-radius: 14px; background-color: ' ~ theme.button ~ '; font-size: 16px; font-weight: 700; line-height: 1.2; color: #FFFFFF; text-decoration: none;',
+    buttonSecondary: 'display: inline-block; margin: 0 8px 8px 0; padding: 12px 22px; border: 1.5px solid #1B1F3B; border-radius: 14px; background-color: #FFFFFF; font-size: 16px; font-weight: 700; line-height: 1.2; color: #1B1F3B; text-decoration: none;',
+    link: 'color: #E8452A; font-weight: 600;',
+    strong: 'color: #1B1F3B;',
+    list: 'margin: 0 0 16px; padding: 16px 20px 16px 38px; border: 1px solid #EADFD4; border-radius: 16px; background-color: #FFF8F1;',
+    item: 'margin: 0 0 4px;',
+    quote: 'margin: 0 0 16px; padding: 12px 16px; border-left: 4px solid #EADFD4; border-radius: 0 12px 12px 0; background-color: #FFF8F1; color: #1B1F3B;',
+    code: 'margin: 8px 0 16px; padding: 16px; border-radius: 14px; background-color: #F4F1FA; font-family: Menlo, Consolas, monospace; font-size: 32px; font-weight: 700; letter-spacing: 0.3em; text-align: center; color: #1B1F3B;',
+    table: 'width: 100%; margin: 0 0 16px; border-collapse: collapse;',
+    cell: 'padding: 9px 0; border-bottom: 1px solid #F1E8DE; color: #4A4F6E;',
+    cellValue: 'padding: 9px 0; border-bottom: 1px solid #F1E8DE; font-weight: 600; text-align: right; white-space: nowrap; color: #1B1F3B;',
+    total: 'padding: 12px 0 0; font-weight: 700; color: #1B1F3B;',
+    totalValue: 'padding: 12px 0 0; font-weight: 700; text-align: right; white-space: nowrap; color: #1B1F3B;',
+} %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+    <title>{{ subject }}</title>
+    <style>
+        .email-content a { color: #E8452A; font-weight: 600; }
+        @media only screen and (max-width: 620px) {
+            .email-cell { padding: 16px 8px !important; }
+            .email-pad { padding-left: 20px !important; padding-right: 20px !important; }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #FFF8F1; -webkit-text-size-adjust: 100%;">
+<span style="display: none; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #FFF8F1; opacity: 0;">{% block preheader %}{% endblock %}</span>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #FFF8F1;">
+    <tr>
+        <td class="email-cell" align="center" style="padding: 32px 16px;">
+            <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px;">
+                <tr>
+                    <td class="email-pad" style="padding: 24px 32px; border-radius: 20px 20px 0 0; background-color: {{ theme.header }}; font-family: Inter, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; color: #F4F1FA;">
+                        {% include 'emails/partials/' ~ mailType ~ '/_header.html.twig' %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="email-pad email-content" style="padding: 32px; border: 1px solid #EADFD4; border-top: 0; border-radius: 0 0 20px 20px; background-color: #FFFFFF; font-family: Inter, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #4A4F6E;">
+                        {% include 'emails/partials/' ~ mailType ~ '/_greeting.html.twig' %}
+                        {% block mailContent %}{% endblock %}
+                        {% include 'emails/partials/' ~ mailType ~ '/_signature.html.twig' %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="email-pad" align="center" style="padding: 24px 32px; font-family: Inter, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 12px; line-height: 1.5; text-align: center; color: #8A8FA8;">
+                        {% include 'emails/partials/' ~ mailType ~ '/_footer.html.twig' %}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

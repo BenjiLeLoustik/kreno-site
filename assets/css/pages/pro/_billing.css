@@ -1,0 +1,183 @@
+@layer components {
+    .billing-alert {
+        @apply flex flex-wrap items-center justify-between gap-4 rounded-[18px] border border-[#F5B5A6] bg-[#FFE9E3] px-5 py-4 text-sm text-[#8A2414];
+    }
+
+    .billing-alert__text {
+        @apply flex min-w-0 flex-[1_1_380px] flex-col gap-1;
+    }
+
+    .billing-plan {
+        @apply flex flex-col gap-0.5;
+    }
+
+    .billing-plan__name {
+        @apply font-display text-[26px] font-extrabold tracking-[-0.02em];
+    }
+
+    .billing-method {
+        @apply flex items-center gap-3;
+    }
+
+    .billing-method__text {
+        @apply flex flex-col;
+    }
+
+    .billing-table {
+        @apply rounded-[14px];
+    }
+
+    .stripe-fields__element {
+        @apply min-h-12 rounded-[14px] border-[1.5px] border-sand bg-white px-3.5 py-[15px];
+    }
+
+    .stripe-fields__element.StripeElement--focus {
+        @apply border-ink;
+    }
+
+    .stripe-fields__element.StripeElement--invalid {
+        @apply border-coral-dark;
+    }
+
+    .invoice {
+        @apply gap-5;
+    }
+
+    .invoice__top {
+        @apply relative grid gap-5 sm:grid-cols-2;
+    }
+
+    .invoice__party {
+        @apply flex flex-col gap-0.5 text-sm;
+    }
+
+    .invoice__address {
+        @apply text-body;
+    }
+
+    .invoice__stamp {
+        @apply absolute top-0 right-0 hidden -rotate-6 rounded-lg border-2 border-current px-3 py-1 text-sm font-extrabold tracking-[0.12em] text-amber-ink sm:block;
+    }
+
+    .invoice__stamp--paid {
+        @apply text-[#1F9D74];
+    }
+
+    .invoice__stamp--failed {
+        @apply text-coral-dark;
+    }
+
+    .invoice__stamp--refunded,
+    .invoice__stamp--void {
+        @apply text-slate;
+    }
+
+    .invoice__lines {
+        @apply min-w-[520px];
+    }
+
+    .invoice__totals {
+        @apply m-0 ml-auto grid w-full max-w-[320px] grid-cols-[1fr_auto] gap-x-6 gap-y-1.5 text-sm;
+    }
+
+    .invoice__total-label {
+        @apply text-muted;
+    }
+
+    .invoice__total-value {
+        @apply m-0 text-right tabular-nums;
+    }
+
+    .invoice__total-label--main,
+    .invoice__total-value--main {
+        @apply border-t border-sand pt-2 text-base font-bold text-ink;
+    }
+
+    .payment-result {
+        @apply items-start;
+    }
+
+    .payment-result--success {
+        @apply border-mint;
+    }
+
+    .payment-result__icon {
+        @apply grid size-12 place-items-center rounded-full bg-mint text-mint-ink;
+    }
+
+    .payment-timeline {
+        @apply m-0 flex list-none flex-col gap-3 border-l-2 border-sand p-0 pl-4;
+    }
+
+    .payment-timeline__item {
+        @apply relative flex flex-col gap-0.5 text-sm text-body;
+    }
+
+    .payment-timeline__item::before {
+        @apply absolute top-1.5 -left-[23px] size-3 rounded-full bg-sand content-[''];
+    }
+
+    .payment-timeline__item--danger::before {
+        @apply bg-coral-dark;
+    }
+
+    .payment-timeline__item--warning::before {
+        @apply bg-amber;
+    }
+
+    .payment-timeline__date {
+        @apply text-ink;
+    }
+
+    .payment-retry {
+        @apply flex flex-col gap-2 border-b border-[#F1E8DE] pb-3.5;
+    }
+
+    .payment-retry__method {
+        @apply flex flex-col text-sm;
+    }
+
+    .cancel-offers {
+        @apply grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-3.5;
+    }
+
+    .cancel-offer {
+        @apply flex flex-col items-start gap-2 rounded-[18px] border border-mint/60 bg-mint/10 p-4;
+    }
+
+    .cancel-offer__title {
+        @apply font-bold;
+    }
+
+    .cancel-offer__text {
+        @apply text-sm text-body;
+    }
+
+    .cancel-lists {
+        @apply grid gap-4 sm:grid-cols-2;
+    }
+
+    .cancel-list {
+        @apply flex flex-col gap-2;
+    }
+
+    .cancel-list__items {
+        @apply m-0 flex list-none flex-col gap-1.5 p-0 text-sm;
+    }
+
+    .cancel-list__item {
+        @apply relative pl-6;
+    }
+
+    .cancel-list__item::before {
+        @apply absolute left-0 font-bold;
+    }
+
+    .cancel-list__item--keep::before {
+        @apply text-[#1F9D74] content-['✓'];
+    }
+
+    .cancel-list__item--lose::before {
+        @apply text-coral-dark content-['✕'];
+    }
+}

@@ -1,0 +1,12 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>Votre abonnement {{ subscription.plan }} pour {{ company }} est en pause jusqu’au {{ subscription.pausedUntil }}.</p>
+    <p>Pendant la pause, vous n’êtes pas prélevé et vous ne pouvez pas publier de créneaux. Votre page et vos informations sont conservées.</p>
+    <p>L’abonnement reprendra automatiquement à cette date, au même tarif.</p>
+    <p style="{{ styles.actions }}"><a href="{{ subscription.url }}" style="{{ styles.button }}">Mon abonnement</a></p>
+
+{% endblock %}

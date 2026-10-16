@@ -1,0 +1,190 @@
+@layer components {
+    .report-head {
+        @apply flex flex-wrap items-baseline gap-3;
+    }
+
+    .report-head__count {
+        @apply rounded-full bg-[#FFE7E1] px-2.5 py-1 text-[13px] font-bold text-[#B33620];
+    }
+
+    .report-filters {
+        @apply flex flex-wrap items-center justify-between gap-3;
+    }
+
+    .report-tabs {
+        @apply flex gap-1 rounded-xl border border-[#E2E0EA] bg-white p-1;
+    }
+
+    .report-tabs__link {
+        @apply rounded-lg px-3.5 py-1.5 text-sm font-semibold text-muted no-underline;
+    }
+
+    .report-tabs__link--active {
+        @apply bg-ink text-white hover:text-white;
+    }
+
+    .report-filters__select {
+        @apply min-h-10 cursor-pointer rounded-xl border border-[#E2E0EA] bg-white px-3 font-sans text-sm font-semibold text-ink;
+    }
+
+    .report-filters__apply {
+        @apply min-h-10 cursor-pointer rounded-xl border-0 bg-ink px-4 font-sans text-sm font-semibold text-white;
+    }
+
+    .report-table {
+        @apply overflow-x-auto rounded-[18px] border border-[#E2E0EA] bg-white;
+    }
+
+    .report-table__table {
+        @apply w-full min-w-[760px] border-collapse text-sm;
+    }
+
+    .report-table__th {
+        @apply px-4 py-3 text-left text-xs font-semibold tracking-[0.08em] text-muted uppercase;
+    }
+
+    .report-table__row {
+        @apply border-t border-[#EEEDF3];
+    }
+
+    .report-table__row--active {
+        @apply bg-[#F7F6FA];
+    }
+
+    .report-table__td {
+        @apply px-4 py-3;
+    }
+
+    .report-table__td--muted {
+        @apply text-body;
+    }
+
+    .report-table__td--nowrap {
+        @apply whitespace-nowrap;
+    }
+
+    .report-table__link {
+        @apply font-bold underline;
+    }
+
+    .report-table__empty {
+        @apply border-t border-[#EEEDF3] px-4 py-6 text-center text-muted;
+    }
+
+    .report-status {
+        @apply rounded-full bg-frost px-[9px] py-1 text-xs font-bold whitespace-nowrap text-[#5E6380];
+    }
+
+    .report-status--sent,
+    .report-status--review {
+        @apply bg-[#FFE7E1] text-[#B33620];
+    }
+
+    .report-status--answer {
+        @apply bg-[#FFF3D6] text-[#5C3D00];
+    }
+
+    .report-status--done {
+        @apply bg-[#DDF7EC] text-[#0F5B43];
+    }
+
+    .report-detail {
+        @apply flex flex-wrap gap-6 rounded-[18px] border border-[#E2E0EA] bg-white p-6;
+    }
+
+    .report-detail__main {
+        @apply flex min-w-0 flex-[2_1_380px] flex-col gap-3;
+    }
+
+    .report-detail__head {
+        @apply flex flex-wrap items-center justify-between gap-2.5;
+    }
+
+    .report-detail__title {
+        @apply text-xl font-bold;
+    }
+
+    .report-detail__meta {
+        @apply text-sm text-muted;
+    }
+
+    .report-detail__quote {
+        @apply m-0 rounded-xl bg-[#F7F6FA] px-4 py-3.5 text-[#3A3F5C];
+    }
+
+    .report-detail__history {
+        @apply text-sm text-body;
+    }
+
+    .report-detail__attachment {
+        @apply inline-flex items-center gap-2 self-start text-sm font-semibold;
+    }
+
+    .report-detail__aside {
+        @apply flex min-w-0 flex-[1_1_240px] flex-col gap-2.5;
+    }
+
+    .report-detail__aside-title {
+        @apply text-sm;
+    }
+
+    .report-detail__hint {
+        @apply text-xs text-muted;
+    }
+
+    .report-thread {
+        @apply flex flex-col gap-2 border-t border-[#EEEDF3] pt-3;
+    }
+
+    .report-thread__title {
+        @apply text-sm;
+    }
+
+    .report-thread__item {
+        @apply flex flex-col gap-1 rounded-xl border border-[#EEEDF3] px-3.5 py-2.5;
+    }
+
+    .report-thread__item--internal {
+        @apply border-dashed bg-[#FFFBF0];
+    }
+
+    .report-thread__author {
+        @apply flex flex-wrap justify-between gap-2 text-[13px] font-semibold;
+    }
+
+    .report-thread__date {
+        @apply font-normal text-muted;
+    }
+
+    .report-thread__body {
+        @apply text-sm text-body;
+    }
+
+    .report-note {
+        @apply flex flex-col gap-2 border-t border-[#EEEDF3] pt-3;
+    }
+
+    .report-note__submit {
+        @apply self-start;
+    }
+
+    .report-decision-form {
+        @apply flex flex-col gap-2.5;
+    }
+
+    .report-decision {
+        @apply min-h-11 w-full cursor-pointer rounded-xl border-0 px-4 font-sans text-sm font-bold transition-colors;
+    }
+
+    .report-decision--neutral {
+        @apply border-[1.5px] border-[#E2E0EA] bg-white font-semibold text-ink hover:border-ink;
+    }
+
+    .report-decision--warn {
+        @apply bg-amber text-amber-ink hover:bg-[#F0A010];
+    }
+
+    .report-decision--danger {
+        @apply bg-[#C93A22] text-white hover:bg-[#B0311C];
+    }
+}

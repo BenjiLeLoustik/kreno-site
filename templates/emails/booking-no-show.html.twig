@@ -1,0 +1,21 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'default' %}
+
+{% block mailContent %}
+
+    <p>{{ booking.establishment.name }} nous a signalé ton absence au rendez-vous suivant :</p>
+    <ul style="{{ styles.list }}">
+        <li style="{{ styles.item }}">{{ booking.service }}</li>
+        <li style="{{ styles.item }}">{{ booking.day }} à {{ booking.time }}</li>
+        <li style="{{ styles.item }}">Référence : {{ booking.reference }}</li>
+    </ul>
+    <p>Les créneaux Kréno sont libérés à la dernière minute : une absence fait perdre ce créneau à l’établissement et aux autres clients.</p>
+    {% if suspended %}
+        <p>Comme ce n’est pas la première fois, ton compte est suspendu{% if suspendedUntil %} jusqu’au {{ suspendedUntil }}{% endif %}. Tu ne peux pas réserver pendant cette période.</p>
+    {% else %}
+        <p>Attention : en cas de nouvelle absence, ton compte pourra être suspendu.</p>
+    {% endif %}
+    <p>Tu étais bien présent ou tu avais prévenu ? Tu peux contester depuis <a href="{{ reportsUrl }}" style="{{ styles.link }}">tes signalements</a> ou nous écrire à {{ supportEmail }}.</p>
+
+{% endblock %}

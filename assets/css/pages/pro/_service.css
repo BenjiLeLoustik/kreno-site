@@ -1,0 +1,34 @@
+@layer components {
+    .service-row {
+        @apply flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[#F1E8DE] py-3.5 first:border-t-0;
+    }
+
+    .service-row--inactive .service-row__main,
+    .service-row--inactive .service-row__price {
+        @apply text-muted;
+    }
+
+    .service-row__main {
+        @apply flex min-w-[200px] flex-1 flex-col gap-0.5;
+    }
+
+    .service-row__price {
+        @apply font-semibold;
+    }
+
+    .service-row__actions {
+        @apply flex flex-wrap items-center gap-1.5;
+    }
+
+    .service-row__edit {
+        @apply w-full;
+    }
+
+    .service-row__summary {
+        @apply cursor-pointer text-sm font-semibold text-coral-dark;
+    }
+
+    .service-row__form {
+        @apply mt-3;
+    }
+}

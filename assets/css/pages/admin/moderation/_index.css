@@ -1,0 +1,165 @@
+@layer components {
+    .moderation {
+        @apply flex flex-wrap items-start gap-5;
+    }
+
+    .moderation-list {
+        @apply flex min-w-0 flex-[1_1_300px] flex-col overflow-hidden rounded-[18px] border border-[#E2E0EA] bg-white;
+    }
+
+    .moderation-list__group {
+        @apply flex flex-col;
+    }
+
+    .moderation-list__title {
+        @apply border-b border-[#EEEDF3] bg-[#F7F6FA] px-4 py-2 text-xs font-bold tracking-[0.06em] text-muted uppercase;
+    }
+
+    .moderation-list__item {
+        @apply flex items-center justify-between gap-2.5 border-b border-[#EEEDF3] px-4 py-3.5 text-ink no-underline transition-colors hover:bg-[#F7F6FA];
+    }
+
+    .moderation-list__item--active {
+        @apply bg-[#F7F6FA] shadow-[inset_3px_0_0_var(--color-coral)];
+    }
+
+    .moderation-list__text {
+        @apply flex min-w-0 flex-col;
+    }
+
+    .moderation-list__name {
+        @apply truncate;
+    }
+
+    .moderation-list__meta {
+        @apply truncate text-[13px] text-muted;
+    }
+
+    .moderation-list__empty {
+        @apply border-b border-[#EEEDF3] px-4 py-3.5 text-sm text-muted;
+    }
+
+    .moderation-status {
+        @apply flex-none rounded-full bg-frost px-[9px] py-1 text-xs font-bold whitespace-nowrap text-muted;
+    }
+
+    .moderation-status--large {
+        @apply px-[11px] py-[5px] text-[13px];
+    }
+
+    .moderation-status--pending_review {
+        @apply bg-[#FFF3D6] text-[#5C3D00];
+    }
+
+    .moderation-status--online {
+        @apply bg-[#DDF7EC] text-[#0F5B43];
+    }
+
+    .moderation-status--rejected {
+        @apply bg-[#FFE1DA] text-[#8A2414];
+    }
+
+    .moderation-detail {
+        @apply flex min-w-0 flex-[2_1_420px] flex-col gap-[18px] rounded-[18px] border border-[#E2E0EA] bg-white p-6;
+    }
+
+    .moderation-detail__head {
+        @apply flex flex-wrap items-start justify-between gap-3;
+    }
+
+    .moderation-detail__heading {
+        @apply flex flex-col;
+    }
+
+    .moderation-detail__title {
+        @apply font-display text-[26px] font-extrabold tracking-[-0.02em];
+    }
+
+    .moderation-detail__muted {
+        @apply text-sm font-normal text-muted;
+    }
+
+    .moderation-detail__description {
+        @apply rounded-[14px] border border-[#EEEDF3] px-4 py-3 text-sm text-body;
+    }
+
+    .moderation-facts {
+        @apply m-0 grid grid-cols-1 gap-x-4 gap-y-1 sm:grid-cols-[140px_minmax(0,1fr)] sm:gap-y-2;
+    }
+
+    .moderation-facts__label {
+        @apply text-muted;
+    }
+
+    .moderation-facts__value {
+        @apply m-0 mb-2 sm:mb-0;
+    }
+
+    .moderation-facts__value--number {
+        @apply tabular-nums;
+    }
+
+    .moderation-facts__contact {
+        @apply block text-sm text-muted;
+    }
+
+    .moderation-checks {
+        @apply flex flex-col gap-2 rounded-[14px] bg-[#F7F6FA] px-4 py-3.5;
+    }
+
+    .moderation-checks__title {
+        @apply text-sm;
+    }
+
+    .moderation-checks__item {
+        @apply flex items-center gap-2 text-sm;
+    }
+
+    .moderation-checks__mark {
+        @apply grid size-5 place-items-center rounded-full text-xs font-bold text-white;
+    }
+
+    .moderation-checks__mark--ok {
+        @apply bg-mint;
+    }
+
+    .moderation-checks__mark--ko {
+        @apply bg-coral-dark;
+    }
+
+    .moderation-form {
+        @apply flex flex-col gap-4;
+    }
+
+    .moderation-form__field {
+        @apply flex flex-col gap-1.5 text-sm font-semibold;
+    }
+
+    .moderation-form__input {
+        @apply min-h-11 rounded-xl border-[1.5px] border-[#E2E0EA] bg-white px-3 font-sans text-[15px] font-medium text-ink focus:border-ink focus:outline-none;
+    }
+
+    .moderation-form__input--area {
+        @apply resize-y py-2.5;
+    }
+
+    .moderation-form__actions {
+        @apply flex flex-wrap gap-2.5;
+    }
+
+    .moderation-button {
+        @apply min-h-[46px] cursor-pointer rounded-xl border-[1.5px] border-[#E2E0EA] bg-white px-5 font-sans text-[15px] font-semibold text-ink transition-colors hover:border-ink;
+    }
+
+    .moderation-button--approve {
+        @apply border-mint bg-mint font-bold text-mint-ink hover:border-[#25B386] hover:bg-[#25B386];
+    }
+
+    .moderation-button--reject {
+        @apply font-bold text-[#C93A22] hover:border-[#C93A22];
+    }
+
+    .moderation-decision {
+        @apply rounded-[14px] bg-[#F7F6FA] px-4 py-3.5 text-sm;
+    }
+}

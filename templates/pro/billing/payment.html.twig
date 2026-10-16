@@ -1,0 +1,90 @@
+{% extends 'layouts/pro.html.twig' %}
+
+{% set pro_section = 'billing' %}
+
+{% block title %}Paiement · Espace pro{% endblock %}
+
+{% block javascripts %}
+    {% if action %}
+        <script src="https://js.stripe.com/v3/" defer></script>
+        <script src="{{ asset('js/pages/pro/stripe.js') }}" defer></script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="pro-head">
+        <div class="pro-head__text">
+            <a href="{{ path('pro_billing') }}" class="pro-back">← Facturation</a>
+            <h1 class="pro-title">
+                {% if payment.status == 'succeeded' %}Paiement réussi
+                {% elseif payment.status == 'requires_action' %}Validation bancaire requise
+                {% elseif payment.status == 'pending' %}Paiement en cours
+                {% else %}Paiement refusé{% endif %}
+            </h1>
+            <span class="pro-subtitle">{{ payment.amount }}{% if payment.invoice %} · facture {{ payment.invoice.number }}{% endif %}{% if payment.date %} · {{ payment.date }}{% endif %}</span>
+        </div>
+        {% if payment.invoice %}
+            <a href="{{ path('pro_billing_invoice', { number: payment.invoice.number }) }}" class="pro-button">Voir la facture</a>
+        {% endif %}
+    </div>
+
+    {% if payment.status == 'succeeded' %}
+        <section class="pro-card payment-result payment-result--success">
+            <span class="payment-result__icon" aria-hidden="true"><i data-lucide="check"></i></span>
+            <h2 class="pro-card__title">Merci, c'est réglé.</h2>
+            <dl class="pro-facts">
+                {% for fact in payment.facts ?? [] %}
+                    <dt class="pro-facts__label">{{ fact.label }}</dt>
+                    <dd class="pro-facts__value">{{ fact.value }}</dd>
+                {% endfor %}
+            </dl>
+            {% if billingEmail %}<p class="pro-field__hint">La facture acquittée est envoyée à {{ billingEmail }}.</p>{% endif %}
+        </section>
+    {% elseif payment.status in ['requires_action', 'pending'] %}
+        <section class="pro-card payment-result">
+            {% if payment.status == 'requires_action' %}
+                <p>Votre banque demande une confirmation (3D Secure) pour ce paiement.</p>
+            {% else %}
+                <p>Le paiement est en cours de traitement par votre banque. Un prélèvement SEPA peut prendre jusqu'à 2 jours ouvrés.</p>
+            {% endif %}
+            <form method="post" action="{{ path('pro_billing_payment_confirm', { id: payment.id }) }}" class="settings-line__actions"{% if action %} data-stripe-action data-stripe-key="{{ action.gatewayKey }}" data-stripe-secret="{{ action.clientSecret }}"{% endif %}>
+                {{ csrf_field('pro')|raw }}
+                <button type="submit" class="pro-button pro-button--primary">{{ action ? 'Valider avec ma banque' : 'Actualiser le statut' }}</button>
+            </form>
+            <p class="pro-flash pro-flash--error" data-stripe-error hidden></p>
+        </section>
+    {% endif %}
+
+    {% if payment.status not in ['succeeded'] and payment.timeline is defined %}
+        <div class="pro-columns">
+            <section class="pro-card pro-columns__main">
+                {% if payment.reason %}<p class="pro-flash pro-flash--error">Motif : {{ payment.reason }}</p>{% endif %}
+                <h2 class="pro-card__title">Et maintenant ?</h2>
+                <ol class="payment-timeline">
+                    {% for step in payment.timeline %}
+                        <li class="payment-timeline__item payment-timeline__item--{{ step.tone }}">
+                            <b class="payment-timeline__date">{{ step.date }}</b>
+                            <span>{{ step.text }}</span>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </section>
+            {% if payment.invoice and payment.invoice.status != 'paid' %}
+                <section class="pro-card pro-columns__aside">
+                    <h2 class="pro-card__title">Régler maintenant</h2>
+                    {% for option in payment.retryOptions %}
+                        {% if not option.expired %}
+                            <form method="post" action="{{ path('pro_billing_invoice_pay', { number: payment.invoice.number }) }}" class="payment-retry">
+                                {{ csrf_field('pro')|raw }}
+                                <input type="hidden" name="paymentMethodId" value="{{ option.id }}">
+                                <span class="payment-retry__method"><b>{{ option.label }}</b>{% if option.retryNote %}<span class="pro-row__meta">{{ option.retryNote }}</span>{% endif %}</span>
+                                <button type="submit" class="pro-button pro-button--primary pro-button--block">{{ option.retryLabel }}</button>
+                            </form>
+                        {% endif %}
+                    {% endfor %}
+                    <a href="{{ path('pro_billing') }}#moyens" class="pro-button">Ajouter un autre moyen de paiement</a>
+                </section>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

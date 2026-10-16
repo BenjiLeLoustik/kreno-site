@@ -1,0 +1,22 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    {% if audience == 'reporter' %}
+        <p>Notre équipe a traité votre signalement {{ report.reference }}.</p>
+    {% else %}
+        <p>Notre équipe a rendu sa décision sur le signalement {{ report.reference }} concernant {{ report.establishment.name }}.</p>
+    {% endif %}
+    <p>Décision : {{ decision == 'dismiss' ? 'classé sans suite' : report.resolution|lower }}.</p>
+    {% if message %}
+        <p>Message de l’équipe Kréno :</p>
+        <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
+    {% endif %}
+    {% if audience == 'establishment' and decision in ['warn', 'suspend'] %}
+        <p>Nous comptons sur vous pour que les prochains rendez-vous se passent au mieux. Les signalements répétés peuvent entraîner la suspension de l’établissement.</p>
+    {% endif %}
+    <p style="{{ styles.actions }}"><a href="{{ report.proUrl }}" style="{{ styles.button }}">Voir le signalement</a></p>
+
+{% endblock %}

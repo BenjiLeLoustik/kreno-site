@@ -1,0 +1,28 @@
+<div class="admin-form__row">
+    <label class="admin-field">Code<input type="text" name="code" value="{{ promo.code ?? '' }}" required pattern="[A-Za-z0-9_\-]{3,40}" class="admin-input"{{ promo is defined ? ' readonly' : '' }}></label>
+    <label class="admin-field">
+        Formule
+        <select name="planCode" class="admin-input">
+            <option value="">Toutes</option>
+            {% for plan in pricing.plans %}
+                <option value="{{ plan.code }}"{{ plan.code == (promo.plan ?? null) ? ' selected' : '' }}>{{ plan.name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+</div>
+<label class="admin-field">Description<input type="text" name="description" value="{{ promo.description ?? '' }}" maxlength="255" class="admin-input"></label>
+<div class="admin-form__row admin-form__row--3">
+    <label class="admin-field">Remise (%)<input type="number" name="discountPercent" value="{{ promo.discountPercent ?? 0 }}" min="0" max="100" class="admin-input"></label>
+    <label class="admin-field">Mois offerts<input type="number" name="freeMonths" value="{{ promo.freeMonths ?? 0 }}" min="0" max="24" class="admin-input"></label>
+    <label class="admin-field">Durée (mois)<input type="number" name="durationMonths" value="{{ promo.durationMonths ?? 1 }}" min="1" max="36" class="admin-input"></label>
+</div>
+<div class="admin-form__row admin-form__row--3">
+    <label class="admin-field">Utilisations max<input type="number" name="maxUses" value="{{ promo.maxUses ?? '' }}" min="1" class="admin-input"></label>
+    <label class="admin-field">Début<input type="date" name="startsAt" value="{{ promo.startsAt is defined and promo.startsAt ? promo.startsAt|date('Y-m-d') : '' }}" class="admin-input"></label>
+    <label class="admin-field">Fin<input type="date" name="endsAt" value="{{ promo.endsAt is defined and promo.endsAt ? promo.endsAt|date('Y-m-d') : '' }}" class="admin-input"></label>
+</div>
+<label class="admin-check">
+    <input type="hidden" name="active" value="0">
+    <input type="checkbox" name="active" value="1" class="admin-check__input"{{ (promo.active ?? true) ? ' checked' : '' }}>
+    Actif
+</label>

@@ -1,0 +1,130 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set admin_section = 'establishments' %}
+{% set query = filters|filter(value => value and value != 'all') %}
+
+{% block title %}Établissements · Administration Kréno{% endblock %}
+
+{% block content %}
+    <div class="admin-head">
+        <h1 class="admin-title">Établissements</h1>
+        <form method="get" action="{{ path('admin_establishments') }}" class="admin-toolbar">
+            <label class="admin-search">
+                <i data-lucide="search" class="admin-nav__icon"></i>
+                <input type="search" name="q" value="{{ filters.q }}" placeholder="Nom, SIRET, ville" class="admin-search__input" aria-label="Rechercher un établissement">
+            </label>
+            <select name="category" class="admin-select" aria-label="Catégorie" data-admin-auto>
+                <option value="">Toutes catégories</option>
+                {% for category in categories %}
+                    <option value="{{ category.slug }}"{{ category.slug == filters.category ? ' selected' : '' }}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="city" class="admin-select" aria-label="Ville" data-admin-auto>
+                <option value="">Toutes villes</option>
+                {% for city in cities %}
+                    <option value="{{ city.slug }}"{{ city.slug == filters.city ? ' selected' : '' }}>{{ city.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="status" class="admin-select" aria-label="Statut" data-admin-auto>
+                {% for status in statuses %}
+                    <option value="{{ status.key }}"{{ status.key == filters.status ? ' selected' : '' }}>{{ status.label }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="admin-button" data-admin-apply>Filtrer</button>
+        </form>
+    </div>
+
+    <div class="admin-split">
+        <div class="admin-split__list">
+            {% for establishment in establishments %}
+                {% set current = selected and selected.id == establishment.id %}
+                <a href="{{ path('admin_establishment_show', { id: establishment.id }|merge(query)) }}" class="admin-list__item{{ current ? ' admin-list__item--active' : '' }}"{{ current ? ' aria-current="page"' : '' }}>
+                    <span class="admin-list__text">
+                        <b class="admin-list__name">{{ establishment.name }}</b>
+                        <span class="admin-list__meta">{{ establishment.activity ?: '—' }}{% if establishment.city %} · {{ establishment.city.name }}{% endif %}</span>
+                    </span>
+                    <span class="admin-badge admin-badge--{{ establishment.suspended ? 'danger' : 'success' }}">{{ establishment.statusLabel }}</span>
+                </a>
+            {% else %}
+                <p class="admin-list__empty">Aucun établissement pour ces filtres.</p>
+            {% endfor %}
+        </div>
+
+        {% if selected %}
+            <section class="admin-card admin-split__detail">
+                <div class="admin-card__head">
+                    <div>
+                        <h2 class="admin-detail__title">{{ selected.name }}</h2>
+                        <span class="admin-card__subtitle">{{ selected.activity ?: '—' }}{% if selected.city %} · {{ selected.city.name }}{% endif %}{% if selected.since %} · partenaire depuis {{ selected.since }}{% endif %}</span>
+                    </div>
+                    <span class="admin-badge admin-badge--{{ selected.suspended ? 'danger' : 'success' }}">{{ selected.statusLabel }}</span>
+                </div>
+
+                <div class="admin-figures">
+                    <div class="admin-figure"><span class="admin-figure__label">Créneaux / {{ selected.stats.days }} j</span><strong class="admin-figure__value">{{ selected.stats.slots }}</strong></div>
+                    <div class="admin-figure"><span class="admin-figure__label">Remplissage</span><strong class="admin-figure__value">{{ selected.stats.fill }}</strong></div>
+                    <div class="admin-figure"><span class="admin-figure__label">Remise moyenne</span><strong class="admin-figure__value">{{ selected.stats.discount }}</strong></div>
+                    <div class="admin-figure"><span class="admin-figure__label">Signalements</span><strong class="admin-figure__value">{{ selected.stats.reports }}</strong></div>
+                    <div class="admin-figure"><span class="admin-figure__label">Abonnés</span><strong class="admin-figure__value">{{ selected.stats.followers }}</strong></div>
+                </div>
+
+                <dl class="admin-facts">
+                    <dt class="admin-facts__label">Adresse</dt>
+                    <dd class="admin-facts__value">{{ selected.address ?: '—' }}</dd>
+                    <dt class="admin-facts__label">Entreprise</dt>
+                    <dd class="admin-facts__value">{{ selected.company ? (selected.company.legalName ?: selected.company.name) : '—' }}</dd>
+                    <dt class="admin-facts__label">Responsable</dt>
+                    <dd class="admin-facts__value">
+                        {% if selected.owner %}
+                            {{ selected.owner.name }} · <a href="mailto:{{ selected.owner.email }}">{{ selected.owner.email }}</a>{% if selected.owner.phone %} · {{ selected.owner.phone }}{% endif %}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </dd>
+                    <dt class="admin-facts__label">Formule</dt>
+                    <dd class="admin-facts__value">{{ selected.plan ?: '—' }}</dd>
+                    <dt class="admin-facts__label">SIRET</dt>
+                    <dd class="admin-facts__value">{{ selected.siretLabel ?: '—' }}{% if selected.verified %} · vérifié le {{ selected.verifiedAt|date('d/m/Y') }}{% endif %}</dd>
+                </dl>
+
+                {% if selected.stats.openReports > 0 %}
+                    <div class="admin-note admin-note--danger">{{ selected.stats.openReports }} signalement{{ selected.stats.openReports > 1 ? 's' : '' }} ouvert{{ selected.stats.openReports > 1 ? 's' : '' }} sur cet établissement.</div>
+                {% endif %}
+
+                <div class="admin-actions">
+                    {% if selected.city and not selected.suspended %}
+                        <a href="{{ path('shop_show', { city: selected.city.slug, slug: selected.slug }) }}" class="admin-button" target="_blank" rel="noopener">Voir la page publique</a>
+                    {% endif %}
+                    {% if route_exists('admin_reports') %}
+                        <a href="{{ path('admin_reports', { status: 'all' }) }}" class="admin-button">Signalements</a>
+                    {% endif %}
+                    {% if selected.company and is_granted('ROLE_ADMIN') and route_exists('admin_billing_company') %}
+                        <a href="{{ path('admin_billing_company', { id: selected.company.id }) }}" class="admin-button">Facturation</a>
+                    {% endif %}
+                    {% if selected.canResume %}
+                        <form method="post" action="{{ path('admin_establishment_resume', { id: selected.id }) }}">
+                            {{ csrf_field('admin_establishment')|raw }}
+                            <button type="submit" class="admin-button admin-button--success">Remettre en ligne</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+                {% if selected.canSuspend %}
+                    <details class="admin-disclosure">
+                        <summary class="admin-disclosure__summary">Suspendre l'établissement</summary>
+                        <form method="post" action="{{ path('admin_establishment_suspend', { id: selected.id }) }}" class="admin-form admin-disclosure__body">
+                            {{ csrf_field('admin_establishment')|raw }}
+                            <label class="admin-field">
+                                Motif (envoyé au pro)
+                                <textarea name="reason" rows="2" required minlength="5" maxlength="500" class="admin-input admin-input--area"></textarea>
+                            </label>
+                            <div class="admin-actions">
+                                <button type="submit" class="admin-button admin-button--danger" data-admin-confirm="Suspendre {{ selected.name }} ? Ses créneaux ne seront plus visibles.">Suspendre</button>
+                            </div>
+                        </form>
+                    </details>
+                {% endif %}
+            </section>
+        {% endif %}
+    </div>
+{% endblock %}

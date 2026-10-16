@@ -1,0 +1,45 @@
+@layer components {
+    .layout-auth--pro {
+        @apply bg-ink;
+    }
+
+    .pro-login {
+        @apply flex min-h-screen flex-col items-center justify-center gap-7 px-6 py-12;
+    }
+
+    .pro-login__brand {
+        @apply no-underline;
+    }
+
+    .pro-login__card {
+        @apply w-full max-w-[440px] rounded-3xl bg-cream p-8;
+    }
+
+    .pro-login__head {
+        @apply flex flex-col gap-1;
+    }
+
+    .pro-login__title {
+        @apply font-display text-[30px] font-extrabold tracking-[-0.03em];
+    }
+
+    .pro-login__lead {
+        @apply text-muted;
+    }
+
+    .pro-login__signup {
+        @apply text-center text-muted;
+    }
+
+    .pro-login__signup-link {
+        @apply font-semibold;
+    }
+
+    .pro-login__switch {
+        @apply text-sm text-mist;
+    }
+
+    .pro-login__switch:hover {
+        @apply text-white;
+    }
+}

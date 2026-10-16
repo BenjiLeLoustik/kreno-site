@@ -1,0 +1,13 @@
+<span class="plan-card__head">
+    <b class="plan-card__name">{{ plan.name }}</b>
+    {% if plan.tag %}<span class="plan-card__tag">{{ plan.tag }}</span>{% endif %}
+    {% if plan.current %}<span class="plan-card__tag plan-card__tag--current">Formule actuelle</span>{% endif %}
+</span>
+<span class="plan-card__price">{{ plan.price }}</span>
+<span class="plan-card__unit">{{ plan.unit }}</span>
+{% if plan.text %}<span class="plan-card__text">{{ plan.text }}</span>{% endif %}
+<ul class="plan-card__perks">
+    {% for perk in plan.perks %}
+        <li class="plan-card__perk"><i data-lucide="check" class="plan-card__icon"></i>{{ perk }}</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,54 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Connexion · Kréno Pro{% endblock %}
+
+{% block body_class %}layout-auth layout-auth--pro{% endblock %}
+
+{% block body %}
+    <div class="pro-login">
+        <a href="{{ path('pro_landing') }}" class="pro-login__brand" aria-label="Kréno Pro, accueil">
+            {% include 'components/logo.html.twig' with { size: 0, light: true, badge: 'pro' } %}
+        </a>
+
+        <form method="post" action="{{ path('app_login') }}" class="pro-login__card form">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <input type="hidden" name="_target_path" value="{{ targetPath }}">
+
+            <div class="pro-login__head">
+                <h1 class="pro-login__title">Espace professionnel</h1>
+                <span class="pro-login__lead">Connectez-vous pour publier vos créneaux.</span>
+            </div>
+
+            {% for type, messages in flashes() %}
+                {% for message in messages %}
+                    <div class="form-alert form-alert--{{ type == 'success' ? 'success' : 'error' }}" role="status">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            {% if error %}
+                <div class="form-alert form-alert--error" role="alert">{{ error }}</div>
+            {% endif %}
+
+            <label for="pro-login-email" class="form-field">
+                Adresse e-mail professionnelle
+                <input id="pro-login-email" type="email" name="email" value="{{ lastUsername }}" required autofocus autocomplete="email" class="form-input">
+            </label>
+            <label for="pro-login-password" class="form-field">
+                <span class="form-field__head">
+                    Mot de passe
+                    <a href="{{ path('pro_forgot_password') }}" class="form-field__aside">Mot de passe oublié ?</a>
+                </span>
+                <input id="pro-login-password" type="password" name="password" required autocomplete="current-password" class="form-input">
+            </label>
+            <label class="form-check">
+                <input type="checkbox" name="_remember_me" value="1" class="form-check__input">
+                Rester connecté
+            </label>
+            <button type="submit" class="btn btn--primary form-submit">Se connecter</button>
+
+            <span class="pro-login__signup">Pas encore partenaire ? <a href="{{ path('pro_signup') }}" class="pro-login__signup-link">Créer mon espace pro</a></span>
+        </form>
+
+        <a href="{{ path('app_login') }}" class="pro-login__switch">Vous êtes client ? Connexion client</a>
+    </div>
+{% endblock %}

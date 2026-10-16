@@ -1,0 +1,170 @@
+@layer components {
+    .account {
+        @apply mx-auto flex max-w-[1200px] flex-col gap-7 px-6 pt-7 pb-16 lg:flex-row lg:items-start;
+    }
+
+    .account-nav {
+        @apply flex gap-1 overflow-x-auto lg:sticky lg:top-6 lg:w-[240px] lg:shrink-0 lg:flex-col lg:overflow-visible;
+    }
+
+    .account-nav__title {
+        @apply hidden font-display text-[30px] font-extrabold tracking-[-0.03em] lg:mb-3 lg:block;
+    }
+
+    .account-nav__link {
+        @apply flex min-h-11 shrink-0 cursor-pointer items-center gap-2.5 rounded-xl border-0 bg-transparent px-3.5 font-sans text-[15px] font-semibold whitespace-nowrap text-ink no-underline transition-colors hover:bg-white lg:w-full;
+    }
+
+    .account-nav__link--active {
+        @apply bg-ink text-white hover:bg-ink hover:text-white;
+    }
+
+    .account-nav__link--danger {
+        @apply text-[#C93A22] hover:text-[#C93A22];
+    }
+
+    .account-nav__icon {
+        @apply size-[18px] shrink-0;
+    }
+
+    .account-nav__label {
+        @apply flex-1 text-left;
+    }
+
+    .account-nav__badge {
+        @apply rounded-full bg-coral px-2 py-0.5 text-xs font-bold text-white;
+    }
+
+    .account-nav__logout {
+        @apply m-0 shrink-0 lg:mt-3;
+    }
+
+    .account-main {
+        @apply flex min-w-0 flex-1 flex-col gap-6;
+    }
+
+    .account-head {
+        @apply flex flex-col gap-1;
+    }
+
+    .account-head__date {
+        @apply text-xs font-semibold tracking-[0.08em] text-muted uppercase;
+    }
+
+    .account-head__title {
+        @apply font-display text-[34px] leading-tight font-extrabold tracking-[-0.03em] md:text-[40px];
+    }
+
+    .account-head__subtitle {
+        @apply text-body;
+    }
+
+    .account-section {
+        @apply flex flex-col gap-3;
+    }
+
+    .account-section__head {
+        @apply flex items-baseline justify-between gap-3;
+    }
+
+    .account-section__title {
+        @apply text-xl font-bold;
+    }
+
+    .account-section__more {
+        @apply text-sm font-semibold whitespace-nowrap;
+    }
+
+    .account-next {
+        @apply grid items-center gap-5 rounded-[18px] border border-sand bg-white p-4 md:grid-cols-[minmax(0,1fr)_minmax(0,260px)];
+    }
+
+    .account-next__side {
+        @apply flex flex-col items-start gap-2;
+    }
+
+    .account-next__in {
+        @apply rounded-full bg-mint/15 px-3 py-1 text-sm font-bold text-mint-ink;
+    }
+
+    .account-next__notice {
+        @apply text-sm text-muted;
+    }
+
+    .account-next__actions {
+        @apply flex flex-wrap gap-2;
+    }
+
+    .account-empty {
+        @apply flex flex-wrap items-center justify-between gap-4 rounded-[18px] border border-sand bg-white px-5 py-[18px];
+    }
+
+    .account-empty__text {
+        @apply max-w-[520px] text-body;
+    }
+
+    .account-stats {
+        @apply grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3.5;
+    }
+
+    .account-stat {
+        @apply flex flex-col gap-1 rounded-2xl border border-sand bg-white px-5 py-[18px];
+    }
+
+    .account-stat__label,
+    .account-stat__note {
+        @apply text-[13px] text-muted;
+    }
+
+    .account-stat__value {
+        @apply font-display text-[30px] font-extrabold tabular-nums;
+    }
+
+    .account-stat__value--alert {
+        @apply text-coral-dark;
+    }
+
+    .account-columns {
+        @apply grid items-start gap-4 md:grid-cols-2;
+    }
+
+    .account-card {
+        @apply flex flex-col gap-3 rounded-[18px] border border-sand bg-white p-5;
+    }
+
+    .account-card__text {
+        @apply text-sm text-body;
+    }
+
+    .account-card__muted {
+        @apply text-sm text-muted;
+    }
+
+    .account-notification {
+        @apply flex flex-col gap-0.5 border-t border-[#F1E8DE] pt-2.5 text-ink no-underline;
+    }
+
+    .account-notification--unread .account-notification__title {
+        @apply before:mr-2 before:inline-block before:size-2 before:rounded-full before:bg-coral before:align-middle before:content-[''];
+    }
+
+    .account-notification__title {
+        @apply font-semibold;
+    }
+
+    .account-notification__body {
+        @apply text-sm text-body;
+    }
+
+    .account-notification__date {
+        @apply text-xs text-muted;
+    }
+
+    .account-picks {
+        @apply grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4;
+    }
+
+    .account-rules {
+        @apply m-0 flex list-disc flex-col gap-1.5 pl-5 text-sm text-body;
+    }
+}

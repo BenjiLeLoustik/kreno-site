@@ -1,0 +1,125 @@
+@layer components {
+    .slot-page {
+        @apply mx-auto flex max-w-[1200px] flex-col gap-5 px-6 pt-2 pb-16;
+    }
+
+    .slot-page__layout {
+        @apply flex flex-wrap items-start gap-7;
+    }
+
+    .slot-page__main {
+        @apply flex min-w-0 flex-[999_1_520px] flex-col gap-[22px];
+    }
+
+    .slot-page__cover {
+        @apply h-[220px] w-full rounded-[22px] object-cover md:h-[300px];
+    }
+
+    .slot-page__cover--empty {
+        @apply grid place-items-center bg-ink text-mist;
+    }
+
+    .slot-page__cover-icon {
+        @apply size-12;
+    }
+
+    .slot-intro {
+        @apply flex flex-col gap-1.5;
+    }
+
+    .slot-intro__eyebrow {
+        @apply text-[13px] font-semibold tracking-[0.12em] text-coral uppercase;
+    }
+
+    .slot-intro__title {
+        @apply font-display text-[32px] leading-[1.1] font-extrabold tracking-[-0.03em] md:text-[40px];
+    }
+
+    .slot-intro__address {
+        @apply text-body;
+    }
+
+    .slot-intro__link {
+        @apply font-semibold;
+    }
+
+    .slot-infos {
+        @apply m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3 p-0;
+    }
+
+    .slot-infos__item {
+        @apply flex flex-col gap-1 rounded-2xl border border-sand bg-white p-4;
+    }
+
+    .slot-infos__text {
+        @apply text-sm text-body;
+    }
+
+    .slot-others {
+        @apply flex flex-col gap-2.5;
+    }
+
+    .slot-others__title {
+        @apply text-lg font-bold;
+    }
+
+    .slot-others__list {
+        @apply flex flex-wrap gap-2;
+    }
+
+    .slot-others__item {
+        @apply rounded-xl border border-sand bg-white px-3.5 py-2.5 font-semibold text-ink no-underline tabular-nums transition-colors hover:border-ink hover:text-ink;
+    }
+
+    .slot-others__price {
+        @apply text-coral-dark;
+    }
+
+    .slot-book {
+        @apply flex min-w-0 flex-[1_1_340px] flex-col gap-4 rounded-[22px] border border-sand bg-white p-[22px] shadow-card lg:sticky lg:top-6;
+    }
+
+    .slot-book__remaining {
+        @apply flex flex-col gap-1.5 text-sm font-semibold text-[#0F5B43];
+    }
+
+    .slot-book__gauge {
+        @apply block h-1.5 overflow-hidden rounded-full bg-sand;
+    }
+
+    .slot-book__gauge-fill {
+        @apply block h-full w-(--value) rounded-full bg-mint;
+    }
+
+    .slot-book__form {
+        @apply gap-3;
+    }
+
+    .slot-book__row {
+        @apply grid gap-3 sm:grid-cols-2;
+    }
+
+    .slot-book__identity {
+        @apply rounded-xl bg-frost px-3.5 py-3 text-sm text-body;
+    }
+
+    .slot-book__optional {
+        @apply text-xs font-normal text-muted;
+    }
+
+    .slot-book__note {
+        @apply min-h-0 resize-y py-2.5;
+    }
+
+    .slot-book__hint {
+        @apply text-[13px] text-muted;
+    }
+
+    .slot-book__footnote {
+        @apply text-center text-[13px] text-muted;
+    }
+
+    .slot-book__closed {
+        @apply flex flex-col gap-2 rounded-2xl bg-frost p-4 text-sm text-body;
+    }
+}

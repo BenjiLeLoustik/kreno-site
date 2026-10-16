@@ -1,0 +1,45 @@
+@layer components {
+    .btn {
+        @apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-xl border-0 px-4 py-2.5 text-[15px] font-semibold no-underline transition-colors;
+    }
+
+    .btn--small {
+        @apply min-h-10 px-3.5 py-2 text-sm;
+    }
+
+    .btn--large {
+        @apply min-h-12 rounded-[14px] px-[22px] py-3.5 text-base;
+    }
+
+    .btn--primary {
+        @apply bg-coral font-bold text-white;
+    }
+
+    .btn--primary:hover {
+        @apply bg-coral-dark text-white;
+    }
+
+    .btn--ink {
+        @apply bg-ink text-white;
+    }
+
+    .btn--ink:hover {
+        @apply bg-ink-soft text-white;
+    }
+
+    .btn--outline {
+        @apply border-[1.5px] border-solid border-ink bg-transparent text-ink;
+    }
+
+    .btn--outline:hover {
+        @apply border-coral text-coral;
+    }
+
+    .btn--outline-light {
+        @apply border-[1.5px] border-solid border-ink-line bg-transparent text-frost;
+    }
+
+    .btn--outline-light:hover {
+        @apply border-frost text-white;
+    }
+}

@@ -1,0 +1,87 @@
+@layer components {
+
+    .slot-card {
+        @apply relative grid grid-cols-[128px_minmax(0,1fr)] rounded-card bg-white shadow-card;
+    }
+
+    .slot-card__when {
+        @apply flex flex-col items-center justify-center gap-1 border-r-2 border-dashed border-sand px-3 py-[22px] text-center;
+    }
+
+    .slot-card__day {
+        @apply text-sm font-bold tracking-[0.06em] text-ink uppercase;
+    }
+
+    .slot-card__day--today {
+        @apply text-coral;
+    }
+
+    .slot-card__time {
+        @apply text-[30px] leading-none tracking-[-0.02em] tabular-nums;
+    }
+
+    .slot-card__duration {
+        @apply text-[13px] text-muted;
+    }
+
+    .slot-card__body {
+        @apply flex min-w-0 flex-col gap-1.5 px-6 py-5;
+    }
+
+    .slot-card__category {
+        @apply text-xs font-semibold tracking-[0.08em] text-muted uppercase;
+    }
+
+    .slot-card__pro {
+        @apply text-[17px] font-semibold;
+    }
+
+    .slot-card__what {
+        @apply text-sm text-muted;
+    }
+
+    .slot-card__prices {
+        @apply flex flex-wrap items-baseline gap-2 tabular-nums;
+    }
+
+    .slot-card__old {
+        @apply text-slate;
+    }
+
+    .slot-card__price {
+        @apply text-[21px] text-coral-dark;
+    }
+
+    .slot-card__badge {
+        @apply rounded-full px-2 py-1 text-xs font-bold;
+    }
+
+    .slot-card__badge--fresh {
+        @apply bg-coral text-white;
+    }
+
+    .slot-card__badge--soon {
+        @apply bg-amber text-amber-ink;
+    }
+
+    .slot-card__badge--last {
+        @apply bg-mint text-mint-ink;
+    }
+
+    .slot-card__cta {
+        @apply mt-1.5 self-start;
+    }
+
+    .slot-card__notch {
+        @apply absolute left-[116px] size-[22px] rounded-full bg-cream;
+    }
+
+    .slot-card__notch--top {
+        @apply -top-[11px];
+    }
+
+    .slot-card__notch--bottom {
+        @apply -bottom-[11px];
+    }
+
+}

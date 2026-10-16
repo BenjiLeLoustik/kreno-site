@@ -1,0 +1,17 @@
+@layer components {
+    .settings-group {
+        @apply m-0 flex flex-col gap-3 border-0 border-t border-[#EEEDF3] p-0 pt-3 first:border-t-0 first:pt-0;
+    }
+
+    .settings-group__title {
+        @apply p-0 text-xs font-bold tracking-[0.06em] text-muted uppercase;
+    }
+
+    .settings-input {
+        @apply flex items-center gap-2;
+    }
+
+    .settings-input__unit {
+        @apply text-xs font-normal whitespace-nowrap text-muted;
+    }
+}

@@ -1,0 +1,49 @@
+@layer components {
+    .legal {
+        @apply mx-auto flex max-w-[1100px] flex-col gap-8 px-6 pt-10 pb-16 lg:flex-row lg:items-start;
+    }
+
+    .legal-nav {
+        @apply flex gap-1 overflow-x-auto lg:sticky lg:top-6 lg:w-[240px] lg:shrink-0 lg:flex-col lg:overflow-visible;
+    }
+
+    .legal-nav__link {
+        @apply flex min-h-11 shrink-0 items-center rounded-xl px-3.5 font-semibold whitespace-nowrap text-ink no-underline transition-colors hover:bg-white;
+    }
+
+    .legal-nav__link--active {
+        @apply bg-ink text-white hover:bg-ink hover:text-white;
+    }
+
+    .legal-document {
+        @apply flex min-w-0 flex-1 flex-col gap-7 rounded-[20px] border border-sand bg-white p-6 md:p-10;
+    }
+
+    .legal-document__head {
+        @apply flex flex-col gap-1;
+    }
+
+    .legal-document__title {
+        @apply font-display text-[34px] leading-tight font-extrabold tracking-[-0.03em] md:text-[40px];
+    }
+
+    .legal-document__date {
+        @apply text-sm text-muted;
+    }
+
+    .legal-section {
+        @apply flex flex-col gap-2;
+    }
+
+    .legal-section__title {
+        @apply text-lg font-bold;
+    }
+
+    .legal-section__text {
+        @apply max-w-[70ch] text-body;
+    }
+
+    .legal-todo {
+        @apply rounded bg-[#FFF3D6] px-1 text-[#5C3D00];
+    }
+}

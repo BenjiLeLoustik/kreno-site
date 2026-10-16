@@ -1,0 +1,17 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>Votre signalement {{ report.reference }} a bien été transmis à l’équipe Kréno.</p>
+    <ul style="{{ styles.list }}">
+        <li style="{{ styles.item }}">Motif : {{ report.reason }}</li>
+        {% if report.booking %}
+            <li style="{{ styles.item }}">Rendez-vous : {{ report.booking.service }}, {{ report.booking.day }} à {{ report.booking.time }} ({{ report.booking.customer.name }})</li>
+        {% endif %}
+    </ul>
+    <p>Nous l’examinons et vous tiendrons informé de notre décision.</p>
+    <p style="{{ styles.actions }}"><a href="{{ report.proUrl }}" style="{{ styles.button }}">Suivre le signalement</a><a href="{{ reportsUrl }}" style="{{ styles.buttonSecondary }}">Tous mes signalements</a></p>
+
+{% endblock %}

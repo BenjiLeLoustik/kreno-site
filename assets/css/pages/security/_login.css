@@ -1,0 +1,105 @@
+@layer components {
+    .login {
+        @apply flex min-h-screen flex-wrap;
+    }
+
+    .login-side {
+        @apply flex min-w-0 flex-[1_1_420px] flex-col justify-between gap-10 bg-ink p-10 text-frost;
+    }
+
+    .login-side__brand {
+        @apply self-start no-underline;
+    }
+
+    .login-side__pitch {
+        @apply flex flex-col gap-[22px];
+    }
+
+    .login-side__title {
+        @apply font-display text-[36px] leading-[1.05] font-extrabold tracking-[-0.03em] md:text-[44px];
+    }
+
+    .login-side__accent {
+        @apply text-[#FF7A61];
+    }
+
+    .login-ticket {
+        @apply relative grid max-w-[440px] grid-cols-[128px_minmax(0,1fr)] overflow-hidden rounded-card bg-ink-soft;
+    }
+
+    .login-ticket__when {
+        @apply flex flex-col items-center justify-center gap-1 border-r-2 border-dashed border-[#3B4275] px-3 py-[22px] text-center;
+    }
+
+    .login-ticket__time {
+        @apply text-[28px] leading-none tabular-nums;
+    }
+
+    .login-ticket__duration {
+        @apply text-xs text-mist;
+    }
+
+    .login-ticket__body {
+        @apply flex flex-col gap-[3px] px-6 py-5;
+    }
+
+    .login-ticket__prices {
+        @apply tabular-nums;
+    }
+
+    .login-ticket__old {
+        @apply text-slate;
+    }
+
+    .login-ticket__price {
+        @apply text-[#FF7A61];
+    }
+
+    .login-ticket__notch {
+        @apply absolute left-[116px] size-[22px] rounded-full bg-ink;
+    }
+
+    .login-ticket__notch--top {
+        @apply -top-[11px];
+    }
+
+    .login-ticket__notch--bottom {
+        @apply -bottom-[11px];
+    }
+
+    .login-side__pro {
+        @apply text-sm text-mist;
+    }
+
+    .login-side__pro-link {
+        @apply font-semibold text-mint;
+    }
+
+    .login-main {
+        @apply flex min-w-0 flex-[1_1_480px] flex-col justify-center px-6 py-16 md:px-10;
+    }
+
+    .login-main__inner {
+        @apply mx-auto flex w-full max-w-[420px] flex-col gap-[22px];
+    }
+
+    .login-main__head {
+        @apply flex flex-col gap-1.5;
+    }
+
+    .login-main__title {
+        @apply font-display text-[36px] font-extrabold tracking-[-0.03em];
+    }
+
+    .login-main__lead {
+        @apply text-body;
+    }
+
+    .login-main__signup {
+        @apply text-muted;
+    }
+
+    .login-main__signup-link {
+        @apply font-semibold;
+    }
+}

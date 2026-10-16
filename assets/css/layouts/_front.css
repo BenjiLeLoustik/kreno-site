@@ -1,0 +1,99 @@
+@layer components {
+    .site-header {
+        @apply block;
+    }
+
+    .site-header__inner {
+        @apply mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-6 py-5;
+    }
+
+    .site-header--compact {
+        @apply border-b border-sand bg-white;
+    }
+
+    .site-header--compact .site-header__inner {
+        @apply max-w-[1360px] py-3.5;
+    }
+
+    .site-header--compact .logo__word {
+        @apply text-2xl;
+    }
+
+    .site-header__brand,
+    .site-footer__brand {
+        @apply text-ink no-underline;
+    }
+
+    .site-header__nav {
+        @apply flex flex-wrap items-center gap-6 text-[15px] font-medium;
+    }
+
+    .site-header__link {
+        @apply no-underline;
+    }
+
+    .site-main {
+        @apply block;
+    }
+
+    .flash {
+        @apply mx-auto mb-4 max-w-[1200px] rounded-xl px-6 py-3 text-sm font-medium;
+    }
+
+    .flash--success {
+        @apply bg-mint/15 text-mint-ink;
+    }
+
+    .flash--error {
+        @apply bg-coral/15 text-coral-dark;
+    }
+
+    .flash--info,
+    .flash--warning {
+        @apply bg-amber/20 text-amber-ink;
+    }
+
+    .site-footer {
+        @apply border-t border-line bg-cream;
+    }
+
+    .site-footer__grid {
+        @apply mx-auto grid max-w-[1200px] grid-cols-2 gap-10 px-6 pt-16 md:grid-cols-[minmax(0,1.4fr)_repeat(4,minmax(0,1fr))];
+    }
+
+    .site-footer__intro {
+        @apply col-span-2 flex flex-col gap-4 md:col-span-1;
+    }
+
+    .site-footer__pitch {
+        @apply max-w-[300px] text-[15px] text-ink/70;
+    }
+
+    .site-footer__intro .btn {
+        @apply self-start;
+    }
+
+    .site-footer__column {
+        @apply flex flex-col gap-3 text-[15px];
+    }
+
+    .site-footer__title {
+        @apply text-[13px] tracking-[0.1em] text-slate uppercase;
+    }
+
+    .site-footer__link {
+        @apply no-underline;
+    }
+
+    .site-footer__bottom {
+        @apply mx-auto mt-12 flex max-w-[1200px] flex-wrap items-center justify-between gap-5 border-t border-line px-6 pt-[22px] pb-8 text-sm text-ink/70;
+    }
+
+    .site-footer__legal {
+        @apply flex flex-wrap gap-[22px];
+    }
+
+    .site-footer__legal a {
+        @apply text-ink/70;
+    }
+}

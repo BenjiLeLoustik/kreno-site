@@ -1,0 +1,85 @@
+@layer components {
+    .slot-row {
+        @apply relative grid grid-cols-[112px_minmax(0,1fr)] items-center rounded-card bg-white shadow-card sm:grid-cols-[132px_minmax(0,1fr)_auto];
+    }
+
+    .slot-row__when {
+        @apply row-span-2 flex flex-col items-center justify-center gap-1 self-stretch border-r-2 border-dashed border-sand px-3 py-[22px] text-center sm:row-span-1;
+    }
+
+    .slot-row__day {
+        @apply text-xs font-bold tracking-[0.06em] text-muted uppercase;
+    }
+
+    .slot-row__day--today {
+        @apply text-coral;
+    }
+
+    .slot-row__time {
+        @apply text-[30px] leading-none tabular-nums;
+    }
+
+    .slot-row__duration {
+        @apply text-xs text-muted;
+    }
+
+    .slot-row__body {
+        @apply flex min-w-0 flex-col gap-[3px] px-6 pt-5 sm:pb-5;
+    }
+
+    .slot-row__meta {
+        @apply text-xs font-semibold tracking-[0.08em] text-muted uppercase;
+    }
+
+    .slot-row__pro {
+        @apply text-[17px] font-bold no-underline;
+    }
+
+    .slot-row__what {
+        @apply text-sm text-body;
+    }
+
+    .slot-row__aside {
+        @apply flex flex-wrap items-center gap-2 px-6 pt-2 pb-5 tabular-nums sm:flex-col sm:items-end sm:py-5 sm:pl-0;
+    }
+
+    .slot-row__prices {
+        @apply flex items-baseline gap-1.5;
+    }
+
+    .slot-row__old {
+        @apply text-slate;
+    }
+
+    .slot-row__price {
+        @apply text-[21px] text-coral-dark;
+    }
+
+    .slot-row__badge {
+        @apply rounded-full px-2 py-1 text-xs font-bold;
+    }
+
+    .slot-row__badge--fresh {
+        @apply bg-coral/10 text-coral-dark;
+    }
+
+    .slot-row__badge--soon {
+        @apply bg-amber text-amber-ink;
+    }
+
+    .slot-row__badge--last {
+        @apply bg-mint text-mint-ink;
+    }
+
+    .slot-row__notch {
+        @apply absolute left-[101px] size-[22px] rounded-full bg-cream sm:left-[120px];
+    }
+
+    .slot-row__notch--top {
+        @apply -top-[11px];
+    }
+
+    .slot-row__notch--bottom {
+        @apply -bottom-[11px];
+    }
+}

@@ -1,0 +1,20 @@
+<article class="slot-card">
+    <div class="slot-card__when">
+        <span class="slot-card__day{{ slot.today ? ' slot-card__day--today' : '' }}">{{ slot.day }}</span>
+        <strong class="slot-card__time">{{ slot.time }}</strong>
+        <span class="slot-card__duration">{{ slot.duration }}</span>
+    </div>
+    <div class="slot-card__body">
+        <span class="slot-card__category">{{ slot.category }}</span>
+        <span class="slot-card__pro">{{ slot.pro }}</span>
+        <span class="slot-card__what">{{ slot.what }}{% if slot.distance %} · {{ slot.distance }}{% endif %}</span>
+        <span class="slot-card__prices">
+            <s class="slot-card__old">{{ slot.old }}</s>
+            <b class="slot-card__price">{{ slot.price }}</b>
+            <span class="slot-card__badge slot-card__badge--{{ slot.urgency }}">{{ slot.badge }}</span>
+        </span>
+        <a href="{{ path('slot_show', { id: slot.id }) }}" class="btn btn--ink btn--small slot-card__cta">Réserver</a>
+    </div>
+    <span class="slot-card__notch slot-card__notch--top" aria-hidden="true"></span>
+    <span class="slot-card__notch slot-card__notch--bottom" aria-hidden="true"></span>
+</article>

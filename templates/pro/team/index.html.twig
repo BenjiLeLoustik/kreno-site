@@ -1,0 +1,140 @@
+{% extends 'layouts/pro.html.twig' %}
+
+{% set pro_section = 'team' %}
+{% set roleOptions = (canInviteAdmins ? [{ value: 'admin', label: 'Administrateur (toute l\'entreprise)' }] : [])|merge([
+    { value: 'manager', label: 'Gérant' },
+    { value: 'planner', label: 'Planificateur' },
+    { value: 'receptionist', label: 'Accueil' },
+    { value: 'employee', label: 'Employé' },
+]) %}
+{% set marks = { yes: '✓', no: '—', scope: 'Son établissement', on_demand: 'Sur option' } %}
+
+{% block title %}Équipe · Espace pro{% endblock %}
+
+{% block content %}
+    <div class="pro-head">
+        <div class="pro-head__text">
+            <h1 class="pro-title">Équipe</h1>
+            <span class="pro-subtitle">Qui peut publier des créneaux, gérer les réservations ou modifier l'établissement.</span>
+        </div>
+        {% if establishments|length > 1 %}
+            <form method="get" action="{{ path('pro_team') }}">
+                <select name="establishment" class="pro-input" aria-label="Établissement" data-pro-auto>
+                    <option value="all">Tous les établissements</option>
+                    {% for establishment in establishments %}
+                        <option value="{{ establishment.id }}"{{ establishment.id ~ '' == filter ? ' selected' : '' }}>{{ establishment.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="pro-button" data-pro-apply>Filtrer</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <section class="pro-card">
+        <h2 class="pro-card__title">Membres</h2>
+        {% for member in members %}
+            <div class="team-member">
+                <div class="team-person">
+                    <span class="pro-side__avatar" aria-hidden="true">{{ member.initials }}</span>
+                    <span class="team-person__identity">
+                        <b>{{ member.name }}{% if member.isYou %} (vous){% endif %}</b>
+                        <span class="pro-row__meta">{{ member.email }}{% if member.status != 'active' %} · {{ member.statusLabel }}{% endif %}</span>
+                    </span>
+                    <span class="pro-badge">{{ member.roleLabel }}</span>
+                </div>
+
+                {% if not member.allEstablishments and member.scope is not empty %}
+                    <div class="team-scope">
+                        {% for scope in member.scope %}
+                            <span class="team-scope__item">
+                                {{ scope.establishment }} · {{ scope.roleLabel }}{% if scope.canManageBookings %} · réservations{% endif %}
+                                {% if scope.manageable and not member.isYou %}
+                                    <form method="post" action="{{ path('pro_team_member_establishment_remove', { id: member.id, establishmentId: scope.establishmentId }) }}">
+                                        {{ csrf_field('pro')|raw }}
+                                        <button type="submit" class="team-scope__remove" aria-label="Retirer l'accès à {{ scope.establishment }}" data-pro-confirm="Retirer l'accès de {{ member.name }} à {{ scope.establishment }} ?">×</button>
+                                    </form>
+                                {% endif %}
+                            </span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if not member.isYou and not member.isOwner and manageableEstablishments is not empty %}
+                    <details class="service-row__edit">
+                        <summary class="service-row__summary">Modifier le rôle</summary>
+                        <form method="post" action="{{ path('pro_team_member_role', { id: member.id }) }}" class="pro-form service-row__form">
+                            {{ csrf_field('pro')|raw }}
+                            {% include 'pro/team/_role_fields.html.twig' with { current: member.companyRole ?? (member.scope|first).role ?? 'employee', currentEstablishment: (member.scope|first).establishmentId ?? null, currentBookings: (member.scope|first).canManageBookings ?? false } %}
+                            <div class="settings-line__actions">
+                                <button type="submit" class="pro-button pro-button--primary">Enregistrer</button>
+                            </div>
+                        </form>
+                        <form method="post" action="{{ path('pro_team_member_remove', { id: member.id }) }}" class="service-row__form">
+                            {{ csrf_field('pro')|raw }}
+                            <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="Retirer {{ member.name }} de l'entreprise ?">Retirer de l'entreprise</button>
+                        </form>
+                    </details>
+                {% endif %}
+            </div>
+        {% else %}
+            <p class="pro-subtitle">Aucun membre pour ce filtre.</p>
+        {% endfor %}
+    </section>
+
+    <div class="pro-columns">
+        <section class="pro-card pro-columns__main">
+            <h2 class="pro-card__title">Inviter un collaborateur</h2>
+            {% if manageableEstablishments is empty and not canInviteAdmins %}
+                <p class="pro-subtitle">Votre rôle ne permet pas d'inviter.</p>
+            {% else %}
+                <form method="post" action="{{ path('pro_team_invite') }}" class="pro-form">
+                    {{ csrf_field('pro')|raw }}
+                    <label class="pro-field">E-mail<input type="email" name="email" required class="pro-input" placeholder="prenom@exemple.fr"></label>
+                    {% include 'pro/team/_role_fields.html.twig' with { current: 'employee', currentEstablishment: context.current.id, currentBookings: false } %}
+                    <div><button type="submit" class="pro-button pro-button--primary">Envoyer l'invitation</button></div>
+                </form>
+            {% endif %}
+
+            {% if invitations is not empty %}
+                <h3 class="settings-subtitle">Invitations en attente</h3>
+                {% for invitation in invitations %}
+                    <div class="settings-line">
+                        <span>
+                            <b>{{ invitation.email }}</b>
+                            <span class="pro-row__meta">{{ invitation.roleLabel }}{% if invitation.establishment %} · {{ invitation.establishment }}{% endif %}{% if invitation.expiresAt %} · expire le {{ invitation.expiresAt|date('d/m/Y') }}{% endif %}</span>
+                        </span>
+                        <form method="post" action="{{ path('pro_team_invitation_revoke', { id: invitation.id }) }}">
+                            {{ csrf_field('pro')|raw }}
+                            <button type="submit" class="pro-button pro-button--small pro-button--danger">Annuler</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </section>
+
+        <section class="pro-card pro-columns__aside">
+            <h2 class="pro-card__title">Qui peut faire quoi ?</h2>
+            <div class="team-matrix">
+                <table class="team-matrix__table">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="team-matrix__th"><span class="sr-only">Action</span></th>
+                        {% for column in roleMatrix.columns %}<th scope="col" class="team-matrix__th">{{ column.label }}</th>{% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in roleMatrix.rows %}
+                        <tr>
+                            <th scope="row" class="team-matrix__action">{{ row.action }}</th>
+                            {% for column in roleMatrix.columns %}
+                                {% set cell = row.cells[column.key] %}
+                                <td class="team-matrix__cell team-matrix__cell--{{ cell }}">{{ marks[cell] ?? cell }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+{% endblock %}

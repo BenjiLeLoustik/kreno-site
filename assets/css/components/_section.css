@@ -1,0 +1,25 @@
+@layer components {
+    .eyebrow {
+        @apply text-[13px] font-semibold tracking-[0.12em] text-coral uppercase;
+    }
+
+    .eyebrow--mint {
+        @apply text-mint;
+    }
+
+    .section-head {
+        @apply flex flex-col gap-1.5;
+    }
+
+    .section-head--split {
+        @apply flex-row flex-wrap items-end justify-between gap-4;
+    }
+
+    .section-head__text {
+        @apply flex flex-col gap-1.5;
+    }
+
+    .section-title {
+        @apply font-display text-[32px] font-extrabold tracking-[-0.03em] md:text-[40px];
+    }
+}

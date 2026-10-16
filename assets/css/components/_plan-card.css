@@ -1,0 +1,73 @@
+@layer components {
+    .plan-grid {
+        @apply grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4;
+    }
+
+    .plan-card {
+        @apply relative flex flex-col gap-2 rounded-[20px] border-2 border-sand bg-white p-5 text-ink;
+    }
+
+    .plan-card--choice {
+        @apply cursor-pointer transition-colors hover:border-ink has-checked:border-coral has-checked:bg-[#FFF3EF];
+    }
+
+    .plan-card--current {
+        @apply border-mint;
+    }
+
+    .plan-card--flat {
+        @apply border-0 p-0;
+    }
+
+    .plan-card__input {
+        @apply sr-only;
+    }
+
+    .plan-card__head {
+        @apply flex flex-wrap items-center justify-between gap-2;
+    }
+
+    .plan-card__name {
+        @apply text-lg font-bold;
+    }
+
+    .plan-card__tag {
+        @apply rounded-full bg-coral px-2.5 py-0.5 text-xs font-bold text-white;
+    }
+
+    .plan-card__tag--current {
+        @apply bg-mint text-mint-ink;
+    }
+
+    .plan-card__price {
+        @apply font-display text-[36px] leading-none font-extrabold tracking-[-0.03em] tabular-nums;
+    }
+
+    .plan-card__unit {
+        @apply text-sm text-muted;
+    }
+
+    .plan-card__text {
+        @apply text-sm text-body;
+    }
+
+    .plan-card__perks {
+        @apply m-0 flex list-none flex-col gap-1.5 p-0 text-sm;
+    }
+
+    .plan-card__perk {
+        @apply flex items-center gap-2;
+    }
+
+    .plan-card__icon {
+        @apply size-4 flex-none text-[#1F9D74];
+    }
+
+    .plan-card__cta {
+        @apply mt-auto w-full;
+    }
+
+    .plan-card__cta--muted {
+        @apply py-2.5 text-center text-sm font-semibold text-muted;
+    }
+}

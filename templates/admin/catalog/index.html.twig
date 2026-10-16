@@ -1,0 +1,163 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set admin_section = 'catalog' %}
+{% set categorySlugs = categories|map(category => category.slug) %}
+{% set citySlugs = cities|map(city => city.slug) %}
+{% set cityTones = { open: 'success', waitlist: 'warning', closed: 'neutral' } %}
+
+{% macro order(route, slugs, index, step, label, icon) %}
+    {% set target = index + step %}
+    {% if target >= 0 and target < slugs|length %}
+        {% set reordered = [] %}
+        {% for position, slug in slugs %}
+            {% set reordered = reordered|merge([position == index ? slugs[target] : (position == target ? slugs[index] : slug)]) %}
+        {% endfor %}
+        <form method="post" action="{{ path(route) }}">
+            {{ csrf_field('admin_catalog')|raw }}
+            {% for slug in reordered %}
+                <input type="hidden" name="slugs[]" value="{{ slug }}">
+            {% endfor %}
+            <button type="submit" class="admin-button admin-button--small" aria-label="{{ label }}"><i data-lucide="{{ icon }}" class="admin-nav__icon"></i></button>
+        </form>
+    {% endif %}
+{% endmacro %}
+
+{% block title %}Catégories et villes · Administration Kréno{% endblock %}
+
+{% block content %}
+    {% import _self as catalog %}
+
+    <h1 class="admin-title">Catégories et villes</h1>
+
+    <div class="admin-grid">
+        <section class="admin-card">
+            <h2 class="admin-card__title">Catégories</h2>
+            <div class="admin-rows">
+                {% for category in categories %}
+                    <div class="admin-row">
+                        <span class="admin-row__main">
+                            <b><i data-lucide="{{ category.icon ?: 'circle' }}" class="admin-nav__icon catalog-icon"></i> {{ category.name }}</b>
+                            <span class="admin-row__meta">{{ category.slug }} · icône {{ category.icon ?: '—' }} · {{ category.establishmentsCount }} pro{{ category.establishmentsCount > 1 ? 's' : '' }}</span>
+                        </span>
+                        <span class="admin-row__actions">
+                            {{ catalog.order('admin_catalog_category_order', categorySlugs, loop.index0, -1, 'Monter ' ~ category.name, 'arrow-up') }}
+                            {{ catalog.order('admin_catalog_category_order', categorySlugs, loop.index0, 1, 'Descendre ' ~ category.name, 'arrow-down') }}
+                            <form method="post" action="{{ path('admin_catalog_category_visibility', { slug: category.slug }) }}">
+                                {{ csrf_field('admin_catalog')|raw }}
+                                <button type="submit" class="catalog-switch{{ category.visible ? ' catalog-switch--on' : '' }}" role="switch" aria-checked="{{ category.visible ? 'true' : 'false' }}" aria-label="{{ category.visible ? 'Masquer' : 'Afficher' }} {{ category.name }}"><span class="catalog-switch__knob"></span></button>
+                            </form>
+                        </span>
+                        <details class="admin-disclosure admin-disclosure--full">
+                            <summary class="admin-disclosure__summary">Modifier</summary>
+                            <div class="admin-disclosure__body admin-form">
+                                <form method="post" action="{{ path('admin_catalog_category_update', { slug: category.slug }) }}" class="admin-form" data-admin-strip>
+                                    {{ csrf_field('admin_catalog')|raw }}
+                                    <div class="admin-form__row">
+                                        <label class="admin-field">Nom<input type="text" name="name" value="{{ category.name }}" required minlength="2" maxlength="80" class="admin-input"></label>
+                                        <label class="admin-field">Icône Lucide<input type="text" name="icon" value="{{ category.icon }}" pattern="[a-z0-9-]{2,50}" class="admin-input"></label>
+                                    </div>
+                                    <label class="admin-field">Description<textarea name="description" rows="2" class="admin-input admin-input--area">{{ category.description }}</textarea></label>
+                                    <div class="admin-actions">
+                                        <button type="submit" class="admin-button admin-button--primary">Enregistrer</button>
+                                    </div>
+                                </form>
+                                <form method="post" action="{{ path('admin_catalog_category_delete', { slug: category.slug }) }}">
+                                    {{ csrf_field('admin_catalog')|raw }}
+                                    <button type="submit" class="admin-button admin-button--ghost-danger"{{ category.establishmentsCount > 0 ? ' disabled title="Des établissements utilisent cette catégorie"' : '' }} data-admin-confirm="Supprimer la catégorie {{ category.name }} ?">Supprimer</button>
+                                </form>
+                            </div>
+                        </details>
+                    </div>
+                {% else %}
+                    <p class="admin-subtitle">Aucune catégorie.</p>
+                {% endfor %}
+            </div>
+            <form method="post" action="{{ path('admin_catalog_category_create') }}" class="admin-form admin-form--inline" data-admin-strip>
+                {{ csrf_field('admin_catalog')|raw }}
+                <label class="admin-field catalog-grow">Nouvelle catégorie<input type="text" name="name" required minlength="2" maxlength="80" class="admin-input"></label>
+                <label class="admin-field">Icône (Lucide)<input type="text" name="icon" pattern="[a-z0-9-]{2,50}" placeholder="scissors" class="admin-input"></label>
+                <button type="submit" class="admin-button admin-button--primary">Ajouter</button>
+            </form>
+        </section>
+
+        <section class="admin-card">
+            <h2 class="admin-card__title">Villes</h2>
+            <div class="admin-rows">
+                {% for city in cities %}
+                    <div class="admin-row">
+                        <span class="admin-row__main">
+                            <b>{{ city.name }}</b>
+                            <span class="admin-row__meta">{{ city.departmentCode ?: '—' }} · rayon {{ city.radiusKm }} km · {{ city.establishmentsCount }} pro{{ city.establishmentsCount > 1 ? 's' : '' }}</span>
+                        </span>
+                        <span class="admin-row__actions">
+                            {{ catalog.order('admin_catalog_city_order', citySlugs, loop.index0, -1, 'Monter ' ~ city.name, 'arrow-up') }}
+                            {{ catalog.order('admin_catalog_city_order', citySlugs, loop.index0, 1, 'Descendre ' ~ city.name, 'arrow-down') }}
+                            <span class="admin-badge admin-badge--{{ cityTones[city.status] ?? 'neutral' }}">{{ city.statusLabel }}</span>
+                        </span>
+                        <details class="admin-disclosure admin-disclosure--full">
+                            <summary class="admin-disclosure__summary">Modifier</summary>
+                            <div class="admin-disclosure__body admin-form">
+                                <div class="admin-actions">
+                                    {% for status in cityStatuses|filter(status => status.value != city.status) %}
+                                        <form method="post" action="{{ path('admin_catalog_city_status', { slug: city.slug, status: status.value }) }}">
+                                            {{ csrf_field('admin_catalog')|raw }}
+                                            <button type="submit" class="admin-button admin-button--small">Passer en « {{ status.label }} »</button>
+                                        </form>
+                                    {% endfor %}
+                                </div>
+                                <form method="post" action="{{ path('admin_catalog_city_update', { slug: city.slug }) }}" class="admin-form">
+                                    {{ csrf_field('admin_catalog')|raw }}
+                                    <div class="admin-form__row">
+                                        <label class="admin-field">Nom<input type="text" name="name" value="{{ city.name }}" required minlength="2" maxlength="100" class="admin-input"></label>
+                                        <label class="admin-field">Département<input type="text" name="departmentCode" value="{{ city.departmentCode }}" required pattern="\d{2,3}|2A|2B" class="admin-input"></label>
+                                    </div>
+                                    <div class="admin-form__row admin-form__row--3">
+                                        <label class="admin-field">Latitude<input type="number" name="latitude" value="{{ city.latitude }}" step="0.0000001" min="-90" max="90" required class="admin-input"></label>
+                                        <label class="admin-field">Longitude<input type="number" name="longitude" value="{{ city.longitude }}" step="0.0000001" min="-180" max="180" required class="admin-input"></label>
+                                        <label class="admin-field">Rayon (km)<input type="number" name="radiusKm" value="{{ city.radiusKm }}" min="1" max="100" required class="admin-input"></label>
+                                    </div>
+                                    <div class="admin-actions">
+                                        <button type="submit" class="admin-button admin-button--primary">Enregistrer</button>
+                                    </div>
+                                </form>
+                                <form method="post" action="{{ path('admin_catalog_city_delete', { slug: city.slug }) }}">
+                                    {{ csrf_field('admin_catalog')|raw }}
+                                    <button type="submit" class="admin-button admin-button--ghost-danger"{{ city.establishmentsCount > 0 ? ' disabled title="Des établissements sont rattachés à cette ville"' : '' }} data-admin-confirm="Supprimer la ville {{ city.name }} ?">Supprimer</button>
+                                </form>
+                            </div>
+                        </details>
+                    </div>
+                {% else %}
+                    <p class="admin-subtitle">Aucune ville.</p>
+                {% endfor %}
+            </div>
+            <span class="admin-subtitle">« Liste d'attente » : les pros peuvent s'inscrire, la ville n'est pas encore visible des clients.</span>
+            <details class="admin-disclosure">
+                <summary class="admin-disclosure__summary">Ajouter une ville</summary>
+                <form method="post" action="{{ path('admin_catalog_city_create') }}" class="admin-form admin-disclosure__body">
+                    {{ csrf_field('admin_catalog')|raw }}
+                    <div class="admin-form__row">
+                        <label class="admin-field">Nom<input type="text" name="name" required minlength="2" maxlength="100" class="admin-input"></label>
+                        <label class="admin-field">Département<input type="text" name="departmentCode" required pattern="\d{2,3}|2A|2B" placeholder="69" class="admin-input"></label>
+                    </div>
+                    <div class="admin-form__row admin-form__row--3">
+                        <label class="admin-field">Latitude<input type="number" name="latitude" step="0.0000001" min="-90" max="90" required class="admin-input"></label>
+                        <label class="admin-field">Longitude<input type="number" name="longitude" step="0.0000001" min="-180" max="180" required class="admin-input"></label>
+                        <label class="admin-field">Rayon (km)<input type="number" name="radiusKm" value="10" min="1" max="100" required class="admin-input"></label>
+                    </div>
+                    <label class="admin-field">
+                        Statut
+                        <select name="status" class="admin-input">
+                            {% for status in cityStatuses %}
+                                <option value="{{ status.value }}"{{ status.value == 'waitlist' ? ' selected' : '' }}>{{ status.label }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <div class="admin-actions">
+                        <button type="submit" class="admin-button admin-button--primary">Ajouter</button>
+                    </div>
+                </form>
+            </details>
+        </section>
+    </div>
+{% endblock %}

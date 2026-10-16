@@ -1,0 +1,15 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>{{ inviter }} vous invite à rejoindre {{ target }} sur Kréno Pro en tant que {{ role|lower }}.</p>
+    <p>Kréno Pro permet de publier les créneaux libérés de l’établissement et de suivre les réservations des clients.</p>
+    <p style="{{ styles.actions }}"><a href="{{ acceptUrl }}" style="{{ styles.button }}">Accepter l’invitation</a></p>
+    {% if expiresAt %}
+        <p>Cette invitation est valable jusqu’au {{ expiresAt }}.</p>
+    {% endif %}
+    <p>Vous ne connaissez pas {{ inviter }} ? Ignorez simplement cet e-mail.</p>
+
+{% endblock %}

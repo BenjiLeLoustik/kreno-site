@@ -1,0 +1,48 @@
+{% extends 'layouts/account.html.twig' %}
+
+{% set account_section = 'bookings' %}
+{% set emptyLabels = {
+    upcoming: 'Aucune réservation à venir.',
+    past: 'Aucune réservation passée pour le moment.',
+    cancelled: 'Aucune réservation annulée.',
+} %}
+
+{% block title %}Mes réservations · {{ website().siteName }}{% endblock %}
+
+{% block account_content %}
+    <header class="account-head">
+        <h1 class="account-head__title">Mes réservations</h1>
+    </header>
+
+    <nav class="account-tabs" aria-label="Filtrer les réservations">
+        {% for item in tabs %}
+            <a href="{{ path('account_bookings', { tab: item.key }) }}" class="account-tabs__link{{ item.selected ? ' account-tabs__link--active' : '' }}"{{ item.selected ? ' aria-current="page"' : '' }}>{{ item.label }}</a>
+        {% endfor %}
+    </nav>
+
+    {% if bookings is not empty %}
+        <div class="booking-list">
+            {% for booking in bookings %}
+                <a href="{{ path('account_booking_show', { reference: booking.reference }) }}" class="booking-list__item">
+                    <span class="booking-list__when">
+                        <span class="booking-list__day">{{ booking.day }}</span>
+                        <strong class="booking-list__time">{{ booking.time }}</strong>
+                    </span>
+                    <span class="booking-list__text">
+                        <b class="booking-list__name">{{ booking.establishment ? booking.establishment.name : '—' }}</b>
+                        <span class="booking-list__meta">{{ booking.what }} · {{ booking.date }} · {{ booking.reference }}</span>
+                    </span>
+                    <span class="booking-list__aside">
+                        <span class="account-status account-status--{{ booking.kind }}">{{ booking.statusLabel }}</span>
+                        <span class="booking-list__prices"><s class="booking-list__old">{{ booking.old }}</s> <b class="booking-list__price">{{ booking.price }}</b></span>
+                    </span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="account-empty">
+            <p class="account-empty__text">{{ emptyLabels[tab] }}</p>
+            <a href="{{ path('search_index') }}" class="btn btn--primary btn--small">Trouver un créneau</a>
+        </div>
+    {% endif %}
+{% endblock %}

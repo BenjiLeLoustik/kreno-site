@@ -1,0 +1,90 @@
+@layer components {
+    .booking-detail__head {
+        @apply flex flex-wrap items-center justify-between gap-3;
+    }
+
+    .booking-detail {
+        @apply grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_300px];
+    }
+
+    .booking-detail__main,
+    .booking-detail__aside {
+        @apply flex min-w-0 flex-col gap-5;
+    }
+
+    .booking-facts {
+        @apply m-0 grid grid-cols-[110px_minmax(0,1fr)] gap-x-3 gap-y-2 text-sm;
+    }
+
+    .booking-facts__label {
+        @apply text-muted;
+    }
+
+    .booking-facts__value {
+        @apply m-0 font-semibold;
+    }
+
+    .booking-facts__value--number {
+        @apply tabular-nums;
+    }
+
+    .booking-timeline {
+        @apply m-0 flex list-none flex-col gap-3 p-0;
+    }
+
+    .booking-timeline__step {
+        @apply grid grid-cols-[12px_52px_minmax(0,1fr)] items-center gap-3 text-sm;
+    }
+
+    .booking-timeline__dot {
+        @apply size-3 rounded-full bg-mist;
+    }
+
+    .booking-timeline__step--success .booking-timeline__dot {
+        @apply bg-mint;
+    }
+
+    .booking-timeline__step--danger .booking-timeline__dot {
+        @apply bg-coral-dark;
+    }
+
+    .booking-timeline__step--pending {
+        @apply text-muted;
+    }
+
+    .booking-timeline__time {
+        @apply text-muted tabular-nums;
+    }
+
+    .booking-cancel {
+        @apply flex flex-col;
+    }
+
+    .booking-cancel__toggle {
+        @apply flex min-h-10 cursor-pointer list-none items-center justify-center rounded-xl border-[1.5px] border-sand px-4 text-sm font-semibold text-[#C93A22] transition-colors hover:border-[#C93A22] [&::-webkit-details-marker]:hidden;
+    }
+
+    .booking-cancel[open] .booking-cancel__toggle {
+        @apply hidden;
+    }
+
+    .booking-cancel__form {
+        @apply flex flex-col gap-3 rounded-[14px] bg-[#FFF1EC] p-4;
+    }
+
+    .booking-cancel__text {
+        @apply text-sm font-semibold;
+    }
+
+    .booking-cancel__muted {
+        @apply font-normal text-muted;
+    }
+
+    .booking-cancel__input {
+        @apply min-h-0 resize-y py-2.5;
+    }
+
+    .booking-cancel__submit {
+        @apply border-0 bg-[#C93A22] text-white hover:bg-[#A92F1B];
+    }
+}

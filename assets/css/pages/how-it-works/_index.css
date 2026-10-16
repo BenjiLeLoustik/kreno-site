@@ -1,0 +1,93 @@
+@layer components {
+    .how-hero {
+        @apply mx-auto flex max-w-[860px] flex-col items-center gap-4 px-6 pt-14 pb-10 text-center md:pt-20;
+    }
+
+    .how-hero__eyebrow {
+        @apply text-xs font-bold tracking-[0.08em] text-coral uppercase;
+    }
+
+    .how-hero__title {
+        @apply font-display text-[38px] leading-[1.05] font-extrabold tracking-[-0.03em] md:text-[56px];
+    }
+
+    .how-hero__text {
+        @apply max-w-[620px] text-lg text-body;
+    }
+
+    .how-columns {
+        @apply mx-auto grid max-w-[1200px] gap-5 px-6 pb-14 md:grid-cols-2;
+    }
+
+    .how-card {
+        @apply flex flex-col gap-5 rounded-[24px] border border-sand bg-white p-6 md:p-8;
+    }
+
+    .how-card--pro {
+        @apply border-ink bg-ink text-frost;
+    }
+
+    .how-card__title {
+        @apply font-display text-[28px] font-extrabold tracking-[-0.02em];
+    }
+
+    .how-card__cta {
+        @apply mt-auto self-start;
+    }
+
+    .how-steps {
+        @apply m-0 flex list-none flex-col gap-4 p-0;
+    }
+
+    .how-steps__item {
+        @apply flex items-start gap-4;
+    }
+
+    .how-steps__number {
+        @apply grid size-9 shrink-0 place-items-center rounded-full bg-coral font-bold text-white;
+    }
+
+    .how-steps__text {
+        @apply flex flex-col gap-0.5;
+    }
+
+    .how-steps__description {
+        @apply text-body;
+    }
+
+    .how-card--pro .how-steps__description {
+        @apply text-mist;
+    }
+
+    .how-card--pro .how-card__cta {
+        @apply bg-white text-ink hover:bg-cream;
+    }
+
+    .how-rules {
+        @apply bg-white;
+    }
+
+    .how-rules__inner {
+        @apply mx-auto flex max-w-[1200px] flex-col gap-6 px-6 py-14;
+    }
+
+    .how-rules__title {
+        @apply font-display text-[30px] font-extrabold tracking-[-0.02em];
+    }
+
+    .how-rules__grid {
+        @apply grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4;
+    }
+
+    .how-rule {
+        @apply flex flex-col gap-1 rounded-[18px] bg-cream p-5;
+    }
+
+    .how-rule__text {
+        @apply text-sm text-body;
+    }
+
+    .how-rules__link {
+        @apply self-start font-semibold;
+    }
+}

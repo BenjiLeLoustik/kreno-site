@@ -1,0 +1,21 @@
+@layer components {
+    .chip-list {
+        @apply flex flex-wrap gap-2;
+    }
+
+    .chip {
+        @apply inline-flex min-h-10 items-center rounded-full border border-sand bg-white px-3.5 text-sm font-semibold text-ink no-underline;
+    }
+
+    .chip:hover {
+        @apply border-ink text-ink;
+    }
+
+    .chip--active {
+        @apply border-ink bg-ink text-white;
+    }
+
+    .chip--active:hover {
+        @apply text-white;
+    }
+}

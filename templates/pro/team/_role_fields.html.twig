@@ -1,0 +1,24 @@
+<div class="pro-form__row">
+    <label class="pro-field">
+        Rôle
+        <select name="role" class="pro-input">
+            {% for option in roleOptions %}
+                <option value="{{ option.value }}"{{ option.value == current ? ' selected' : '' }}>{{ option.label }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label class="pro-field">
+        Établissement
+        <select name="establishmentId" class="pro-input">
+            {% for establishment in manageableEstablishments %}
+                <option value="{{ establishment.id }}"{{ establishment.id == currentEstablishment ? ' selected' : '' }}>{{ establishment.name }}</option>
+            {% endfor %}
+        </select>
+        <span class="pro-field__hint">Ignoré pour un administrateur.</span>
+    </label>
+</div>
+<label class="settings-check">
+    <input type="hidden" name="canManageBookings" value="0">
+    <input type="checkbox" name="canManageBookings" value="1" class="settings-check__input"{{ currentBookings ? ' checked' : '' }}>
+    Peut aussi gérer les réservations (planificateur, employé)
+</label>

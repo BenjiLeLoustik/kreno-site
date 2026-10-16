@@ -1,0 +1,87 @@
+@layer components {
+    .auth-perks {
+        @apply m-0 flex list-none flex-col gap-3 p-0 text-[#C9CCE0];
+    }
+
+    .auth-perks__item {
+        @apply flex items-center gap-3;
+    }
+
+    .auth-perks__icon {
+        @apply size-5 flex-none text-mint;
+    }
+
+    .auth-row {
+        @apply grid gap-4 sm:grid-cols-2;
+    }
+
+    .auth-optional {
+        @apply text-xs font-normal text-muted;
+    }
+
+    .auth-terms {
+        @apply items-start;
+    }
+
+    .auth-terms .form-check__input {
+        @apply mt-0.5 flex-none;
+    }
+
+    .auth-state {
+        @apply flex flex-col gap-1.5 rounded-2xl px-4 py-3.5 text-sm;
+    }
+
+    .auth-state--success {
+        @apply bg-[#DDF7EC] text-mint-ink;
+    }
+
+    .auth-state--error {
+        @apply bg-[#FFE7E1] text-[#8A2414];
+    }
+
+    .auth-state__icon {
+        @apply size-6;
+    }
+
+    .password-meter {
+        @apply -mt-2 flex flex-col gap-1.5;
+    }
+
+    .password-meter__bars {
+        @apply grid grid-cols-4 gap-1.5;
+    }
+
+    .password-meter__bar {
+        @apply h-[5px] rounded-full bg-sand;
+    }
+
+    .password-meter__bar[data-level="1"] {
+        @apply bg-[#E8452A];
+    }
+
+    .password-meter__bar[data-level="2"],
+    .password-meter__bar[data-level="3"] {
+        @apply bg-amber;
+    }
+
+    .password-meter__bar[data-level="4"] {
+        @apply bg-mint;
+    }
+
+    .password-meter__text {
+        @apply text-[13px] text-muted;
+    }
+
+    .password-meter__text[data-level="1"] {
+        @apply text-[#E8452A];
+    }
+
+    .password-meter__text[data-level="2"],
+    .password-meter__text[data-level="3"] {
+        @apply text-amber-ink;
+    }
+
+    .password-meter__text[data-level="4"] {
+        @apply text-mint-ink;
+    }
+}

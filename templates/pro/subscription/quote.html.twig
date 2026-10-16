@@ -1,0 +1,91 @@
+{% extends 'layouts/pro.html.twig' %}
+
+{% set pro_section = 'billing' %}
+
+{% block title %}Changer de formule · Espace pro{% endblock %}
+
+{% block content %}
+    <div class="pro-head">
+        <div class="pro-head__text">
+            <a href="{{ path('pro_subscription', { period: period }) }}" class="pro-back">← Formules</a>
+            <h1 class="pro-title">Passer à « {{ plan.name }} »</h1>
+            {% if current %}<span class="pro-subtitle">Aujourd'hui : {{ current.plan.name }} · {{ current.priceLine }}</span>{% endif %}
+        </div>
+    </div>
+
+    <div class="pro-columns">
+        <section class="pro-card pro-columns__main">
+            <div class="plan-card plan-card--flat">
+                {% include 'components/plan_card.html.twig' %}
+            </div>
+
+            <dl class="pro-facts">
+                <dt class="pro-facts__label">Tarif</dt>
+                <dd class="pro-facts__value">{{ quote.priceLabel }} {{ quote.unit }} · {{ quote.priceIncludingTaxLabel }}{% if quote.monthlyEquivalent %} · soit {{ quote.monthlyEquivalent }}{% endif %}</dd>
+                {% if not quote.perBooking %}
+                    <dt class="pro-facts__label">Première échéance</dt>
+                    <dd class="pro-facts__value">{{ quote.firstLabel }}</dd>
+                {% endif %}
+                {% if prorata %}
+                    <dt class="pro-facts__label">Nouvelle période</dt>
+                    <dd class="pro-facts__value">{{ quote.perBooking ? '—' : ('jusqu\'au ' ~ prorata.until) }}</dd>
+                    <dt class="pro-facts__label">Montant de la formule</dt>
+                    <dd class="pro-facts__value">{{ prorata.charge }} TTC{{ prorata.keepsPeriodEnd ? ' (au prorata)' : '' }}</dd>
+                    <dt class="pro-facts__label">Crédit non utilisé</dt>
+                    <dd class="pro-facts__value">{{ prorata.credit }} TTC</dd>
+                    <dt class="pro-facts__label"><b>À payer aujourd'hui</b></dt>
+                    <dd class="pro-facts__value"><b>{{ prorata.due }} TTC</b></dd>
+                {% endif %}
+            </dl>
+
+            {% if scheduled %}
+                <p class="pro-note">Ce changement prendra effet à la fin de votre période en cours{% if current and current.nextDate %}, le {{ current.nextDate }}{% endif %}. Rien n'est prélevé aujourd'hui.</p>
+            {% endif %}
+            {% if uncoveredEstablishments > 0 %}
+                <p class="pro-flash pro-flash--warning">{{ uncoveredEstablishments }} établissement{{ uncoveredEstablishments > 1 ? 's ne seront' : ' ne sera' }} pas couvert{{ uncoveredEstablishments > 1 ? 's' : '' }} par cette formule et {{ uncoveredEstablishments > 1 ? 'seront facturés' : 'sera facturé' }} à la réservation.</p>
+            {% endif %}
+
+            {% if not quote.perBooking %}
+                <form method="get" action="{{ path('pro_subscription_quote') }}" class="settings-inline">
+                    <input type="hidden" name="plan" value="{{ plan.code }}">
+                    <input type="hidden" name="period" value="{{ period }}">
+                    <label class="pro-field settings-inline__grow">Code promo<input type="text" name="promoCode" value="{{ promoCode }}" maxlength="40" class="pro-input" autocomplete="off"></label>
+                    <button type="submit" class="pro-button">Appliquer</button>
+                </form>
+                {% if promo %}<p class="pro-flash pro-flash--success">Code {{ promo.code }} : {{ promo.label }}</p>{% endif %}
+                {% if promoError %}<p class="pro-flash pro-flash--error">{{ promoError }}</p>{% endif %}
+            {% endif %}
+        </section>
+
+        <aside class="pro-card pro-columns__aside">
+            <h2 class="pro-card__title">Confirmer</h2>
+            <form method="post" action="{{ path('pro_subscription_change') }}" class="pro-form">
+                {{ csrf_field('pro')|raw }}
+                <input type="hidden" name="plan" value="{{ plan.code }}">
+                <input type="hidden" name="period" value="{{ period }}">
+                <input type="hidden" name="promoCode" value="{{ promo ? promo.code : '' }}">
+                {% if current and not scheduled and not quote.perBooking %}
+                    {% if paymentMethods is empty %}
+                        <p class="pro-subtitle">Ajoutez d'abord un moyen de paiement.</p>
+                        <a href="{{ path('pro_billing') }}#moyens" class="pro-button">Ajouter un moyen de paiement</a>
+                    {% else %}
+                        <fieldset class="report-reasons">
+                            <legend class="pro-field">Payer avec</legend>
+                            {% for method in paymentMethods %}
+                                <label class="settings-check">
+                                    <input type="radio" name="paymentMethodId" value="{{ method.id }}" class="settings-check__input"{{ method.isDefault ? ' checked' : '' }}>
+                                    <span>{{ method.label }} <span class="pro-row__meta">{{ method.note }}</span></span>
+                                </label>
+                            {% endfor %}
+                        </fieldset>
+                    {% endif %}
+                {% endif %}
+                {% if not (current and not scheduled and not quote.perBooking and paymentMethods is empty) %}
+                    <button type="submit" class="pro-button pro-button--primary pro-button--block">
+                        {{ prorata and not prorata.dueIsZero ? 'Payer ' ~ prorata.due ~ ' et changer' : 'Confirmer le changement' }}
+                    </button>
+                {% endif %}
+            </form>
+        </aside>
+    </div>
+{% endblock %}

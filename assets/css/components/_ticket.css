@@ -1,0 +1,94 @@
+@layer components {
+    .ticket {
+        @apply relative grid grid-cols-[112px_minmax(0,1fr)] overflow-hidden rounded-card bg-cream;
+    }
+
+    .ticket--large {
+        @apply bg-white shadow-card md:grid-cols-[140px_minmax(0,1fr)];
+    }
+
+    .ticket__when {
+        @apply flex flex-col items-center justify-center gap-1 border-r-2 border-dashed border-sand px-3 py-[22px] text-center;
+    }
+
+    .ticket__day {
+        @apply text-xs font-bold tracking-[0.06em] text-muted uppercase;
+    }
+
+    .ticket__day--today {
+        @apply text-coral;
+    }
+
+    .ticket__time {
+        @apply text-[30px] leading-none tabular-nums;
+    }
+
+    .ticket__duration {
+        @apply text-xs text-muted;
+    }
+
+    .ticket__body {
+        @apply flex min-w-0 flex-col justify-center gap-1 px-6 py-5 tabular-nums;
+    }
+
+    .ticket__name {
+        @apply text-lg;
+    }
+
+    .ticket__what,
+    .ticket__address {
+        @apply text-sm text-body;
+    }
+
+    .ticket__prices {
+        @apply flex flex-wrap items-baseline gap-2;
+    }
+
+    .ticket__old {
+        @apply text-slate;
+    }
+
+    .ticket__price {
+        @apply text-2xl text-coral-dark;
+    }
+
+    .ticket__pay {
+        @apply text-xs text-muted;
+    }
+
+    .ticket__badge {
+        @apply self-start rounded-full px-2 py-1 text-xs font-bold;
+    }
+
+    .ticket__badge--fresh {
+        @apply bg-coral text-white;
+    }
+
+    .ticket__badge--soon {
+        @apply bg-amber text-amber-ink;
+    }
+
+    .ticket__badge--last {
+        @apply bg-mint text-mint-ink;
+    }
+
+    .ticket__reference {
+        @apply mt-1 self-start rounded-lg bg-frost px-2 py-0.5 font-mono text-xs font-semibold tracking-[0.08em] text-muted;
+    }
+
+    .ticket__notch {
+        @apply absolute left-[101px] size-[22px] rounded-full bg-white;
+    }
+
+    .ticket--large .ticket__notch {
+        @apply bg-cream md:left-[129px];
+    }
+
+    .ticket__notch--top {
+        @apply -top-[11px];
+    }
+
+    .ticket__notch--bottom {
+        @apply -bottom-[11px];
+    }
+}

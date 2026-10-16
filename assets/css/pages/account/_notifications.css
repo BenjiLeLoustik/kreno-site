@@ -1,0 +1,63 @@
+@layer components {
+    .notification-head {
+        @apply flex flex-wrap items-end justify-between gap-4;
+    }
+
+    .notification-head__actions {
+        @apply flex flex-wrap gap-2;
+    }
+
+    .notification-list {
+        @apply flex flex-col overflow-hidden rounded-[18px] border border-sand bg-white;
+    }
+
+    .notification-list__form {
+        @apply m-0;
+    }
+
+    .notification-list__item {
+        @apply grid w-full grid-cols-[10px_minmax(0,1fr)] items-start gap-x-3 gap-y-1 border-0 border-b border-solid border-[#F1E8DE] bg-transparent px-5 py-4 text-left font-sans text-[15px] text-ink no-underline sm:grid-cols-[10px_minmax(0,1fr)_auto];
+    }
+
+    a.notification-list__item,
+    button.notification-list__item {
+        @apply cursor-pointer transition-colors hover:bg-cream;
+    }
+
+    .notification-list > :last-child .notification-list__item,
+    .notification-list > .notification-list__item:last-child {
+        @apply border-b-0;
+    }
+
+    .notification-list__item--unread {
+        @apply bg-[#FFF8F1];
+    }
+
+    .notification-list__dot {
+        @apply mt-2 size-2.5 rounded-full;
+    }
+
+    .notification-list__item--unread .notification-list__dot {
+        @apply bg-coral;
+    }
+
+    .notification-list__text {
+        @apply flex min-w-0 flex-col;
+    }
+
+    .notification-list__type {
+        @apply text-xs font-semibold tracking-[0.06em] text-muted uppercase;
+    }
+
+    .notification-list__title {
+        @apply font-semibold;
+    }
+
+    .notification-list__body {
+        @apply text-sm text-body;
+    }
+
+    .notification-list__date {
+        @apply col-start-2 text-xs whitespace-nowrap text-muted sm:col-start-3;
+    }
+}

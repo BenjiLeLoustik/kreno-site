@@ -1,0 +1,31 @@
+@layer base {
+
+    html {
+        @apply scroll-smooth;
+    }
+
+    body {
+        @apply m-0 min-h-screen bg-cream font-sans text-base leading-[1.55] text-ink antialiased;
+    }
+
+    a {
+        @apply text-ink transition-colors;
+    }
+
+    a:hover {
+        @apply text-coral;
+    }
+
+    h1, h2, h3 {
+        @apply m-0 text-balance;
+    }
+
+    p {
+        @apply m-0;
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-coral;
+    }
+
+}

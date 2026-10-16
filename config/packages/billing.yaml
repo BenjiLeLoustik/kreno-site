@@ -1,0 +1,5 @@
+issuer:
+    name: 'KRENO SAS'
+    address: '%env(BILLING_ISSUER_ADDRESS)%'
+    siren: '%env(BILLING_ISSUER_SIREN)%'
+    vatNumber: '%env(BILLING_ISSUER_VAT)%'

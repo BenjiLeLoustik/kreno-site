@@ -1,0 +1,85 @@
+{% extends 'layouts/pro.html.twig' %}
+
+{% set pro_section = 'bookings' %}
+
+{% block title %}Réservation {{ booking.reference }} · Espace pro{% endblock %}
+
+{% block content %}
+    <div class="pro-head">
+        <div class="pro-head__text">
+            <a href="{{ path('pro_bookings') }}" class="pro-back">← Réservations · {{ booking.reference }}</a>
+            <h1 class="pro-title">{{ booking.client }} · {{ booking.day|lower }} {{ booking.time }}</h1>
+        </div>
+        <span class="pro-badge pro-badge--{{ booking.kind }}">{{ booking.statusLabel }}</span>
+    </div>
+
+    <div class="pro-columns">
+        <div class="pro-columns__main pro-form">
+            <section class="booking-summary">
+                <div class="booking-summary__item"><span class="pro-stat__label">Créneau</span><b>{{ booking.date }} · {{ booking.time }}</b></div>
+                <div class="booking-summary__item"><span class="pro-stat__label">Prestation</span><b>{{ booking.what ?: '—' }}{% if booking.duration %} · {{ booking.duration }}{% endif %}</b></div>
+                <div class="booking-summary__item"><span class="pro-stat__label">À encaisser</span><b class="pro-price">{{ booking.price }} <s class="pro-price__old">{{ booking.old }}</s></b></div>
+            </section>
+
+            <section class="pro-card">
+                <h2 class="pro-card__title">Client</h2>
+                {% if booking.customer %}
+                    <dl class="pro-facts">
+                        <dt class="pro-facts__label">Nom</dt>
+                        <dd class="pro-facts__value">{{ booking.customer.name }}</dd>
+                        <dt class="pro-facts__label">Téléphone</dt>
+                        <dd class="pro-facts__value">
+                            {% if booking.customer.phone %}<a href="tel:{{ booking.customer.phone|replace({ ' ': '' }) }}">{{ booking.customer.phone }}</a>{% else %}—{% endif %}
+                        </dd>
+                        <dt class="pro-facts__label">Chez vous via Kréno</dt>
+                        <dd class="pro-facts__value">{{ booking.customer.history }}</dd>
+                    </dl>
+                {% else %}
+                    <p class="pro-subtitle">Compte client supprimé.</p>
+                {% endif %}
+                {% if booking.note %}
+                    <div class="pro-note">« {{ booking.note }} »</div>
+                {% endif %}
+            </section>
+        </div>
+
+        <aside class="pro-card pro-columns__aside">
+            <h2 class="pro-card__title">{{ booking.closed ? 'Rendez-vous clos' : 'Après le rendez-vous' }}</h2>
+
+            {% if booking.closed %}
+                <div class="pro-note">
+                    {{ booking.closedText ?: booking.statusLabel }}
+                    {% if booking.cancellationReason %}<br>Motif : {{ booking.cancellationReason }}{% endif %}
+                </div>
+            {% else %}
+                {% if booking.canMark %}
+                    <form method="post" action="{{ path('pro_booking_honored', { id: booking.id }) }}">
+                        {{ csrf_field('pro')|raw }}
+                        <button type="submit" class="pro-button pro-button--success pro-button--block">Le client est venu</button>
+                    </form>
+                    <form method="post" action="{{ path('pro_booking_no_show', { id: booking.id }) }}">
+                        {{ csrf_field('pro')|raw }}
+                        <button type="submit" class="pro-button pro-button--danger pro-button--block" data-pro-confirm="Confirmer l'absence de {{ booking.client }} ? Elle est signalée à Kréno et peut suspendre son compte.">Le client ne s'est pas présenté</button>
+                    </form>
+                    <span class="pro-field__hint">Une absence est signalée à Kréno et peut suspendre le compte du client.</span>
+                {% else %}
+                    <div class="pro-note">Vous pourrez indiquer si le client est venu à partir de l'heure du rendez-vous.</div>
+                {% endif %}
+
+                {% if booking.canCancel %}
+                    <details class="booking-cancel">
+                        <summary class="booking-cancel__summary">Annuler ce rendez-vous (imprévu)</summary>
+                        <form method="post" action="{{ path('pro_booking_cancel', { id: booking.id }) }}" class="pro-form booking-cancel__body">
+                            {{ csrf_field('pro')|raw }}
+                            <label class="pro-field">
+                                Motif (envoyé au client)
+                                <textarea name="reason" rows="2" maxlength="255" class="pro-input pro-input--area" placeholder="Ex. : fermeture exceptionnelle"></textarea>
+                            </label>
+                            <button type="submit" class="pro-button pro-button--danger" data-pro-confirm="Annuler le rendez-vous de {{ booking.client }} ? Il sera prévenu par e-mail.">Annuler le rendez-vous</button>
+                        </form>
+                    </details>
+                {% endif %}
+            {% endif %}
+        </aside>
+    </div>
+{% endblock %}

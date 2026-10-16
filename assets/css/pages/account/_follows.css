@@ -1,0 +1,46 @@
+@layer components {
+    .follow-grid {
+        @apply grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4;
+    }
+
+    .follow-card {
+        @apply flex flex-col overflow-hidden rounded-[18px] border border-sand bg-white;
+    }
+
+    .follow-card__cover {
+        @apply aspect-[16/9] w-full object-cover;
+    }
+
+    .follow-card__cover--empty {
+        @apply grid place-items-center bg-frost font-display text-4xl font-extrabold text-mist;
+    }
+
+    .follow-card__body {
+        @apply flex flex-1 flex-col gap-1 px-4 pt-4;
+    }
+
+    .follow-card__name {
+        @apply font-bold text-ink no-underline hover:text-coral;
+    }
+
+    .follow-card__meta,
+    .follow-card__hours {
+        @apply text-sm text-muted;
+    }
+
+    .follow-card__slots {
+        @apply text-sm font-semibold text-muted;
+    }
+
+    .follow-card__slots--available {
+        @apply text-[#0F5B43];
+    }
+
+    .follow-card__form {
+        @apply m-0 px-4 pt-2 pb-4;
+    }
+
+    .follow-card__unfollow {
+        @apply cursor-pointer border-0 bg-transparent p-0 font-sans text-sm font-semibold text-muted underline hover:text-[#C93A22];
+    }
+}

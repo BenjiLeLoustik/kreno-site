@@ -1,0 +1,75 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set admin_section = 'bookings' %}
+{% set query = { tab: tab != 'all' ? tab : null, q: q }|filter(value => value) %}
+{% set tones = { coming: 'info', pending: 'warning', done: 'success', noshow: 'danger', cancelled: 'neutral', cancelled_by_establishment: 'danger' } %}
+
+{% block title %}Réservations · Administration Kréno{% endblock %}
+
+{% block content %}
+    <div class="admin-head">
+        <h1 class="admin-title">Réservations</h1>
+        <form method="get" action="{{ path('admin_bookings') }}" class="admin-toolbar">
+            {% if tab != 'all' %}<input type="hidden" name="tab" value="{{ tab }}">{% endif %}
+            <label class="admin-search">
+                <i data-lucide="search" class="admin-nav__icon"></i>
+                <input type="search" name="q" value="{{ q }}" placeholder="Référence, client ou établissement" class="admin-search__input" aria-label="Rechercher une réservation">
+            </label>
+            <button type="submit" class="admin-button">Rechercher</button>
+        </form>
+    </div>
+
+    <div class="admin-head">
+        <nav class="admin-tabs" aria-label="Statut">
+            {% for item in tabs %}
+                <a href="{{ path('admin_bookings', { tab: item.key != 'all' ? item.key : null, q: q }|filter(value => value)) }}" class="admin-tabs__link{{ item.key == tab ? ' admin-tabs__link--active' : '' }}"{{ item.key == tab ? ' aria-current="page"' : '' }}>{{ item.label }}</a>
+            {% endfor %}
+        </nav>
+        <span class="admin-subtitle">{{ today }}</span>
+    </div>
+
+    <div class="admin-table">
+        <table class="admin-table__table">
+            <thead>
+            <tr>
+                <th scope="col" class="admin-table__th">Référence</th>
+                <th scope="col" class="admin-table__th">Client</th>
+                <th scope="col" class="admin-table__th">Établissement</th>
+                <th scope="col" class="admin-table__th">Créneau</th>
+                <th scope="col" class="admin-table__th">Prix</th>
+                <th scope="col" class="admin-table__th">Statut</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for booking in bookings %}
+                <tr class="admin-table__row">
+                    <td class="admin-table__td admin-table__td--nowrap"><a href="{{ path('admin_booking_show', { id: booking.id }) }}" class="admin-table__link">{{ booking.reference }}</a></td>
+                    <td class="admin-table__td">{{ booking.client }}</td>
+                    <td class="admin-table__td">
+                        {% if booking.establishment and is_granted('ROLE_MODERATOR') and route_exists('admin_establishment_show') %}
+                            <a href="{{ path('admin_establishment_show', { id: booking.establishment.id }) }}">{{ booking.shop }}</a>
+                        {% else %}
+                            {{ booking.shop ?: '—' }}
+                        {% endif %}
+                    </td>
+                    <td class="admin-table__td admin-table__td--muted admin-table__td--nowrap">{{ booking.when ?: '—' }}{% if booking.what %} · {{ booking.what }}{% endif %}</td>
+                    <td class="admin-table__td admin-table__td--number">{{ booking.price }}</td>
+                    <td class="admin-table__td"><span class="admin-badge admin-badge--{{ tones[booking.kind] ?? 'neutral' }}">{{ booking.statusLabel }}</span></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="admin-table__empty">Aucune réservation pour ce filtre.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if page > 1 or hasNext %}
+        <div class="admin-pagination">
+            {% if page > 1 %}<a href="{{ path('admin_bookings', query|merge({ page: page - 1 })) }}" class="admin-button admin-button--small">← Précédentes</a>{% else %}<span></span>{% endif %}
+            <span>Page {{ page }}</span>
+            {% if hasNext %}<a href="{{ path('admin_bookings', query|merge({ page: page + 1 })) }}" class="admin-button admin-button--small">Suivantes →</a>{% else %}<span></span>{% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

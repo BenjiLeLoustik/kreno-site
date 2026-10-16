@@ -1,0 +1,12 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>Voici votre code de vérification pour finaliser l’inscription de {{ company }} sur Kréno Pro :</p>
+    <p style="{{ styles.code }}">{{ code }}</p>
+    <p>Ce code est valable {{ expiresIn }}. Saisissez-le sur la page d’inscription : <a href="{{ signupUrl }}" style="{{ styles.link }}">reprendre mon inscription</a></p>
+    <p>Si vous n’êtes pas à l’origine de cette demande, ignorez cet e-mail.</p>
+
+{% endblock %}

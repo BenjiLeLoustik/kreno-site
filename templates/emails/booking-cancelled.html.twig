@@ -1,0 +1,17 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'default' %}
+
+{% block mailContent %}
+
+    <p>Ta réservation est bien annulée :</p>
+    <ul style="{{ styles.list }}">
+        <li style="{{ styles.item }}">{{ booking.service }}</li>
+        <li style="{{ styles.item }}">{{ booking.day }} à {{ booking.time }}</li>
+        <li style="{{ styles.item }}">{{ booking.establishment.name }}</li>
+        <li style="{{ styles.item }}">Référence : {{ booking.reference }}</li>
+    </ul>
+    <p>L’établissement a été prévenu. Rien ne t’a été facturé.</p>
+    <p>D’autres créneaux t’attendent : <a href="{{ homeUrl }}" style="{{ styles.link }}">voir les créneaux du moment</a></p>
+
+{% endblock %}

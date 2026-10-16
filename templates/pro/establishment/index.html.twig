@@ -1,0 +1,216 @@
+{% extends 'layouts/pro.html.twig' %}
+
+{% set pro_section = 'establishment' %}
+{% set form = establishment.form %}
+{% set imageIds = establishment.images|map(image => image.id) %}
+
+{% macro move(ids, index, step, label, icon) %}
+    {% set target = index + step %}
+    {% if target >= 0 and target < ids|length %}
+        {% set reordered = [] %}
+        {% for position, id in ids %}
+            {% set reordered = reordered|merge([position == index ? ids[target] : (position == target ? ids[index] : id)]) %}
+        {% endfor %}
+        <form method="post" action="{{ path('pro_image_reorder') }}">
+            {{ csrf_field('pro')|raw }}
+            {% for id in reordered %}<input type="hidden" name="ids[]" value="{{ id }}">{% endfor %}
+            <button type="submit" class="pro-button pro-button--small" aria-label="{{ label }}"><i data-lucide="{{ icon }}" class="pro-nav__icon"></i></button>
+        </form>
+    {% endif %}
+{% endmacro %}
+
+{% block title %}Mon établissement · Espace pro{% endblock %}
+
+{% block content %}
+    {% import _self as ui %}
+
+    <div class="pro-head">
+        <div class="pro-head__text">
+            <h1 class="pro-title">Mon établissement</h1>
+            <span class="pro-subtitle">{{ establishment.name }} · {{ establishment.statusLabel }}{% if establishment.followersCount %} · {{ establishment.followersCount }} abonné{{ establishment.followersCount > 1 ? 's' : '' }}{% endif %}</span>
+        </div>
+        {% if context.current.online and context.current.city %}
+            <a href="{{ path('shop_show', { city: context.current.city, slug: context.current.slug }) }}" class="pro-button" target="_blank" rel="noopener">Voir ma page publique</a>
+        {% endif %}
+    </div>
+
+    <div class="pro-columns">
+        <div class="pro-columns__main pro-form">
+            <section class="pro-card" id="informations">
+                <h2 class="pro-card__title">Informations</h2>
+                <form method="post" action="{{ path('pro_establishment_update') }}" class="pro-form">
+                    {{ csrf_field('pro')|raw }}
+                    <fieldset class="settings-fieldset"{{ rights.edit ? '' : ' disabled' }}>
+                        <div class="pro-form__row">
+                            <label class="pro-field">Nom<input type="text" name="name" value="{{ form.name }}" required minlength="2" maxlength="120" class="pro-input"></label>
+                            <label class="pro-field">
+                                Catégorie
+                                <select name="categorySlug" class="pro-input">
+                                    {% for category in categories %}
+                                        <option value="{{ category.slug }}"{{ category.slug == form.categorySlug ? ' selected' : '' }}>{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        </div>
+                        <label class="pro-field">
+                            Description
+                            <textarea name="description" rows="4" maxlength="2000" class="pro-input pro-input--area" placeholder="Présentez votre établissement en deux ou trois phrases.">{{ form.description }}</textarea>
+                        </label>
+                        <div class="pro-form__row">
+                            <label class="pro-field">Adresse<input type="text" name="addressLine1" value="{{ form.addressLine1 }}" maxlength="160" class="pro-input"></label>
+                            <label class="pro-field">Complément<input type="text" name="addressLine2" value="{{ form.addressLine2 }}" maxlength="160" class="pro-input"></label>
+                        </div>
+                        <div class="pro-form__row settings-row--3">
+                            <label class="pro-field">Code postal<input type="text" name="postalCode" value="{{ form.postalCode }}" pattern="\d{5}" inputmode="numeric" class="pro-input"></label>
+                            <label class="pro-field">Ville affichée<input type="text" name="locality" value="{{ form.locality }}" maxlength="100" class="pro-input" placeholder="Lyon 3e"></label>
+                            <label class="pro-field">
+                                Ville Kréno
+                                <select name="citySlug" class="pro-input">
+                                    {% for city in cities %}
+                                        <option value="{{ city.slug }}"{{ city.slug == form.citySlug ? ' selected' : '' }}>{{ city.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        </div>
+                        <div class="pro-form__row settings-row--3">
+                            <label class="pro-field">Téléphone<input type="tel" name="phone" value="{{ form.phone }}" class="pro-input" placeholder="04 00 00 00 00"></label>
+                            <label class="pro-field">E-mail<input type="email" name="email" value="{{ form.email }}" class="pro-input"></label>
+                            <label class="pro-field">Site web<input type="url" name="website" value="{{ form.website }}" class="pro-input" placeholder="https://"></label>
+                        </div>
+                        <label class="pro-field">
+                            Remise par défaut (%)
+                            <input type="number" name="defaultDiscount" value="{{ form.defaultDiscount }}" min="0" max="80" class="pro-input settings-input--short">
+                            <span class="pro-field__hint">Proposée par défaut quand vous publiez un créneau.</span>
+                        </label>
+                        {% if rights.edit %}
+                            <div><button type="submit" class="pro-button pro-button--primary">Enregistrer</button></div>
+                        {% endif %}
+                    </fieldset>
+                </form>
+            </section>
+
+            <section class="pro-card" id="horaires">
+                <h2 class="pro-card__title">Horaires</h2>
+                <form method="post" action="{{ path('pro_establishment_hours') }}" class="pro-form">
+                    {{ csrf_field('pro')|raw }}
+                    <fieldset class="settings-fieldset"{{ rights.edit ? '' : ' disabled' }}>
+                        <div class="settings-hours">
+                            {% set row = 0 %}
+                            {% for day in establishment.hours %}
+                                <div class="settings-hours__day">
+                                    <b class="settings-hours__name">{{ day.day }}</b>
+                                    <div class="settings-hours__ranges">
+                                        {% for index in 0..(rangesPerDay - 1) %}
+                                            {% set range = day.ranges[index] ?? null %}
+                                            <span class="settings-hours__range">
+                                                <input type="hidden" name="hours[{{ row }}][weekday]" value="{{ day.weekday }}">
+                                                <input type="time" name="hours[{{ row }}][opensAt]" value="{{ range ? range.opensAt : '' }}" step="900" class="pro-input settings-hours__time" aria-label="{{ day.day }}, ouverture {{ index + 1 }}">
+                                                <span aria-hidden="true">–</span>
+                                                <input type="time" name="hours[{{ row }}][closesAt]" value="{{ range ? range.closesAt : '' }}" step="900" class="pro-input settings-hours__time" aria-label="{{ day.day }}, fermeture {{ index + 1 }}">
+                                            </span>
+                                            {% set row = row + 1 %}
+                                        {% endfor %}
+                                    </div>
+                                    <span class="settings-hours__label{{ day.closed ? ' settings-hours__label--closed' : '' }}">{{ day.hours }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <span class="pro-field__hint">Laissez vide pour un jour fermé. Deuxième plage pour une pause du midi.</span>
+                        {% if rights.edit %}
+                            <div><button type="submit" class="pro-button pro-button--primary">Enregistrer les horaires</button></div>
+                        {% endif %}
+                    </fieldset>
+                </form>
+
+                <h3 class="settings-subtitle">Fermetures exceptionnelles</h3>
+                {% for closure in establishment.closures %}
+                    <div class="settings-line">
+                        <span><b>{{ closure.label }}</b>{% if closure.reason %} · {{ closure.reason }}{% endif %}</span>
+                        {% if rights.edit %}
+                            <form method="post" action="{{ path('pro_establishment_closure_delete', { id: closure.id }) }}">
+                                {{ csrf_field('pro')|raw }}
+                                <button type="submit" class="pro-button pro-button--small pro-button--danger">Supprimer</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p class="pro-subtitle">Aucune fermeture prévue.</p>
+                {% endfor %}
+                {% if rights.edit %}
+                    <form method="post" action="{{ path('pro_establishment_closure_create') }}" class="settings-inline">
+                        {{ csrf_field('pro')|raw }}
+                        <label class="pro-field">Du<input type="date" name="startsOn" required class="pro-input"></label>
+                        <label class="pro-field">Au<input type="date" name="endsOn" required class="pro-input"></label>
+                        <label class="pro-field settings-inline__grow">Motif<input type="text" name="reason" maxlength="160" class="pro-input" placeholder="Congés, travaux…"></label>
+                        <button type="submit" class="pro-button">Ajouter</button>
+                    </form>
+                {% endif %}
+            </section>
+        </div>
+
+        <div class="pro-columns__aside pro-form">
+            <section class="pro-card" id="photos">
+                <h2 class="pro-card__title">Photos</h2>
+                <div class="settings-photos">
+                    {% for image in establishment.images %}
+                        <figure class="settings-photo">
+                            <img src="{{ image.url }}" alt="{{ image.alt ?: establishment.name }}" class="settings-photo__image" loading="lazy">
+                            {% if image.cover %}<span class="settings-photo__cover">Couverture</span>{% endif %}
+                            {% if rights.edit %}
+                                <figcaption class="settings-photo__actions">
+                                    {{ ui.move(imageIds, loop.index0, -1, 'Avancer la photo', 'arrow-left') }}
+                                    {{ ui.move(imageIds, loop.index0, 1, 'Reculer la photo', 'arrow-right') }}
+                                    <form method="post" action="{{ path('pro_image_delete', { id: image.id }) }}">
+                                        {{ csrf_field('pro')|raw }}
+                                        <button type="submit" class="pro-button pro-button--small pro-button--danger" aria-label="Supprimer la photo" data-pro-confirm="Supprimer cette photo ?"><i data-lucide="trash-2" class="pro-nav__icon"></i></button>
+                                    </form>
+                                </figcaption>
+                                <form method="post" action="{{ path('pro_image_update', { id: image.id }) }}" class="settings-photo__alt">
+                                    {{ csrf_field('pro')|raw }}
+                                    <input type="text" name="alt" value="{{ image.alt }}" maxlength="160" class="pro-input settings-photo__alt-input" placeholder="Décrire la photo" aria-label="Description de la photo">
+                                    <button type="submit" class="pro-button pro-button--small">OK</button>
+                                </form>
+                            {% endif %}
+                        </figure>
+                    {% else %}
+                        <p class="pro-subtitle">Pas encore de photo. Les pages avec photos sont deux fois plus réservées.</p>
+                    {% endfor %}
+                </div>
+                {% if rights.edit %}
+                    <form method="post" action="{{ path('pro_image_upload') }}" enctype="multipart/form-data" class="pro-form">
+                        {{ csrf_field('pro')|raw }}
+                        <label class="pro-field">Ajouter une photo<input type="file" name="image" accept="image/jpeg,image/png,image/webp" required class="pro-input settings-file"></label>
+                        <label class="pro-field">Description (facultatif)<input type="text" name="alt" maxlength="160" class="pro-input"></label>
+                        <div><button type="submit" class="pro-button">Envoyer la photo</button></div>
+                    </form>
+                {% endif %}
+            </section>
+
+            <section class="pro-card" id="prestations">
+                <div class="pro-card__head">
+                    <h2 class="pro-card__title">Prestations</h2>
+                    <a href="{{ path('pro_services') }}" class="pro-card__link">{{ rights.services ? 'Gérer' : 'Voir' }}</a>
+                </div>
+                {% for service in establishment.services %}
+                    <div class="settings-line{{ service.active ? '' : ' settings-line--muted' }}">
+                        <span><b>{{ service.name }}</b> · {{ service.durationLabel }}</span>
+                        <span class="pro-price">{{ service.priceLabel }}</span>
+                    </div>
+                {% else %}
+                    <p class="pro-subtitle">Aucune prestation.</p>
+                {% endfor %}
+            </section>
+
+            <section class="pro-card">
+                <h2 class="pro-card__title">Identification</h2>
+                <dl class="pro-facts">
+                    <dt class="pro-facts__label">SIRET</dt>
+                    <dd class="pro-facts__value">{{ establishment.siret ?? '—' }}</dd>
+                    <dt class="pro-facts__label">Statut</dt>
+                    <dd class="pro-facts__value">{{ establishment.statusLabel }}</dd>
+                </dl>
+                <span class="pro-field__hint">Pour modifier le SIRET, contactez l'équipe Kréno.</span>
+            </section>
+        </div>
+    </div>
+{% endblock %}

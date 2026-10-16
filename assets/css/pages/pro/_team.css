@@ -1,0 +1,61 @@
+@layer components {
+    .team-member {
+        @apply flex flex-col gap-2.5 border-t border-[#F1E8DE] py-4 first:border-t-0;
+    }
+
+    .team-person {
+        @apply flex items-center gap-3;
+    }
+
+    .team-person__identity {
+        @apply flex min-w-0 flex-1 flex-col text-sm;
+    }
+
+    .team-scope {
+        @apply flex flex-wrap gap-1.5;
+    }
+
+    .team-scope__item {
+        @apply inline-flex items-center gap-1.5 rounded-full bg-frost py-1 pr-1.5 pl-3 text-xs font-semibold text-[#5E6380];
+    }
+
+    .team-scope__remove {
+        @apply grid size-5 cursor-pointer place-items-center rounded-full border-0 bg-white font-sans text-sm leading-none text-muted hover:text-coral-dark;
+    }
+
+    .team-matrix {
+        @apply overflow-x-auto;
+    }
+
+    .team-matrix__table {
+        @apply w-full min-w-[560px] border-collapse text-sm;
+    }
+
+    .team-matrix__th {
+        @apply px-3 py-2.5 text-center text-xs font-semibold tracking-[0.08em] whitespace-nowrap text-muted uppercase first:text-left;
+    }
+
+    .team-matrix__action {
+        @apply border-t border-[#F1E8DE] px-3 py-2.5 text-left font-medium;
+    }
+
+    .team-matrix__cell {
+        @apply border-t border-[#F1E8DE] px-3 py-2.5 text-center text-[13px] font-semibold;
+    }
+
+    .team-matrix__cell--yes {
+        @apply text-[#1F9D74];
+    }
+
+    .team-matrix__cell--no {
+        @apply text-slate;
+    }
+
+    .team-matrix__cell--scope {
+        @apply text-body;
+    }
+
+    .team-matrix__cell--on_demand {
+        @apply text-amber-ink;
+    }
+}

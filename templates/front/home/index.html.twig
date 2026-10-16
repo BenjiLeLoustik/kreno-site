@@ -1,0 +1,109 @@
+{% extends 'layouts/front.html.twig' %}
+
+{% block content %}
+    {% set nav = navigation() %}
+    {% set site = website() %}
+    {% set tagline = site.tagline|split('. ', 2) %}
+
+    <section class="home-hero">
+        <h1 class="home-hero__title">
+            {% if tagline|length > 1 %}{{ tagline[0] }}.<br>{% endif %}
+            <span class="home-hero__accent">{{ tagline|last }}
+                <svg class="home-hero__underline" viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true"><path d="M4 11 C 70 3, 150 3, 296 9"></path></svg>
+            </span>
+        </h1>
+        <p class="home-hero__lead">Coiffeurs, esthéticiennes, ostéos, garages : quand un rendez-vous s'annule, il arrive sur {{ site.siteName }} à prix réduit. Tu réserves en deux clics, tu paies sur place.</p>
+
+        <form action="{{ path('search_index') }}" method="get" role="search" class="home-search">
+            <label for="home-where" class="home-search__field">
+                <i data-lucide="map-pin" class="home-search__icon" aria-hidden="true"></i>
+                <span class="home-search__control">
+                    <span class="home-search__label">Où ?</span>
+                    <select id="home-where" name="where" class="home-search__input">
+                        {% for item in nav.cities %}
+                            <option value="{{ item.slug }}"{{ city and city.slug == item.slug ? ' selected' : '' }}>{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                </span>
+            </label>
+            <span class="home-search__divider" aria-hidden="true"></span>
+            <label for="home-what" class="home-search__field home-search__field--what">
+                <i data-lucide="calendar" class="home-search__icon" aria-hidden="true"></i>
+                <span class="home-search__control">
+                    <span class="home-search__label">Quoi ?</span>
+                    <select id="home-what" name="what" class="home-search__input">
+                        <option value="">Tout</option>
+                        {% for category in nav.categories %}
+                            <option value="{{ category.slug }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </span>
+            </label>
+            <button type="submit" class="btn btn--primary home-search__submit">Voir les créneaux</button>
+        </form>
+    </section>
+
+    <section id="dispo" class="home-slots">
+        <div class="section-head section-head--split">
+            <div class="section-head__text">
+                <span class="eyebrow">Libres maintenant</span>
+                <h2 class="section-title">Près de chez toi{% if city %}, à {{ city.name }}{% endif %}</h2>
+            </div>
+            <a href="{{ path('search_index', city ? { where: city.slug } : {}) }}" class="home-slots__all">Voir tous les créneaux</a>
+        </div>
+
+        {% if slots is not empty %}
+            <div class="home-slots__grid">
+                {% for slot in slots %}
+                    {% include 'components/slot_card.html.twig' with { slot: slot } %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="home-slots__empty">
+                <i data-lucide="bell-ring" class="home-slots__empty-icon" aria-hidden="true"></i>
+                <p class="home-slots__empty-text">Aucun créneau libre pour le moment. Crée une alerte : on te prévient dès qu'un pro en libère un près de chez toi.</p>
+                <a href="{{ path('account_alerts') }}" class="btn btn--primary">Créer une alerte</a>
+            </div>
+        {% endif %}
+    </section>
+
+    <section id="comment" class="home-steps">
+        <div class="home-steps__inner">
+            <div class="section-head">
+                <span class="eyebrow">Comment ça marche</span>
+                <h2 class="section-title">Trois étapes, zéro compte à créer pour regarder</h2>
+            </div>
+            <div class="home-steps__grid">
+                {% for step in steps %}
+                    <div class="home-steps__item">
+                        <span class="home-steps__number">{{ step.n }}</span>
+                        <h3 class="home-steps__title">{{ step.title }}</h3>
+                        <p class="home-steps__text">{{ step.text }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="pros" class="home-pros">
+        <div class="home-pros__inner">
+            <div class="home-pros__text">
+                <span class="eyebrow eyebrow--mint">{{ site.siteName }} Pro</span>
+                <h2 class="home-pros__title">Un rendez-vous annulé ? Remplissez-le avant qu'il ne soit perdu.</h2>
+                <p class="home-pros__lead">Publiez le créneau libéré en trente secondes, choisissez la remise, et {{ site.siteName }} prévient les clients du quartier. Vous ne payez que lorsqu'il est réservé.</p>
+                <div class="home-pros__actions">
+                    <a href="{{ path('pro_signup') }}" class="btn btn--primary btn--large">Créer mon espace pro</a>
+                    <a href="{{ path('pro_landing') }}#tarifs" class="btn btn--outline-light btn--large">Voir les tarifs</a>
+                </div>
+            </div>
+            <div class="home-pros__facts">
+                {% for fact in proFacts|filter(fact => fact.value is not null) %}
+                    <div class="home-pros__fact">
+                        <strong class="home-pros__fact-value">{{ fact.value }}</strong>
+                        <span class="home-pros__fact-label">{{ fact.label }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

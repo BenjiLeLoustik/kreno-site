@@ -1,0 +1,11 @@
+senders:
+    client: 'Kréno <bonjour@kreno.fr>'
+    support: 'Kréno <aide@kreno.fr>'
+    pro: 'Kréno Pro <pro@kreno.fr>'
+
+supportAddress: 'aide@kreno.fr'
+moderationAddress: 'moderation@kreno.fr'
+
+footer:
+    legalName: 'KRENO SAS'
+    address: '%env(BILLING_ISSUER_ADDRESS)%'

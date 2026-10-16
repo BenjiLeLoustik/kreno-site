@@ -1,0 +1,33 @@
+@layer components {
+    .logo {
+        @apply inline-flex items-center gap-2.5;
+    }
+
+    .logo__mark {
+        @apply shrink-0;
+    }
+
+    .logo__word {
+        @apply font-display text-[28px] font-extrabold tracking-[-0.04em];
+    }
+
+    .logo--light .logo__word {
+        @apply text-frost;
+    }
+
+    .logo__badge {
+        @apply font-sans;
+    }
+
+    .logo__badge--pro {
+        @apply text-base font-semibold text-mint;
+    }
+
+    .logo__badge--admin {
+        @apply rounded-md bg-amber px-[7px] py-[3px] text-[11px] font-bold text-amber-ink uppercase;
+    }
+
+    .site-footer .logo__word {
+        @apply text-[26px];
+    }
+}

@@ -1,0 +1,75 @@
+{% extends 'layouts/pro.html.twig' %}
+
+{% set pro_section = 'slots' %}
+
+{% block title %}Mes créneaux · Espace pro{% endblock %}
+
+{% block content %}
+    <div class="pro-head">
+        <div class="pro-head__text">
+            <h1 class="pro-title">Mes créneaux</h1>
+            <span class="pro-subtitle">Créneaux à venir et ceux des {{ historyDays }} derniers jours.</span>
+        </div>
+        {% if canPublish %}
+            <a href="{{ path('pro_slot_new') }}" class="pro-button pro-button--primary">Publier un créneau</a>
+        {% endif %}
+    </div>
+
+    <nav class="pro-tabs" aria-label="Filtrer par statut">
+        {% for tab in tabs %}
+            <a href="{{ path('pro_slots', tab.key != 'all' ? { filter: tab.key } : {}) }}" class="pro-tabs__link{{ tab.key == filter ? ' pro-tabs__link--active' : '' }}"{{ tab.key == filter ? ' aria-current="page"' : '' }}>
+                {{ tab.label }} <span class="pro-tabs__count">{{ tab.count }}</span>
+            </a>
+        {% endfor %}
+    </nav>
+
+    <div class="pro-table">
+        <table class="pro-table__table">
+            <thead>
+            <tr>
+                <th scope="col" class="pro-table__th">Créneau</th>
+                <th scope="col" class="pro-table__th">Prestation</th>
+                <th scope="col" class="pro-table__th">Prix Kréno</th>
+                <th scope="col" class="pro-table__th">Statut</th>
+                <th scope="col" class="pro-table__th">Client</th>
+                <th scope="col" class="pro-table__th"><span class="sr-only">Actions</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+                <tr class="pro-table__row">
+                    <td class="pro-table__td pro-table__td--nowrap"><b>{{ row.time }}</b> <span class="pro-table__td--muted">{{ row.day }}</span></td>
+                    <td class="pro-table__td">{{ row.what }}{% if row.staff %}<br><span class="pro-table__td--muted">avec {{ row.staff }}</span>{% endif %}</td>
+                    <td class="pro-table__td pro-price"><s class="pro-price__old">{{ row.old }}</s> <b class="pro-price__new">{{ row.price }}</b></td>
+                    <td class="pro-table__td">
+                        <span class="pro-badge pro-badge--{{ row.kind }}">{{ row.status }}</span>
+                        {% if row.expiresLabel %}<br><span class="pro-table__td--muted">{{ row.expiresLabel }}</span>{% endif %}
+                    </td>
+                    <td class="pro-table__td">
+                        {% if row.bookingId and (context.permissions.establishment['bookings.manage'] ?? false) %}
+                            <a href="{{ path('pro_booking_show', { id: row.bookingId }) }}">{{ row.client }}</a>
+                        {% else %}
+                            {{ row.client }}
+                        {% endif %}
+                    </td>
+                    <td class="pro-table__td pro-table__td--end pro-table__td--nowrap">
+                        {% if canPublish and row.canWithdraw %}
+                            <form method="post" action="{{ path('pro_slot_withdraw', { id: row.id }) }}">
+                                {{ csrf_field('pro')|raw }}
+                                <input type="hidden" name="filter" value="{{ filter }}">
+                                <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="Retirer le créneau de {{ row.time }} ? Il ne sera plus visible des clients.">Retirer</button>
+                            </form>
+                        {% elseif canPublish and row.canRepublish %}
+                            <a href="{{ path('pro_slot_new', { from: row.id }) }}" class="pro-button pro-button--small">Republier</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="pro-table__empty">Aucun créneau dans cette catégorie.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

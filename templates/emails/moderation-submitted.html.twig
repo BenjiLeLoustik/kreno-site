@@ -1,0 +1,20 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'moderation' %}
+
+{% block mailContent %}
+
+    <p>Un nouvel établissement attend sa validation :</p>
+    <ul style="{{ styles.list }}">
+        <li style="{{ styles.item }}">Nom : {{ establishment.name }} (#{{ establishment.id }})</li>
+        <li style="{{ styles.item }}">Entreprise : {{ establishment.company }}</li>
+        <li style="{{ styles.item }}">SIRET : {{ establishment.siret }}</li>
+        <li style="{{ styles.item }}">Catégorie : {{ establishment.category }}</li>
+        <li style="{{ styles.item }}">Adresse : {{ establishment.address }}</li>
+        {% if establishment.phone %}
+            <li style="{{ styles.item }}">Téléphone : {{ establishment.phone }}</li>
+        {% endif %}
+    </ul>
+    <p>À traiter dans l’admin, section « Modération des pros ».</p>
+
+{% endblock %}

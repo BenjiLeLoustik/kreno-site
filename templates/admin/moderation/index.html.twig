@@ -1,0 +1,135 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set admin_section = 'moderation' %}
+{% set checkLabels = {
+    siretMatchesCompany: 'SIRET cohérent avec l\'entreprise',
+    hasAddress: 'Adresse renseignée',
+    hasPhotosAndDescription: 'Photos et description renseignées',
+} %}
+
+{% block title %}Modération des pros · Administration Kréno{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/pages/admin/moderation.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+    <h1 class="admin-title">Modération des pros</h1>
+
+    <div class="moderation">
+        <div class="moderation-list">
+            {% for group in [
+                { title: 'À vérifier', items: pending, empty: 'Aucun établissement à vérifier pour le moment.' },
+                { title: 'Décisions récentes', items: recent, empty: null },
+            ] %}
+                {% if group.items is not empty or group.empty %}
+                    <div class="moderation-list__group">
+                        <span class="moderation-list__title">{{ group.title }}{% if group.items is not empty %} · {{ group.items|length }}{% endif %}</span>
+                        {% for establishment in group.items %}
+                            {% set current = selected and selected.id == establishment.id %}
+                            <a href="{{ path('admin_moderation_show', { id: establishment.id }) }}" class="moderation-list__item{{ current ? ' moderation-list__item--active' : '' }}"{{ current ? ' aria-current="page"' : '' }}>
+                                <span class="moderation-list__text">
+                                    <b class="moderation-list__name">{{ establishment.name }}</b>
+                                    <span class="moderation-list__meta">{{ establishment.category ? establishment.category.name : 'Sans catégorie' }}{% if establishment.city %} · {{ establishment.city.name }}{% endif %}</span>
+                                </span>
+                                <span class="moderation-status moderation-status--{{ establishment.status }}">{{ establishment.statusLabel }}</span>
+                            </a>
+                        {% else %}
+                            <p class="moderation-list__empty">{{ group.empty }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if selected %}
+            <section class="moderation-detail">
+                <div class="moderation-detail__head">
+                    <div class="moderation-detail__heading">
+                        <h2 class="moderation-detail__title">{{ selected.name }}</h2>
+                        {% if selected.submittedAt %}
+                            <span class="moderation-detail__muted">Envoyé le {{ selected.submittedAt|date('d/m/Y à H:i') }}</span>
+                        {% endif %}
+                    </div>
+                    <span class="moderation-status moderation-status--{{ selected.status }} moderation-status--large">{{ selected.statusLabel }}</span>
+                </div>
+
+                <dl class="moderation-facts">
+                    <dt class="moderation-facts__label">Activité</dt>
+                    <dd class="moderation-facts__value">{{ selected.category ? selected.category.name : '—' }}</dd>
+                    <dt class="moderation-facts__label">Adresse</dt>
+                    <dd class="moderation-facts__value">{{ selected.address ?: '—' }}</dd>
+                    <dt class="moderation-facts__label">SIRET</dt>
+                    <dd class="moderation-facts__value moderation-facts__value--number">{{ selected.siretLabel ?: '—' }}{% if selected.apeCode %} · APE {{ selected.apeCode }}{% endif %}</dd>
+                    {% if selected.company %}
+                        <dt class="moderation-facts__label">Entreprise</dt>
+                        <dd class="moderation-facts__value">{{ selected.company.legalName ?: selected.company.name }} · SIREN {{ selected.company.siren }}</dd>
+                    {% endif %}
+                    <dt class="moderation-facts__label">Responsable</dt>
+                    <dd class="moderation-facts__value">
+                        {% if selected.owner %}
+                            {{ selected.owner.name }}
+                            <span class="moderation-facts__contact">
+                                <a href="mailto:{{ selected.owner.email }}">{{ selected.owner.email }}</a>{% if selected.owner.phone %} · {{ selected.owner.phone }}{% endif %}
+                            </span>
+                        {% else %}
+                            —
+                        {% endif %}
+                    </dd>
+                    <dt class="moderation-facts__label">Formule</dt>
+                    <dd class="moderation-facts__value">{{ selected.plan ?: '—' }}</dd>
+                    <dt class="moderation-facts__label">Fiche</dt>
+                    <dd class="moderation-facts__value">{{ selected.servicesCount }} prestation{{ selected.servicesCount > 1 ? 's' : '' }} · {{ selected.imagesCount }} photo{{ selected.imagesCount > 1 ? 's' : '' }}</dd>
+                </dl>
+
+                {% if selected.description %}
+                    <p class="moderation-detail__description">{{ selected.description }}</p>
+                {% endif %}
+
+                <div class="moderation-checks">
+                    <b class="moderation-checks__title">Vérifications</b>
+                    {% for key, label in checkLabels %}
+                        {% set ok = selected.checks[key] ?? false %}
+                        <span class="moderation-checks__item">
+                            <span class="moderation-checks__mark moderation-checks__mark--{{ ok ? 'ok' : 'ko' }}" aria-hidden="true">{{ ok ? '✓' : '!' }}</span>
+                            {{ label }}<span class="sr-only"> : {{ ok ? 'oui' : 'non' }}</span>
+                        </span>
+                    {% endfor %}
+                </div>
+
+                {% if selected.status == 'pending_review' %}
+                    <form method="post" action="{{ path('admin_moderation_approve', { id: selected.id }) }}" class="moderation-form">
+                        {{ csrf_field('admin_moderation')|raw }}
+                        <label for="moderation-reason" class="moderation-form__field">
+                            Motif en cas de refus
+                            <select id="moderation-reason" name="reason" class="moderation-form__input">
+                                {% for reason in rejectionReasons %}
+                                    <option value="{{ reason.value }}">{{ reason.label }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        <label for="moderation-message" class="moderation-form__field">
+                            Message au pro <span class="moderation-detail__muted">(facultatif, pour un refus ou un justificatif)</span>
+                            <textarea id="moderation-message" name="message" rows="3" maxlength="2000" class="moderation-form__input moderation-form__input--area"></textarea>
+                        </label>
+                        <div class="moderation-form__actions">
+                            <button type="submit" class="moderation-button moderation-button--approve">Valider et mettre en ligne</button>
+                            <button type="submit" formaction="{{ path('admin_moderation_reject', { id: selected.id }) }}" class="moderation-button moderation-button--reject" data-confirm="Refuser {{ selected.name }} ? Le pro sera prévenu par e-mail.">Refuser</button>
+                            <button type="submit" formaction="{{ path('admin_moderation_request_document', { id: selected.id }) }}" class="moderation-button">Demander un justificatif</button>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="moderation-decision">
+                        {% if selected.status == 'rejected' %}
+                            <span>Refusé{% if selected.rejectionReason %} : {{ selected.rejectionReason }}{% endif %}</span>
+                        {% elseif selected.verifiedAt %}
+                            <span>Validé le {{ selected.verifiedAt|date('d/m/Y à H:i') }}.</span>
+                        {% else %}
+                            <span>Statut actuel : {{ selected.statusLabel }}.</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </section>
+        {% endif %}
+    </div>
+{% endblock %}

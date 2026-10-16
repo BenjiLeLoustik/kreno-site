@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block pdfTitle %}{% endblock %}</title>
+        <style>
+            body { font-family: "DejaVu Sans", sans-serif; font-size: 10pt; color: #000; }
+            table { width: 100%; border-collapse: collapse; }
+            td, th { padding: 4pt 6pt; vertical-align: top; text-align: left; }
+            .lines th, .lines td { border-bottom: 1px solid #999; }
+            .right { text-align: right; }
+            .small { font-size: 8pt; }
+        </style>
+    </head>
+    <body>
+        {% block pdfContent %}{% endblock %}
+    </body>
+</html>

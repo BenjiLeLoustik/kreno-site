@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% set site = website() %}
+    <title>{% block title %}{{ site.seoTitle ?: site.siteName }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ site.siteDescription }}{% endblock %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    {% block layout_javascripts %}{% endblock %}
+    {% block javascripts %}{% endblock %}
+</head>
+    <body class="{% block body_class %}{% endblock %}">
+    {% block body %}{% endblock %}
+    </body>
+</html>

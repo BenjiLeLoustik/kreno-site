@@ -1,0 +1,171 @@
+@layer components {
+    .layout-admin {
+        @apply bg-[#F2F1F6] text-[15px] leading-normal;
+    }
+
+    .admin {
+        @apply flex min-h-screen flex-col lg:flex-row;
+    }
+
+    .admin-side {
+        @apply flex flex-col gap-6 bg-night px-4 py-6 text-frost lg:sticky lg:top-0 lg:h-screen lg:w-[260px] lg:shrink-0 lg:overflow-y-auto;
+    }
+
+    .admin-side__brand {
+        @apply self-start px-2 no-underline;
+    }
+
+    .admin-side__brand .logo__word {
+        @apply text-2xl;
+    }
+
+    .admin-nav {
+        @apply flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible;
+    }
+
+    .admin-nav__link {
+        @apply flex min-h-11 shrink-0 items-center gap-2.5 rounded-xl px-3 font-medium whitespace-nowrap text-mist no-underline transition-colors;
+    }
+
+    .admin-nav__link:hover {
+        @apply bg-ink-soft/60 text-white;
+    }
+
+    .admin-nav__link--active {
+        @apply bg-ink-soft font-semibold text-white;
+    }
+
+    .admin-nav__icon {
+        @apply size-[18px] shrink-0;
+    }
+
+    .admin-nav__label {
+        @apply flex-1;
+    }
+
+    .admin-nav__badge {
+        @apply rounded-full bg-coral px-2 py-0.5 text-xs font-bold text-white;
+    }
+
+    .admin-side__footer {
+        @apply mt-auto flex flex-wrap items-center justify-between gap-3 px-2 lg:flex-col lg:items-start;
+    }
+
+    .admin-side__user {
+        @apply text-[13px] text-mist;
+    }
+
+    .admin-side__actions {
+        @apply flex gap-4 lg:flex-col lg:gap-1;
+    }
+
+    .admin-side__logout {
+        @apply m-0;
+    }
+
+    .admin-side__action {
+        @apply inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-sans text-[13px] font-medium text-mist no-underline;
+    }
+
+    .admin-side__action:hover {
+        @apply text-white;
+    }
+
+    .admin-main {
+        @apply flex min-w-0 flex-1 flex-col gap-6 p-5 md:p-8;
+    }
+
+    .admin-title {
+        @apply font-display text-[34px] font-extrabold tracking-[-0.03em];
+    }
+
+    .admin-flash {
+        @apply rounded-xl px-4 py-3 text-sm font-medium;
+    }
+
+    .admin-flash--success {
+        @apply bg-mint/15 text-mint-ink;
+    }
+
+    .admin-flash--error {
+        @apply bg-coral/15 text-coral-dark;
+    }
+
+    .admin-flash--info,
+    .admin-flash--warning {
+        @apply bg-amber/20 text-amber-ink;
+    }
+
+    .admin-stats {
+        @apply grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3.5;
+    }
+
+    .admin-stat {
+        @apply flex flex-col gap-1 rounded-2xl border border-[#E2E0EA] bg-white px-5 py-[18px] no-underline transition-shadow hover:shadow-card;
+    }
+
+    .admin-stat__label,
+    .admin-stat__note {
+        @apply text-[13px] text-muted;
+    }
+
+    .admin-stat__value {
+        @apply font-display text-[32px] font-extrabold text-ink tabular-nums;
+    }
+
+    .admin-stat__value--alert {
+        @apply text-coral-dark;
+    }
+
+    .admin-panel {
+        @apply flex min-w-0 flex-[1_1_380px] flex-col gap-2.5 rounded-[18px] border border-[#E2E0EA] bg-white p-5;
+    }
+
+    .admin-panel__head {
+        @apply flex items-baseline justify-between gap-2.5;
+    }
+
+    .admin-panel__title {
+        @apply text-[17px] font-bold;
+    }
+
+    .admin-panel__more {
+        @apply text-sm font-semibold whitespace-nowrap;
+    }
+
+    .admin-panel__row {
+        @apply flex items-center justify-between gap-2.5 border-t border-[#EEEDF3] py-2.5;
+    }
+
+    .admin-panel__name {
+        @apply font-bold no-underline;
+    }
+
+    .admin-panel__meta {
+        @apply text-sm text-muted;
+    }
+
+    .admin-panel__aside {
+        @apply text-[13px] whitespace-nowrap text-muted;
+    }
+
+    .admin-panel__empty {
+        @apply border-t border-[#EEEDF3] pt-2.5 text-sm text-muted;
+    }
+
+    .admin-priority {
+        @apply rounded-full px-[9px] py-1 text-xs font-bold whitespace-nowrap;
+    }
+
+    .admin-priority--high {
+        @apply bg-[#FFE1DA] text-[#8A2414];
+    }
+
+    .admin-priority--mid {
+        @apply bg-[#FFF3D6] text-[#5C3D00];
+    }
+
+    .admin-priority--low {
+        @apply bg-frost text-muted;
+    }
+}

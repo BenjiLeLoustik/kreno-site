@@ -1,0 +1,72 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Inscription · Espace pro{% endblock %}
+
+{% block body_class %}layout-signup{% endblock %}
+
+{% block layout_javascripts %}
+    <script src="{{ asset('js/pro.js') }}" defer></script>
+{% endblock %}
+
+{% block body %}
+    {% set site = website() %}
+    <div class="signup">
+        <aside class="signup-side">
+            <a href="{{ path('pro_landing') }}" class="signup-side__brand" aria-label="{{ site.siteName }} Pro, accueil">
+                {% include 'components/logo.html.twig' with { size: 34, light: true, badge: 'pro' } %}
+            </a>
+            <div class="signup-side__intro">
+                <h2 class="signup-side__title">Créer mon espace pro</h2>
+                <span class="signup-side__lead">Environ 5 minutes. Vos réponses sont enregistrées à chaque étape.</span>
+            </div>
+            <ol class="signup-steps" aria-label="Étapes de l'inscription">
+                {% for item in signup.steps %}
+                    <li class="signup-steps__item signup-steps__item--{{ item.state }}"{{ item.state == 'current' ? ' aria-current="step"' : '' }}>
+                        <span class="signup-steps__mark" aria-hidden="true">{{ item.state == 'done' ? '✓' : item.number }}</span>
+                        <span class="signup-steps__text">
+                            {% if item.reachable and item.state != 'current' %}
+                                <a href="{{ path('pro_signup_step', { step: item.key }) }}" class="signup-steps__label">{{ item.label }}</a>
+                            {% else %}
+                                <b class="signup-steps__label">{{ item.label }}</b>
+                            {% endif %}
+                            <span class="signup-steps__sub">{{ item.sub }}</span>
+                        </span>
+                    </li>
+                {% endfor %}
+            </ol>
+            <div class="signup-side__note">
+                <b>Sans engagement</b>
+                <span class="signup-side__note-text">Vous changez de formule quand vous voulez, depuis votre espace.</span>
+                {% if site.contactEmail %}<span class="signup-side__contact">Une question ? {{ site.contactEmail }}</span>{% endif %}
+            </div>
+        </aside>
+
+        <main class="signup-main">
+            <div class="signup-panel">
+                <div class="signup-top">
+                    <span class="signup-top__step">{{ signup.step == 'pending' ? 'Inscription envoyée' : 'Étape ' ~ signup.number ~ ' sur ' ~ signup.total }}</span>
+                    {% if signup.loggedIn %}
+                        <form method="post" action="{{ logout_path() }}">
+                            <button type="submit" class="signup-top__logout">Se déconnecter</button>
+                        </form>
+                    {% else %}
+                        <span class="signup-top__login">Déjà inscrit ? <a href="{{ path('pro_login') }}" class="signup-top__link">Se connecter</a></span>
+                    {% endif %}
+                </div>
+
+                {% for type, messages in flashes() %}
+                    {% for message in messages %}
+                        <div class="pro-flash pro-flash--{{ type }}" role="status">{{ message }}</div>
+                    {% endfor %}
+                {% endfor %}
+
+                <div class="signup-head">
+                    <h1 class="signup-title">{% block heading %}{% endblock %}</h1>
+                    <span class="signup-lead">{% block lead %}{% endblock %}</span>
+                </div>
+
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+{% endblock %}

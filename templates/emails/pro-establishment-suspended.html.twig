@@ -1,0 +1,13 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>{{ establishment.name }} est suspendu sur Kréno.</p>
+    <p>Motif : {{ reason }}</p>
+    <p>Pendant la suspension, votre page n’est plus visible et vous ne pouvez plus publier de créneaux. Les réservations déjà confirmées sont maintenues.</p>
+    <p>Pour échanger avec notre équipe, écrivez-nous à {{ supportEmail }}.</p>
+    <p style="{{ styles.actions }}"><a href="{{ dashboardUrl }}" style="{{ styles.button }}">Ouvrir Kréno Pro</a></p>
+
+{% endblock %}

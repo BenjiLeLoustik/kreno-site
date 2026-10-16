@@ -1,0 +1,29 @@
+{% set groupTones = { moderation: 'info', sanction: 'danger', settings: 'neutral', billing: 'warning' } %}
+<div class="admin-table">
+    <table class="admin-table__table">
+        <thead>
+        <tr>
+            <th scope="col" class="admin-table__th">Date</th>
+            <th scope="col" class="admin-table__th">Membre</th>
+            <th scope="col" class="admin-table__th">Action</th>
+            <th scope="col" class="admin-table__th">Détail</th>
+            <th scope="col" class="admin-table__th">Version</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entry in journal.entries %}
+            <tr class="admin-table__row">
+                <td class="admin-table__td admin-table__td--muted admin-table__td--nowrap">{{ entry.when }}</td>
+                <td class="admin-table__td admin-table__td--nowrap">{{ entry.who }}</td>
+                <td class="admin-table__td"><span class="admin-badge admin-badge--{{ groupTones[entry.group] ?? 'neutral' }}">{{ entry.action }}</span></td>
+                <td class="admin-table__td">{{ entry.message }}</td>
+                <td class="admin-table__td admin-table__td--muted">{{ entry.version ?: '—' }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5" class="admin-table__empty">Aucune activité pour ce filtre.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,33 @@
+@layer components {
+    .booking-done {
+        @apply mx-auto grid max-w-[1100px] items-center gap-10 px-6 py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,460px)] lg:py-20;
+    }
+
+    .booking-done__text {
+        @apply flex flex-col items-start gap-4;
+    }
+
+    .booking-done__icon {
+        @apply grid size-14 place-items-center rounded-full bg-mint text-mint-ink;
+    }
+
+    .booking-done__check {
+        @apply size-7;
+    }
+
+    .booking-done__title {
+        @apply font-display text-[40px] leading-[1.05] font-extrabold tracking-[-0.03em] md:text-[52px];
+    }
+
+    .booking-done__message {
+        @apply max-w-[520px] text-lg text-body;
+    }
+
+    .booking-done__actions {
+        @apply flex flex-wrap gap-3;
+    }
+
+    .booking-done__notice {
+        @apply text-sm text-muted;
+    }
+}

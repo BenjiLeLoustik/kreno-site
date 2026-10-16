@@ -1,0 +1,54 @@
+{% extends 'layouts/pro.html.twig' %}
+
+{% set pro_section = 'dashboard' %}
+
+{% block title %}Bienvenue · Espace pro{% endblock %}
+
+{% block content %}
+    <div class="pro-head">
+        <div class="pro-head__text">
+            <h1 class="pro-title">Bienvenue {{ welcome.firstName }} !</h1>
+            <span class="pro-subtitle">{{ welcome.establishment.name }}{% if welcome.establishment.city %} · {{ welcome.establishment.city }}{% endif %}</span>
+        </div>
+        <a href="{{ path('pro_dashboard') }}" class="pro-button">Aller au tableau de bord</a>
+    </div>
+
+    <section class="pro-card">
+        <div class="pro-card__head">
+            <h2 class="pro-card__title">{{ welcome.completed ? 'Tout est prêt.' : 'Plus que quelques étapes' }}</h2>
+            <span class="pro-subtitle">{{ welcome.done }} sur {{ welcome.total }}</span>
+        </div>
+        <span class="welcome-progress" role="progressbar" aria-valuenow="{{ welcome.progress }}" aria-valuemin="0" aria-valuemax="100"><span class="welcome-progress__fill" style="--value: {{ welcome.progress }};"></span></span>
+
+        <ol class="welcome-tasks">
+            {% for task in welcome.tasks %}
+                <li class="welcome-task{{ task.done ? ' welcome-task--done' : '' }}">
+                    <span class="welcome-task__mark" aria-hidden="true">
+                        {% if task.done %}<i data-lucide="check" class="pro-nav__icon"></i>{% else %}{{ loop.index }}{% endif %}
+                    </span>
+                    <span class="welcome-task__body">
+                        <b>{{ task.title }}</b>
+                        <span class="pro-row__meta">{{ task.text }}</span>
+                    </span>
+                    <a href="{{ task.url }}" class="pro-button pro-button--small{{ task.done ? '' : ' pro-button--primary' }}">{{ task.cta }}</a>
+                </li>
+            {% endfor %}
+        </ol>
+    </section>
+
+    {% if welcome.shareUrl %}
+        <section class="pro-card">
+            <h2 class="pro-card__title">Votre page est en ligne</h2>
+            <p class="pro-subtitle">Partagez-la à vos clients : ils pourront vous suivre et être prévenus dès qu'un créneau se libère.</p>
+            <div class="welcome-share">
+                <input type="text" value="{{ welcome.shareUrl }}" readonly class="pro-input" aria-label="Adresse de votre page" data-welcome-share>
+                <button type="button" class="pro-button" data-welcome-copy>Copier</button>
+                <a href="{{ welcome.shareUrl }}" class="pro-button" target="_blank" rel="noopener">Ouvrir</a>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/pages/pro/welcome.js') }}" defer></script>
+{% endblock %}

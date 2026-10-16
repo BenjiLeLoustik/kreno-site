@@ -1,0 +1,21 @@
+@layer components {
+    .booking-summary {
+        @apply grid gap-3 sm:grid-cols-3;
+    }
+
+    .booking-summary__item {
+        @apply flex flex-col gap-1 rounded-[18px] border border-sand bg-white px-[18px] py-4;
+    }
+
+    .booking-cancel {
+        @apply border-t border-[#F1E8DE] pt-3;
+    }
+
+    .booking-cancel__summary {
+        @apply cursor-pointer text-sm font-semibold text-[#C93A22];
+    }
+
+    .booking-cancel__body {
+        @apply pt-3;
+    }
+}

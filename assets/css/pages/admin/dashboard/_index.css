@@ -1,0 +1,5 @@
+@layer components {
+    .admin-dashboard__panels {
+        @apply flex flex-wrap items-start gap-5;
+    }
+}

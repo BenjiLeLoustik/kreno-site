@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block body_class %}layout-auth layout-auth--pro{% endblock %}
+
+{% block body %}
+    {% set site = website() %}
+    <div class="pro-login">
+        <a href="{{ path('pro_landing') }}" class="pro-login__brand" aria-label="{{ site.siteName }} Pro, accueil">
+            {% include 'components/logo.html.twig' with { size: 0, light: true, badge: 'pro' } %}
+        </a>
+
+        <div class="pro-login__card form">
+            <div class="pro-login__head">
+                <h1 class="pro-login__title">{% block heading %}{% endblock %}</h1>
+                <span class="pro-login__lead">{% block lead %}{% endblock %}</span>
+            </div>
+
+            {% for type, messages in flashes() %}
+                {% for message in messages %}
+                    <div class="form-alert form-alert--{{ type == 'success' ? 'success' : 'error' }}" role="status">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            {% block content %}{% endblock %}
+        </div>
+
+        <a href="{{ path('pro_login') }}" class="pro-login__switch">← Retour à la connexion pro</a>
+    </div>
+{% endblock %}

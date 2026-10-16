@@ -1,0 +1,71 @@
+@layer components {
+    .alert-card--paused .account-card__text {
+        @apply text-muted;
+    }
+
+    .alert-card__actions {
+        @apply flex flex-wrap items-start justify-between gap-3;
+    }
+
+    .alert-card__edit {
+        @apply flex min-w-0 flex-[1_1_100%] flex-col gap-4 sm:flex-1;
+    }
+
+    .alert-card__toggle {
+        @apply cursor-pointer list-none self-start text-sm font-semibold text-ink underline [&::-webkit-details-marker]:hidden;
+    }
+
+    .alert-card__edit[open] .alert-card__toggle {
+        @apply text-muted;
+    }
+
+    .alert-card__delete {
+        @apply m-0;
+    }
+
+    .alert-card__remove {
+        @apply cursor-pointer border-0 bg-transparent p-0 font-sans text-sm font-semibold text-[#C93A22] underline;
+    }
+
+    .alert-form {
+        @apply grid gap-4 sm:grid-cols-2;
+    }
+
+    .alert-form__wide,
+    .alert-form__categories,
+    .alert-form__actions {
+        @apply sm:col-span-2;
+    }
+
+    .alert-form__categories {
+        @apply m-0 flex flex-wrap gap-2 border-0 p-0;
+    }
+
+    .alert-form__legend {
+        @apply mb-2 p-0 text-sm font-semibold;
+    }
+
+    .alert-form__muted {
+        @apply font-normal text-muted;
+    }
+
+    .alert-chip {
+        @apply cursor-pointer;
+    }
+
+    .alert-chip__input {
+        @apply sr-only;
+    }
+
+    .alert-chip__label {
+        @apply inline-flex min-h-10 items-center rounded-full border-[1.5px] border-sand bg-white px-4 text-sm font-semibold transition-colors;
+    }
+
+    .alert-chip__input:checked + .alert-chip__label {
+        @apply border-ink bg-ink text-white;
+    }
+
+    .alert-chip__input:focus-visible + .alert-chip__label {
+        @apply outline-2 outline-offset-2 outline-ink;
+    }
+}

@@ -1,0 +1,53 @@
+@layer components {
+    .settings-fieldset {
+        @apply m-0 flex min-w-0 flex-col gap-4 border-0 p-0 disabled:opacity-70;
+    }
+
+    .settings-row--3 {
+        @apply sm:grid-cols-3;
+    }
+
+    .settings-input--short {
+        @apply max-w-[140px];
+    }
+
+    .settings-subtitle {
+        @apply mt-2 text-base font-bold;
+    }
+
+    .settings-line {
+        @apply flex flex-wrap items-center justify-between gap-3 border-t border-[#F1E8DE] py-3 first:border-t-0;
+    }
+
+    .settings-line--muted {
+        @apply text-muted;
+    }
+
+    .settings-line__actions {
+        @apply flex flex-wrap items-center gap-2;
+    }
+
+    .settings-inline {
+        @apply flex flex-wrap items-end gap-3;
+    }
+
+    .settings-inline__grow {
+        @apply min-w-[200px] flex-1;
+    }
+
+    .settings-check {
+        @apply flex cursor-pointer items-start gap-2.5 text-sm font-medium;
+    }
+
+    .settings-check__input {
+        @apply mt-0.5 size-4 flex-none cursor-pointer accent-coral;
+    }
+
+    .settings-file {
+        @apply py-2.5 text-sm;
+    }
+
+    .pro-badge--default {
+        @apply bg-frost text-[#5E6380];
+    }
+}

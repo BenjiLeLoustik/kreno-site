@@ -1,0 +1,9 @@
+@layer components {
+    .field-select {
+        @apply min-h-10 w-full cursor-pointer rounded-[10px] border border-sand bg-white px-2.5 font-sans text-sm font-semibold text-ink;
+    }
+
+    .field-select--inline {
+        @apply w-auto;
+    }
+}

@@ -1,0 +1,49 @@
+@layer components {
+    .report-detail__head {
+        @apply flex flex-wrap items-start justify-between gap-3;
+    }
+
+    .report-facts {
+        @apply m-0 grid grid-cols-1 gap-x-4 gap-y-1 text-sm sm:grid-cols-[130px_minmax(0,1fr)] sm:gap-y-2;
+    }
+
+    .report-facts__label {
+        @apply text-muted;
+    }
+
+    .report-facts__value {
+        @apply m-0 mb-2 font-semibold sm:mb-0;
+    }
+
+    .report-detail__description {
+        @apply rounded-[14px] bg-cream px-4 py-3 text-sm whitespace-pre-line text-body;
+    }
+
+    .report-detail__resolution {
+        @apply rounded-[14px] bg-[#DDF7EC] px-4 py-3 text-sm text-mint-ink;
+    }
+
+    .report-message {
+        @apply flex flex-col gap-1 border-t border-[#F1E8DE] pt-3;
+    }
+
+    .report-message__head {
+        @apply flex flex-wrap items-baseline gap-x-3;
+    }
+
+    .report-message__author {
+        @apply text-sm;
+    }
+
+    .report-message__date {
+        @apply text-xs text-muted;
+    }
+
+    .report-message__body {
+        @apply text-sm text-body;
+    }
+
+    .report-reply {
+        @apply flex flex-col gap-3 border-t border-[#F1E8DE] pt-4;
+    }
+}

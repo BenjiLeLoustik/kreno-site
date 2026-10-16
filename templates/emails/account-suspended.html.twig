@@ -1,0 +1,15 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'default' %}
+
+{% block mailContent %}
+
+    <p>Ton compte Kréno est suspendu{% if until %} jusqu’au {{ until }}{% endif %}.</p>
+    <p>Motif : {{ reason }}</p>
+    {% if automatic %}
+        <p>Cette suspension est automatique : elle s’applique selon les règles de la plateforme, notamment en cas d’absences répétées à des rendez-vous.</p>
+    {% endif %}
+    <p>Pendant cette période, tu ne peux pas réserver de nouveau créneau. Tes réservations passées restent consultables.</p>
+    <p>Tu penses qu’il s’agit d’une erreur ? Écris-nous à {{ supportEmail }}.</p>
+
+{% endblock %}

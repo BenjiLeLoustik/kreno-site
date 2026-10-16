@@ -1,0 +1,17 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>La résiliation de votre abonnement {{ subscription.plan }} pour {{ company }} est enregistrée.</p>
+    {% if subscription.cancelAt %}
+        <p>Votre abonnement reste actif jusqu’au {{ subscription.cancelAt }}. Vous pouvez publier des créneaux jusqu’à cette date ; aucun prélèvement ne sera effectué ensuite.</p>
+    {% endif %}
+    {% if reason %}
+        <p>Motif indiqué : {{ reason }}</p>
+    {% endif %}
+    <p>Vous changez d’avis ? Vous pouvez annuler la résiliation à tout moment avant cette date.</p>
+    <p style="{{ styles.actions }}"><a href="{{ subscription.url }}" style="{{ styles.button }}">Mon abonnement</a></p>
+
+{% endblock %}

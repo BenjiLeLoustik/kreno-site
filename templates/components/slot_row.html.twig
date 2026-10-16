@@ -1,0 +1,26 @@
+<article class="slot-row">
+    <div class="slot-row__when">
+        <span class="slot-row__day{{ slot.today ? ' slot-row__day--today' : '' }}">{{ slot.day }}</span>
+        <strong class="slot-row__time">{{ slot.time }}</strong>
+        <span class="slot-row__duration">{{ slot.duration }}</span>
+    </div>
+    <div class="slot-row__body">
+        <span class="slot-row__meta">{{ slot.category }}{% if slot.distance %} · {{ slot.distance }}{% endif %}</span>
+        {% if slot.establishment.city and slot.establishment.slug %}
+            <a href="{{ path('shop_show', { city: slot.establishment.city, slug: slot.establishment.slug }) }}" class="slot-row__pro">{{ slot.pro }}</a>
+        {% else %}
+            <span class="slot-row__pro">{{ slot.pro }}</span>
+        {% endif %}
+        <span class="slot-row__what">{{ slot.what }}</span>
+    </div>
+    <div class="slot-row__aside">
+        <span class="slot-row__prices">
+            <s class="slot-row__old">{{ slot.old }}</s>
+            <b class="slot-row__price">{{ slot.price }}</b>
+        </span>
+        <span class="slot-row__badge slot-row__badge--{{ slot.urgency }}">{{ slot.badge }}</span>
+        <a href="{{ path('slot_show', { id: slot.id }) }}" class="btn btn--ink btn--small">Réserver</a>
+    </div>
+    <span class="slot-row__notch slot-row__notch--top" aria-hidden="true"></span>
+    <span class="slot-row__notch slot-row__notch--bottom" aria-hidden="true"></span>
+</article>

@@ -1,0 +1,33 @@
+@layer components {
+    .report-item {
+        @apply flex flex-wrap items-center justify-between gap-3 border-t border-[#F1E8DE] py-3.5 text-ink no-underline first:border-t-0 hover:text-ink;
+    }
+
+    .report-item__main {
+        @apply flex min-w-0 flex-1 flex-col gap-0.5;
+    }
+
+    .report-item__detail {
+        @apply text-sm text-muted;
+    }
+
+    .report-item__aside {
+        @apply flex flex-col items-end gap-1 text-sm text-muted;
+    }
+
+    .report-reasons {
+        @apply m-0 flex flex-col gap-2.5 border-0 p-0;
+    }
+
+    .report-message {
+        @apply flex flex-col gap-1.5 rounded-[14px] bg-[#F7F2EC] px-4 py-3.5;
+    }
+
+    .report-message__head {
+        @apply flex flex-wrap items-baseline gap-2 text-sm;
+    }
+
+    .report-message__body {
+        @apply text-sm text-body;
+    }
+}

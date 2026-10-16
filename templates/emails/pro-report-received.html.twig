@@ -1,0 +1,21 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>Un client a signalé un problème concernant {{ report.establishment.name }} (signalement {{ report.reference }}).</p>
+    <ul style="{{ styles.list }}">
+        <li style="{{ styles.item }}">Motif : {{ report.reason }}</li>
+        {% if report.booking %}
+            <li style="{{ styles.item }}">Rendez-vous : {{ report.booking.service }}, {{ report.booking.day }} à {{ report.booking.time }} (réf. {{ report.booking.reference }})</li>
+        {% endif %}
+    </ul>
+    {% if report.description %}
+        <p>Message du client :</p>
+        <blockquote style="{{ styles.quote }}">{{ report.description|nl2br }}</blockquote>
+    {% endif %}
+    <p>Vous avez {{ replyWithin }} pour donner votre version{% if deadline %}, soit jusqu’au {{ deadline }}{% endif %}. Passé ce délai, notre équipe tranchera sur la base des éléments disponibles.</p>
+    <p style="{{ styles.actions }}"><a href="{{ report.proUrl }}" style="{{ styles.button }}">Répondre au signalement</a></p>
+
+{% endblock %}

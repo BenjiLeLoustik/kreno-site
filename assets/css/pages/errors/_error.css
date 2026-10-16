@@ -1,0 +1,29 @@
+@layer components {
+    .error-page {
+        @apply mx-auto grid max-w-[1100px] items-center gap-10 px-6 py-14 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:py-24;
+    }
+
+    .error-page__ticket {
+        @apply order-2 lg:order-1;
+    }
+
+    .error-page__text {
+        @apply order-1 flex flex-col items-start gap-4 lg:order-2;
+    }
+
+    .error-page__eyebrow {
+        @apply text-xs font-bold tracking-[0.08em] text-coral uppercase;
+    }
+
+    .error-page__title {
+        @apply font-display text-[38px] leading-[1.05] font-extrabold tracking-[-0.03em] md:text-[52px];
+    }
+
+    .error-page__message {
+        @apply max-w-[520px] text-lg text-body;
+    }
+
+    .error-page__actions {
+        @apply flex flex-wrap gap-3;
+    }
+}

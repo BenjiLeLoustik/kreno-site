@@ -1,0 +1,11 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'default' %}
+
+{% block mailContent %}
+
+    <p>Ton compte Kréno est supprimé. Tes réservations à venir ont été annulées et les établissements concernés ont été prévenus.</p>
+    <p>Tes données personnelles seront effacées dans les délais prévus par notre politique de confidentialité.</p>
+    <p>Merci d’avoir utilisé Kréno. Tu seras toujours le bienvenu : <a href="{{ homeUrl }}" style="{{ styles.link }}">kreno.fr</a></p>
+
+{% endblock %}

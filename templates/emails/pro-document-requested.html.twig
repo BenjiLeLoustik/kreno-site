@@ -1,0 +1,12 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>Pour finaliser la vérification de {{ establishment.name }}, nous avons besoin d’un justificatif.</p>
+    <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
+    <p>Répondez simplement à cet e-mail en joignant le document, ou envoyez-le à {{ replyEmail }}.</p>
+    <p>Votre établissement sera mis en ligne dès réception et vérification.</p>
+
+{% endblock %}

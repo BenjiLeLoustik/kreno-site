@@ -1,0 +1,24 @@
+{% extends 'install/_layout.html.twig' %}
+
+{% block install %}
+    <section class="pro-card install-login">
+        <div class="install-intro">
+            <h1 class="install-intro__title">Aucune version du site n'est en ligne</h1>
+            <p class="install-intro__lead">Connecte-toi avec un compte administrateur pour créer et publier la première version.</p>
+        </div>
+        {% if loggedIn %}
+            <p class="pro-flash pro-flash--error">Ton compte n'a pas le rôle administrateur.</p>
+            <form method="post" action="{{ logout_path() }}">
+                <button type="submit" class="pro-button">Se déconnecter</button>
+            </form>
+        {% else %}
+            <form method="post" action="{{ path('app_login') }}" class="pro-form">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <input type="hidden" name="_target_path" value="{{ path('app_install') }}">
+                <label class="pro-field">Adresse e-mail<input type="email" name="email" required autofocus autocomplete="email" class="pro-input"></label>
+                <label class="pro-field">Mot de passe<input type="password" name="password" required autocomplete="current-password" class="pro-input"></label>
+                <button type="submit" class="pro-button pro-button--primary pro-button--block">Se connecter</button>
+            </form>
+        {% endif %}
+    </section>
+{% endblock %}

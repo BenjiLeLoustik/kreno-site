@@ -1,0 +1,49 @@
+{% extends 'layouts/front.html.twig' %}
+
+{% block title %}{{ category.name }} : les créneaux libérés près de chez toi · Kréno{% endblock %}
+
+{% block meta_description %}{{ category.description ?: category.name ~ ' : les rendez-vous annulés remis en ligne à prix réduit près de chez toi. Réservation en deux clics, paiement sur place.' }}{% endblock %}
+
+{% block header_class %}site-header--compact{% endblock %}
+
+{% block content %}
+    <section class="category-hero">
+        {% include 'components/breadcrumb.html.twig' with { items: breadcrumb } %}
+        <h1 class="category-hero__title">{{ category.name }} : les créneaux libérés près de chez toi</h1>
+        <p class="category-hero__lead">{{ category.description ?: 'Des rendez-vous annulés, remis en ligne à prix réduit par les professionnels de ton quartier. Réservation en deux clics, paiement sur place.' }}</p>
+    </section>
+
+    <section class="category-cities">
+        <h2 class="category-section-title">Choisis ta ville</h2>
+        {% if cities is not empty %}
+            <div class="category-cities__grid">
+                {% for city in cities %}
+                    <a href="{{ path('city_category_show', { city: city.slug, category: category.slug }) }}" class="category-city">
+                        <b class="category-city__name">{{ city.name }}</b>
+                        <span class="category-city__count{{ city.establishmentsCount > 0 ? ' category-city__count--open' : '' }}">
+                            {% if city.establishmentsCount > 0 %}
+                                {{ city.establishmentsCount }} partenaire{{ city.establishmentsCount > 1 ? 's' : '' }}
+                            {% else %}
+                                Pas encore de partenaire
+                            {% endif %}
+                        </span>
+                        <i data-lucide="arrow-right" class="category-city__arrow" aria-hidden="true"></i>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="category-cities__empty">Kréno arrive bientôt près de chez toi.</div>
+        {% endif %}
+    </section>
+
+    {% if otherCategories is not empty %}
+        <section class="category-more">
+            <h2 class="category-section-title">Autres catégories</h2>
+            <div class="chip-list">
+                {% for other in otherCategories %}
+                    <a href="{{ path('category_show', { slug: other.slug }) }}" class="chip">{{ other.name }}</a>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

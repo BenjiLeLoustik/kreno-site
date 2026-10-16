@@ -1,0 +1,105 @@
+@layer components {
+    .help-hero {
+        @apply bg-ink text-frost;
+    }
+
+    .help-hero__inner {
+        @apply mx-auto flex max-w-[1200px] flex-col gap-[18px] px-6 py-12 md:py-14;
+    }
+
+    .help-hero__title {
+        @apply font-display text-[36px] leading-tight font-extrabold tracking-[-0.03em] md:text-[48px];
+    }
+
+    .help-search {
+        @apply flex min-h-[54px] w-full max-w-[640px] items-center gap-2.5 rounded-2xl bg-white px-4 text-ink;
+    }
+
+    .help-search__icon {
+        @apply size-5 shrink-0 text-muted;
+    }
+
+    .help-search__input {
+        @apply min-w-0 flex-1 border-0 bg-transparent font-sans text-base font-medium text-ink outline-none placeholder:text-slate;
+    }
+
+    .help {
+        @apply mx-auto grid max-w-[1200px] items-start gap-10 px-6 pt-12 pb-[72px] lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)];
+    }
+
+    .help-faq {
+        @apply flex min-w-0 flex-col gap-6;
+    }
+
+    .help-topics {
+        @apply flex flex-wrap gap-2;
+    }
+
+    .help-topics__link {
+        @apply flex min-h-10 items-center rounded-full border border-sand bg-white px-3.5 text-sm font-semibold text-ink no-underline transition-colors hover:border-ink;
+    }
+
+    .help-group {
+        @apply flex scroll-mt-6 flex-col gap-3;
+    }
+
+    .help-group__title {
+        @apply text-xl font-bold;
+    }
+
+    .help-group__list {
+        @apply rounded-[18px] border border-sand bg-white px-[22px];
+    }
+
+    .help-question {
+        @apply border-b border-[#F1E8DE] last:border-b-0;
+    }
+
+    .help-question__summary {
+        @apply flex min-h-[58px] cursor-pointer list-none items-center justify-between gap-4 py-3 text-base font-semibold [&::-webkit-details-marker]:hidden;
+    }
+
+    .help-question__sign {
+        @apply text-[22px] leading-none text-coral before:content-['+'];
+    }
+
+    .help-question[open] .help-question__sign {
+        @apply before:content-['−'];
+    }
+
+    .help-question__answer {
+        @apply mb-4 text-body;
+    }
+
+    .help-faq__empty {
+        @apply rounded-[18px] border border-sand bg-white px-5 py-4 text-body;
+    }
+
+    .help-contact {
+        @apply flex scroll-mt-6 flex-col gap-3.5 rounded-[20px] border border-sand bg-white p-6 lg:sticky lg:top-6;
+    }
+
+    .help-contact__title {
+        @apply text-[22px] font-bold;
+    }
+
+    .help-contact__text {
+        @apply text-body;
+    }
+
+    .help-contact__sent {
+        @apply flex flex-col gap-1 rounded-[14px] bg-[#DDF7EC] p-[18px] text-mint-ink;
+    }
+
+    .help-form {
+        @apply flex flex-col gap-3;
+    }
+
+    .help-form__muted {
+        @apply font-normal text-muted;
+    }
+
+    .help-form__area {
+        @apply min-h-0 resize-y py-2.5;
+    }
+}

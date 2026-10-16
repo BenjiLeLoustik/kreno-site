@@ -1,0 +1,11 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>Vous avez demandé à réinitialiser votre mot de passe Kréno Pro.</p>
+    <p style="{{ styles.actions }}"><a href="{{ resetUrl }}" style="{{ styles.button }}">Choisir un nouveau mot de passe</a></p>
+    <p>Ce lien est valable {{ expiresIn }}. Si vous n’êtes pas à l’origine de cette demande, ignorez cet e-mail : votre mot de passe reste inchangé.</p>
+
+{% endblock %}

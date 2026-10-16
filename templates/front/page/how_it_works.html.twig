@@ -1,0 +1,49 @@
+{% extends 'layouts/front.html.twig' %}
+
+{% block title %}Comment ça marche · {{ website().siteName }}{% endblock %}
+
+{% block content %}
+    <section class="how-hero">
+        <span class="how-hero__eyebrow">Comment ça marche</span>
+        <h1 class="how-hero__title">Un rendez-vous annulé ne doit plus être une heure perdue.</h1>
+        <p class="how-hero__text">{{ website().siteName }} remet en ligne, à prix réduit, les créneaux qui se libèrent chez les pros de votre quartier. Tout le monde y gagne.</p>
+    </section>
+
+    <section class="how-columns">
+        {% for column in [
+            { title: 'Pour vous', steps: client, route: 'search_index', cta: 'Voir les créneaux libres', modifier: 'client' },
+            { title: 'Pour les pros', steps: pro, route: 'pro_landing', cta: 'Découvrir l\'espace pro', modifier: 'pro' },
+        ] %}
+            <div class="how-card how-card--{{ column.modifier }}">
+                <h2 class="how-card__title">{{ column.title }}</h2>
+                <ol class="how-steps">
+                    {% for step in column.steps %}
+                        <li class="how-steps__item">
+                            <span class="how-steps__number" aria-hidden="true">{{ loop.index }}</span>
+                            <div class="how-steps__text">
+                                <b class="how-steps__title">{{ step.title }}</b>
+                                <p class="how-steps__description">{{ step.text }}</p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ol>
+                <a href="{{ path(column.route) }}" class="btn {{ column.modifier == 'client' ? 'btn--primary' : 'btn--ink' }} how-card__cta">{{ column.cta }}</a>
+            </div>
+        {% endfor %}
+    </section>
+
+    <section class="how-rules">
+        <div class="how-rules__inner">
+            <h2 class="how-rules__title">Les règles du jeu</h2>
+            <div class="how-rules__grid">
+                {% for rule in rules %}
+                    <div class="how-rule">
+                        <b class="how-rule__title">{{ rule.title }}</b>
+                        <span class="how-rule__text">{{ rule.text }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <a href="{{ path('page_help') }}" class="how-rules__link">D'autres questions ? Consultez l'aide</a>
+        </div>
+    </section>
+{% endblock %}

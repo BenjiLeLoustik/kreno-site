@@ -1,0 +1,82 @@
+{% extends 'layouts/pro-signup.html.twig' %}
+
+{% set selected = plan.selected %}
+{% set billing = plan.billing|merge(old.billing) %}
+
+{% block title %}Paiement · Inscription pro{% endblock %}
+
+{% block javascripts %}
+    <script src="https://js.stripe.com/v3/" defer></script>
+    <script src="{{ asset('js/pages/pro/stripe.js') }}" defer></script>
+    <script src="{{ asset('js/pages/pro/signup.js') }}" defer></script>
+{% endblock %}
+
+{% block heading %}Paiement et validation{% endblock %}
+
+{% block lead %}Enregistrez un moyen de paiement puis envoyez votre inscription : l'équipe la vérifie avant la mise en ligne.{% endblock %}
+
+{% block content %}
+    {% if recap %}
+        <section class="signup-recap">
+            {% for item in recap %}
+                <div class="signup-recap__row">
+                    <span class="signup-recap__label">{{ item.label }}</span>
+                    <span class="signup-recap__value">{{ item.value ?? '—' }}</span>
+                    {% if item.key not in ['account'] %}<a href="{{ path('pro_signup_step', { step: item.key }) }}" class="signup-recap__edit">Modifier</a>{% endif %}
+                </div>
+            {% endfor %}
+        </section>
+    {% endif %}
+
+    {% if selected %}
+        <section class="signup-summary">
+            <span class="signup-summary__main">
+                <b>{{ selected.name }}</b>
+                <span class="pro-row__meta">{{ selected.quote.priceLabel }} {{ selected.quote.unit }}{% if selected.quote.monthlyEquivalent %} · soit {{ selected.quote.monthlyEquivalent }}{% endif %}</span>
+            </span>
+            <span class="signup-summary__aside">
+                <b data-signup-promo-first>{{ selected.quote.firstLabel }}</b>
+                {% if selected.quote.trialDays > 0 %}<span class="pro-row__meta">{{ selected.quote.trialDays }} jours d'essai</span>{% endif %}
+            </span>
+        </section>
+    {% endif %}
+
+    <form method="post" action="{{ path('pro_signup_payment') }}" class="signup-form" data-stripe-form data-stripe-key="{{ plan.gatewayKey }}" data-stripe-setup="{{ path('pro_signup_payment_setup') }}">
+        {{ csrf_field('pro')|raw }}
+
+        {% if selected and not selected.perBooking %}
+            <div class="signup-promo" data-signup-promo="{{ path('pro_signup_promo') }}">
+                <label class="pro-field signup-promo__field">Code promo<input type="text" name="promoCode" value="{{ old.promoCode ?? (selected.promo ? selected.promo.code : '') }}" maxlength="40" class="pro-input" autocomplete="off" data-signup-promo-code></label>
+                <input type="hidden" name="plan" value="{{ selected.code }}" data-signup-promo-plan>
+                <input type="hidden" name="period" value="{{ selected.period }}" data-signup-promo-period>
+                <button type="button" class="pro-button" data-signup-promo-apply hidden>Appliquer</button>
+            </div>
+            <span class="pro-field__hint signup-promo__result" data-signup-promo-result>{{ selected.promo ? selected.promo.label : '' }}</span>
+        {% endif %}
+
+        <fieldset class="signup-fieldset">
+            <legend class="signup-legend">Facturation</legend>
+            <div class="pro-form__row">
+                <label class="pro-field">Raison sociale<input type="text" name="billing[billingName]" value="{{ billing.billingName }}" required maxlength="160" class="pro-input" data-stripe-name></label>
+                <label class="pro-field">E-mail des factures<input type="email" name="billing[billingEmail]" value="{{ billing.billingEmail }}" required maxlength="180" class="pro-input" data-stripe-email></label>
+            </div>
+            <label class="pro-field">Adresse<input type="text" name="billing[addressLine1]" value="{{ billing.addressLine1 }}" required maxlength="160" autocomplete="address-line1" class="pro-input"></label>
+            <label class="pro-field">Complément<input type="text" name="billing[addressLine2]" value="{{ billing.addressLine2 }}" maxlength="160" autocomplete="address-line2" class="pro-input"></label>
+            <div class="pro-form__row settings-row--3">
+                <label class="pro-field">Code postal<input type="text" name="billing[postalCode]" value="{{ billing.postalCode }}" required pattern="\d{5}" inputmode="numeric" class="pro-input"></label>
+                <label class="pro-field">Ville<input type="text" name="billing[locality]" value="{{ billing.locality }}" required maxlength="100" class="pro-input"></label>
+                <label class="pro-field">N° TVA (facultatif)<input type="text" name="billing[vatNumber]" value="{{ billing.vatNumber }}" class="pro-input" placeholder="FR00123456789"></label>
+            </div>
+        </fieldset>
+
+        {% include 'pro/billing/_stripe_fields.html.twig' %}
+
+        <label class="settings-check">
+            <input type="hidden" name="acceptTerms" value="0">
+            <input type="checkbox" name="acceptTerms" value="1" required class="settings-check__input">
+            <span>J'accepte les {% if route_exists('page_legal') %}<a href="{{ path('page_legal', { document: 'cgv' }) }}" target="_blank" rel="noopener">conditions générales de vente pro</a>{% else %}conditions générales de vente pro{% endif %} et je certifie être habilité·e à représenter cet établissement.</span>
+        </label>
+
+        {% include 'pro/signup/_actions.html.twig' with { label: 'Envoyer mon inscription', stripe: true } %}
+    </form>
+{% endblock %}

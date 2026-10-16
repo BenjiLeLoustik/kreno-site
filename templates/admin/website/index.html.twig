@@ -1,0 +1,153 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set admin_section = 'versions' %}
+{% set tones = { draft: 'neutral', scheduled: 'info', live: 'success', archived: 'neutral' } %}
+{% set identityLabels = {
+    siteName: 'Nom du site',
+    domain: 'Domaine',
+    tagline: 'Accroche',
+    siteDescription: 'Description',
+    seoTitle: 'Titre SEO',
+    contactEmail: 'E-mail de contact',
+} %}
+
+{% block title %}Versions du site · Administration Kréno{% endblock %}
+
+{% block content %}
+    <h1 class="admin-title">Versions du site</h1>
+
+    <div class="admin-split">
+        <div class="admin-split__list">
+            {% for item in versions %}
+                {% set current = item.code == version.code %}
+                <a href="{{ path('admin_website_show', { code: item.code }) }}" class="admin-list__item{{ current ? ' admin-list__item--active' : '' }}"{{ current ? ' aria-current="page"' : '' }}>
+                    <span class="admin-list__text">
+                        <b class="admin-list__name">{{ item.code }} · {{ item.name }}</b>
+                        <span class="admin-list__meta">
+                            {% if item.status == 'scheduled' and item.scheduledAt %}en ligne le {{ item.scheduledAt|date('d/m/Y H:i') }}
+                            {% elseif item.publishedAt %}publiée le {{ item.publishedAt|date('d/m/Y') }}
+                            {% else %}créée le {{ item.createdAt|date('d/m/Y') }}{% endif %}
+                        </span>
+                    </span>
+                    <span class="admin-badge admin-badge--{{ tones[item.status] ?? 'neutral' }}">{{ item.statusLabel }}</span>
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="admin-split__detail admin-form">
+            <section class="admin-card">
+                <div class="admin-card__head">
+                    <div>
+                        <h2 class="admin-detail__title">{{ version.code }} · {{ version.name }}</h2>
+                        <span class="admin-card__subtitle">
+                            {% if version.parent %}Issue de {{ version.parent }}{% endif %}
+                            {% if version.createdBy %}{{ version.parent ? ' · ' : '' }}créée par {{ version.createdBy }}{% endif %}
+                            {% if version.updatedAt %} · modifiée le {{ version.updatedAt|date('d/m/Y à H:i') }}{% endif %}
+                        </span>
+                    </div>
+                    <span class="admin-badge admin-badge--{{ tones[version.status] ?? 'neutral' }}">{{ version.statusLabel }}</span>
+                </div>
+
+                {% if version.status == 'scheduled' and version.scheduledAt %}
+                    <div class="admin-note">Mise en ligne automatique le {{ version.scheduledAt|date('d/m/Y à H:i') }}.</div>
+                {% endif %}
+
+                <div class="admin-actions">
+                    <form method="post" action="{{ path('admin_website_duplicate', { code: version.code }) }}">
+                        {{ csrf_field('admin_website')|raw }}
+                        <button type="submit" class="admin-button">Dupliquer en brouillon</button>
+                    </form>
+                    {% if version.status == 'scheduled' %}
+                        <form method="post" action="{{ path('admin_website_unschedule', { code: version.code }) }}">
+                            {{ csrf_field('admin_website')|raw }}
+                            <button type="submit" class="admin-button">Annuler la planification</button>
+                        </form>
+                    {% endif %}
+                    {% if version.status in ['draft', 'scheduled'] %}
+                        <form method="post" action="{{ path('admin_website_publish', { code: version.code }) }}">
+                            {{ csrf_field('admin_website')|raw }}
+                            <button type="submit" class="admin-button admin-button--success" data-admin-confirm="Mettre en ligne la version {{ version.code }} maintenant ? La version actuelle sera archivée.">Mettre en ligne</button>
+                        </form>
+                    {% endif %}
+                    {% if version.status == 'archived' %}
+                        <form method="post" action="{{ path('admin_website_restore', { code: version.code }) }}">
+                            {{ csrf_field('admin_website')|raw }}
+                            <button type="submit" class="admin-button admin-button--warning" data-admin-confirm="Revenir à la version {{ version.code }} ? Une copie sera créée et mise en ligne immédiatement, la version actuelle sera archivée.">Revenir à cette version</button>
+                        </form>
+                    {% endif %}
+                    {% if version.status in ['draft', 'archived'] %}
+                        <form method="post" action="{{ path('admin_website_delete', { code: version.code }) }}">
+                            {{ csrf_field('admin_website')|raw }}
+                            <button type="submit" class="admin-button admin-button--ghost-danger" data-admin-confirm="Supprimer définitivement la version {{ version.code }} ? Ses règles, formules et codes promo seront supprimés.">Supprimer</button>
+                        </form>
+                    {% endif %}
+                    {% if route_exists('admin_settings_index') %}
+                        <a href="{{ path('admin_settings_index', { version: version.code }) }}" class="admin-button">Règles</a>
+                    {% endif %}
+                    {% if route_exists('admin_pricing_index') %}
+                        <a href="{{ path('admin_pricing_index', { version: version.code }) }}" class="admin-button">Tarifs</a>
+                    {% endif %}
+                </div>
+
+                {% if version.status == 'draft' %}
+                    <form method="post" action="{{ path('admin_website_schedule', { code: version.code }) }}" class="admin-form admin-form--inline">
+                        {{ csrf_field('admin_website')|raw }}
+                        <label class="admin-field">Planifier la mise en ligne<input type="datetime-local" name="scheduledAt" required class="admin-input"></label>
+                        <button type="submit" class="admin-button admin-button--primary">Planifier</button>
+                    </form>
+                {% endif %}
+            </section>
+
+            <section class="admin-card">
+                <h2 class="admin-card__title">Identité du site</h2>
+                <form method="post" action="{{ path('admin_website_update', { code: version.code }) }}" class="admin-form">
+                    {{ csrf_field('admin_website')|raw }}
+                    <div class="admin-form__row">
+                        <label class="admin-field">Nom de la version<input type="text" name="name" value="{{ version.name }}" minlength="2" maxlength="120" required class="admin-input"{{ version.editable ? '' : ' disabled' }}></label>
+                        <label class="admin-field">Note interne<input type="text" name="description" value="{{ version.description }}" class="admin-input"{{ version.editable ? '' : ' disabled' }}></label>
+                    </div>
+                    {% for field, label in identityLabels %}
+                        {% set item = version.identity[field] %}
+                        <label class="admin-field">
+                            {{ label }}
+                            {% if field == 'siteDescription' %}
+                                <textarea name="{{ field }}" rows="3" class="admin-input admin-input--area"{{ version.editable ? '' : ' disabled' }}>{{ item.value }}</textarea>
+                            {% else %}
+                                <input type="{{ field == 'contactEmail' ? 'email' : 'text' }}" name="{{ field }}" value="{{ item.value }}" class="admin-input"{{ version.editable ? '' : ' disabled' }}>
+                            {% endif %}
+                            {% if item.changed %}<span class="admin-diff">En ligne : {{ item.liveValue ?: '—' }}</span>{% endif %}
+                        </label>
+                    {% endfor %}
+                    {% if version.editable %}
+                        <div class="admin-actions"><button type="submit" class="admin-button admin-button--primary">Enregistrer</button></div>
+                    {% else %}
+                        <div class="admin-note">Cette version n'est plus modifiable. Duplique-la pour préparer des changements.</div>
+                    {% endif %}
+                </form>
+            </section>
+
+            <section class="admin-card">
+                <h2 class="admin-card__title">Différences avec la version en ligne</h2>
+                {% set changedRules = rules.groups|map(group => group.rules)|reduce((carry, items) => carry|merge(items), [])|filter(rule => rule.changed) %}
+                {% if changedRules is empty and pricing.changedPlans is empty %}
+                    <p class="admin-subtitle">Aucune différence de règles ni de prix.</p>
+                {% else %}
+                    <div class="admin-rows">
+                        {% for rule in changedRules %}
+                            <div class="admin-row">
+                                <span class="admin-row__main">{{ rule.label }}</span>
+                                <span>{{ rule.liveValue }} → <b>{{ rule.value }}</b> {{ rule.unit }}</span>
+                            </div>
+                        {% endfor %}
+                        {% for plan in pricing.plans|filter(plan => plan.changed) %}
+                            <div class="admin-row">
+                                <span class="admin-row__main">Prix {{ plan.name }}</span>
+                                <span>{{ plan.livePriceLabel }} → <b>{{ plan.priceLabel }}</b></span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}

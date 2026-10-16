@@ -1,0 +1,54 @@
+{% extends 'layouts/account.html.twig' %}
+
+{% set account_section = 'notifications' %}
+{% set unreadNotifications = unread %}
+
+{% block title %}Notifications · {{ website().siteName }}{% endblock %}
+
+{% block account_content %}
+    <header class="notification-head">
+        <div class="account-head">
+            <h1 class="account-head__title">Notifications</h1>
+            <p class="account-head__subtitle">{{ unread > 0 ? unread ~ ' non lue' ~ (unread > 1 ? 's' : '') : 'Tout est lu.' }}</p>
+        </div>
+        <div class="notification-head__actions">
+            {% if unread > 0 %}
+                <form method="post" action="{{ path('account_notifications_read_all') }}">
+                    {{ csrf_field('account')|raw }}
+                    <button type="submit" class="btn btn--outline btn--small">Tout marquer comme lu</button>
+                </form>
+            {% endif %}
+            <a href="{{ path('account_settings') }}#e-mails" class="btn btn--outline btn--small">Réglages</a>
+        </div>
+    </header>
+
+    {% if notifications is not empty %}
+        <div class="notification-list">
+            {% for notification in notifications %}
+                {% set content %}
+                    <span class="notification-list__dot" aria-hidden="true"></span>
+                    <span class="notification-list__text">
+                        {% if notification.typeLabel %}<span class="notification-list__type">{{ notification.typeLabel }}</span>{% endif %}
+                        <b class="notification-list__title">{{ notification.title }}</b>
+                        {% if notification.body %}<span class="notification-list__body">{{ notification.body }}</span>{% endif %}
+                    </span>
+                    {% if notification.createdAt %}<span class="notification-list__date">{{ notification.createdAt|date('d/m à H:i') }}</span>{% endif %}
+                {% endset %}
+                {% if not notification.read %}
+                    <form method="post" action="{{ path('account_notification_read', { id: notification.id }) }}" class="notification-list__form">
+                        {{ csrf_field('account')|raw }}
+                        <button type="submit" class="notification-list__item notification-list__item--unread">{{ content }}<span class="sr-only"> (non lue)</span></button>
+                    </form>
+                {% elseif notification.link %}
+                    <a href="{{ notification.link }}" class="notification-list__item">{{ content }}</a>
+                {% else %}
+                    <div class="notification-list__item">{{ content }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="account-empty">
+            <p class="account-empty__text">Aucune notification pour le moment.</p>
+        </div>
+    {% endif %}
+{% endblock %}

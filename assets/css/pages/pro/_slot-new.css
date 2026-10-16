@@ -1,0 +1,73 @@
+@layer components {
+    .publish-discount {
+        @apply text-coral-dark;
+    }
+
+    .publish-preview {
+        @apply flex flex-col gap-3;
+    }
+
+    .publish-preview__label {
+        @apply text-xs font-bold tracking-[0.08em] text-muted uppercase;
+    }
+
+    .publish-preview__text {
+        @apply text-sm;
+    }
+
+    .publish-ticket {
+        @apply relative grid grid-cols-[112px_minmax(0,1fr)] rounded-card bg-white shadow-card;
+    }
+
+    .publish-ticket__when {
+        @apply flex flex-col items-center justify-center gap-1 border-r-2 border-dashed border-sand px-3 py-[22px] text-center;
+    }
+
+    .publish-ticket__day {
+        @apply text-xs font-bold tracking-[0.06em] text-coral uppercase;
+    }
+
+    .publish-ticket__time {
+        @apply text-[28px] leading-none tabular-nums;
+    }
+
+    .publish-ticket__duration {
+        @apply text-xs text-muted;
+    }
+
+    .publish-ticket__body {
+        @apply flex min-w-0 flex-col gap-1 px-5 py-5;
+    }
+
+    .publish-ticket__pro {
+        @apply font-bold;
+    }
+
+    .publish-ticket__what {
+        @apply text-sm text-body;
+    }
+
+    .publish-ticket__prices {
+        @apply flex flex-wrap items-baseline gap-2 tabular-nums;
+    }
+
+    .publish-ticket__price {
+        @apply text-[19px] text-coral-dark;
+    }
+
+    .publish-ticket__badge {
+        @apply rounded-full bg-coral/10 px-2 py-0.5 text-xs font-bold text-coral-dark;
+    }
+
+    .publish-ticket__notch {
+        @apply absolute left-[101px] size-[22px] rounded-full bg-[#F6F1EA];
+    }
+
+    .publish-ticket__notch--top {
+        @apply -top-[11px];
+    }
+
+    .publish-ticket__notch--bottom {
+        @apply -bottom-[11px];
+    }
+}

@@ -1,0 +1,146 @@
+{% extends "pdf/layout/_base.html.twig" %}
+
+{% block pdfTitle %}
+    {{ creditNote ? 'Avoir' : 'Facture' }} {{ invoice.number }}
+{% endblock %}
+
+{% block pdfContent %}
+    <table>
+        <tr>
+            <td>
+                <strong>
+                    {{ invoice.issuer.name }}
+                </strong>
+                <br />
+                {{ invoice.issuer.address|nl2br }}
+                <br />
+                SIREN : {{ invoice.issuer.siren }}
+                <br />
+                TVA intracommunautaire : {{ invoice.issuer.vatNumber }}
+            </td>
+            <td class="right">
+                <h1>
+                    {{ creditNote ? 'AVOIR' : 'FACTURE' }}
+                </h1>
+                N° {{ invoice.number }}
+                <br />
+                Date d’émission : {{ invoice.date }}
+                <br />
+                {% if not creditNote %}
+                    Échéance : {{ invoice.due }}
+                    <br />
+                {% endif %}
+                {% if invoice.period %}
+                    Période : {{ invoice.period }}
+                    <br />
+                {% endif %}
+                {% if invoice.creditedInvoice %}
+                    Avoir sur la facture n° {{ invoice.creditedInvoice }}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    <p>
+        <strong>
+            Facturé à
+        </strong>
+        <br />
+        {{ invoice.billedTo.name }}
+        <br />
+        {{ invoice.billedTo.address|nl2br }}
+        <br />
+        {% if invoice.billedTo.vatNumber %}
+            TVA intracommunautaire : {{ invoice.billedTo.vatNumber }}
+            <br />
+        {% endif %}
+        {% if invoice.billedTo.email %}
+            {{ invoice.billedTo.email }}
+        {% endif %}
+    </p>
+
+    <p>
+        {{ invoice.subtitle }}
+    </p>
+
+    <table class="lines">
+        <thead>
+            <tr>
+                <th>
+                    Désignation
+                </th>
+                <th class="right">
+                    Quantité
+                </th>
+                <th class="right">
+                    Prix unitaire HT
+                </th>
+                <th class="right">
+                    Total HT
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for line in invoice.lines %}
+                <tr>
+                    <td>
+                        {{ line.label }}
+                    </td>
+                    <td class="right">
+                        {{ line.qty }}
+                    </td>
+                    <td class="right">
+                        {{ line.unit }}
+                    </td>
+                    <td class="right">
+                        {{ line.total }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table>
+        <tr>
+            <td class="right">
+                Total HT
+            </td>
+            <td class="right">
+                {{ invoice.ht }}
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                {{ invoice.vatLabel }}
+            </td>
+            <td class="right">
+                {{ invoice.vat }}
+            </td>
+        </tr>
+        <tr>
+            <td class="right">
+                <strong>
+                    Total TTC
+                </strong>
+            </td>
+            <td class="right">
+                <strong>
+                    {{ invoice.ttc }}
+                </strong>
+            </td>
+        </tr>
+    </table>
+
+    {% if not creditNote %}
+        <p class="small">
+            Paiement par prélèvement automatique sur le moyen de paiement enregistré dans votre espace Kréno Pro.
+        </p>
+        <p class="small">
+            {{ invoice.legalNotice }}
+        </p>
+    {% endif %}
+
+    <p class="small">
+        {{ invoice.issuer.name }} · {{ invoice.issuer.address }} · SIREN {{ invoice.issuer.siren }}
+    </p>
+{% endblock %}

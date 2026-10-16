@@ -1,0 +1,88 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block body_class %}layout-front{% endblock %}
+
+{% block body %}
+    {% set nav = navigation() %}
+    {% set user = app_user() %}
+
+    <header class="site-header {% block header_class %}{% endblock %}">
+        <div class="site-header__inner">
+            <a href="{{ path('home_index') }}" class="site-header__brand" aria-label="Kréno, accueil">
+                {% include 'components/logo.html.twig' %}
+            </a>
+            <nav class="site-header__nav" aria-label="Navigation principale">
+                <a href="{{ path('page_how_it_works') }}" class="site-header__link">Comment ça marche</a>
+                <a href="{{ path('pro_landing') }}" class="site-header__link">Pour les pros</a>
+                {% if user %}
+                    <a href="{{ path('account_index') }}" class="site-header__link">Mon compte</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="site-header__link">Se connecter</a>
+                {% endif %}
+                <a href="{{ path('pro_slot_new') }}" class="btn btn--outline">Publier un créneau</a>
+            </nav>
+        </div>
+    </header>
+
+    {% for type, messages in flashes() %}
+        {% for message in messages %}
+            <div class="flash flash--{{ type }}" role="status">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    <main id="top" class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__grid">
+            <div class="site-footer__intro">
+                <a href="{{ path('home_index') }}" class="site-footer__brand" aria-label="Kréno, accueil">
+                    {% include 'components/logo.html.twig' with { size: 34 } %}
+                </a>
+                <p class="site-footer__pitch">Les créneaux libérés de ton quartier, à prix réduit. Tu réserves en deux clics, tu paies sur place.</p>
+                <a href="{{ path('pro_landing') }}" class="btn btn--outline btn--small">Vous êtes un pro ? Rejoindre Kréno</a>
+            </div>
+
+            <nav class="site-footer__column" aria-label="Kréno">
+                <b class="site-footer__title">Kréno</b>
+                <a href="{{ path('page_how_it_works') }}" class="site-footer__link">Comment ça marche</a>
+                <a href="{{ path('search_index') }}" class="site-footer__link">Tous les créneaux</a>
+                <a href="{{ path('app_signup') }}" class="site-footer__link">Créer un compte</a>
+                <a href="{{ path('page_help') }}" class="site-footer__link">Aide et contact</a>
+            </nav>
+
+            <nav class="site-footer__column" aria-label="Professionnels">
+                <b class="site-footer__title">Pros</b>
+                <a href="{{ path('pro_landing') }}" class="site-footer__link">Pour les pros</a>
+                <a href="{{ path('pro_landing') }}#tarifs" class="site-footer__link">Tarifs</a>
+                <a href="{{ path('pro_signup') }}" class="site-footer__link">Créer mon espace pro</a>
+                <a href="{{ path('pro_login') }}" class="site-footer__link">Connexion pro</a>
+            </nav>
+
+            <nav class="site-footer__column" aria-label="Catégories">
+                <b class="site-footer__title">Catégories</b>
+                {% for category in nav.categories|slice(0, 6) %}
+                    <a href="{{ path('category_show', { slug: category.slug }) }}" class="site-footer__link">{{ category.name }}</a>
+                {% endfor %}
+            </nav>
+
+            <nav class="site-footer__column" aria-label="Villes">
+                <b class="site-footer__title">Villes</b>
+                {% for city in nav.cities|slice(0, 6) %}
+                    <a href="{{ path('city_show', { slug: city.slug }) }}" class="site-footer__link">{{ city.name }}</a>
+                {% endfor %}
+            </nav>
+        </div>
+
+        <div class="site-footer__bottom">
+            <span>© {{ 'now'|date('Y') }} Kréno · Fait à Lyon</span>
+            <nav class="site-footer__legal" aria-label="Informations légales">
+                <a href="{{ path('page_legal', { document: 'mentions' }) }}">Mentions légales</a>
+                <a href="{{ path('page_legal', { document: 'cgu' }) }}">CGU</a>
+                <a href="{{ path('page_legal', { document: 'privacy' }) }}">Confidentialité</a>
+                <a href="{{ path('page_legal', { document: 'cgv' }) }}">Conditions pros</a>
+            </nav>
+        </div>
+    </footer>
+{% endblock %}

@@ -1,0 +1,87 @@
+@layer components {
+    .agenda-week {
+        @apply flex flex-wrap items-center gap-2;
+    }
+
+    .agenda-week__label {
+        @apply font-semibold;
+    }
+
+    .agenda-legend {
+        @apply flex flex-wrap items-center gap-4 text-sm text-body;
+    }
+
+    .agenda-legend__item {
+        @apply inline-flex items-center gap-1.5;
+    }
+
+    .agenda-legend__dot {
+        @apply size-3 rounded-full bg-mist;
+    }
+
+    .agenda-legend__dot--booked {
+        @apply bg-coral;
+    }
+
+    .agenda-legend__dot--online {
+        @apply bg-mint;
+    }
+
+    .agenda {
+        @apply overflow-x-auto rounded-[20px] border border-sand bg-white;
+    }
+
+    .agenda__grid {
+        --agenda-hour: 60px;
+        @apply grid min-w-[760px] grid-cols-[56px_repeat(7,minmax(0,1fr))];
+    }
+
+    .agenda__corner {
+        @apply border-b border-[#F1E8DE];
+    }
+
+    .agenda__day {
+        @apply border-b border-l border-[#F1E8DE] px-2 py-3 text-center text-sm;
+    }
+
+    .agenda__day--today {
+        @apply bg-coral/8 text-coral-dark;
+    }
+
+    .agenda__day--closed {
+        @apply text-slate;
+    }
+
+    .agenda__hours {
+        @apply relative h-[calc(var(--agenda-hours)*var(--agenda-hour))];
+    }
+
+    .agenda__hour {
+        @apply absolute top-[calc(var(--top)*1px)] right-2 -translate-y-1/2 text-xs text-muted tabular-nums first:translate-y-0;
+    }
+
+    .agenda__column {
+        @apply relative h-[calc(var(--agenda-hours)*var(--agenda-hour))] border-l border-[#F1E8DE] bg-[repeating-linear-gradient(to_bottom,transparent_0,transparent_59px,#F1E8DE_59px,#F1E8DE_60px)];
+    }
+
+    .agenda__column--closed {
+        @apply bg-[#FAF7F3];
+    }
+
+    .agenda__slot {
+        @apply absolute inset-x-1 top-[calc(var(--top)*1px)] h-[calc(var(--height)*1px-2px)] min-h-6 overflow-hidden rounded-lg border-l-4 border-mist bg-frost px-2 py-1 text-xs leading-tight text-ink no-underline hover:z-10 hover:shadow-card;
+    }
+
+    .agenda__slot--booked {
+        @apply border-coral bg-coral/12 hover:text-ink;
+    }
+
+    .agenda__slot--online {
+        @apply border-mint bg-mint/15 hover:text-ink;
+    }
+
+    .agenda__slot--expired,
+    .agenda__slot--removed {
+        @apply text-muted line-through hover:text-muted;
+    }
+}

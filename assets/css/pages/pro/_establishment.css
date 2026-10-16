@@ -1,0 +1,61 @@
+@layer components {
+    .settings-hours {
+        @apply flex flex-col;
+    }
+
+    .settings-hours__day {
+        @apply grid grid-cols-1 items-center gap-2 border-t border-[#F1E8DE] py-3 first:border-t-0 md:grid-cols-[110px_minmax(0,1fr)_160px] md:gap-4;
+    }
+
+    .settings-hours__name {
+        @apply font-semibold;
+    }
+
+    .settings-hours__ranges {
+        @apply flex flex-wrap gap-3;
+    }
+
+    .settings-hours__range {
+        @apply inline-flex items-center gap-2 text-sm text-muted;
+    }
+
+    .settings-hours__time {
+        @apply min-h-10 w-[116px] px-2.5 tabular-nums;
+    }
+
+    .settings-hours__label {
+        @apply text-sm text-body tabular-nums md:text-right;
+    }
+
+    .settings-hours__label--closed {
+        @apply text-muted;
+    }
+
+    .settings-photos {
+        @apply grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3.5;
+    }
+
+    .settings-photo {
+        @apply relative m-0 flex flex-col gap-2 overflow-hidden rounded-[16px] border border-sand bg-white pb-3;
+    }
+
+    .settings-photo__image {
+        @apply aspect-[4/3] w-full object-cover;
+    }
+
+    .settings-photo__cover {
+        @apply absolute top-2 left-2 rounded-full bg-ink px-2.5 py-1 text-xs font-bold text-white;
+    }
+
+    .settings-photo__actions {
+        @apply flex flex-wrap items-center gap-1.5 px-3;
+    }
+
+    .settings-photo__alt {
+        @apply flex items-center gap-1.5 px-3;
+    }
+
+    .settings-photo__alt-input {
+        @apply min-h-9 rounded-lg px-2.5 text-[13px];
+    }
+}

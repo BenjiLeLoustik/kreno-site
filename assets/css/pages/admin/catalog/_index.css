@@ -1,0 +1,25 @@
+@layer components {
+    .catalog-icon {
+        @apply inline-block align-[-3px] text-muted;
+    }
+
+    .catalog-grow {
+        @apply flex-1;
+    }
+
+    .catalog-switch {
+        @apply relative h-6 w-11 cursor-pointer rounded-full border-0 bg-mist p-0 transition-colors;
+    }
+
+    .catalog-switch--on {
+        @apply bg-mint;
+    }
+
+    .catalog-switch__knob {
+        @apply absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform;
+    }
+
+    .catalog-switch--on .catalog-switch__knob {
+        @apply translate-x-5;
+    }
+}

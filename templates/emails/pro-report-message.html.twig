@@ -1,0 +1,11 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'pro' %}
+
+{% block mailContent %}
+
+    <p>Le client a ajouté un message au signalement {{ report.reference }} :</p>
+    <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
+    <p style="{{ styles.actions }}"><a href="{{ report.proUrl }}" style="{{ styles.button }}">Répondre ou voir l’échange</a></p>
+
+{% endblock %}
