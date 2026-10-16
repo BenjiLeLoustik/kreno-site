@@ -3,18 +3,19 @@
 namespace App\Log\Presenter;
 
 use App\Entity\AppLog;
+use App\Entity\User\User;
 use App\User\Helper\UserNameHelper;
 
 class AppLogPresenter
 {
+    public const MESSAGE_LENGTH = 140;
+
     public function row(AppLog $log): array
     {
-        $class = (string) $log->getExceptionClass();
-
         return [
             'id' => $log->getId(),
-            'shortClass' => substr($class, (int) strrpos('\\' . $class, '\\')),
-            'message' => mb_strimwidth((string) $log->getMessage(), 0, 140, '…'),
+            'shortClass' => $this->shortClass((string) $log->getExceptionClass()),
+            'message' => mb_strimwidth((string) $log->getMessage(), 0, self::MESSAGE_LENGTH, '…'),
             'status' => $log->getStatus()?->value,
             'statusLabel' => $log->getStatus()?->label(),
             'tone' => $log->getStatus()?->tone() ?? 'info',
@@ -25,22 +26,55 @@ class AppLogPresenter
 
     public function detail(AppLog $log): array
     {
-        $user = $log->getUser();
-        $handledBy = $log->getHandledBy();
-
         return $this->row($log) + [
                 'exceptionClass' => $log->getExceptionClass(),
                 'fullMessage' => $log->getMessage(),
                 'level' => $log->getLevel()?->label(),
-                'location' => $log->getFile() !== null ? sprintf('%s:%d', $log->getFile(), (int) $log->getLine()) : null,
+                'location' => $this->location($log),
                 'trace' => $log->getTrace(),
                 'statusCode' => $log->getStatusCode(),
                 'request' => trim(sprintf('%s %s', $log->getMethod(), $log->getUrl())),
-                'user' => $user === null ? null : ['id' => $user->getId(), 'name' => UserNameHelper::fullName($user), 'email' => $user->getEmail()],
+                'user' => $this->user($log->getUser()),
                 'firstSeenAt' => $log->getFirstSeenAt(),
-                'handledBy' => $handledBy !== null ? UserNameHelper::fullName($handledBy) : null,
+                'handledBy' => $this->handledBy($log->getHandledBy()),
                 'handledAt' => $log->getHandledAt(),
                 'note' => $log->getNote(),
             ];
+    }
+
+    private function shortClass(string $class): string
+    {
+        return substr($class, (int) strrpos('\\' . $class, '\\'));
+    }
+
+    private function location(AppLog $log): ?string
+    {
+        if ($log->getFile() === null) {
+            return null;
+        }
+
+        return sprintf('%s:%d', $log->getFile(), (int) $log->getLine());
+    }
+
+    private function user(?User $user): ?array
+    {
+        if ($user === null) {
+            return null;
+        }
+
+        return [
+            'id' => $user->getId(),
+            'name' => UserNameHelper::fullName($user),
+            'email' => $user->getEmail(),
+        ];
+    }
+
+    private function handledBy(?User $handledBy): ?string
+    {
+        if ($handledBy === null) {
+            return null;
+        }
+
+        return UserNameHelper::fullName($handledBy);
     }
 }

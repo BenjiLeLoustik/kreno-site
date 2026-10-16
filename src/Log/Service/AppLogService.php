@@ -13,6 +13,8 @@ class AppLogService
 {
     public const RETENTION_DAYS = 30;
 
+    public const NOTE_LENGTH = 2000;
+
     public function __construct(
         private OrmManagerInterface $orm,
         private AppLogRepository $logs,
@@ -21,10 +23,9 @@ class AppLogService
 
     public function changeStatus(AppLog $log, AppLogStatus $status, User $admin, ?string $note = null): AppLog
     {
-        $log->setStatus($status)
-            ->setHandledBy($status === AppLogStatus::NEW ? null : $admin)
-            ->setHandledAt($status === AppLogStatus::NEW ? null : new DateTimeImmutable())
-            ->setNote($note !== null && trim($note) !== '' ? mb_substr(trim($note), 0, 2000) : $log->getNote());
+        $log->setStatus($status);
+        $this->handle($log, $status, $admin);
+        $log->setNote($this->note($log, $note));
 
         $this->orm->flush();
 
@@ -48,5 +49,29 @@ class AppLogService
         $this->orm->flush();
 
         return count($logs);
+    }
+
+    private function handle(AppLog $log, AppLogStatus $status, User $admin): void
+    {
+        if ($status === AppLogStatus::NEW) {
+            $log->setHandledBy(null);
+            $log->setHandledAt(null);
+
+            return;
+        }
+
+        $log->setHandledBy($admin);
+        $log->setHandledAt(new DateTimeImmutable());
+    }
+
+    private function note(AppLog $log, ?string $note): ?string
+    {
+        $note = trim((string) $note);
+
+        if ($note === '') {
+            return $log->getNote();
+        }
+
+        return mb_substr($note, 0, self::NOTE_LENGTH);
     }
 }

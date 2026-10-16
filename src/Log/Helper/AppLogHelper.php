@@ -8,6 +8,10 @@ class AppLogHelper
 {
     public const TRACE_LENGTH = 20000;
 
+    public const FILE_LENGTH = 255;
+
+    public const PATH_LENGTH = 500;
+
     public static function fingerprint(Throwable $throwable, string $root = ''): string
     {
         return sha1(implode('|', [
@@ -36,12 +40,18 @@ class AppLogHelper
             $file = substr($file, strlen($root) + 1);
         }
 
-        return mb_strlen($file) > 255 ? '…' . mb_substr($file, -254) : $file;
+        if (mb_strlen($file) > self::FILE_LENGTH) {
+            return '…' . mb_substr($file, 1 - self::FILE_LENGTH);
+        }
+
+        return $file;
     }
 
     public static function path(string $path): string
     {
-        return mb_substr((string) preg_replace('#/[A-Za-z0-9_\-]{24,}#', '/{token}', $path), 0, 500);
+        $path = (string) preg_replace('#/[A-Za-z0-9_\-]{24,}#', '/{token}', $path);
+
+        return mb_substr($path, 0, self::PATH_LENGTH);
     }
 
     public static function trace(Throwable $throwable, string $root = ''): string
@@ -50,16 +60,42 @@ class AppLogHelper
         $previous = $throwable->getPrevious();
 
         while ($previous !== null) {
-            $parts[] = sprintf("Cause : %s: %s\n%s:%d\n%s", $previous::class, $previous->getMessage(), self::file($previous->getFile(), $root), $previous->getLine(), $previous->getTraceAsString());
+            $parts[] = self::cause($previous, $root);
             $previous = $previous->getPrevious();
         }
 
-        $trace = implode("\n\n", $parts);
-
-        if ($root !== '') {
-            $trace = str_replace([rtrim($root, '/\\') . DIRECTORY_SEPARATOR, str_replace('\\', '/', rtrim($root, '/\\')) . '/'], '', $trace);
-        }
+        $trace = self::stripRoot(implode("\n\n", $parts), $root);
 
         return mb_substr($trace, 0, self::TRACE_LENGTH);
+    }
+
+    private static function cause(Throwable $previous, string $root): string
+    {
+        return sprintf(
+            "Cause : %s: %s\n%s:%d\n%s",
+            $previous::class,
+            $previous->getMessage(),
+            self::file($previous->getFile(), $root),
+            $previous->getLine(),
+            $previous->getTraceAsString(),
+        );
+    }
+
+    private static function stripRoot(string $trace, string $root): string
+    {
+        if ($root === '') {
+            return $trace;
+        }
+
+        $root = rtrim($root, '/\\');
+
+        return str_replace(
+            [
+                $root . DIRECTORY_SEPARATOR,
+                str_replace('\\', '/', $root) . '/'
+            ],
+            '',
+            $trace
+        );
     }
 }
