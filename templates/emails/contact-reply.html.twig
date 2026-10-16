@@ -1,0 +1,22 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'default' %}
+
+{% block preheader %}L’équipe Kréno a répondu à ta demande « {{ topic }} ».{% endblock %}
+
+{% block mailContent %}
+
+    <p>L’équipe Kréno a répondu à ta demande « {{ topic }} »{% if reference %} concernant la réservation <strong style="{{ styles.strong }}">{{ reference }}</strong>{% endif %} :</p>
+
+    <blockquote style="{{ styles.quote }}">{{ reply|nl2br }}</blockquote>
+
+    <p style="{{ styles.actions }}"><a href="{{ url }}" style="{{ styles.button }}">Voir la conversation et répondre</a></p>
+
+    {% if original %}
+        <p style="margin: 24px 0 8px; font-size: 13px; color: #6A6F8C;">Ton message :</p>
+        <blockquote style="{{ styles.quote }}">{{ original|nl2br }}</blockquote>
+    {% endif %}
+
+    <p>Pour nous répondre, utilise le bouton ci-dessus : ta réponse arrivera directement dans ta demande.</p>
+
+{% endblock %}

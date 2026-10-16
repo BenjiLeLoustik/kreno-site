@@ -2,6 +2,7 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\AppContact;
 use App\Report\Service\ReportService;
 use App\Support\Dto\ContactInput;
 use App\Support\Service\ContactService;
@@ -70,7 +71,7 @@ class PageController extends AbstractFrontController
     public function help(): Response
     {
         $old = $this->session->get(self::OLD_CONTACT);
-        $sent = $this->session->get(self::CONTACT_SENT) === true;
+        $sent = $this->session->get(self::CONTACT_SENT);
         $this->session->remove(self::OLD_CONTACT);
         $this->session->remove(self::CONTACT_SENT);
         $old = is_array($old) ? $old : [];
@@ -85,7 +86,7 @@ class PageController extends AbstractFrontController
                 'email' => $old['email'] ?? $this->optionalUser()?->getEmail(),
                 'message' => $old['message'] ?? null,
             ],
-            'sent' => $sent,
+            'sent' => is_string($sent) ? $sent : null,
             'supportEmail' => $this->supportAddress,
         ]);
     }
@@ -100,8 +101,16 @@ class PageController extends AbstractFrontController
         $input->email = trim($request->request->getString('email')) ?: null;
         $input->message = trim($request->request->getString('message')) ?: null;
 
-        if (!$this->invalid($input) && $this->attempt(fn () => $this->contact->send($input, $this->optionalUser()))) {
-            $this->session->set(self::CONTACT_SENT, true);
+        $contact = null;
+
+        if (!$this->invalid($input)) {
+            $this->attempt(function () use ($input, &$contact): void {
+                $contact = $this->contact->send($input, $this->optionalUser());
+            });
+        }
+
+        if ($contact instanceof AppContact) {
+            $this->session->set(self::CONTACT_SENT, $contact->getToken());
         } else {
             $this->session->set(self::OLD_CONTACT, ['topic' => $input->topic, 'reference' => $input->reference, 'email' => $input->email, 'message' => $input->message]);
         }

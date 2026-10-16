@@ -1,0 +1,25 @@
+@layer components {
+    .message-list {
+        @apply flex flex-col overflow-hidden rounded-[18px] border border-sand bg-white;
+    }
+
+    .message-list__item {
+        @apply flex items-center justify-between gap-4 border-b border-[#F1E8DE] px-5 py-4 text-ink no-underline transition-colors last:border-b-0 hover:bg-cream;
+    }
+
+    .message-list__text {
+        @apply flex min-w-0 flex-col gap-0.5;
+    }
+
+    .message-list__title {
+        @apply font-semibold;
+    }
+
+    .message-list__excerpt {
+        @apply truncate text-sm text-body;
+    }
+
+    .message-list__date {
+        @apply text-xs text-muted;
+    }
+}

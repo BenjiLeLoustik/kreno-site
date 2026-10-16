@@ -6,7 +6,11 @@
 
 {% block mailContent %}
 
-    <p>Nouveau message reçu depuis le formulaire d’aide le {{ sentAt }}.</p>
+    {% if followUp|default(false) %}
+        <p>Le client a répondu à sa demande le {{ sentAt }}.</p>
+    {% else %}
+        <p>Nouveau message reçu depuis le formulaire d’aide le {{ sentAt }}.</p>
+    {% endif %}
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">Sujet : <strong style="{{ styles.strong }}">{{ topic }}</strong></li>
         <li style="{{ styles.item }}">E-mail : <a href="mailto:{{ email }}" style="{{ styles.link }}">{{ email }}</a></li>
@@ -28,6 +32,11 @@
 
     <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
 
-    <p>Répondre à cet e-mail écrit directement à {{ email }}.</p>
+    {% if adminUrl|default(null) %}
+        <p style="{{ styles.actions }}"><a href="{{ adminUrl }}" style="{{ styles.button }}">Répondre depuis l’administration</a></p>
+        <p>Une réponse envoyée depuis l’administration reste dans l’historique de la demande. Répondre à cet e-mail écrit directement à {{ email }}, sans garder de trace.</p>
+    {% else %}
+        <p>Répondre à cet e-mail écrit directement à {{ email }}.</p>
+    {% endif %}
 
 {% endblock %}

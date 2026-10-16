@@ -2,8 +2,10 @@
 
 namespace App\Admin\Provider;
 
+use App\Enum\Contact\AppContactStatus;
 use App\Enum\Log\AppLogStatus;
 use App\Establishment\Enum\EstablishmentStatus;
+use App\Repository\AppContactRepository;
 use App\Repository\AppLogRepository;
 use App\Repository\Company\CompanyEstablishmentRepository;
 use App\Repository\Report\ReportRepository;
@@ -14,6 +16,7 @@ class AdminNavProvider
         private CompanyEstablishmentRepository $establishments,
         private ReportRepository $reports,
         private AppLogRepository $logs,
+        private AppContactRepository $contacts,
     ) {
     }
 
@@ -23,6 +26,7 @@ class AdminNavProvider
             'moderation' => $this->establishments->countByStatus(EstablishmentStatus::PENDING_REVIEW),
             'reports' => $this->reports->countOpen(),
             'errors' => $this->logs->countByStatus(AppLogStatus::NEW),
+            'contacts' => $this->contacts->countByStatus(AppContactStatus::NEW),
         ];
     }
 }

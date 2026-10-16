@@ -11,6 +11,7 @@ class AdminNavViewHelper implements ViewFunctionInterface
         ['key' => 'dashboard', 'label' => 'Vue d\'ensemble', 'route' => 'admin_dashboard', 'role' => 'ROLE_SUPPORT', 'icon' => 'layout-dashboard'],
         ['key' => 'moderation', 'label' => 'Modération des pros', 'route' => 'admin_moderation_index', 'role' => 'ROLE_MODERATOR', 'icon' => 'shield-check'],
         ['key' => 'reports', 'label' => 'Signalements', 'route' => 'admin_reports', 'role' => 'ROLE_MODERATOR', 'icon' => 'flag'],
+        ['key' => 'contacts', 'label' => 'Messages reçus', 'route' => 'admin_contacts', 'role' => 'ROLE_SUPPORT', 'icon' => 'mail'],
         ['key' => 'users', 'label' => 'Utilisateurs', 'route' => 'admin_user_index', 'role' => 'ROLE_MODERATOR', 'icon' => 'users'],
         ['key' => 'establishments', 'label' => 'Établissements', 'route' => 'admin_establishments', 'role' => 'ROLE_MODERATOR', 'icon' => 'store'],
         ['key' => 'bookings', 'label' => 'Réservations', 'route' => 'admin_bookings', 'role' => 'ROLE_SUPPORT', 'icon' => 'calendar-check'],
