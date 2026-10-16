@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\AppLog;
-use App\Enum\Log\AppLogStatus;
+use App\Log\Enum\AppLogStatus;
 use App\Log\Presenter\AppLogPresenter;
 use App\Log\Service\AppLogService;
 use App\Repository\AppLogRepository;

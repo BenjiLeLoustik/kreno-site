@@ -4,7 +4,7 @@ namespace App\Log\Service;
 
 use App\Entity\AppLog;
 use App\Entity\User\User;
-use App\Enum\Log\AppLogStatus;
+use App\Log\Enum\AppLogStatus;
 use App\Repository\AppLogRepository;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;

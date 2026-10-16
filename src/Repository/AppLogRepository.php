@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\AppLog;
-use App\Enum\Log\AppLogStatus;
+use App\Log\Enum\AppLogStatus;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\Contract\AbstractRepository;
 use NeoPHP\Package\Orm\Query\QueryBuilder;

@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\User\User;
-use App\Enum\Log\AppLogLevel;
-use App\Enum\Log\AppLogStatus;
+use App\Log\Enum\AppLogLevel;
+use App\Log\Enum\AppLogStatus;
 use App\Repository\AppLogRepository;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\Mapping as ORM;

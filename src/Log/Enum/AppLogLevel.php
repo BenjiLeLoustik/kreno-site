@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enum\Log;
+namespace App\Log\Enum;
 
 enum AppLogLevel: string
 {

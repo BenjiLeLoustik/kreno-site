@@ -3,8 +3,8 @@
 namespace App\Log\Service;
 
 use App\Entity\AppLog;
-use App\Enum\Log\AppLogLevel;
-use App\Enum\Log\AppLogStatus;
+use App\Log\Enum\AppLogLevel;
+use App\Log\Enum\AppLogStatus;
 use App\Log\Helper\AppLogHelper;
 use DateTimeImmutable;
 use NeoPHP\Component\Http\Request\Request;

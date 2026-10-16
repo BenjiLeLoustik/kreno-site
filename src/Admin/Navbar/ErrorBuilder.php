@@ -2,7 +2,7 @@
 
 namespace App\Admin\Navbar;
 
-use App\Enum\Log\AppLogStatus;
+use App\Log\Enum\AppLogStatus;
 use App\Repository\AppLogRepository;
 
 class ErrorBuilder extends AbstractNavbarBuilder
