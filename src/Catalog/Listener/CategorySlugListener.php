@@ -24,6 +24,11 @@ class CategorySlugListener
             return;
         }
 
-        $category->setSlug(StringHelper::uniqueSlug((string) $category->getName(), fn (string $slug): bool => $this->categories->slugExists($slug)));
+        $category->setSlug(
+            StringHelper::uniqueSlug(
+                (string) $category->getName(),
+                fn (string $slug): bool => $this->categories->slugExists($slug)
+            )
+        );
     }
 }

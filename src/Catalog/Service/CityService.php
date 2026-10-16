@@ -3,6 +3,8 @@
 namespace App\Catalog\Service;
 
 use App\Catalog\Dto\CityInput;
+use App\Catalog\Exception\CityNameRequiredException;
+use App\Catalog\Exception\CityNotEmptyException;
 use App\Entity\City;
 use App\Entity\User\User;
 use App\Enum\City\CityStatus;
@@ -10,12 +12,13 @@ use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Repository\CityRepository;
 use App\Repository\Company\CompanyEstablishmentRepository;
-use App\Shared\Exception\BusinessRuleException;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class CityService
 {
+    public const COORDINATE_DECIMALS = 7;
+
     public function __construct(
         private OrmManagerInterface $orm,
         private CityRepository $cities,
@@ -26,19 +29,22 @@ class CityService
 
     public function create(CityInput $input, ?User $actor = null): City
     {
-        if ($input->name === null || trim($input->name) === '') {
-            throw new BusinessRuleException('Le nom de la ville est obligatoire.');
-        }
+        $name = $this->name($input->name) ?? throw new CityNameRequiredException();
 
         $city = (new City())
-            ->setName(trim($input->name))
+            ->setName($name)
             ->setPosition($input->position ?? $this->cities->nextPosition());
 
         $this->apply($city, $input);
         $this->changeStatus($city, $input->status ?? CityStatus::WAITLIST);
-
         $this->orm->persist($city);
-        $this->logger->log(ActivityType::CATALOG, sprintf('Ville %s ajoutée (%s)', $city->getName(), mb_strtolower($city->getStatus()->label())), $actor, null, $city);
+
+        $message = sprintf(
+            'Ville %s ajoutée (%s)',
+            $city->getName(),
+            mb_strtolower($city->getStatus()->label())
+        );
+        $this->logger->log(ActivityType::CATALOG, $message, $actor, null, $city);
         $this->orm->flush();
 
         return $city;
@@ -46,19 +52,25 @@ class CityService
 
     public function update(City $city, CityInput $input, ?User $actor = null): City
     {
-        if ($input->name !== null && trim($input->name) !== '') {
-            $city->setName(trim($input->name));
+        $name = $this->name($input->name);
+
+        if ($name !== null) {
+            $city->setName($name);
         }
 
         $this->apply($city, $input);
 
         if ($input->status !== null && $input->status !== $city->getStatus()) {
-            $this->updateStatus($city, $input->status, $actor);
-
-            return $city;
+            return $this->updateStatus($city, $input->status, $actor);
         }
 
-        $this->logger->log(ActivityType::CATALOG, sprintf('Ville %s modifiée', $city->getName()), $actor, null, $city);
+        $this->logger->log(
+            ActivityType::CATALOG,
+            sprintf('Ville %s modifiée', $city->getName()),
+            $actor,
+            null,
+            $city
+        );
         $this->orm->flush();
 
         return $city;
@@ -66,14 +78,28 @@ class CityService
 
     public function updateStatus(City $city, CityStatus $status, ?User $actor = null): City
     {
-        if ($status === $city->getStatus()) {
+        $previous = $city->getStatus();
+
+        if ($status === $previous) {
             return $city;
         }
 
-        $previous = $city->getStatus();
         $this->changeStatus($city, $status);
 
-        $this->logger->log(ActivityType::CATALOG, sprintf('%s : %s → %s', $city->getName(), mb_strtolower($previous->label()), mb_strtolower($status->label())), $actor, null, $city, ['status' => ['from' => $previous->value, 'to' => $status->value]]);
+        $message = sprintf(
+            '%s : %s -> %s',
+            $city->getName(),
+            mb_strtolower($previous->label()),
+            mb_strtolower($status->label()),
+        );
+        $context = [
+            'status' => [
+                'from' => $previous->value,
+                'to' => $status->value
+            ]
+        ];
+
+        $this->logger->log(ActivityType::CATALOG, $message, $actor, null, $city, $context);
         $this->orm->flush();
 
         return $city;
@@ -82,10 +108,14 @@ class CityService
     public function delete(City $city, ?User $actor = null): void
     {
         if ($this->establishments->countByCity($city) > 0) {
-            throw new BusinessRuleException('{city} a des établissements : fermez-la plutôt que de la supprimer.', ['city' => $city->getName()]);
+            throw new CityNotEmptyException((string) $city->getName());
         }
 
-        $this->logger->log(ActivityType::CATALOG, sprintf('Ville %s supprimée', $city->getName()), $actor);
+        $this->logger->log(
+            ActivityType::CATALOG,
+            sprintf('Ville %s supprimée', $city->getName()),
+            $actor
+        );
         $this->orm->remove($city);
         $this->orm->flush();
     }
@@ -96,8 +126,23 @@ class CityService
             $this->cities->findOneBySlug($slug)?->setPosition($position);
         }
 
-        $this->logger->log(ActivityType::CATALOG, 'Ordre des villes modifié', $actor);
+        $this->logger->log(
+            ActivityType::CATALOG,
+            'Ordre des villes modifié',
+            $actor
+        );
         $this->orm->flush();
+    }
+
+    private function name(?string $name): ?string
+    {
+        $name = trim((string) $name);
+
+        if ($name === '') {
+            return null;
+        }
+
+        return $name;
     }
 
     private function apply(City $city, CityInput $input): void
@@ -107,11 +152,11 @@ class CityService
         }
 
         if ($input->latitude !== null) {
-            $city->setLatitude(number_format($input->latitude, 7, '.', ''));
+            $city->setLatitude($this->coordinate($input->latitude));
         }
 
         if ($input->longitude !== null) {
-            $city->setLongitude(number_format($input->longitude, 7, '.', ''));
+            $city->setLongitude($this->coordinate($input->longitude));
         }
 
         if ($input->radiusKm !== null) {
@@ -121,6 +166,11 @@ class CityService
         if ($input->position !== null) {
             $city->setPosition($input->position);
         }
+    }
+
+    private function coordinate(float $value): string
+    {
+        return number_format($value, self::COORDINATE_DECIMALS, '.', '');
     }
 
     private function changeStatus(City $city, CityStatus $status): void
