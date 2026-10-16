@@ -16,4 +16,12 @@ enum PlanBilling: string
             self::SUBSCRIPTION => 'Abonnement',
         };
     }
+
+    public function unitLabel(): string
+    {
+        return match ($this) {
+            self::PER_BOOKING => 'HT / créneau réservé',
+            self::SUBSCRIPTION => 'HT / mois',
+        };
+    }
 }

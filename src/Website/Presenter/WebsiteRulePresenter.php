@@ -4,67 +4,92 @@ namespace App\Website\Presenter;
 
 use App\Entity\Website\WebsiteRule;
 use App\Shared\Helper\DurationHelper;
+use App\Website\Enum\RuleField;
+use App\Website\Enum\RuleGroup;
+use App\Website\Enum\WebsiteText;
 use App\Website\Service\WebsiteRuleService;
 
-final class WebsiteRulePresenter
+class WebsiteRulePresenter
 {
-    private const GROUPS = [
-        'booking' => ['Réservations', ['freeCancellationMinutes', 'bookingLeadMinutes', 'maxUpcomingBookingsPerUser']],
-        'absence' => ['Absences', ['toleratedNoShows', 'noShowWindowDays', 'suspensionDays']],
-        'discount' => ['Remises', ['minDiscount', 'maxDiscount', 'defaultDiscount']],
-        'slot' => ['Créneaux', ['publicationWindowDays', 'autoRemovalMinutes']],
-    ];
-
     public function __construct(
-        private WebsiteRuleService $rules
+        private WebsiteRuleService $rules,
     ) {
     }
 
     public function present(?WebsiteRule $rule, ?WebsiteRule $liveRule): array
     {
         if ($rule === null) {
-            return ['groups' => [], 'differences' => [], 'userSummary' => null];
+            return [
+                'groups' => [],
+                'differences' => [],
+                'userSummary' => null
+            ];
         }
 
         $values = $this->rules->toArray($rule);
-        $liveValues = $liveRule !== null && $liveRule !== $rule ? $this->rules->toArray($liveRule) : null;
+        $liveValues = $this->liveValues($rule, $liveRule);
         $groups = [];
         $differences = [];
 
-        foreach (self::GROUPS as $key => [$title, $fields]) {
-            $items = [];
+        foreach (RuleGroup::cases() as $group) {
+            $items = $this->items($group, $values, $liveValues);
 
-            foreach ($fields as $field) {
-                [$label, $unit] = WebsiteRuleService::LABELS[$field];
-                $changed = $liveValues !== null && $liveValues[$field] !== $values[$field];
-
-                if ($changed) {
-                    $differences[] = $field;
+            foreach ($items as $item) {
+                if ($item['changed']) {
+                    $differences[] = $item['key'];
                 }
-
-                $items[] = [
-                    'key' => $field,
-                    'label' => $label,
-                    'unit' => $unit,
-                    'value' => $values[$field],
-                    'liveValue' => $liveValues[$field] ?? null,
-                    'changed' => $changed,
-                ];
             }
 
-            $groups[] = ['key' => $key, 'title' => $title, 'rules' => $items];
+            $groups[] = [
+                'key' => $group->value,
+                'title' => $group->label(),
+                'rules' => $items
+            ];
         }
 
         return [
             'groups' => $groups,
             'differences' => $differences,
-            'userSummary' => sprintf(
-                'Annulation gratuite jusqu\'à %s avant le rendez-vous. Après %d absences non prévenues en %d jours, ton compte est suspendu %d jours.',
-                DurationHelper::format($values['freeCancellationMinutes']),
-                $values['toleratedNoShows'],
-                $values['noShowWindowDays'],
-                $values['suspensionDays'],
-            ),
+            'userSummary' => $this->userSummary($values),
         ];
+    }
+
+    private function liveValues(WebsiteRule $rule, ?WebsiteRule $liveRule): ?array
+    {
+        if ($liveRule === null || $liveRule === $rule) {
+            return null;
+        }
+
+        return $this->rules->toArray($liveRule);
+    }
+
+    private function items(RuleGroup $group, array $values, ?array $liveValues): array
+    {
+        $items = [];
+
+        foreach ($group->fields() as $key) {
+            $field = RuleField::from($key);
+
+            $items[] = [
+                'key' => $key,
+                'label' => $field->label(),
+                'unit' => $field->unit(),
+                'value' => $values[$key],
+                'liveValue' => $liveValues[$key] ?? null,
+                'changed' => $liveValues !== null && $liveValues[$key] !== $values[$key],
+            ];
+        }
+
+        return $items;
+    }
+
+    private function userSummary(array $values): string
+    {
+        return WebsiteText::RULES_SUMMARY->text(
+            DurationHelper::format($values['freeCancellationMinutes']),
+            $values['toleratedNoShows'],
+            $values['noShowWindowDays'],
+            $values['suspensionDays'],
+        );
     }
 }

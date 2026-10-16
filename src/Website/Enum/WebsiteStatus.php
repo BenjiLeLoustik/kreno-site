@@ -20,4 +20,14 @@ enum WebsiteStatus: string
             self::ARCHIVED => 'Archivée',
         };
     }
+
+    public function isDeletable(): bool
+    {
+        return $this === self::DRAFT || $this === self::ARCHIVED;
+    }
+
+    public function isEditable(): bool
+    {
+        return $this === self::DRAFT || $this === self::SCHEDULED;
+    }
 }

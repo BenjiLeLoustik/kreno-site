@@ -7,26 +7,13 @@ use App\Entity\Website\WebsiteConfig;
 use App\Entity\Website\WebsiteRule;
 use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
-use App\Shared\Exception\BusinessRuleException;
 use App\Website\Dto\WebsiteRuleInput;
+use App\Website\Enum\RuleField;
+use App\Website\Exception\InvalidRulesException;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class WebsiteRuleService
 {
-    public const LABELS = [
-        'freeCancellationMinutes' => ['Annulation gratuite', 'min avant'],
-        'bookingLeadMinutes' => ['Délai minimal de réservation', 'min avant'],
-        'maxUpcomingBookingsPerUser' => ['Réservations en cours par client', 'max'],
-        'toleratedNoShows' => ['Absences tolérées', 'absences'],
-        'noShowWindowDays' => ['Période comptée', 'jours'],
-        'suspensionDays' => ['Durée de suspension', 'jours'],
-        'minDiscount' => ['Remise minimale', '%'],
-        'maxDiscount' => ['Remise maximale', '%'],
-        'defaultDiscount' => ['Remise par défaut', '%'],
-        'publicationWindowDays' => ['Publication à l\'avance', 'jours'],
-        'autoRemovalMinutes' => ['Retrait automatique', 'min avant'],
-    ];
-
     public function __construct(
         private OrmManagerInterface $orm,
         private WebsiteVersionService $versions,
@@ -44,15 +31,15 @@ class WebsiteRuleService
         $this->assertConsistent($values);
 
         foreach ($values as $key => $value) {
-            $current = $rule->{'get' . ucfirst($key)}();
+            $field = RuleField::from($key);
+            $current = $rule->{$field->getter()}();
 
             if ($current === $value) {
                 continue;
             }
 
-            $rule->{'set' . ucfirst($key)}($value);
-            [$label, $unit] = self::LABELS[$key];
-            $this->logger->log(ActivityType::RULES, sprintf('%s : %d → %d %s', $label, $current, $value, $unit), $actor, $website, $rule, [$key => ['from' => $current, 'to' => $value]]);
+            $rule->{$field->setter()}($value);
+            $this->logChange($website, $rule, $field, $current, $value, $actor);
         }
 
         $this->orm->persist($rule);
@@ -65,11 +52,30 @@ class WebsiteRuleService
     {
         $values = [];
 
-        foreach (array_keys(self::LABELS) as $key) {
-            $values[$key] = $rule->{'get' . ucfirst($key)}();
+        foreach (RuleField::cases() as $field) {
+            $values[$field->value] = $rule->{$field->getter()}();
         }
 
         return $values;
+    }
+
+    private function logChange(
+        WebsiteConfig $website,
+        WebsiteRule $rule,
+        RuleField $field,
+        ?int $current,
+        int $value,
+        ?User $actor,
+    ): void {
+        $message = sprintf('%s : %d → %d %s', $field->label(), $current, $value, $field->unit());
+        $context = [
+            $field->value => [
+                'from' => $current,
+                'to' => $value
+            ]
+        ];
+
+        $this->logger->log(ActivityType::RULES, $message, $actor, $website, $rule, $context);
     }
 
     private function assertConsistent(array $values): void
@@ -77,19 +83,21 @@ class WebsiteRuleService
         $errors = [];
 
         if ($values['minDiscount'] >= $values['maxDiscount']) {
-            $errors[] = 'la remise minimale doit être inférieure à la maximale';
+            $errors[] = InvalidRulesException::MIN_ABOVE_MAX;
         }
 
-        if ($values['defaultDiscount'] < $values['minDiscount'] || $values['defaultDiscount'] > $values['maxDiscount']) {
-            $errors[] = 'la remise par défaut doit être comprise entre la minimale et la maximale';
+        $default = $values['defaultDiscount'];
+
+        if ($default < $values['minDiscount'] || $default > $values['maxDiscount']) {
+            $errors[] = InvalidRulesException::DEFAULT_OUT_OF_RANGE;
         }
 
         if ($values['autoRemovalMinutes'] >= $values['freeCancellationMinutes']) {
-            $errors[] = 'le retrait automatique doit arriver avant la fin de l\'annulation gratuite';
+            $errors[] = InvalidRulesException::AUTO_REMOVAL_TOO_LATE;
         }
 
         if ($errors !== []) {
-            throw new BusinessRuleException('Règles invalides : {errors}.', ['errors' => implode(' ; ', $errors)]);
+            throw new InvalidRulesException($errors);
         }
     }
 }

@@ -8,7 +8,6 @@ use App\Entity\Website\WebsitePlan;
 use App\Entity\Website\WebsiteRule;
 use App\Repository\User\UserRepository;
 use App\Repository\Website\WebsiteConfigRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\User\Enum\UserRole;
 use App\Website\Dto\WebsiteIdentityInput;
 use App\Website\Dto\WebsitePlanInput;
@@ -16,6 +15,13 @@ use App\Website\Dto\WebsiteRuleInput;
 use App\Website\Enum\PlanBilling;
 use App\Website\Enum\PriceChangePolicy;
 use App\Website\Enum\WebsiteStatus;
+use App\Website\Exception\AdminEmailExistsException;
+use App\Website\Exception\AlreadyInstalledException;
+use App\Website\Exception\AutoRemovalTooLateException;
+use App\Website\Exception\DefaultDiscountOutOfRangeException;
+use App\Website\Exception\MinDiscountAboveMaxException;
+use App\Website\Exception\MissingRulesException;
+use App\Website\Exception\NoActivePlanException;
 use App\Website\Helper\WebsiteVersionHelper;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;
@@ -24,6 +30,14 @@ use NeoPHP\Package\Security\Hasher\UserPasswordHasher;
 class WebsiteInstallService
 {
     public const PRICE_CHANGE_NOTICE_DAYS = 30;
+
+    public const DEFAULT_VAT_RATE = 20;
+
+    public const DEFAULT_NAME = 'Lancement';
+
+    public const DEFAULT_DESCRIPTION = 'Version créée à l\'installation';
+
+    public const PRICING_NAME = 'Tarifs %s';
 
     public function __construct(
         private OrmManagerInterface $orm,
@@ -55,7 +69,7 @@ class WebsiteInstallService
         $email = mb_strtolower(trim($email));
 
         if ($this->users->emailExists($email)) {
-            throw new BusinessRuleException('Un compte existe déjà avec cette adresse : connecte-toi avec ce compte puis reviens sur l\'installation.');
+            throw new AdminEmailExistsException();
         }
 
         $user = (new User())
@@ -71,26 +85,15 @@ class WebsiteInstallService
         return $user;
     }
 
-    public function install(WebsiteIdentityInput $identity, WebsiteRuleInput $rules, array $plans, ?User $actor = null): WebsiteConfig
-    {
+    public function install(
+        WebsiteIdentityInput $identity,
+        WebsiteRuleInput $rules,
+        array $plans,
+        ?User $actor = null,
+    ): WebsiteConfig {
         $this->assertInstallable($rules, $plans);
 
-        $website = (new WebsiteConfig())
-            ->setCode(WebsiteVersionHelper::nextCode($this->websites->findAllCodes()))
-            ->setName(trim((string) $identity->name) ?: 'Lancement')
-            ->setDescription(trim((string) $identity->description) ?: 'Version créée à l\'installation')
-            ->setSiteName(trim((string) $identity->siteName))
-            ->setDomain(trim((string) $identity->domain))
-            ->setTagline(trim((string) $identity->tagline))
-            ->setSiteDescription(trim((string) $identity->siteDescription))
-            ->setSeoTitle(trim((string) $identity->seoTitle) ?: null)
-            ->setContactEmail(trim((string) $identity->contactEmail))
-            ->setPricingName(sprintf('Tarifs %s', (new DateTimeImmutable())->format('Y')))
-            ->setPriceChangePolicy(PriceChangePolicy::KEEP_UNTIL_RENEWAL)
-            ->setPriceChangeNoticeDays(self::PRICE_CHANGE_NOTICE_DAYS)
-            ->setStatus(WebsiteStatus::DRAFT)
-            ->setCreatedBy($actor);
-
+        $website = $this->website($identity, $actor);
         $website->setRule($this->rule($rules)->setWebsite($website));
 
         foreach (array_values($plans) as $position => $input) {
@@ -106,30 +109,60 @@ class WebsiteInstallService
     public function assertInstallable(WebsiteRuleInput $rules, array $plans): void
     {
         if ($this->isInstalled()) {
-            throw new BusinessRuleException('Le site est déjà installé : une version est en ligne.');
+            throw new AlreadyInstalledException();
         }
 
-        if (array_filter($plans, static fn (WebsitePlanInput $plan): bool => (bool) $plan->active) === []) {
-            throw new BusinessRuleException('Activez au moins une formule pour les professionnels.');
+        if (!$this->hasActivePlan($plans)) {
+            throw new NoActivePlanException();
         }
 
         foreach (get_object_vars($rules) as $value) {
             if ($value === null) {
-                throw new BusinessRuleException('Toutes les règles de la plateforme doivent être renseignées.');
+                throw new MissingRulesException();
             }
         }
 
         if ($rules->minDiscount >= $rules->maxDiscount) {
-            throw new BusinessRuleException('La remise minimale doit être inférieure à la remise maximale.');
+            throw new MinDiscountAboveMaxException();
         }
 
         if ($rules->defaultDiscount < $rules->minDiscount || $rules->defaultDiscount > $rules->maxDiscount) {
-            throw new BusinessRuleException('La remise par défaut doit être comprise entre la minimale et la maximale.');
+            throw new DefaultDiscountOutOfRangeException();
         }
 
         if ($rules->autoRemovalMinutes >= $rules->freeCancellationMinutes) {
-            throw new BusinessRuleException('Le retrait automatique doit arriver avant la fin de l\'annulation gratuite.');
+            throw new AutoRemovalTooLateException();
         }
+    }
+
+    private function hasActivePlan(array $plans): bool
+    {
+        foreach ($plans as $plan) {
+            if ($plan instanceof WebsitePlanInput && $plan->active) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function website(WebsiteIdentityInput $identity, ?User $actor): WebsiteConfig
+    {
+        return (new WebsiteConfig())
+            ->setCode(WebsiteVersionHelper::nextCode($this->websites->findAllCodes()))
+            ->setName(trim((string) $identity->name) ?: self::DEFAULT_NAME)
+            ->setDescription(trim((string) $identity->description) ?: self::DEFAULT_DESCRIPTION)
+            ->setSiteName(trim((string) $identity->siteName))
+            ->setDomain(trim((string) $identity->domain))
+            ->setTagline(trim((string) $identity->tagline))
+            ->setSiteDescription(trim((string) $identity->siteDescription))
+            ->setSeoTitle(trim((string) $identity->seoTitle) ?: null)
+            ->setContactEmail(trim((string) $identity->contactEmail))
+            ->setPricingName(sprintf(self::PRICING_NAME, (new DateTimeImmutable())->format('Y')))
+            ->setPriceChangePolicy(PriceChangePolicy::KEEP_UNTIL_RENEWAL)
+            ->setPriceChangeNoticeDays(self::PRICE_CHANGE_NOTICE_DAYS)
+            ->setStatus(WebsiteStatus::DRAFT)
+            ->setCreatedBy($actor);
     }
 
     private function rule(WebsiteRuleInput $rules): WebsiteRule
@@ -151,23 +184,47 @@ class WebsiteInstallService
     private function plan(WebsitePlanInput $input, int $position): WebsitePlan
     {
         $billing = $input->billing ?? PlanBilling::PER_BOOKING;
-        $subscription = $billing === PlanBilling::SUBSCRIPTION;
 
-        return (new WebsitePlan())
+        $plan = (new WebsitePlan())
             ->setCode((string) $input->code)
             ->setName((string) $input->name)
             ->setDescription($input->description)
             ->setBilling($billing)
             ->setPrice((int) $input->price)
-            ->setYearlyPrice($subscription ? $input->yearlyPrice : null)
-            ->setVatRate($input->vatRate ?? 20)
-            ->setTrialDays($subscription ? (int) $input->trialDays : 0)
-            ->setCommitmentMonths($subscription ? (int) $input->commitmentMonths : 0)
-            ->setMaxEstablishments($subscription && !$input->unlimitedEstablishments ? $input->maxEstablishments : null)
-            ->setCommissionFree($subscription && (bool) $input->commissionFree)
+            ->setVatRate($input->vatRate ?? self::DEFAULT_VAT_RATE)
             ->setFeatured((bool) $input->featured)
             ->setAdvancedStats((bool) $input->advancedStats)
             ->setActive((bool) $input->active)
             ->setPosition($position);
+
+        if ($billing === PlanBilling::SUBSCRIPTION) {
+            return $this->applySubscription($plan, $input);
+        }
+
+        return $plan
+            ->setYearlyPrice(null)
+            ->setTrialDays(0)
+            ->setCommitmentMonths(0)
+            ->setMaxEstablishments(null)
+            ->setCommissionFree(false);
+    }
+
+    private function applySubscription(WebsitePlan $plan, WebsitePlanInput $input): WebsitePlan
+    {
+        return $plan
+            ->setYearlyPrice($input->yearlyPrice)
+            ->setTrialDays((int) $input->trialDays)
+            ->setCommitmentMonths((int) $input->commitmentMonths)
+            ->setMaxEstablishments($this->maxEstablishments($input))
+            ->setCommissionFree((bool) $input->commissionFree);
+    }
+
+    private function maxEstablishments(WebsitePlanInput $input): ?int
+    {
+        if ($input->unlimitedEstablishments) {
+            return null;
+        }
+
+        return $input->maxEstablishments;
     }
 }

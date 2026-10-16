@@ -7,27 +7,22 @@ use App\Entity\Website\WebsitePlan;
 use App\Entity\Website\WebsitePromoCode;
 use App\Shared\Helper\DateHelper;
 use App\Shared\Helper\MoneyHelper;
-use App\Website\Enum\PlanBilling;
 use DateTimeImmutable;
 
-final class WebsitePricingPresenter
+class WebsitePricingPresenter
 {
+    public const STATUS_ACTIVE = 'active';
+
+    public const STATUS_ENDED = 'ended';
+
     public function present(WebsiteConfig $website, ?WebsiteConfig $live): array
     {
-        $livePlans = [];
-
-        if ($live !== null && $live !== $website) {
-            foreach ($live->getPlans() as $plan) {
-                $livePlans[$plan->getCode()] = $plan;
-            }
-        }
-
+        $livePlans = $this->livePlans($website, $live);
         $plans = [];
         $changed = [];
 
         foreach ($website->getPlans() as $plan) {
-            $livePlan = $livePlans[$plan->getCode()] ?? null;
-            $data = $this->plan($plan, $livePlan);
+            $data = $this->plan($plan, $livePlans[$plan->getCode()] ?? null);
             $plans[] = $data;
 
             if ($data['changed']) {
@@ -42,14 +37,12 @@ final class WebsitePricingPresenter
             'priceChangeNoticeDays' => $website->getPriceChangeNoticeDays(),
             'plans' => $plans,
             'changedPlans' => $changed,
-            'promoCodes' => array_map(fn (WebsitePromoCode $code): array => $this->promoCode($code), $website->getPromoCodes()->toArray()),
+            'promoCodes' => $this->promoCodes($website),
         ];
     }
 
     public function plan(WebsitePlan $plan, ?WebsitePlan $livePlan = null): array
     {
-        $perBooking = $plan->getBilling() === PlanBilling::PER_BOOKING;
-
         return [
             'id' => $plan->getId(),
             'code' => $plan->getCode(),
@@ -59,7 +52,7 @@ final class WebsitePricingPresenter
             'billingLabel' => $plan->getBilling()->label(),
             'price' => $plan->getPrice(),
             'priceLabel' => MoneyHelper::format($plan->getPrice()),
-            'unitLabel' => $perBooking ? 'HT / créneau réservé' : 'HT / mois',
+            'unitLabel' => $plan->getBilling()->unitLabel(),
             'priceIncludingTax' => MoneyHelper::includingTax($plan->getPrice(), $plan->getVatRate()),
             'yearlyPrice' => $plan->getYearlyPrice(),
             'vatRate' => $plan->getVatRate(),
@@ -72,7 +65,7 @@ final class WebsitePricingPresenter
             'active' => $plan->isActive(),
             'position' => $plan->getPosition(),
             'livePrice' => $livePlan?->getPrice(),
-            'livePriceLabel' => $livePlan !== null ? MoneyHelper::format($livePlan->getPrice()) : null,
+            'livePriceLabel' => $this->livePriceLabel($livePlan),
             'changed' => $livePlan !== null && $livePlan->getPrice() !== $plan->getPrice(),
             'isNew' => $livePlan === null,
         ];
@@ -80,11 +73,6 @@ final class WebsitePricingPresenter
 
     public function promoCode(WebsitePromoCode $code, ?DateTimeImmutable $now = null): array
     {
-        $now ??= new DateTimeImmutable();
-        $ended = !$code->isActive()
-            || ($code->getEndsAt() !== null && $code->getEndsAt() < $now)
-            || ($code->getMaxUses() !== null && $code->getUsesCount() >= $code->getMaxUses());
-
         return [
             'id' => $code->getId(),
             'code' => $code->getCode(),
@@ -98,7 +86,64 @@ final class WebsitePricingPresenter
             'startsAt' => DateHelper::iso($code->getStartsAt()),
             'endsAt' => DateHelper::iso($code->getEndsAt()),
             'active' => $code->isActive(),
-            'status' => $ended ? 'ended' : 'active',
+            'status' => $this->promoStatus($code, $now ?? new DateTimeImmutable()),
         ];
+    }
+
+    private function livePlans(WebsiteConfig $website, ?WebsiteConfig $live): array
+    {
+        $plans = [];
+
+        if ($live === null || $live === $website) {
+            return $plans;
+        }
+
+        foreach ($live->getPlans() as $plan) {
+            $plans[$plan->getCode()] = $plan;
+        }
+
+        return $plans;
+    }
+
+    private function promoCodes(WebsiteConfig $website): array
+    {
+        $codes = [];
+
+        foreach ($website->getPromoCodes() as $code) {
+            $codes[] = $this->promoCode($code);
+        }
+
+        return $codes;
+    }
+
+    private function livePriceLabel(?WebsitePlan $livePlan): ?string
+    {
+        if ($livePlan === null) {
+            return null;
+        }
+
+        return MoneyHelper::format($livePlan->getPrice());
+    }
+
+    private function promoStatus(WebsitePromoCode $code, DateTimeImmutable $now): string
+    {
+        if ($this->isEnded($code, $now)) {
+            return self::STATUS_ENDED;
+        }
+
+        return self::STATUS_ACTIVE;
+    }
+
+    private function isEnded(WebsitePromoCode $code, DateTimeImmutable $now): bool
+    {
+        if (!$code->isActive()) {
+            return true;
+        }
+
+        if ($code->getEndsAt() !== null && $code->getEndsAt() < $now) {
+            return true;
+        }
+
+        return $code->getMaxUses() !== null && $code->getUsesCount() >= $code->getMaxUses();
     }
 }
