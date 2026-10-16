@@ -2,7 +2,7 @@
 
 namespace App\Admin\Helper\View;
 
-use App\Admin\Navbar\NavbarRegistry;
+use App\Admin\Registry\NavbarRegistry;
 use NeoPHP\Component\View\Contract\ViewFunctionInterface;
 
 class AdminNavViewHelper implements ViewFunctionInterface
