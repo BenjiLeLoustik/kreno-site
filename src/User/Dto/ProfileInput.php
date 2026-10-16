@@ -2,6 +2,7 @@
 
 namespace App\User\Dto;
 
+use App\Shared\Helper\ValidationPattern;
 use NeoPHP\Component\Validator\Constraint as Assert;
 
 class ProfileInput
@@ -12,7 +13,7 @@ class ProfileInput
     #[Assert\Length(max: 80)]
     public ?string $lastName = null;
 
-    #[Assert\Regex(pattern: '/^\+?[0-9 .-]{10,20}$/')]
+    #[Assert\Regex(pattern: ValidationPattern::PHONE)]
     public ?string $phone = null;
 
     #[Assert\Email]

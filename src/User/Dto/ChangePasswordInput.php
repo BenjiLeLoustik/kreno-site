@@ -2,6 +2,7 @@
 
 namespace App\User\Dto;
 
+use App\Shared\Helper\ValidationPattern;
 use NeoPHP\Component\Validator\Constraint as Assert;
 
 class ChangePasswordInput
@@ -10,6 +11,6 @@ class ChangePasswordInput
     public string $currentPassword = '';
 
     #[Assert\NotBlank]
-    #[Assert\Regex(pattern: '/^(?=.*[A-Za-z])(?=.*\\d).{12,}$/', message: 'Le mot de passe doit faire au moins 12 caractères, avec des lettres et des chiffres.')]
+    #[Assert\Regex(pattern: ValidationPattern::PASSWORD, message: ValidationPattern::PASSWORD_MESSAGE)]
     public string $newPassword = '';
 }

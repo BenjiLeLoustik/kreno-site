@@ -4,10 +4,10 @@ namespace App\User\Service;
 
 use App\Entity\User\User;
 use App\Repository\User\UserRepository;
-use App\Shared\Exception\BusinessRuleException;
-use App\User\Event\GuestAccountCreatedEvent;
 use App\User\Enum\UserRole;
 use App\User\Enum\UserTokenType;
+use App\User\Event\GuestAccountCreatedEvent;
+use App\User\Exception\GuestEmailExistsException;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 use NeoPHP\Package\Security\Hasher\UserPasswordHasher;
@@ -28,15 +28,13 @@ class GuestAccountService
         $email = mb_strtolower(trim($email));
 
         if ($this->users->emailExists($email)) {
-            throw new BusinessRuleException('Un compte existe déjà avec cette adresse e-mail : connecte-toi pour réserver.');
+            throw new GuestEmailExistsException();
         }
-
-        $phone = trim((string) $phone);
 
         $user = (new User())
             ->setEmail($email)
             ->setFirstName(trim($firstName))
-            ->setPhone($phone !== '' ? $phone : null)
+            ->setPhone($this->phone($phone))
             ->setRoles([UserRole::USER->value]);
 
         $user->setPassword($this->hasher->hashPassword($user, bin2hex(random_bytes(24))));
@@ -48,5 +46,16 @@ class GuestAccountService
         $this->events->dispatch(new GuestAccountCreatedEvent($user, $token));
 
         return $user;
+    }
+
+    private function phone(?string $phone): ?string
+    {
+        $phone = trim((string) $phone);
+
+        if ($phone === '') {
+            return null;
+        }
+
+        return $phone;
     }
 }

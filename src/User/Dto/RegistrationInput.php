@@ -2,6 +2,7 @@
 
 namespace App\User\Dto;
 
+use App\Shared\Helper\ValidationPattern;
 use NeoPHP\Component\Validator\Constraint as Assert;
 
 class RegistrationInput
@@ -18,11 +19,11 @@ class RegistrationInput
     #[Assert\Length(max: 180)]
     public string $email = '';
 
-    #[Assert\Regex(pattern: '/^\+?[0-9 .-]{10,20}$/')]
+    #[Assert\Regex(pattern: ValidationPattern::PHONE)]
     public ?string $phone = null;
 
     #[Assert\NotBlank]
-    #[Assert\Regex(pattern: '/^(?=.*[A-Za-z])(?=.*\\d).{12,}$/', message: 'Le mot de passe doit faire au moins 12 caractères, avec des lettres et des chiffres.')]
+    #[Assert\Regex(pattern: ValidationPattern::PASSWORD, message: ValidationPattern::PASSWORD_MESSAGE)]
     public string $password = '';
 
     #[Assert\IsTrue(message: 'Vous devez accepter les conditions d\'utilisation.')]

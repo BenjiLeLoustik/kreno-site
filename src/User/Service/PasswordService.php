@@ -4,13 +4,15 @@ namespace App\User\Service;
 
 use App\Entity\User\User;
 use App\Repository\User\UserRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\User\Dto\ChangePasswordInput;
 use App\User\Dto\ResetPasswordInput;
-use App\User\Event\PasswordChangedEvent;
-use App\User\Event\PasswordResetRequestedEvent;
 use App\User\Enum\UserStatus;
 use App\User\Enum\UserTokenType;
+use App\User\Event\PasswordChangedEvent;
+use App\User\Event\PasswordResetRequestedEvent;
+use App\User\Exception\PasswordMismatchException;
+use App\User\Exception\SamePasswordException;
+use App\User\Exception\WrongCurrentPasswordException;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
@@ -19,6 +21,10 @@ use NeoPHP\Package\Security\Hasher\UserPasswordHasher;
 class PasswordService
 {
     public const SET_PASSWORD_TOKENS = [UserTokenType::PASSWORD_RESET, UserTokenType::ACCOUNT_SETUP];
+
+    public const CLIENT_CONTEXT = 'client';
+
+    public const CLOSED_STATUSES = [UserStatus::DELETED, UserStatus::BANNED];
 
     public function __construct(
         private OrmManagerInterface $orm,
@@ -29,11 +35,11 @@ class PasswordService
     ) {
     }
 
-    public function requestReset(string $email, string $context = 'client'): void
+    public function requestReset(string $email, string $context = self::CLIENT_CONTEXT): void
     {
         $user = $this->users->findOneByEmail($email);
 
-        if ($user === null || in_array($user->getStatus(), [UserStatus::DELETED, UserStatus::BANNED], true)) {
+        if ($user === null || in_array($user->getStatus(), self::CLOSED_STATUSES, true)) {
             return;
         }
 
@@ -51,10 +57,10 @@ class PasswordService
     public function reset(string $plainToken, ResetPasswordInput $input): User
     {
         if ($input->password !== $input->passwordConfirmation) {
-            throw new BusinessRuleException('Les deux mots de passe ne sont pas identiques.');
+            throw new PasswordMismatchException();
         }
 
-        $type = $this->tokens->find($plainToken, ...self::SET_PASSWORD_TOKENS)->getType() ?? UserTokenType::PASSWORD_RESET;
+        $type = $this->tokenType($plainToken);
         $user = $this->tokens->consume($plainToken, $type);
         $user->setPassword($this->hasher->hashPassword($user, $input->password));
 
@@ -74,11 +80,11 @@ class PasswordService
     public function change(User $user, ChangePasswordInput $input): User
     {
         if (!$this->hasher->isPasswordValid($user, $input->currentPassword)) {
-            throw new BusinessRuleException('Le mot de passe actuel est incorrect.');
+            throw new WrongCurrentPasswordException();
         }
 
         if ($input->currentPassword === $input->newPassword) {
-            throw new BusinessRuleException('Le nouveau mot de passe doit être différent de l\'actuel.');
+            throw new SamePasswordException();
         }
 
         $user->setPassword($this->hasher->hashPassword($user, $input->newPassword));
@@ -87,5 +93,11 @@ class PasswordService
         $this->events->dispatch(new PasswordChangedEvent($user));
 
         return $user;
+    }
+
+    private function tokenType(string $plainToken): UserTokenType
+    {
+        return $this->tokens->find($plainToken, ...self::SET_PASSWORD_TOKENS)->getType()
+            ?? UserTokenType::PASSWORD_RESET;
     }
 }

@@ -4,17 +4,21 @@ namespace App\User\Service;
 
 use App\Entity\User\User;
 use App\Repository\User\UserRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\User\Dto\ProfileInput;
 use App\User\Dto\SettingsInput;
-use App\User\Event\AccountDeletedEvent;
 use App\User\Enum\UserStatus;
+use App\User\Event\AccountDeletedEvent;
+use App\User\Exception\EmailAlreadyUsedException;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class AccountService
 {
+    public const DELETED_EMAIL = 'supprime-%d@kreno.invalid';
+
+    public const DELETED_FIRST_NAME = 'Compte supprimé';
+
     public function __construct(
         private OrmManagerInterface $orm,
         private UserRepository $users,
@@ -37,15 +41,7 @@ class AccountService
         }
 
         if ($input->email !== null) {
-            $email = mb_strtolower(trim($input->email));
-
-            if ($email !== $user->getEmail()) {
-                if ($this->users->emailExists($email)) {
-                    throw new BusinessRuleException('Cette adresse e-mail est déjà utilisée par un autre compte.');
-                }
-
-                $user->setEmail($email)->setEmailVerifiedAt(null);
-            }
+            $this->changeEmail($user, $input->email);
         }
 
         $this->orm->flush();
@@ -79,16 +75,35 @@ class AccountService
             $user->removeFollow($follow);
         }
 
+        $this->anonymize($user);
+        $this->orm->flush();
+    }
+
+    private function changeEmail(User $user, string $email): void
+    {
+        $email = mb_strtolower(trim($email));
+
+        if ($email === $user->getEmail()) {
+            return;
+        }
+
+        if ($this->users->emailExists($email)) {
+            throw new EmailAlreadyUsedException();
+        }
+
+        $user->setEmail($email)->setEmailVerifiedAt(null);
+    }
+
+    private function anonymize(User $user): void
+    {
         $user
             ->setStatus(UserStatus::DELETED)
-            ->setEmail(sprintf('supprime-%d@kreno.invalid', $user->getId()))
-            ->setFirstName('Compte supprimé')
+            ->setEmail(sprintf(self::DELETED_EMAIL, $user->getId()))
+            ->setFirstName(self::DELETED_FIRST_NAME)
             ->setLastName(null)
             ->setPhone(null)
             ->setPassword(bin2hex(random_bytes(32)))
             ->setEmailNotifications(false)
             ->setDeletedAt(new DateTimeImmutable());
-
-        $this->orm->flush();
     }
 }
