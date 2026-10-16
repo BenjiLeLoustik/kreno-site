@@ -42,13 +42,19 @@ class StripePaymentGateway implements PaymentGatewayInterface
         return $this->publicKey;
     }
 
-    public function createSetup(Company $company, PaymentMethodType $type, ?CompanyPaymentMethod $existing = null): GatewaySetup
-    {
+    public function createSetup(
+        Company $company,
+        PaymentMethodType $type,
+        ?CompanyPaymentMethod $existing = null
+    ): GatewaySetup {
+
         $customer = $existing !== null ? $this->customerOf((string) $existing->getProviderReference()) : null;
         $customer ??= $this->request('POST', 'customers', [
             'name' => $company->getLegalName() ?? $company->getName(),
             'email' => $company->getConfig()?->getBillingEmail(),
-            'metadata' => ['company_id' => $company->getId()],
+            'metadata' => [
+                'company_id' => $company->getId()
+            ],
         ])['id'];
 
         $intent = $this->request('POST', 'setup_intents', [

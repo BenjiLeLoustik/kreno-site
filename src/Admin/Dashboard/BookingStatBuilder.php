@@ -40,7 +40,11 @@ class BookingStatBuilder extends AbstractStatBuilder
 
         return new DashboardStat(
             $this->bookings->countCreatedBetween($today, $tomorrow),
-            sprintf('%d %s', $cancellations, $this->plural($cancellations, 'annulation', 'annulations')),
+            sprintf(
+                '%d %s',
+                $cancellations,
+                $this->plural($cancellations, 'annulation', 'annulations')
+            ),
         );
     }
 }

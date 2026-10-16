@@ -11,11 +11,21 @@ use App\Entity\Company\CompanyPaymentMethod;
 
 interface PaymentGatewayInterface
 {
-    public function createSetup(Company $company, PaymentMethodType $type, ?CompanyPaymentMethod $existing = null): GatewaySetup;
+    public function createSetup(
+        Company $company,
+        PaymentMethodType $type,
+        ?CompanyPaymentMethod $existing = null
+    ): GatewaySetup;
 
     public function completeSetup(string $setupReference): GatewayPaymentMethod;
 
-    public function charge(CompanyPaymentMethod $method, int $amount, string $description, string $idempotencyKey, bool $offSession): GatewayPaymentResult;
+    public function charge(
+        CompanyPaymentMethod $method,
+        int $amount,
+        string $description,
+        string $idempotencyKey,
+        bool $offSession
+    ): GatewayPaymentResult;
 
     public function retrieveCharge(string $reference): GatewayPaymentResult;
 

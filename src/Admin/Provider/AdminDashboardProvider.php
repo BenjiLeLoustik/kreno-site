@@ -46,16 +46,28 @@ class AdminDashboardProvider
 
     private function pending(DateTimeImmutable $now): array
     {
-        return array_map(fn (CompanyEstablishment $establishment): array => $this->establishmentPresenter->summary($establishment) + [
-                'when' => $establishment->getUpdatedAt() !== null ? CalendarHelper::relative($establishment->getUpdatedAt(), $now) : null,
-            ], $this->establishments->findByStatus(EstablishmentStatus::PENDING_REVIEW, self::LIST_SIZE));
+        return array_map(
+            fn (CompanyEstablishment $establishment): array => $this->establishmentPresenter->summary($establishment) + [
+                'when' => $establishment->getUpdatedAt() !== null
+                    ? CalendarHelper::relative($establishment->getUpdatedAt(), $now)
+                    : null,
+            ], $this->establishments->findByStatus(EstablishmentStatus::PENDING_REVIEW, self::LIST_SIZE)
+        );
     }
 
     private function openReports(): array
     {
-        $rows = $this->reportPresenter->forAdminList($this->reports->findForAdmin(ReportRepository::OPEN_STATUSES, null, self::OPEN_REPORTS_SCAN));
+        $rows = $this->reportPresenter->forAdminList(
+            $this->reports->findForAdmin(
+                ReportRepository::OPEN_STATUSES,
+                null,
+                self::OPEN_REPORTS_SCAN
+            )
+        );
 
-        usort($rows, static fn (array $a, array $b): int => (self::PRIORITY_ORDER[$a['priority']] ?? 3) <=> (self::PRIORITY_ORDER[$b['priority']] ?? 3));
+        usort($rows, static fn (array $a, array $b): int =>
+            (self::PRIORITY_ORDER[$a['priority']] ?? 3) <=> (self::PRIORITY_ORDER[$b['priority']] ?? 3)
+        );
 
         return array_slice($rows, 0, self::LIST_SIZE);
     }
