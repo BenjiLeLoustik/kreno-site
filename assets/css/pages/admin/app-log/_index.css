@@ -1,0 +1,29 @@
+@layer components {
+    .app-log__heading {
+        @apply min-w-0;
+    }
+
+    .app-log__class {
+        @apply break-all;
+    }
+
+    .app-log__message {
+        @apply rounded-[14px] bg-[#FFE7E1] px-4 py-3 font-mono text-sm break-words text-[#8A2414];
+    }
+
+    .app-log__code {
+        @apply font-mono text-[13px] break-all;
+    }
+
+    .app-log__date {
+        @apply text-base;
+    }
+
+    .app-log__trace {
+        @apply mt-3 max-h-[420px] overflow-auto rounded-xl bg-night p-4 font-mono text-xs leading-relaxed whitespace-pre text-mist;
+    }
+
+    .app-log__purge {
+        @apply flex flex-wrap items-center justify-between gap-3;
+    }
+}

@@ -18,6 +18,7 @@ class AdminNavViewHelper implements ViewFunctionInterface
         ['key' => 'catalog', 'label' => 'Catégories et villes', 'route' => 'admin_catalog_index', 'role' => 'ROLE_ADMIN', 'icon' => 'map-pin'],
         ['key' => 'pricing', 'label' => 'Tarifs et formules', 'route' => 'admin_pricing_index', 'role' => 'ROLE_ADMIN', 'icon' => 'tags'],
         ['key' => 'versions', 'label' => 'Versions du site', 'route' => 'admin_website_index', 'role' => 'ROLE_ADMIN', 'icon' => 'git-branch'],
+        ['key' => 'errors', 'label' => 'Erreurs du site', 'route' => 'admin_app_logs', 'role' => 'ROLE_ADMIN', 'icon' => 'bug'],
         ['key' => 'settings', 'label' => 'Réglages et journal', 'route' => 'admin_settings_index', 'role' => 'ROLE_ADMIN', 'icon' => 'settings'],
     ];
 

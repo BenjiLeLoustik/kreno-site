@@ -2,6 +2,8 @@
 
 namespace App\Shared\Listener;
 
+use App\Entity\User\User;
+use App\Log\Service\AppLogRecorder;
 use App\Shared\Error\Context\Context403;
 use App\Shared\Error\Context\Context404;
 use App\Shared\Error\Context\Context500;
@@ -13,6 +15,7 @@ use NeoPHP\Component\Exception\ExceptionManager;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Kernel\Event\ExceptionEvent;
 use NeoPHP\Component\View\ViewManagerInterface;
+use NeoPHP\Package\Security\SecurityManagerInterface;
 use Throwable;
 
 class ErrorPageListener
@@ -28,6 +31,8 @@ class ErrorPageListener
     public function __construct(
         private ViewManagerInterface $view,
         private ExceptionManager $exceptions,
+        private AppLogRecorder $recorder,
+        private SecurityManagerInterface $security,
     ) {
     }
 
@@ -37,6 +42,11 @@ class ErrorPageListener
         $request = $event->getRequest();
         $throwable = $event->getThrowable();
         $status = $this->exceptions->getStatusCode($throwable);
+
+        if ($status >= 500) {
+            $this->recorder->record($throwable, $request, $status, $this->userId(), $event->getKernel()->getRootPath());
+        }
+
         $context = $this->context($throwable, $status);
 
         if ($context === null || $request->wantsJson() || $request->isJson() || ($status >= 500 && $event->getKernel()->isDebug())) {
@@ -68,5 +78,16 @@ class ErrorPageListener
         }
 
         return null;
+    }
+
+    private function userId(): ?int
+    {
+        try {
+            $user = $this->security->getUser();
+        } catch (Throwable) {
+            return null;
+        }
+
+        return $user instanceof User ? $user->getId() : null;
     }
 }

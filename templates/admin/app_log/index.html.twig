@@ -1,0 +1,142 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set admin_section = 'errors' %}
+{% set query = { status: filters.status != 'new' ? filters.status : null, q: filters.q ?: null, page: filters.page > 1 ? filters.page : null }|filter(value => value) %}
+
+{% block title %}Erreurs du site · Administration Kréno{% endblock %}
+
+{% block content %}
+    <div class="admin-head">
+        <h1 class="admin-title">Erreurs du site</h1>
+        <form method="get" action="{{ path('admin_app_logs') }}" class="admin-toolbar">
+            <input type="hidden" name="status" value="{{ filters.status }}">
+            <label class="admin-search">
+                <i data-lucide="search" class="admin-nav__icon"></i>
+                <input type="search" name="q" value="{{ filters.q }}" placeholder="Message, classe, URL" class="admin-search__input" aria-label="Rechercher une erreur">
+            </label>
+            <button type="submit" class="admin-button">Rechercher</button>
+        </form>
+    </div>
+
+    <nav class="admin-tabs" aria-label="Statut">
+        {% for status in statuses %}
+            <a href="{{ path('admin_app_logs', { status: status.value, q: filters.q ?: null }|filter(value => value)) }}" class="admin-tabs__link{{ status.value == filters.status ? ' admin-tabs__link--active' : '' }}"{{ status.value == filters.status ? ' aria-current="page"' : '' }}>{{ status.label }} · {{ status.count }}</a>
+        {% endfor %}
+        <a href="{{ path('admin_app_logs', { status: 'all', q: filters.q ?: null }|filter(value => value)) }}" class="admin-tabs__link{{ filters.status == 'all' ? ' admin-tabs__link--active' : '' }}"{{ filters.status == 'all' ? ' aria-current="page"' : '' }}>Toutes</a>
+    </nav>
+
+    <div class="admin-split">
+        <div class="admin-split__list">
+            {% for log in logs %}
+                {% set current = selected and selected.id == log.id %}
+                <a href="{{ path('admin_app_log_show', { id: log.id }|merge(query)) }}" class="admin-list__item{{ current ? ' admin-list__item--active' : '' }}"{{ current ? ' aria-current="page"' : '' }}>
+                    <span class="admin-list__text">
+                        <b class="admin-list__name">{{ log.shortClass }}</b>
+                        <span class="admin-list__meta">{{ log.message }}</span>
+                        <span class="admin-list__meta">{{ log.occurrences }} fois · dernière le {{ log.lastSeenAt|date('d/m à H:i') }}</span>
+                    </span>
+                    <span class="admin-badge admin-badge--{{ log.tone }}">{{ log.statusLabel }}</span>
+                </a>
+            {% else %}
+                <p class="admin-list__empty">{{ filters.status == 'new' ? 'Aucune nouvelle erreur. Tout va bien.' : 'Aucune erreur pour ce filtre.' }}</p>
+            {% endfor %}
+            {% if filters.page > 1 or hasNext %}
+                <div class="admin-list__item admin-pagination">
+                    {% if filters.page > 1 %}<a href="{{ path('admin_app_logs', query|merge({ page: filters.page - 1 })) }}">← Précédentes</a>{% else %}<span></span>{% endif %}
+                    <span>Page {{ filters.page }}</span>
+                    {% if hasNext %}<a href="{{ path('admin_app_logs', query|merge({ page: filters.page + 1 })) }}">Suivantes →</a>{% else %}<span></span>{% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        {% if selected %}
+            <section class="admin-card admin-split__detail">
+                <div class="admin-card__head">
+                    <div class="app-log__heading">
+                        <h2 class="admin-detail__title">{{ selected.shortClass }}</h2>
+                        <span class="admin-card__subtitle app-log__class">{{ selected.exceptionClass }}</span>
+                    </div>
+                    <span class="admin-badge admin-badge--{{ selected.tone }}">{{ selected.statusLabel }}</span>
+                </div>
+
+                <p class="app-log__message">{{ selected.fullMessage }}</p>
+
+                <div class="admin-figures">
+                    <div class="admin-figure"><span class="admin-figure__label">Occurrences</span><strong class="admin-figure__value">{{ selected.occurrences }}</strong></div>
+                    <div class="admin-figure"><span class="admin-figure__label">Code HTTP</span><strong class="admin-figure__value">{{ selected.statusCode }}</strong></div>
+                    <div class="admin-figure"><span class="admin-figure__label">Première fois</span><strong class="admin-figure__value app-log__date">{{ selected.firstSeenAt|date('d/m/y H:i') }}</strong></div>
+                    <div class="admin-figure"><span class="admin-figure__label">Dernière fois</span><strong class="admin-figure__value app-log__date">{{ selected.lastSeenAt|date('d/m/y H:i') }}</strong></div>
+                </div>
+
+                <dl class="admin-facts">
+                    <dt class="admin-facts__label">Emplacement</dt>
+                    <dd class="admin-facts__value app-log__code">{{ selected.location ?: '—' }}</dd>
+                    <dt class="admin-facts__label">Dernière requête</dt>
+                    <dd class="admin-facts__value app-log__code">{{ selected.request ?: '—' }}</dd>
+                    <dt class="admin-facts__label">Dernier utilisateur</dt>
+                    <dd class="admin-facts__value">
+                        {% if selected.user %}
+                            {% if route_exists('admin_user_show') %}<a href="{{ path('admin_user_show', { id: selected.user.id }) }}">{{ selected.user.name }}</a>{% else %}{{ selected.user.name }}{% endif %} · {{ selected.user.email }}
+                        {% else %}
+                            Visiteur non connecté
+                        {% endif %}
+                    </dd>
+                    <dt class="admin-facts__label">Niveau</dt>
+                    <dd class="admin-facts__value">{{ selected.level ?: '—' }}</dd>
+                    {% if selected.handledBy %}
+                        <dt class="admin-facts__label">Traitée par</dt>
+                        <dd class="admin-facts__value">{{ selected.handledBy }}{% if selected.handledAt %} le {{ selected.handledAt|date('d/m/Y à H:i') }}{% endif %}</dd>
+                    {% endif %}
+                </dl>
+
+                {% if selected.note %}
+                    <div class="admin-note">{{ selected.note }}</div>
+                {% endif %}
+
+                {% if selected.trace %}
+                    <details class="admin-disclosure">
+                        <summary class="admin-disclosure__summary">Pile d'appels</summary>
+                        <pre class="app-log__trace">{{ selected.trace }}</pre>
+                    </details>
+                {% endif %}
+
+                <form method="post" action="{{ path('admin_app_log_status', { id: selected.id }) }}" class="admin-form">
+                    {{ csrf_field('admin_app_log')|raw }}
+                    <input type="hidden" name="filterStatus" value="{{ filters.status }}">
+                    <input type="hidden" name="filterQ" value="{{ filters.q }}">
+                    <label class="admin-field">
+                        Note <span class="admin-field__hint">facultatif : cause, correctif, lien vers le commit…</span>
+                        <textarea name="note" rows="2" maxlength="2000" class="admin-input admin-input--area"></textarea>
+                    </label>
+                    <div class="admin-actions">
+                        {% if selected.status != 'acknowledged' %}
+                            <button type="submit" name="status" value="acknowledged" class="admin-button">Marquer comme vue</button>
+                        {% endif %}
+                        {% if selected.status != 'resolved' %}
+                            <button type="submit" name="status" value="resolved" class="admin-button admin-button--success">Marquer comme corrigée</button>
+                        {% endif %}
+                        {% if selected.status != 'ignored' %}
+                            <button type="submit" name="status" value="ignored" class="admin-button">Ignorer</button>
+                        {% endif %}
+                        {% if selected.status != 'new' %}
+                            <button type="submit" name="status" value="new" class="admin-button">Rouvrir</button>
+                        {% endif %}
+                    </div>
+                </form>
+
+                <form method="post" action="{{ path('admin_app_log_delete', { id: selected.id }) }}" class="admin-form--inline">
+                    {{ csrf_field('admin_app_log')|raw }}
+                    <input type="hidden" name="filterStatus" value="{{ filters.status }}">
+                    <input type="hidden" name="filterQ" value="{{ filters.q }}">
+                    <button type="submit" class="admin-button admin-button--ghost-danger" data-admin-confirm="Supprimer cette erreur ? Elle sera recréée si elle se reproduit.">Supprimer</button>
+                </form>
+            </section>
+        {% endif %}
+    </div>
+
+    <form method="post" action="{{ path('admin_app_log_purge') }}" class="app-log__purge">
+        {{ csrf_field('admin_app_log')|raw }}
+        <span class="admin-subtitle">Les erreurs corrigées ou ignorées depuis plus de {{ retentionDays }} jours peuvent être supprimées.</span>
+        <button type="submit" class="admin-button admin-button--small" data-admin-confirm="Supprimer les erreurs corrigées ou ignorées depuis plus de {{ retentionDays }} jours ?">Purger</button>
+    </form>
+{% endblock %}
