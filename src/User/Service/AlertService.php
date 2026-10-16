@@ -16,7 +16,7 @@ use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class AlertService
 {
-    private const MAX_ALERTS = 5;
+    public const MAX_ALERTS = 5;
 
     private const COORDINATE_DECIMALS = 7;
 
