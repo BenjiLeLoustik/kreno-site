@@ -4,11 +4,11 @@ namespace App\Establishment\Service;
 
 use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Establishment\EstablishmentOpeningHour;
-use App\Enum\Calendar\Weekday;
 use App\Establishment\Dto\OpeningHourInput;
 use App\Establishment\Exception\OpeningHourOrderException;
 use App\Establishment\Exception\OpeningHourOverlapException;
 use App\Repository\Establishment\EstablishmentOpeningHourRepository;
+use App\Shared\Enum\Weekday;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 

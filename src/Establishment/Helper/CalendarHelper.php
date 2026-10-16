@@ -2,8 +2,8 @@
 
 namespace App\Establishment\Helper;
 
-use App\Enum\Calendar\Month;
-use App\Enum\Calendar\Weekday;
+use App\Shared\Enum\Month;
+use App\Shared\Enum\Weekday;
 use DateTimeImmutable;
 
 class CalendarHelper

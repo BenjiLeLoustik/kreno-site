@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enum\Calendar;
+namespace App\Shared\Enum;
 
 use DateTimeInterface;
 

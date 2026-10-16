@@ -3,7 +3,7 @@
 namespace App\Billing\Helper;
 
 use App\Billing\Enum\BillingPeriod;
-use App\Enum\Calendar\Month;
+use App\Shared\Enum\Month;
 use DateTimeImmutable;
 
 class PeriodHelper

@@ -3,8 +3,8 @@
 namespace App\Establishment\Presenter;
 
 use App\Entity\Establishment\EstablishmentClosure;
-use App\Enum\Calendar\Weekday;
 use App\Establishment\Helper\OpeningHoursHelper;
+use App\Shared\Enum\Weekday;
 use App\Shared\Helper\DateHelper;
 use DateTimeImmutable;
 

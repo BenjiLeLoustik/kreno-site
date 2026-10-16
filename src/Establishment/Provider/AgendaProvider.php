@@ -3,12 +3,12 @@
 namespace App\Establishment\Provider;
 
 use App\Entity\Company\CompanyEstablishment;
-use App\Enum\Calendar\Weekday;
 use App\Establishment\Enum\SlotKind;
 use App\Establishment\Helper\CalendarHelper;
 use App\Establishment\Helper\OpeningHoursHelper;
 use App\Establishment\Presenter\SlotPresenter;
 use App\Repository\Establishment\EstablishmentSlotRepository;
+use App\Shared\Enum\Weekday;
 use DateTimeImmutable;
 
 class AgendaProvider

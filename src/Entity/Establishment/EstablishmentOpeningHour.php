@@ -6,8 +6,8 @@ namespace App\Entity\Establishment;
 
 use App\Entity\AbstractBaseEntity;
 use App\Entity\Company\CompanyEstablishment;
-use App\Enum\Calendar\Weekday;
 use App\Repository\Establishment\EstablishmentOpeningHourRepository;
+use App\Shared\Enum\Weekday;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\Mapping as ORM;
 
