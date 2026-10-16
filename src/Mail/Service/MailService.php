@@ -17,6 +17,8 @@ class MailService
 
     public const PRO = 'pro';
 
+    public const DEFAULT_SENDER = 'Kréno <bonjour@kreno.fr>';
+
     public function __construct(
         private MessageBusInterface $bus,
         private RoutingManagerInterface $routing,
@@ -25,35 +27,77 @@ class MailService
     ) {
     }
 
-    public function send(string $sender, array|string $to, string $subject, string $template, array $context = [], ?string $replyTo = null): void
-    {
-        $recipients = array_values(array_unique(array_filter(is_array($to) ? $to : [$to], static fn (?string $address): bool => $address !== null && $address !== '')));
+    public function send(
+        string $sender,
+        array|string $to,
+        string $subject,
+        string $template,
+        array $context = [],
+        ?string $replyTo = null,
+    ): void {
+        $recipients = $this->recipients($to);
 
         if ($recipients === []) {
             return;
         }
 
-        $this->bus->dispatch(new SendEmailMessage($template, $recipients, $subject, $this->senders[$sender] ?? $this->senders[self::CLIENT] ?? 'Kréno <bonjour@kreno.fr>', $context, $replyTo));
+        $message = new SendEmailMessage($template, $recipients, $subject, $this->from($sender), $context, $replyTo);
+
+        $this->bus->dispatch($message);
     }
 
-    public function toUser(string $sender, User $user, string $subject, string $template, array $context = [], bool $optional = false): void
-    {
-        if ($user->getEmail() === null || ($optional && !$user->isEmailNotifications())) {
+    public function toUser(
+        string $sender,
+        User $user,
+        string $subject,
+        string $template,
+        array $context = [],
+        bool $optional = false,
+    ): void {
+        if ($user->getEmail() === null) {
             return;
         }
 
-        $this->send($sender, $this->address($user), $subject, $template, $context + ['firstName' => $user->getFirstName()]);
+        if ($optional && !$user->isEmailNotifications()) {
+            return;
+        }
+
+        $context += ['firstName' => $user->getFirstName()];
+
+        $this->send($sender, $this->address($user), $subject, $template, $context);
     }
 
     public function address(User $user): string
     {
         $name = UserNameHelper::fullName($user);
 
-        return $name !== '' ? sprintf('%s <%s>', str_replace(['<', '>', '"'], '', $name), $user->getEmail()) : (string) $user->getEmail();
+        if ($name === '') {
+            return (string) $user->getEmail();
+        }
+
+        return sprintf('%s <%s>', str_replace(['<', '>', '"'], '', $name), $user->getEmail());
     }
 
     public function url(string $route, array $parameters = []): string
     {
         return $this->routing->generate($route, $parameters, true);
+    }
+
+    private function recipients(array|string $to): array
+    {
+        $recipients = [];
+
+        foreach ((array) $to as $address) {
+            if ($address !== null && $address !== '') {
+                $recipients[] = $address;
+            }
+        }
+
+        return array_values(array_unique($recipients));
+    }
+
+    private function from(string $sender): string
+    {
+        return $this->senders[$sender] ?? $this->senders[self::CLIENT] ?? self::DEFAULT_SENDER;
     }
 }

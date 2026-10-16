@@ -10,13 +10,16 @@ use App\Booking\Event\BookingReminderEvent;
 use App\Booking\Listener\AccountDeletedListener;
 use App\Booking\Service\BookingService;
 use App\Entity\Booking;
+use App\Entity\User\User;
 use App\Establishment\Helper\CalendarHelper;
-use App\Establishment\Model\SlotMatch;
 use App\Establishment\Service\AlertMatchService;
+use App\Mail\Enum\MailSubject;
+use App\Mail\Enum\MailText;
 use App\Mail\Presenter\MailContextPresenter;
 use App\Mail\Provider\RecipientProvider;
 use App\Mail\Service\MailService;
 use App\Shared\Helper\DateHelper;
+use DateTimeImmutable;
 use NeoPHP\Component\Container\Attribute\Autowire;
 use NeoPHP\Component\Event\Attribute\AsListener;
 
@@ -39,18 +42,21 @@ class BookingMailListener
         $booking = $event->getBooking();
         $customer = $booking->getCustomer();
         $context = $this->context->booking($booking);
-        $establishment = $context['establishment']['name'] ?? '';
 
         if ($customer !== null) {
-            $until = $this->bookings->freeCancellationUntil($booking);
+            $subject = MailSubject::BOOKING_CONFIRMED->text(
+                $this->establishmentName($context),
+                $context['day'],
+                $context['time'],
+            );
 
-            $this->mail->toUser(MailService::CLIENT, $customer, sprintf('C’est réservé : %s, %s à %s', $establishment, $context['day'], $context['time']), 'booking-confirmed', [
+            $this->mail->toUser(MailService::CLIENT, $customer, $subject, 'booking-confirmed', [
                 'booking' => $context,
-                'freeCancellationUntil' => $until !== null ? sprintf('%s à %s', CalendarHelper::longDate($until), DateHelper::time($until)) : null,
+                'freeCancellationUntil' => $this->dateTime($this->bookings->freeCancellationUntil($booking)),
             ]);
         }
 
-        $this->mail->send(MailService::PRO, $this->recipients->bookingDesk($booking->getSlot()?->getEstablishment()), sprintf('Votre créneau de %s a trouvé preneur', $context['time']), 'pro-booking', [
+        $this->sendToDesk($booking, MailSubject::PRO_BOOKING->text($context['time']), 'pro-booking', [
             'booking' => $context,
             'bookingsUrl' => $this->mail->url('pro_bookings'),
         ]);
@@ -61,10 +67,9 @@ class BookingMailListener
     {
         $booking = $event->getBooking();
         $context = $this->context->booking($booking);
-        $establishment = $context['establishment']['name'] ?? '';
 
         if ($booking->getStatus() === BookingStatus::CANCELLED_BY_ESTABLISHMENT) {
-            $this->notifyCustomerOfEstablishmentCancellation($booking, $context, $establishment);
+            $this->notifyCustomerOfEstablishmentCancellation($booking, $context);
 
             return;
         }
@@ -72,13 +77,17 @@ class BookingMailListener
         $customer = $booking->getCustomer();
 
         if ($customer !== null && $booking->getCancellationReason() !== AccountDeletedListener::REASON) {
-            $this->mail->toUser(MailService::CLIENT, $customer, sprintf('Ta réservation chez %s est annulée', $establishment), 'booking-cancelled', [
+            $subject = MailSubject::BOOKING_CANCELLED->text($this->establishmentName($context));
+
+            $this->mail->toUser(MailService::CLIENT, $customer, $subject, 'booking-cancelled', [
                 'booking' => $context,
                 'homeUrl' => $this->mail->url('home_index'),
             ]);
         }
 
-        $this->mail->send(MailService::PRO, $this->recipients->bookingDesk($booking->getSlot()?->getEstablishment()), sprintf('Annulation : le rendez-vous de %s, %s, est libéré', $context['time'], $context['day']), 'pro-booking-cancelled', [
+        $subject = MailSubject::PRO_BOOKING_CANCELLED->text($context['time'], $context['day']);
+
+        $this->sendToDesk($booking, $subject, 'pro-booking-cancelled', [
             'booking' => $context,
             'slotReleased' => $event->isSlotReleased(),
             'bookingsUrl' => $this->mail->url('pro_bookings'),
@@ -97,8 +106,9 @@ class BookingMailListener
         }
 
         $context = $this->context->booking($booking);
+        $subject = MailSubject::BOOKING_REMINDER->text($this->establishmentName($context), $context['time']);
 
-        $this->mail->toUser(MailService::CLIENT, $customer, sprintf('Dans 1 h : %s à %s', $context['establishment']['name'] ?? '', $context['time']), 'booking-reminder', [
+        $this->mail->toUser(MailService::CLIENT, $customer, $subject, 'booking-reminder', [
             'booking' => $context,
             'canCancel' => $this->bookings->canCustomerCancel($booking),
         ], true);
@@ -114,16 +124,16 @@ class BookingMailListener
             return;
         }
 
-        $this->mail->toUser(MailService::SUPPORT, $customer, 'Ton absence à un rendez-vous a été signalée', 'booking-no-show', [
+        $this->mail->toUser(MailService::SUPPORT, $customer, MailSubject::BOOKING_NO_SHOW->text(), 'booking-no-show', [
             'booking' => $this->context->booking($booking),
             'suspended' => $event->isCustomerSuspended(),
-            'suspendedUntil' => $customer->getSuspendedUntil() !== null ? CalendarHelper::longDate($customer->getSuspendedUntil()) : null,
+            'suspendedUntil' => $this->longDate($customer->getSuspendedUntil()),
             'reportsUrl' => $this->mail->url('account_reports'),
             'supportEmail' => $this->supportAddress,
         ]);
     }
 
-    private function notifyCustomerOfEstablishmentCancellation(Booking $booking, array $context, string $establishment): void
+    private function notifyCustomerOfEstablishmentCancellation(Booking $booking, array $context): void
     {
         $customer = $booking->getCustomer();
 
@@ -131,12 +141,53 @@ class BookingMailListener
             return;
         }
 
-        $alternatives = array_map(fn (SlotMatch $match): array => $this->context->slot($match->getSlot()), $this->alerts->picksFor($customer));
+        $subject = MailSubject::BOOKING_CANCELLED_BY_ESTABLISHMENT->text($this->establishmentName($context));
 
-        $this->mail->toUser(MailService::CLIENT, $customer, sprintf('%s a dû annuler ton rendez-vous', $establishment), 'booking-cancelled-by-establishment', [
+        $this->mail->toUser(MailService::CLIENT, $customer, $subject, 'booking-cancelled-by-establishment', [
             'booking' => $context,
-            'alternatives' => $alternatives,
+            'alternatives' => $this->alternatives($customer),
             'homeUrl' => $this->mail->url('home_index'),
         ]);
+    }
+
+    private function sendToDesk(Booking $booking, string $subject, string $template, array $context): void
+    {
+        $recipients = $this->recipients->bookingDesk($booking->getSlot()?->getEstablishment());
+
+        $this->mail->send(MailService::PRO, $recipients, $subject, $template, $context);
+    }
+
+    private function alternatives(User $customer): array
+    {
+        $alternatives = [];
+
+        foreach ($this->alerts->picksFor($customer) as $match) {
+            $alternatives[] = $this->context->slot($match->getSlot());
+        }
+
+        return $alternatives;
+    }
+
+    private function establishmentName(array $context): string
+    {
+        return $context['establishment']['name'] ?? '';
+    }
+
+    private function dateTime(?DateTimeImmutable $date): ?string
+    {
+        if ($date === null) {
+            return null;
+        }
+
+        return MailText::DATE_AT_TIME->text(CalendarHelper::longDate($date), DateHelper::time($date));
+    }
+
+    private function longDate(?DateTimeImmutable $date): ?string
+    {
+        if ($date === null) {
+            return null;
+        }
+
+        return CalendarHelper::longDate($date);
     }
 }
