@@ -2,8 +2,8 @@
 
 namespace App\Admin\Navbar;
 
-use App\Enum\Contact\AppContactStatus;
 use App\Repository\AppContactRepository;
+use App\Support\Enum\AppContactStatus;
 
 class ContactBuilder extends AbstractNavbarBuilder
 {

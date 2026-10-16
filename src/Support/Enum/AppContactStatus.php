@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enum\Contact;
+namespace App\Support\Enum;
 
 enum AppContactStatus: string
 {

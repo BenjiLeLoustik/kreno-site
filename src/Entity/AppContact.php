@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\User\User;
-use App\Enum\Contact\AppContactStatus;
 use App\Repository\AppContactRepository;
+use App\Support\Enum\AppContactStatus;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\Collection\ArrayCollection;
 use NeoPHP\Package\Orm\Contract\CollectionInterface;

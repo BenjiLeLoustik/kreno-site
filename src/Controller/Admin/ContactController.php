@@ -3,9 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\AppContact;
-use App\Enum\Contact\AppContactStatus;
 use App\Repository\AppContactRepository;
 use App\Support\Dto\ContactReplyInput;
+use App\Support\Enum\AppContactStatus;
 use App\Support\Presenter\ContactPresenter;
 use App\Support\Service\ContactService;
 use App\User\Enum\UserRole;

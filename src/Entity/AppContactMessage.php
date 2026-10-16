@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\User\User;
-use App\Enum\Contact\AppContactAuthor;
+use App\Support\Enum\AppContactAuthor;
 use NeoPHP\Package\Orm\Mapping as ORM;
 
 #[ORM\Entity]

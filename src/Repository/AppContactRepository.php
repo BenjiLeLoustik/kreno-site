@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\AppContact;
 use App\Entity\User\User;
-use App\Enum\Contact\AppContactStatus;
+use App\Support\Enum\AppContactStatus;
 use NeoPHP\Package\Orm\Contract\AbstractRepository;
 use NeoPHP\Package\Orm\Query\QueryBuilder;
 
