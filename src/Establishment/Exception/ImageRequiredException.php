@@ -8,6 +8,6 @@ class ImageRequiredException extends BusinessRuleException
 {
     public function __construct()
     {
-        parent::__construct('Choisissez une photo à ajouter.');
+        parent::__construct('Choisissez une photo à envoyer.');
     }
 }

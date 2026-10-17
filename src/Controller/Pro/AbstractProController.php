@@ -2,22 +2,27 @@
 
 namespace App\Controller\Pro;
 
+use App\Company\Exception\CompanyRequiredException;
+use App\Company\Exception\NoAccessibleEstablishmentException;
+use App\Company\Exception\NoCompanyMembershipException;
+use App\Company\Exception\RoleNotAllowedException;
 use App\Company\Provider\CurrentCompanyProvider;
+use App\Company\Provider\ProContextProvider;
 use App\Company\Security\PermissionResolver;
 use App\Entity\Company\Company;
 use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Company\CompanyMember;
 use App\Entity\User\User;
-use App\Establishment\Enum\EstablishmentStatus;
 use App\Shared\Exception\BusinessRuleException;
-use App\User\Helper\UserNameHelper;
 use NeoPHP\Component\Controller\Contract\AbstractController;
+use NeoPHP\Component\Http\Response\Response;
 
 abstract class AbstractProController extends AbstractController
 {
     public function __construct(
         protected CurrentCompanyProvider $context,
         protected PermissionResolver $resolver,
+        protected ProContextProvider $pro,
     ) {
     }
 
@@ -34,19 +39,48 @@ abstract class AbstractProController extends AbstractController
         return $user;
     }
 
+    protected function optionalUser(): ?User
+    {
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            return null;
+        }
+
+        return $user;
+    }
+
     protected function currentMember(): CompanyMember
     {
-        return $this->context->getMembership($this->currentUser()) ?? throw $this->createAccessDeniedException('Votre compte n\'est rattaché à aucune entreprise.');
+        $member = $this->context->getMembership($this->currentUser());
+
+        if ($member === null) {
+            throw new NoCompanyMembershipException();
+        }
+
+        return $member;
     }
 
     protected function currentCompany(): Company
     {
-        return $this->currentMember()->getCompany() ?? throw $this->createAccessDeniedException();
+        $company = $this->currentMember()->getCompany();
+
+        if ($company === null) {
+            throw new CompanyRequiredException();
+        }
+
+        return $company;
     }
 
     protected function currentEstablishment(): CompanyEstablishment
     {
-        return $this->context->getCurrentEstablishment($this->currentMember()) ?? throw $this->createNotFoundException('Aucun établissement accessible.');
+        $establishment = $this->context->getCurrentEstablishment($this->currentMember());
+
+        if ($establishment === null) {
+            throw new NoAccessibleEstablishmentException();
+        }
+
+        return $establishment;
     }
 
     protected function requirePermission(string $permission, Company|CompanyEstablishment $subject): CompanyMember
@@ -54,44 +88,36 @@ abstract class AbstractProController extends AbstractController
         $member = $this->currentMember();
 
         if (!$this->resolver->memberCan($member, $permission, $subject)) {
-            throw $this->createAccessDeniedException('Votre rôle ne permet pas cette action.');
+            throw new RoleNotAllowedException();
         }
 
         return $member;
     }
 
+    protected function permittedEstablishment(string $permission): CompanyEstablishment
+    {
+        $establishment = $this->currentEstablishment();
+        $this->requirePermission($permission, $establishment);
+
+        return $establishment;
+    }
+
+    protected function permittedCompany(string $permission): Company
+    {
+        $company = $this->currentCompany();
+        $this->requirePermission($permission, $company);
+
+        return $company;
+    }
+
     protected function proContext(): array
     {
-        $member = $this->currentMember();
-        $user = $member->getUser();
-        $current = $this->context->getCurrentEstablishment($member);
+        return $this->pro->build($this->currentMember());
+    }
 
-        return [
-            'user' => [
-                'name' => $user !== null ? UserNameHelper::fullName($user) : null,
-                'initials' => $user !== null ? UserNameHelper::initials($user) : null,
-                'roleLabel' => $member->getRole()?->label() ?? ($current !== null ? $this->resolver->findEstablishmentRole($member, $current)?->getRole()->label() : null),
-            ],
-            'company' => ['id' => $member->getCompany()?->getId(), 'name' => $member->getCompany()?->getName()],
-            'current' => $current === null ? null : [
-                'id' => $current->getId(),
-                'name' => $current->getName(),
-                'slug' => $current->getSlug(),
-                'city' => $current->getCity()?->getSlug(),
-                'online' => $current->getStatus() === EstablishmentStatus::ONLINE,
-                'statusLabel' => $current->getStatus()->label(),
-            ],
-            'establishments' => array_map(static fn (CompanyEstablishment $establishment): array => [
-                'id' => $establishment->getId(),
-                'name' => $establishment->getName(),
-                'status' => $establishment->getStatus()->value,
-                'current' => $establishment === $current,
-            ], $this->context->getEstablishments($member)),
-            'permissions' => [
-                'company' => $member->getCompany() !== null ? $this->resolver->permissionsFor($member, $member->getCompany()) : [],
-                'establishment' => $current !== null ? $this->resolver->permissionsFor($member, $current) : [],
-            ],
-        ];
+    protected function renderPro(string $view, array $parameters = []): Response
+    {
+        return $this->render($view, ['context' => $this->proContext()] + $parameters);
     }
 
     protected function invalid(object $input): bool

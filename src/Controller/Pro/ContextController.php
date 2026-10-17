@@ -2,6 +2,8 @@
 
 namespace App\Controller\Pro;
 
+use App\Company\Enum\ContextFlash;
+use App\Company\Mapper\ContextRequestMapper;
 use NeoPHP\Component\Csrf\Attribute\Csrf;
 use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Component\Http\Response\JsonResponse;
@@ -17,13 +19,22 @@ class ContextController extends AbstractProController
     }
 
     #[Csrf('pro')]
-    #[Route('/pro/establishments/{id}/switch', name: 'pro_establishment_switch', methods: ['POST'], requirements: ['id' => '\d+'])]
+    #[Route(
+        '/pro/establishments/{id}/switch',
+        name: 'pro_establishment_switch',
+        methods: ['POST'],
+        requirements: ['id' => '\d+'],
+    )]
     public function switch(Request $request, int $id): RedirectResponse
     {
-        $establishment = $this->context->switchTo($this->currentMember(), $id) ?? throw $this->createNotFoundException('Établissement inaccessible.');
-        $this->addFlash('success', sprintf('Vous gérez maintenant %s.', $establishment->getName()));
-        $target = $request->request->getString('_target');
+        $establishment = $this->pro->switchTo($this->currentMember(), $id);
+        $this->addFlash('success', ContextFlash::SWITCHED->text($establishment->getName()));
+        $target = ContextRequestMapper::target($request);
 
-        return str_starts_with($target, '/pro') && !str_starts_with($target, '//') ? $this->redirect($target) : $this->redirectToRoute('pro_dashboard');
+        if ($target === null) {
+            return $this->redirectToRoute('pro_dashboard');
+        }
+
+        return $this->redirect($target);
     }
 }

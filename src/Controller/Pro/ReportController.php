@@ -2,22 +2,18 @@
 
 namespace App\Controller\Pro;
 
-use App\Booking\Enum\BookingStatus;
 use App\Company\Provider\CurrentCompanyProvider;
+use App\Company\Provider\ProContextProvider;
 use App\Company\Security\Permission;
 use App\Company\Security\PermissionResolver;
-use App\Entity\Booking;
 use App\Entity\Report\Report;
 use App\Report\Dto\EstablishmentReportInput;
 use App\Report\Dto\ReportMessageInput;
-use App\Report\Enum\ReportDirection;
-use App\Report\Helper\ReportReasonHelper;
-use App\Report\Presenter\ReportPresenter;
+use App\Report\Enum\ReportFlash;
+use App\Report\Mapper\ProReportRequestMapper;
+use App\Report\Provider\EstablishmentReportProvider;
+use App\Report\Service\EstablishmentReportMessageService;
 use App\Report\Service\ReportService;
-use App\Repository\BookingRepository;
-use App\Repository\Report\ReportRepository;
-use App\Website\Provider\WebsiteProvider;
-use DateTimeImmutable;
 use NeoPHP\Component\Csrf\Attribute\Csrf;
 use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Component\Http\Response\RedirectResponse;
@@ -27,111 +23,81 @@ use NeoPHP\Component\Serializer\Attribute\MapRequestPayload;
 
 class ReportController extends AbstractProController
 {
-    public const TABS = [
-        'mine' => 'Mes signalements',
-        'received' => 'Concernant l’établissement',
-    ];
-
     public function __construct(
         CurrentCompanyProvider $context,
         PermissionResolver $resolver,
+        ProContextProvider $pro,
         private ReportService $reportService,
-        private ReportRepository $reports,
-        private BookingRepository $bookings,
-        private WebsiteProvider $website,
-        private ReportPresenter $presenter,
+        private EstablishmentReportMessageService $messages,
+        private EstablishmentReportProvider $reports,
     ) {
-        parent::__construct($context, $resolver);
+        parent::__construct($context, $resolver, $pro);
     }
 
     #[Route('/pro/reports', name: 'pro_reports', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        $member = $this->currentMember();
-        $establishment = $this->currentEstablishment();
-        $canReport = $this->resolver->memberCan($member, Permission::BOOKINGS_MANAGE, $establishment);
-        $canSeeReceived = $this->resolver->memberCan($member, Permission::ESTABLISHMENT_EDIT, $establishment);
+        $page = $this->reports->index(
+            $this->currentMember(),
+            $this->currentEstablishment(),
+            ProReportRequestMapper::tab($request),
+            ProReportRequestMapper::reason($request),
+            ProReportRequestMapper::bookingId($request),
+        );
 
-        if (!$canReport && !$canSeeReceived) {
-            throw $this->createAccessDeniedException('Votre rôle ne permet pas cette action.');
-        }
-
-        $tab = $request->query->getString('tab', $canReport ? 'mine' : 'received');
-        $tab = ($tab === 'received' && $canSeeReceived) || !$canReport ? 'received' : 'mine';
-        $mine = $canReport ? $this->reports->findByEstablishment($establishment, ReportDirection::FROM_ESTABLISHMENT) : [];
-        $received = $canSeeReceived ? $this->reports->findByEstablishment($establishment, ReportDirection::FROM_CUSTOMER) : [];
-        $rule = $this->website->getRule();
-
-        return $this->render('pro/report/index.html.twig', [
-            'context' => $this->proContext(),
-            'tab' => $tab,
-            'tabs' => array_values(array_filter([
-                $canReport ? ['key' => 'mine', 'label' => self::TABS['mine'], 'count' => count($mine)] : null,
-                $canSeeReceived ? ['key' => 'received', 'label' => self::TABS['received'], 'count' => count($received)] : null,
-            ])),
-            'rows' => $tab === 'mine'
-                ? array_map(fn (Report $report): array => $this->presenter->forProMine($report), $mine)
-                : array_map(fn (Report $report): array => $this->presenter->forProReceived($report), $received),
-            'form' => $canReport ? [
-                'bookings' => array_map(fn (Booking $booking): array => ['id' => $booking->getId(), 'label' => $this->presenter->proBookingLabel($booking)], $this->bookings->findForEstablishment($establishment, [BookingStatus::CONFIRMED, BookingStatus::HONORED, BookingStatus::NO_SHOW], null, new DateTimeImmutable())),
-                'reasons' => ReportReasonHelper::choices(ReportDirection::FROM_ESTABLISHMENT, $request->query->getString('reason') ?: 'no_show'),
-                'bookingId' => $request->query->getInt('booking') ?: null,
-                'notice' => sprintf('Une absence confirmée compte pour la suspension automatique du client (%d absences en %d jours).', $rule->getToleratedNoShows(), $rule->getNoShowWindowDays()),
-            ] : null,
-        ]);
+        return $this->renderPro('pro/report/index.html.twig', $page);
     }
 
     #[Csrf('pro')]
     #[Route('/pro/reports', name: 'pro_report_create', methods: ['POST'])]
     public function create(#[MapRequestPayload(validate: false)] EstablishmentReportInput $input): RedirectResponse
     {
-        $establishment = $this->currentEstablishment();
-        $this->requirePermission(Permission::BOOKINGS_MANAGE, $establishment);
+        $establishment = $this->permittedEstablishment(Permission::BOOKINGS_MANAGE);
         $report = null;
 
         if (!$this->invalid($input)) {
             $this->attempt(function () use ($establishment, $input, &$report): void {
                 $report = $this->reportService->createFromEstablishment($establishment, $this->currentUser(), $input);
-            }, 'Signalement envoyé. L\'équipe Kréno l\'examine sous 48 h.');
+            }, ReportFlash::ESTABLISHMENT_SENT->text());
         }
 
-        return $report !== null ? $this->redirectToRoute('pro_report_show', ['id' => $report->getId()]) : $this->redirectToRoute('pro_reports');
+        if (!$report instanceof Report) {
+            return $this->redirectToRoute('pro_reports');
+        }
+
+        return $this->redirectToRoute('pro_report_show', ['id' => $report->getId()]);
     }
 
     #[Route('/pro/reports/{id}', name: 'pro_report_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(int $id): Response
     {
-        $report = $this->findReport($id);
-        $received = $report->getDirection() === ReportDirection::FROM_CUSTOMER;
+        $establishment = $this->currentEstablishment();
+        $report = $this->reports->owned($establishment, $id);
+        $this->requirePermission($this->reports->permission($report), $establishment);
 
-        return $this->render('pro/report/show.html.twig', [
-            'context' => $this->proContext(),
-            'received' => $received,
-            'report' => $received ? $this->presenter->forProReceived($report) : $this->presenter->forProMine($report),
-        ]);
+        return $this->renderPro('pro/report/show.html.twig', $this->reports->show($report));
     }
 
     #[Csrf('pro')]
-    #[Route('/pro/reports/{id}/messages', name: 'pro_report_message', methods: ['POST'], requirements: ['id' => '\d+'])]
+    #[Route(
+        '/pro/reports/{id}/messages',
+        name: 'pro_report_message',
+        methods: ['POST'],
+        requirements: ['id' => '\d+'],
+    )]
     public function message(int $id, #[MapRequestPayload(validate: false)] ReportMessageInput $input): RedirectResponse
     {
-        $report = $this->findReport($id);
+        $establishment = $this->currentEstablishment();
+        $report = $this->reports->owned($establishment, $id);
+        $this->requirePermission($this->reports->permission($report), $establishment);
 
         if (!$this->invalid($input)) {
-            $report->getDirection() === ReportDirection::FROM_CUSTOMER
-                ? $this->attempt(fn () => $this->reportService->replyAsEstablishment($report, $this->currentUser(), (string) $input->body), 'Réponse envoyée à l\'équipe Kréno.')
-                : $this->attempt(fn () => $this->reportService->post($report, $this->currentUser(), (string) $input->body), 'Message envoyé.');
+            $this->attempt(
+                fn () => $this->messages->send($report, $this->currentUser(), (string) $input->body),
+                ReportFlash::establishmentMessage($report->getDirection())->text(),
+            );
         }
 
         return $this->redirectToRoute('pro_report_show', ['id' => $id]);
-    }
-
-    private function findReport(int $id): Report
-    {
-        $establishment = $this->currentEstablishment();
-        $report = $this->reports->findOneForEstablishment($establishment, $id) ?? throw $this->createNotFoundException('Signalement introuvable.');
-        $this->requirePermission($report->getDirection() === ReportDirection::FROM_CUSTOMER ? Permission::ESTABLISHMENT_EDIT : Permission::BOOKINGS_MANAGE, $establishment);
-
-        return $report;
     }
 }

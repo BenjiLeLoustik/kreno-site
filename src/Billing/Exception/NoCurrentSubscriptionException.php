@@ -2,9 +2,9 @@
 
 namespace App\Billing\Exception;
 
-use App\Shared\Exception\BusinessRuleException;
+use NeoPHP\Component\Http\Exception\NotFoundHttpException;
 
-class NoCurrentSubscriptionException extends BusinessRuleException
+class NoCurrentSubscriptionException extends NotFoundHttpException
 {
     public function __construct()
     {
