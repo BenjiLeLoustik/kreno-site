@@ -13,6 +13,7 @@ enum ActivityType: string
     case BILLING = 'billing';
     case CATALOG = 'catalog';
     case TEAM = 'team';
+    case FAQ = 'faq';
 
     public function label(): string
     {
@@ -26,6 +27,7 @@ enum ActivityType: string
             self::BILLING => 'Facturation',
             self::CATALOG => 'Catalogue',
             self::TEAM => 'Équipe',
+            self::FAQ => 'FAQ',
         };
     }
 }

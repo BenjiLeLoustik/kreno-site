@@ -15,6 +15,7 @@
 @import "./admin/settings/_index.css";
 @import "./admin/app-log/_index.css";
 @import "./admin/contact/_index.css";
+@import "./admin/faq/_index.css";
 @import "./pro/init.css";
 @import "./account/_index.css";
 @import "./account/_bookings.css";

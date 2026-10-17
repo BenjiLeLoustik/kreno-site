@@ -7,7 +7,8 @@ use App\Billing\Presenter\PlanPresenter;
 use App\Billing\Service\PlanCatalog;
 use App\Company\Provider\CurrentCompanyProvider;
 use App\Entity\User\User;
-use App\Website\Enum\ProLandingQuestion;
+use App\Faq\Enum\FaqAudience;
+use App\Faq\Provider\FaqProvider;
 use App\Website\Enum\ProLandingStep;
 
 class ProLandingPageProvider
@@ -17,6 +18,7 @@ class ProLandingPageProvider
         private PlanPresenter $planPresenter,
         private SiteRulesProvider $rules,
         private CurrentCompanyProvider $context,
+        private FaqProvider $faq,
     ) {
     }
 
@@ -31,7 +33,7 @@ class ProLandingPageProvider
             'plans' => $this->planPresenter->offers($plans, $period),
             'periods' => $this->planPresenter->periods($plans, $period),
             'steps' => ProLandingStep::all($rules),
-            'faq' => ProLandingQuestion::all($rules),
+            'faq' => $this->faq->questions(FaqAudience::PRO, $rules),
             'isPro' => $user instanceof User && $this->context->getMembership($user) !== null,
         ];
     }

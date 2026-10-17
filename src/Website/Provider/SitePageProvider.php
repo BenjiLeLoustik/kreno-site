@@ -4,10 +4,11 @@ namespace App\Website\Provider;
 
 use App\Entity\AppContact;
 use App\Entity\User\User;
+use App\Faq\Enum\FaqAudience;
+use App\Faq\Provider\FaqProvider;
 use App\Support\Dto\ContactInput;
 use App\Support\Enum\ContactTopic;
 use App\Support\Mapper\ContactRequestMapper;
-use App\Website\Enum\FaqSection;
 use App\Website\Enum\HowItWorksStep;
 use App\Website\Enum\LegalDocument;
 use NeoPHP\Component\Container\Attribute\Autowire;
@@ -23,11 +24,10 @@ class SitePageProvider
 
     public function __construct(
         private SiteRulesProvider $rules,
+        private FaqProvider $faq,
         private SessionManagerInterface $session,
-        #[Autowire(config: 'packages.billing.issuer')]
-        private array $issuer = [],
-        #[Autowire(config: 'packages.mail.supportAddress')]
-        private string $supportAddress = 'aide@kreno.fr',
+        #[Autowire(config: 'packages.billing.issuer')] private array $issuer = [],
+        #[Autowire(config: 'packages.mail.supportAddress')] private string $supportAddress = 'aide@kreno.fr',
     ) {
     }
 
@@ -42,7 +42,7 @@ class SitePageProvider
         $sent = $this->pull(self::CONTACT_SENT);
 
         return [
-            'faq' => FaqSection::all($this->rules->rules()),
+            'faq' => $this->faq->sections(FaqAudience::CLIENT, $this->rules->rules()),
             'topics' => ContactTopic::choices(),
             'form' => $this->helpForm($this->oldValues($old), $user),
             'sent' => $this->sentToken($sent),

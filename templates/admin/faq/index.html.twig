@@ -1,0 +1,166 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set admin_section = 'faq' %}
+
+{% macro order(route, parameters, field, values, index, step, label, icon) %}
+    {% set target = index + step %}
+    {% if target >= 0 and target < values|length %}
+        {% set reordered = [] %}
+        {% for position, value in values %}
+            {% set reordered = reordered|merge([position == index ? values[target] : (position == target ? values[index] : value)]) %}
+        {% endfor %}
+        <form method="post" action="{{ path(route, parameters) }}">
+            {{ csrf_field('admin_faq')|raw }}
+            {% for value in reordered %}
+                <input type="hidden" name="{{ field }}[]" value="{{ value }}">
+            {% endfor %}
+            <button type="submit" class="admin-button admin-button--small" aria-label="{{ label }}"><i data-lucide="{{ icon }}" class="admin-nav__icon"></i></button>
+        </form>
+    {% endif %}
+{% endmacro %}
+
+{% macro switch(route, parameters, visible, label) %}
+    <form method="post" action="{{ path(route, parameters) }}">
+        {{ csrf_field('admin_faq')|raw }}
+        <button type="submit" class="faq-switch{{ visible ? ' faq-switch--on' : '' }}" role="switch" aria-checked="{{ visible ? 'true' : 'false' }}" aria-label="{{ visible ? 'Masquer' : 'Afficher' }} {{ label }}"><span class="faq-switch__knob"></span></button>
+    </form>
+{% endmacro %}
+
+{% macro questionFields(question) %}
+    <label class="admin-field">Question<input type="text" name="question" value="{{ question.question ?? '' }}" required minlength="5" maxlength="255" class="admin-input"></label>
+    <label class="admin-field">Réponse<textarea name="answer" rows="4" required maxlength="5000" class="admin-input admin-input--area">{{ question.answer ?? '' }}</textarea></label>
+{% endmacro %}
+
+{% macro audienceSelect(choices, selected) %}
+    <label class="admin-field">
+        Public
+        <select name="audience" class="admin-input">
+            {% for choice in choices %}
+                <option value="{{ choice.value }}"{{ choice.value == selected ? ' selected' : '' }}>{{ choice.label }}</option>
+            {% endfor %}
+        </select>
+    </label>
+{% endmacro %}
+
+{% block title %}FAQ · Administration Kréno{% endblock %}
+
+{% block content %}
+    {% import _self as faq %}
+
+    <h1 class="admin-title">FAQ</h1>
+
+    <div class="faq-admin">
+        {% for audience in audiences %}
+            <section class="admin-card">
+                <h2 class="admin-card__title">{{ audience.label }} <span class="faq-admin__page">{{ audience.page }}</span></h2>
+                <div class="admin-rows">
+                    {% for category in audience.categories %}
+                        <div class="admin-row">
+                            <span class="admin-row__main">
+                                <b>{{ category.name }}</b>
+                                <span class="admin-row__meta">{{ category.slug }} · {{ category.questionsCount }} question{{ category.questionsCount > 1 ? 's' : '' }}</span>
+                            </span>
+                            <span class="admin-row__actions">
+                                {{ faq.order('admin_faq_category_order', {}, 'slugs', audience.slugs, loop.index0, -1, 'Monter ' ~ category.name, 'arrow-up') }}
+                                {{ faq.order('admin_faq_category_order', {}, 'slugs', audience.slugs, loop.index0, 1, 'Descendre ' ~ category.name, 'arrow-down') }}
+                                {{ faq.switch('admin_faq_category_visibility', { slug: category.slug }, category.visible, category.name) }}
+                            </span>
+                            <details class="admin-disclosure admin-disclosure--full">
+                                <summary class="admin-disclosure__summary">Modifier</summary>
+                                <div class="admin-disclosure__body admin-form">
+                                    <form method="post" action="{{ path('admin_faq_category_update', { slug: category.slug }) }}" class="admin-form">
+                                        {{ csrf_field('admin_faq')|raw }}
+                                        <div class="admin-form__row">
+                                            <label class="admin-field">Nom<input type="text" name="name" value="{{ category.name }}" required minlength="2" maxlength="80" class="admin-input"></label>
+                                            {{ faq.audienceSelect(audienceChoices, category.audience) }}
+                                        </div>
+                                        <div class="admin-actions">
+                                            <button type="submit" class="admin-button admin-button--primary">Enregistrer</button>
+                                        </div>
+                                    </form>
+
+                                    <div class="faq-questions">
+                                        <span class="faq-questions__title">Questions</span>
+                                        {% for question in category.questions %}
+                                            <div class="faq-question">
+                                                <div class="faq-question__head">
+                                                    <span class="faq-question__label{{ question.visible ? '' : ' faq-question__label--hidden' }}">{{ question.question }}</span>
+                                                    <span class="admin-row__actions">
+                                                        {{ faq.order('admin_faq_question_order', { slug: category.slug }, 'ids', category.questionIds, loop.index0, -1, 'Monter la question', 'arrow-up') }}
+                                                        {{ faq.order('admin_faq_question_order', { slug: category.slug }, 'ids', category.questionIds, loop.index0, 1, 'Descendre la question', 'arrow-down') }}
+                                                        {{ faq.switch('admin_faq_question_visibility', { id: question.id }, question.visible, 'la question') }}
+                                                        <form method="post" action="{{ path('admin_faq_question_delete', { id: question.id }) }}">
+                                                            {{ csrf_field('admin_faq')|raw }}
+                                                            <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger" aria-label="Supprimer la question" data-admin-confirm="Supprimer cette question ?"><i data-lucide="trash-2" class="admin-nav__icon"></i></button>
+                                                        </form>
+                                                    </span>
+                                                </div>
+                                                <details class="admin-disclosure">
+                                                    <summary class="admin-disclosure__summary">Modifier la question</summary>
+                                                    <form method="post" action="{{ path('admin_faq_question_update', { id: question.id }) }}" class="admin-form admin-disclosure__body">
+                                                        {{ csrf_field('admin_faq')|raw }}
+                                                        {{ faq.questionFields(question) }}
+                                                        <div class="admin-actions">
+                                                            <button type="submit" class="admin-button admin-button--primary">Enregistrer</button>
+                                                        </div>
+                                                    </form>
+                                                </details>
+                                            </div>
+                                        {% else %}
+                                            <span class="admin-subtitle">Aucune question pour le moment.</span>
+                                        {% endfor %}
+
+                                        <details class="admin-disclosure">
+                                            <summary class="admin-disclosure__summary">Ajouter une question</summary>
+                                            <form method="post" action="{{ path('admin_faq_question_create', { slug: category.slug }) }}" class="admin-form admin-disclosure__body">
+                                                {{ csrf_field('admin_faq')|raw }}
+                                                {{ faq.questionFields({}) }}
+                                                <div class="admin-actions">
+                                                    <button type="submit" class="admin-button admin-button--primary">Ajouter</button>
+                                                </div>
+                                            </form>
+                                        </details>
+                                    </div>
+
+                                    <form method="post" action="{{ path('admin_faq_category_delete', { slug: category.slug }) }}">
+                                        {{ csrf_field('admin_faq')|raw }}
+                                        <button type="submit" class="admin-button admin-button--ghost-danger" data-admin-confirm="Supprimer la rubrique {{ category.name }} et ses {{ category.questionsCount }} question(s) ?">Supprimer la rubrique</button>
+                                    </form>
+                                </div>
+                            </details>
+                        </div>
+                    {% else %}
+                        <p class="admin-subtitle">Aucune rubrique pour ce public.</p>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endfor %}
+
+        <section class="admin-card">
+            <h2 class="admin-card__title">Nouvelle rubrique</h2>
+            <form method="post" action="{{ path('admin_faq_category_create') }}" class="admin-form">
+                {{ csrf_field('admin_faq')|raw }}
+                <div class="admin-form__row">
+                    <label class="admin-field">Nom<input type="text" name="name" required minlength="2" maxlength="80" placeholder="Réserver" class="admin-input"></label>
+                    {{ faq.audienceSelect(audienceChoices, 'client') }}
+                </div>
+                <div class="admin-actions">
+                    <button type="submit" class="admin-button admin-button--primary">Ajouter</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="admin-card">
+            <h2 class="admin-card__title">Valeurs automatiques</h2>
+            <span class="admin-subtitle">Ces repères sont remplacés dans les réponses par la valeur des règles de la version en ligne.</span>
+            <dl class="faq-placeholders">
+                {% for placeholder in placeholders %}
+                    <div class="faq-placeholders__item">
+                        <dt class="faq-placeholders__token">{{ placeholder.token }}</dt>
+                        <dd class="faq-placeholders__label">{{ placeholder.label }}</dd>
+                    </div>
+                {% endfor %}
+            </dl>
+        </section>
+    </div>
+{% endblock %}
