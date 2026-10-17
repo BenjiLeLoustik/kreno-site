@@ -16,6 +16,8 @@
 {% endblock %}
 
 {% block content %}
+    {% import 'front/review/_stars.html.twig' as stars %}
+
     <div class="shop">
         {% include 'components/breadcrumb.html.twig' with { items: breadcrumb } %}
 
@@ -43,6 +45,13 @@
                         <span class="shop-intro__eyebrow">{{ eyebrow|join(' · ') }}</span>
                     {% endif %}
                     <h1 class="shop-intro__title">{{ shop.name }}</h1>
+                    {% if reviews.count > 0 %}
+                        <a href="#avis" class="shop-intro__rating">
+                            {{ stars.show(reviews.average) }}
+                            <b class="shop-intro__rating-value">{{ reviews.averageLabel }}</b>
+                            <span class="shop-intro__rating-count">{{ reviews.countLabel }}</span>
+                        </a>
+                    {% endif %}
                     <span class="shop-intro__status{{ shop.openNow.open ? ' shop-intro__status--open' : '' }}">
                         <span class="shop-intro__dot" aria-hidden="true"></span>
                         {{ shop.openNow.label }}
@@ -104,6 +113,8 @@
                         <span class="shop-section__note">Prix habituels. Les créneaux Kréno sont proposés avec une remise choisie par le salon.</span>
                     </section>
                 {% endif %}
+
+                {% include 'front/shop/_reviews.html.twig' with { reviews: reviews } only %}
             </div>
 
             <aside class="shop-aside">

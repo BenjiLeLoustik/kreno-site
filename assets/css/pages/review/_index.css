@@ -205,4 +205,32 @@
     .review-rating__input:focus-visible + .review-rating__star {
         @apply rounded outline-2 outline-offset-2 outline-coral;
     }
+
+    .shop-intro__rating {
+        @apply inline-flex items-center gap-2 text-sm text-ink no-underline hover:underline;
+    }
+
+    .shop-intro__rating-value {
+        @apply font-semibold;
+    }
+
+    .shop-intro__rating-count {
+        @apply text-muted;
+    }
+
+    .booking-list__review {
+        @apply inline-flex items-center gap-1 text-xs font-semibold text-coral-dark;
+    }
+
+    .booking-list__review-icon {
+        @apply size-3.5 fill-current;
+    }
+
+    .booking-review {
+        @apply flex flex-col items-start gap-2;
+    }
+
+    .booking-review__icon {
+        @apply size-4 fill-current;
+    }
 }

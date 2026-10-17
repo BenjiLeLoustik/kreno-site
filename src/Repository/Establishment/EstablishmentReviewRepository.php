@@ -45,6 +45,11 @@ class EstablishmentReviewRepository extends AbstractRepository
         return $this->count(['status' => $status]);
     }
 
+    public function countUnanswered(CompanyEstablishment $establishment): int
+    {
+        return $this->count(['establishment' => $establishment, 'reply' => null, 'status' => ReviewStatus::visible()]);
+    }
+
     public function ratingDistribution(CompanyEstablishment $establishment): array
     {
         $rows = $this->createQueryBuilder('r')

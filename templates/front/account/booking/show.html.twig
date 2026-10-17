@@ -65,6 +65,22 @@
         </div>
 
         <aside class="booking-detail__aside">
+            {% if booking.canReview %}
+                <section class="account-card booking-review">
+                    <h2 class="account-section__title">Comment s'est passé ce rendez-vous ?</h2>
+                    <p class="account-card__muted">Un avis aide les autres clients à choisir. Possible jusqu'au {{ booking.reviewDeadline|date('d/m/Y') }}.</p>
+                    <a href="{{ path('account_review_new', { reference: booking.reference }) }}" class="btn btn--primary btn--small">
+                        <i data-lucide="star" class="booking-review__icon"></i>
+                        Donner mon avis
+                    </a>
+                </section>
+            {% elseif booking.reviewed %}
+                <section class="account-card booking-review">
+                    <h2 class="account-section__title">Avis publié</h2>
+                    <p class="account-card__muted">Merci pour ce retour.</p>
+                    <a href="{{ path('account_reviews') }}" class="btn btn--outline btn--small">Voir mes avis</a>
+                </section>
+            {% endif %}
             <section class="account-card">
                 <h2 class="account-section__title">Actions</h2>
                 {% if booking.kind == 'coming' %}

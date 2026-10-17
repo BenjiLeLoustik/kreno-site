@@ -1,5 +1,7 @@
 {% extends 'layouts/pro.html.twig' %}
 
+{% import 'front/review/_stars.html.twig' as stars %}
+
 {% set pro_section = 'dashboard' %}
 
 {% block title %}Tableau de bord · Espace pro{% endblock %}
@@ -36,6 +38,24 @@
     </div>
 
     <div class="pro-columns">
+        <section class="pro-card dashboard-reviews">
+            <div class="pro-card__head">
+                <h2 class="pro-card__title">Avis clients</h2>
+                <a href="{{ path('pro_reviews') }}" class="pro-card__link">Voir les avis</a>
+            </div>
+            {% if reviews.count > 0 %}
+                <div class="dashboard-reviews__body">
+                    <strong class="dashboard-reviews__average">{{ reviews.averageLabel }}</strong>
+                    {{ stars.show(reviews.average) }}
+                    <span class="pro-row__meta">{{ reviews.countLabel }}</span>
+                    {% if reviews.unanswered > 0 %}
+                        <a href="{{ path('pro_reviews', { tab: 'unanswered' }) }}" class="pro-badge dashboard-reviews__pending">{{ reviews.unanswered }} sans réponse</a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p class="pro-subtitle">Pas encore d'avis. Vos clients pourront en laisser après chaque rendez-vous honoré.</p>
+            {% endif %}
+        </section>
         <section class="pro-card pro-columns__main">
             <div class="pro-card__head">
                 <h2 class="pro-card__title">Aujourd'hui</h2>

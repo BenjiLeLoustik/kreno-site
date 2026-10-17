@@ -12,6 +12,7 @@ use App\Entity\Company\CompanyEstablishment;
 use App\Entity\User\User;
 use App\Establishment\Helper\CalendarHelper;
 use App\Repository\BookingRepository;
+use App\Review\Service\ReviewService;
 use App\Shared\Enum\Weekday;
 use App\Shared\Helper\DateHelper;
 use App\Shared\Helper\DurationHelper;
@@ -32,6 +33,7 @@ class BookingPresenter
         private AttendanceService $attendance,
         private ReminderService $reminders,
         private BookingRepository $bookings,
+        private ReviewService $reviewService,
     ) {
     }
 
@@ -76,6 +78,7 @@ class BookingPresenter
                 'freeCancellationUntil' => DateHelper::time($this->bookingService->freeCancellationUntil($booking)),
                 'cancellationReason' => $booking->getCancellationReason(),
                 'note' => $booking->getNote(),
+                'canReview' => $this->reviewService->canReview($bookin, $now),
             ];
     }
 
@@ -86,6 +89,8 @@ class BookingPresenter
         return $this->forCustomer($booking, $now) + [
                 'timeline' => $this->customerTimeline($booking, $now),
                 'canReport' => $this->canReport($booking, $now),
+                'reviewed' => $this->reviewService->isReviewed($booking),
+                'reviewDeadline' => DateHelper::iso($this->reviewService->deadline($booking)),
             ];
     }
 

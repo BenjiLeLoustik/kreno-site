@@ -34,6 +34,12 @@
                     </span>
                     <span class="booking-list__aside">
                         <span class="account-status account-status--{{ booking.kind }}">{{ booking.statusLabel }}</span>
+                        {% if booking.canReview %}
+                            <span class="booking-list__review">
+                                <i data-lucide="star" class="booking-list__review-icon"></i>
+                                Avis à donner
+                            </span>
+                        {% endif %}
                         <span class="booking-list__prices"><s class="booking-list__old">{{ booking.old }}</s> <b class="booking-list__price">{{ booking.price }}</b></span>
                     </span>
                 </a>

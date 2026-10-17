@@ -26,4 +26,16 @@
     .review-pro__form {
         @apply mt-2;
     }
+
+    .dashboard-reviews__body {
+        @apply flex flex-wrap items-center gap-3;
+    }
+
+    .dashboard-reviews__average {
+        @apply font-display text-3xl font-bold leading-none;
+    }
+
+    .dashboard-reviews__pending {
+        @apply no-underline;
+    }
 }

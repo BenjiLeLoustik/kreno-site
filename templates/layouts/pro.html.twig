@@ -12,6 +12,7 @@
     { key: 'stats', label: 'Statistiques', route: 'pro_stats', icon: 'chart-column', allowed: can['planning.view'] ?? false },
     { key: 'establishment', label: 'Mon établissement', route: 'pro_establishment', icon: 'store', allowed: can['establishment.edit'] ?? false },
     { key: 'reports', label: 'Signalements', route: 'pro_reports', icon: 'flag', allowed: can['bookings.manage'] ?? false },
+    { key: 'reviews', label: 'Avis clients', route: 'pro_reviews', icon: 'star', allowed: can['planning.view'] ?? false },
     { key: 'team', label: 'Équipe', route: 'pro_team', icon: 'users', allowed: (canCompany['members.manage'] ?? false) or (can['members.manage'] ?? false) },
     { key: 'billing', label: 'Facturation', route: 'pro_billing', icon: 'receipt', allowed: canCompany['company.billing'] ?? false },
     { key: 'company', label: 'Mon compte', route: 'pro_company', icon: 'building-2', allowed: true },

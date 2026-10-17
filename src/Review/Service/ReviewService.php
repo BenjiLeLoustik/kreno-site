@@ -58,6 +58,20 @@ class ReviewService
         }
     }
 
+    public function canReview(Booking $booking, DateTimeImmutable $now): bool
+    {
+        if ($booking->getStatus() !== BookingStatus::HONORED || !$this->withinWindow($booking, $now)) {
+            return false;
+        }
+
+        return $this->reviews->findOneForBooking($booking) === null;
+    }
+
+    public function isReviewed(Booking $booking): bool
+    {
+        return $this->reviews->findOneForBooking($booking) !== null;
+    }
+
     public function withinWindow(Booking $booking, DateTimeImmutable $now): bool
     {
         $deadline = $this->deadline($booking);

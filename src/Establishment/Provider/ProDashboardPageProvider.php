@@ -8,12 +8,16 @@ use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Company\CompanyMember;
 use App\Entity\User\User;
 use App\Establishment\Enum\EstablishmentStatus;
+use App\Repository\Establishment\EstablishmentReviewRepository;
+use App\Review\Provider\ReviewSummaryProvider;
 
 class ProDashboardPageProvider
 {
     public function __construct(
         private PermissionResolver $resolver,
         private ProDashboardProvider $dashboard,
+        private ReviewSummaryProvider $reviewSummaries,
+        private EstablishmentReviewRepository $reviews,
     ) {
     }
 
@@ -30,6 +34,14 @@ class ProDashboardPageProvider
             ],
             'canPublish' => $this->resolver->memberCan($member, Permission::SLOTS_MANAGE, $establishment),
             'dashboard' => $this->dashboard->build($establishment, $user),
+            'reviews' => $this->reviews($establishment),
         ];
+    }
+
+    private function reviews(CompanyEstablishment $establishment): array
+    {
+        return $this->reviewSummaries->summary($establishment) + [
+                'unanswered' => $this->reviews->countUnanswered($establishment),
+            ];
     }
 }
