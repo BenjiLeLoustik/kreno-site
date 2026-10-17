@@ -3,16 +3,16 @@
 {% set account_section = 'messages' %}
 
 {% block title %}
-    Mes messages · {{ website().siteName }}
+    {{ translate('Mes messages · {site}', {site: website().siteName}) }}
 {% endblock %}
 
 {% block account_content %}
     <header class="account-head">
         <h1 class="account-head__title">
-            Mes messages
+            {{ translate('Mes messages') }}
         </h1>
         <p class="account-head__subtitle">
-            Vos échanges avec l'équipe {{ website().siteName }}.
+            {{ translate('Vos échanges avec l\'équipe {site}.', {site: website().siteName}) }}
         </p>
     </header>
 
@@ -33,7 +33,11 @@
                             </span>
                         {% endif %}
                         <span class="message-list__date">
-                            {{ contact.messagesCount }} message{{ contact.messagesCount > 1 ? 's' : '' }} · dernier le {{ contact.lastMessageAt|date('d/m/Y à H:i') }}
+                            {{ translate('{count, plural, one {# message} other {# messages}} · dernier le {date} à {time}', {
+                                count: contact.messagesCount,
+                                date: contact.lastMessageAt|date('d/m/Y'),
+                                time: contact.lastMessageAt|date('H:i')
+                            }) }}
                         </span>
                     </span>
                     <span class="contact-status contact-status--{{ contact.status }}">
@@ -45,10 +49,10 @@
     {% else %}
         <div class="account-empty">
             <p class="account-empty__text">
-                Aucun message pour le moment. Une question ? Écrivez-nous depuis la page d'aide.
+                {{ translate('Aucun message pour le moment. Une question ? Écrivez-nous depuis la page d\'aide.') }}
             </p>
             <a href="{{ path('page_help') }}#contact" class="btn btn--primary btn--small">
-                Nous écrire
+                {{ translate('Nous écrire') }}
             </a>
         </div>
     {% endif %}

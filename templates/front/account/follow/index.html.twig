@@ -4,22 +4,27 @@
 
 {% block title %}
     Établissements suivis · {{ website().siteName }}
+    {{ translate('Établissements suivis · {site}', {site: website().siteName}) }}
 {% endblock %}
 
 {% block account_content %}
     <header class="account-head">
         <h1 class="account-head__title">
-            Établissements suivis
+            {{ translate('Établissements suivis') }}
         </h1>
         <p class="account-head__subtitle">
-            Vous êtes prévenu dès qu'ils publient un créneau.
+            {{ translate('Vous êtes prévenu dès qu\'ils publient un créneau.') }}
         </p>
     </header>
 
     {% if follows is not empty %}
         <div class="follow-grid">
             {% for shop in follows %}
-                {% set url = shop.city ? path('shop_show', { city: shop.city.slug, slug: shop.slug }) : null %}
+                {% set url = shop.city ? path('shop_show', {
+                    city: shop.city.slug,
+                    slug: shop.slug
+                }) : null %}
+
                 <article class="follow-card">
                     {% if shop.cover %}
                         <img src="{{ shop.cover }}" alt="" class="follow-card__cover" loading="lazy">
@@ -45,11 +50,9 @@
                             {{ shop.city ? shop.city.name : '' }}
                         </span>
                         <span class="follow-card__slots{{ shop.availableSlots > 0 ? ' follow-card__slots--available' : '' }}">
-                            {% if shop.availableSlots > 0 %}
-                                {{ shop.availableSlots }} créneau{{ show.availableSlots > 1 ? 'x' : '' }} libre{{ show.availableSlots > 1 ? 's' : '' }}
-                            {% else %}
-                                Rien pour l'instant
-                            {% endif %}
+                            {{ translate("{count, plural, =0 {Rien pour l'instant} one {# créneau libre} other {# créneaux libres}}", {
+                                count: shop.availableSlots
+                            }) }}
                         </span>
                         {% if shop.openNow.label %}
                             <span class="follow-card__hours">
@@ -60,7 +63,7 @@
                     <form method="post" action="{{ path('account_follow_delete', { id: shop.id }) }}" class="follow-card__form">
                         {{ csrf_field('account')|raw }}
                         <button type="submit" class="follow-card__unfollow">
-                            Ne plus suivre
+                            {{ translate('Ne plus suivre') }}
                         </button>
                     </form>
                 </article>
@@ -69,10 +72,10 @@
     {% else %}
         <div class="account-empty">
             <p class="account-empty__text">
-                Vous ne suivez aucun établissement. Suivez vos adresses préférées depuis leur page pour être prévenu de leurs créneaux.
+                {{ translate('Vous ne suivez aucun établissement. Suivez vos adresses préférées depuis leur page pour être prévenu de leurs créneaux.') }}
             </p>
             <a href="{{ path('search_index') }}" class="btn btn--primary btn--small">
-                Trouver un établissement
+                {{ translate('Trouver un établissement') }}
             </a>
         </div>
     {% endif %}

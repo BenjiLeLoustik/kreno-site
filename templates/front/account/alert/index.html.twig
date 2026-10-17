@@ -3,20 +3,38 @@
 {% set account_section = 'alerts' %}
 
 {% block title %}
-    Mes alertes · {{ website().siteName }}
+    {{ translate('Mes alertes · {site}', {site: website().siteName}) }}
 {% endblock %}
 
 {% block account_content %}
     <header class="account-head">
         <h1 class="account-head__title">
-            Mes
+            {{ translate('Mes alertes') }}
         </h1>
         <p class="account-head__subtitle">
-            Un e-mail et une notification dès qu'un créneau se libère dans vos catégories, près de chez vous et aux heures qui vous arrangent. Jusqu'à {{ maxAlerts }} alertes.
+            {{ translate("{count, plural, one {Un e-mail et une notification dès qu'un créneau se libère dans tes catégories, près de chez toi et aux heures qui t'arrangent. Jusqu'à # alerte.} other {Un e-mail et une notification dès qu'un créneau se libère dans tes catégories, près de chez toi et aux heures qui t'arrangent. Jusqu'à # alertes.}}", {count: maxAlerts}) }}
         </p>
     </header>
 
     {% for alert in alerts %}
+        {% set parts = [
+            alert.categories is not empty
+            ? alert.categories|map(category => category.name)|join(', ')
+            : translate('Toutes catégories'),
+            alert.city ? alert.city.name : translate('toutes les villes'),
+            translate('à moins de {radius} km', {radius: alert.radiusKm})
+        ] %}
+        {% if alert.startTime and alert.endTime %}
+            {% set parts = parts|merge([
+                translate('entre {start} et {end}', {start: alert.startTime, end: alert.endTime})
+            ]) %}
+        {% endif %}
+        {% if alert.maxPrice %}
+            {% set parts = parts|merge([
+                translate('{price} € maximum', {price: (alert.maxPrice / 100)|number_format(0, ',', ' ')})
+            ]) %}
+        {% endif %}
+
         <section class="account-card alert-card{{ alert.enabled ? '' : ' alert-card--paused' }}">
             <div class="account-section__head">
                 <h2 class="account-section__title">
@@ -24,44 +42,26 @@
                 </h2>
                 <span class="account-status account-status--{{ alert.enabled ? 'coming' : 'closed' }}">
                     {% if alert.enabled %}
-                        Active
+                        {{ translate('Active') }}
                     {% else %}
-                        En pause
+                        {{ translate('En pause') }}
                     {% endif %}
                 </span>
             </div>
             <p class="account-card__text">
-                {% if alert.categories is not empty %}
-                    {{ alert.categories|map(category => category.name)|join(', ') }}
-                {% else %}
-                    Toutes catégories
-                {% endif %}
-
-                ·
-                {% if alert.city %}
-                    {{ alert.city.name }}
-                {% else %}
-                    toutes les villes
-                {% endif %}
-                · à moins de {{ alert.radiusKm }} km
-                {% if alert.startTime and alert.endTime %}
-                    · entre {{ alert.startTime }} et {{ alert.endTime }}
-                {% endif %}
-                {% if alert.maxPrice %}
-                    · {{ (alert.maxPrice / 100)|number_format(0, ',', ' ') }} € maximum
-                {% endif %}
+                {{ parts|join(' · ') }}
             </p>
             <div class="alert-card__actions">
                 <details class="alert-card__edit">
                     <summary class="alert-card__toggle">
-                        Modifier
+                        {{ translate('Modifier') }}
                     </summary>
                     {% include 'front/account/alert/_form.html.twig' with { alert: alert } %}
                 </details>
                 <form method="post" action="{{ path('account_alert_delete', { id: alert.id }) }}" class="alert-card__delete">
                     {{ csrf_field('account')|raw }}
                     <button type="submit" class="alert-card__remove">
-                        Supprimer
+                        {{ translate('Supprimer') }}
                     </button>
                 </form>
             </div>
@@ -69,7 +69,7 @@
     {% else %}
         <div class="account-empty">
             <p class="account-empty__text">
-                Vous n'avez pas encore d'alerte. Créez-en une pour ne plus rater les créneaux libérés.
+                {{ translate("Tu n'as pas encore d'alerte. Crées-en une pour ne plus rater les créneaux libérés.") }}
             </p>
         </div>
     {% endfor %}
@@ -77,13 +77,13 @@
     {% if canCreate %}
         <section class="account-card">
             <h2 class="account-section__title">
-                Nouvelle alerte
+                {{ translate('Nouvelle alerte') }}
             </h2>
             {% include 'front/account/alert/_form.html.twig' with { alert: null } %}
         </section>
     {% else %}
         <p class="account-card__muted">
-            Vous avez atteint {{ maxAlerts }} alertes : supprimez-en une pour en créer une nouvelle.
+            {{ translate('{count, plural, one {Tu as atteint # alerte : supprime-la pour en créer une nouvelle.} other {Tu as atteint # alertes : supprimes-en une pour en créer une nouvelle.}}', {count: maxAlerts}) }}
         </p>
     {% endif %}
 {% endblock %}

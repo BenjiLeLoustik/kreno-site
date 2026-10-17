@@ -3,22 +3,22 @@
 {% set account_section = 'reviews' %}
 
 {% block title %}
-    Mes avis · {{ website().siteName }}
+    {{ translate('Mes avis · {site}', {site: website().siteName}) }}
 {% endblock %}
 
 {% block account_content %}
     <header class="account-head">
         <h1 class="account-head__title">
-            Mes avis
+            {{ translate('Mes avis') }}
         </h1>
         <p class="account-head__subtitle">
-            Ton avis aide les autres clients à choisir et les pros à s'améliorer.
+            {{ translate('Ton avis aide les autres clients à choisir et les pros à s\'améliorer.') }}
         </p>
     </header>
 
     <section class="account-section">
         <h2 class="account-section__title">
-            À noter
+            {{ translate('À noter') }}
         </h2>
         {% if pending is not empty %}
             <div class="review-pending">
@@ -32,14 +32,17 @@
                                 {% if booking.service %}
                                     {{ booking.service }} ·
                                 {% endif %}
-                                le {{ booking.startsAt|date('d/m/Y à H:i') }}
+                                {{ translate('le {date} à {time}', {
+                                    date: booking.startsAt|date('d/m/Y'),
+                                    time: booking.startsAt|date('H:i')
+                                }) }}
                             </span>
                             <span class="account-card__muted">
-                                Avis possible jusqu'au {{ booking.deadline|date('d/m/Y') }}
+                                {{ translate('Avis possible jusqu\'au {deadline}', {deadline: booking.deadline|date('d/m/Y')}) }}
                             </span>
                         </span>
                         <a href="{{ path('account_review_new', { reference: booking.reference }) }}" class="btn btn--primary btn--small">
-                            Donner mon avis
+                            {{ translate('Donner mon avis') }}
                         </a>
                     </div>
                 {% endfor %}
@@ -47,7 +50,7 @@
         {% else %}
             <div class="account-empty">
                 <p class="account-empty__text">
-                    Rien à noter pour le moment. Après chaque rendez-vous honoré, tu as {{ windowDays }} jours pour donner ton avis.
+                    {{ translate('Rien à noter pour le moment. Après chaque rendez-vous honoré, tu as {windowDays} jours pour donner ton avis.', {windowDays: windowDays}) }}
                 </p>
             </div>
         {% endif %}
@@ -55,7 +58,7 @@
 
     <section class="account-section">
         <h2 class="account-section__title">
-            Mes avis publiés
+            {{ translate('Mes avis publiés') }}
         </h2>
         {% if reviews is not empty %}
             <ul class="review-list">
@@ -80,7 +83,7 @@
                         {% include 'front/review/_card.html.twig' with { review: review } only %}
                         {% if not review.visible and review.moderationNote %}
                             <p class="review-mine__note">
-                                Motif : {{ review.moderationNote }}
+                                {{ translate('Motif: {moderationNote}', {moderationNote: review.moderationNote}) }}
                             </p>
                         {% endif %}
                     </li>
@@ -89,7 +92,7 @@
         {% else %}
             <div class="account-empty">
                 <p class="account-empty__text">
-                    Tu n'as pas encore donné d'avis.
+                    {{ translate('Tu n\'as pas encore donné d\'avis.') }}
                 </p>
             </div>
         {% endif %}

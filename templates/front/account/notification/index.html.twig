@@ -4,20 +4,20 @@
 {% set unreadNotifications = unread %}
 
 {% block title %}
-    Notifications · {{ website().siteName }}
+    {{ translate('Notifications · {site}', {site: website().siteName}) }}
 {% endblock %}
 
 {% block account_content %}
     <header class="notification-head">
         <div class="account-head">
             <h1 class="account-head__title">
-                Notifications
+                {{ translate('Notifications') }}
             </h1>
             <p class="account-head__subtitle">
                 {% if unread > 0 %}
-                    {{ unread }} non lue{{ unread > 1 ? 's' : '' }}
+                    {{ translate('{count, plural, one {# non lue} other {# non lues}}', {count: unread}) }}
                 {% else %}
-                    Tout est lu.
+                    {{ translate('Tout est lu.') }}
                 {% endif %}
             </p>
         </div>
@@ -26,12 +26,12 @@
                 <form method="post" action="{{ path('account_notifications_read_all') }}">
                     {{ csrf_field('account')|raw }}
                     <button type="submit" class="btn btn--outline btn--small">
-                        Tout marquer comme lu
+                        {{ translate('Tout marquer comme lu') }}
                     </button>
                 </form>
             {% endif %}
             <a href="{{ path('account_settings') }}#e-mails" class="btn btn--outline btn--small">
-                Réglages
+                {{ translate('Réglages') }}
             </a>
         </div>
     </header>
@@ -68,7 +68,7 @@
                         <button type="submit" class="notification-list__item notification-list__item--unread">
                             {{ content }}
                             <span class="sr-only">
-                                (non lue)
+                                {{ translate('(non lue)') }}
                             </span>
                         </button>
                     </form>
@@ -86,7 +86,7 @@
     {% else %}
         <div class="account-empty">
             <p class="account-empty__text">
-                Aucune notification pour le moment.
+                {{ translate('Aucune notification pour le moment.') }}
             </p>
         </div>
     {% endif %}

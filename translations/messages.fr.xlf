@@ -2234,6 +2234,594 @@
         <source>← Retour à la connexion pro</source>
         <target>← Retour à la connexion pro</target>
       </trans-unit>
+      <trans-unit id="f1b640b188993008" resname="(aucune = toutes)">
+        <source>(aucune = toutes)</source>
+        <target>(aucune = toutes)</target>
+      </trans-unit>
+      <trans-unit id="d30e1fc833070705" resname="(facultatif : photo ou PDF)">
+        <source>(facultatif : photo ou PDF)</source>
+        <target>(facultatif : photo ou PDF)</target>
+      </trans-unit>
+      <trans-unit id="6071a0c3fbd7bb92" resname="(facultatif)">
+        <source>(facultatif)</source>
+        <target>(facultatif)</target>
+      </trans-unit>
+      <trans-unit id="dee5031925abb89a" resname="(non lue)">
+        <source>(non lue)</source>
+        <target>(non lue)</target>
+      </trans-unit>
+      <trans-unit id="97c080610f925efc" resname="Accueil, qualité de la prestation, ponctualité…">
+        <source>Accueil, qualité de la prestation, ponctualité…</source>
+        <target>Accueil, qualité de la prestation, ponctualité…</target>
+      </trans-unit>
+      <trans-unit id="92340695899bd2d8" resname="Active">
+        <source>Active</source>
+        <target>Active</target>
+      </trans-unit>
+      <trans-unit id="4e5fbdf58f7b78f1" resname="Adresse non vérifiée.">
+        <source>Adresse non vérifiée.</source>
+        <target>Adresse non vérifiée.</target>
+      </trans-unit>
+      <trans-unit id="c2a7f0f0729b193a" resname="Ajouter à mon agenda">
+        <source>Ajouter à mon agenda</source>
+        <target>Ajouter à mon agenda</target>
+      </trans-unit>
+      <trans-unit id="c9331cd475ec2bd1" resname="Alerte active">
+        <source>Alerte active</source>
+        <target>Alerte active</target>
+      </trans-unit>
+      <trans-unit id="7a95899356ca4cad" resname="Annulation gratuite jusqu&apos;à {hours} h avant le rendez-vous.">
+        <source>Annulation gratuite jusqu&apos;à {hours} h avant le rendez-vous.</source>
+        <target>Annulation gratuite jusqu&apos;à {hours} h avant le rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="91976aaabba06136" resname="Annulation gratuite jusqu&apos;à {minutes} min avant le rendez-vous.">
+        <source>Annulation gratuite jusqu&apos;à {minutes} min avant le rendez-vous.</source>
+        <target>Annulation gratuite jusqu&apos;à {minutes} min avant le rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="de2d85c5cb71a1f6" resname="Annuler la réservation">
+        <source>Annuler la réservation</source>
+        <target>Annuler la réservation</target>
+      </trans-unit>
+      <trans-unit id="b80ffb307cb6e421" resname="Annuler le rendez-vous de {time}">
+        <source>Annuler le rendez-vous de {time}</source>
+        <target>Annuler le rendez-vous de {time}</target>
+      </trans-unit>
+      <trans-unit id="1dda7fc88996cf0d" resname="Appeler {establishmentPhone}">
+        <source>Appeler {establishmentPhone}</source>
+        <target>Appeler {establishmentPhone}</target>
+      </trans-unit>
+      <trans-unit id="f3a62c8ebb73ad0f" resname="Aucun message pour le moment. Une question ? Écrivez-nous depuis la page d&apos;aide.">
+        <source>Aucun message pour le moment. Une question ? Écrivez-nous depuis la page d&apos;aide.</source>
+        <target>Aucun message pour le moment. Une question ? Écrivez-nous depuis la page d&apos;aide.</target>
+      </trans-unit>
+      <trans-unit id="f7478915433eeacf" resname="Aucune alerte active. Soyez prévenu dès qu&apos;un créneau se libère dans vos catégories préférées.">
+        <source>Aucune alerte active. Soyez prévenu dès qu&apos;un créneau se libère dans vos catégories préférées.</source>
+        <target>Aucune alerte active. Soyez prévenu dès qu&apos;un créneau se libère dans vos catégories préférées.</target>
+      </trans-unit>
+      <trans-unit id="603ef99c709c6d8f" resname="Aucune notification pour le moment.">
+        <source>Aucune notification pour le moment.</source>
+        <target>Aucune notification pour le moment.</target>
+      </trans-unit>
+      <trans-unit id="6879e541b619e8db" resname="Aucune réservation annulée.">
+        <source>Aucune réservation annulée.</source>
+        <target>Aucune réservation annulée.</target>
+      </trans-unit>
+      <trans-unit id="d2b5b1ea8361960f" resname="Aucune réservation ne peut être signalée en ce moment. Le signalement est possible jusqu&apos;à {windowHours} h après le rendez-vous.">
+        <source>Aucune réservation ne peut être signalée en ce moment. Le signalement est possible jusqu&apos;à {windowHours} h après le rendez-vous.</source>
+        <target>Aucune réservation ne peut être signalée en ce moment. Le signalement est possible jusqu&apos;à {windowHours} h après le rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="abb9618e7aef2078" resname="Aucune réservation passée pour le moment.">
+        <source>Aucune réservation passée pour le moment.</source>
+        <target>Aucune réservation passée pour le moment.</target>
+      </trans-unit>
+      <trans-unit id="2071a3efdda2da74" resname="Aucune réservation à venir.">
+        <source>Aucune réservation à venir.</source>
+        <target>Aucune réservation à venir.</target>
+      </trans-unit>
+      <trans-unit id="ae889611f79a95d5" resname="Aucune réservation à venir. Des créneaux se libèrent tous les jours près de chez vous.">
+        <source>Aucune réservation à venir. Des créneaux se libèrent tous les jours près de chez vous.</source>
+        <target>Aucune réservation à venir. Des créneaux se libèrent tous les jours près de chez vous.</target>
+      </trans-unit>
+      <trans-unit id="a18956254eb778a0" resname="Avis possible jusqu&apos;au {deadline}">
+        <source>Avis possible jusqu&apos;au {deadline}</source>
+        <target>Avis possible jusqu&apos;au {deadline}</target>
+      </trans-unit>
+      <trans-unit id="7e4b2f0d7f1401f5" resname="Avis publié">
+        <source>Avis publié</source>
+        <target>Avis publié</target>
+      </trans-unit>
+      <trans-unit id="34750bfdfcb73301" resname="Avis à donner">
+        <source>Avis à donner</source>
+        <target>Avis à donner</target>
+      </trans-unit>
+      <trans-unit id="4be321163197b108" resname="Bon à savoir">
+        <source>Bon à savoir</source>
+        <target>Bon à savoir</target>
+      </trans-unit>
+      <trans-unit id="1913cada8de1035e" resname="C&apos;est gratuit jusqu&apos;à {freeCancellationUntil}">
+        <source>C&apos;est gratuit jusqu&apos;à {freeCancellationUntil}</source>
+        <target>C&apos;est gratuit jusqu&apos;à {freeCancellationUntil}</target>
+      </trans-unit>
+      <trans-unit id="c4fc775938d3589c" resname="Comment s&apos;est passé ce rendez-vous ?">
+        <source>Comment s&apos;est passé ce rendez-vous ?</source>
+        <target>Comment s&apos;est passé ce rendez-vous ?</target>
+      </trans-unit>
+      <trans-unit id="883ebeffefbf69ab" resname="Confirmer le nouveau mot de passe">
+        <source>Confirmer le nouveau mot de passe</source>
+        <target>Confirmer le nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="969418f4d5aea880" resname="Créer">
+        <source>Créer</source>
+        <target>Créer</target>
+      </trans-unit>
+      <trans-unit id="da0a2344b053db0e" resname="Créer l&apos;alerte">
+        <source>Créer l&apos;alerte</source>
+        <target>Créer l&apos;alerte</target>
+      </trans-unit>
+      <trans-unit id="4d7c50ed2687d6d6" resname="Distance maximale (km)">
+        <source>Distance maximale (km)</source>
+        <target>Distance maximale (km)</target>
+      </trans-unit>
+      <trans-unit id="23c9e803304e8c3f" resname="Donner mon avis">
+        <source>Donner mon avis</source>
+        <target>Donner mon avis</target>
+      </trans-unit>
+      <trans-unit id="625dd8a474bda923" resname="Donner mon avis · {site}">
+        <source>Donner mon avis · {site}</source>
+        <target>Donner mon avis · {site}</target>
+      </trans-unit>
+      <trans-unit id="17eaee489b095c37" resname="Détails">
+        <source>Détails</source>
+        <target>Détails</target>
+      </trans-unit>
+      <trans-unit id="1e8026f4ed90034a" resname="E-mails">
+        <source>E-mails</source>
+        <target>E-mails</target>
+      </trans-unit>
+      <trans-unit id="239c064e0d40ac4a" resname="En pause">
+        <source>En pause</source>
+        <target>En pause</target>
+      </trans-unit>
+      <trans-unit id="929d79d06248829f" resname="Envoyé le {date} · {reference}">
+        <source>Envoyé le {date} · {reference}</source>
+        <target>Envoyé le {date} · {reference}</target>
+      </trans-unit>
+      <trans-unit id="59245c58edff0eec" resname="Envoyé · {reference}">
+        <source>Envoyé · {reference}</source>
+        <target>Envoyé · {reference}</target>
+      </trans-unit>
+      <trans-unit id="008cf97e2244d8ef" resname="Erreur {code}">
+        <source>Erreur {code}</source>
+        <target>Erreur {code}</target>
+      </trans-unit>
+      <trans-unit id="f54fc9499b58670e" resname="Ex. Lyon 3e, près du bureau">
+        <source>Ex. Lyon 3e, près du bureau</source>
+        <target>Ex. Lyon 3e, près du bureau</target>
+      </trans-unit>
+      <trans-unit id="a07ea6387f97bd0c" resname="Filtrer les réservations">
+        <source>Filtrer les réservations</source>
+        <target>Filtrer les réservations</target>
+      </trans-unit>
+      <trans-unit id="4eb85608d894b7b5" resname="Itinéraire">
+        <source>Itinéraire</source>
+        <target>Itinéraire</target>
+      </trans-unit>
+      <trans-unit id="3d0e97a006005b2d" resname="Jusqu&apos;à">
+        <source>Jusqu&apos;à</source>
+        <target>Jusqu&apos;à</target>
+      </trans-unit>
+      <trans-unit id="eedad347eac4e01f" resname="Les e-mails liés à vos réservations (confirmation, rappel, annulation) sont toujours envoyés.">
+        <source>Les e-mails liés à vos réservations (confirmation, rappel, annulation) sont toujours envoyés.</source>
+        <target>Les e-mails liés à vos réservations (confirmation, rappel, annulation) sont toujours envoyés.</target>
+      </trans-unit>
+      <trans-unit id="457b5a538a2dd279" resname="Membre {since} · {amount} économisés avec {site}">
+        <source>Membre {since} · {amount} économisés avec {site}</source>
+        <target>Membre {since} · {amount} économisés avec {site}</target>
+      </trans-unit>
+      <trans-unit id="c5945181cfd2e6c3" resname="Merci pour ce retour.">
+        <source>Merci pour ce retour.</source>
+        <target>Merci pour ce retour.</target>
+      </trans-unit>
+      <trans-unit id="62e40f748f702cfe" resname="Mes alertes">
+        <source>Mes alertes</source>
+        <target>Mes alertes</target>
+      </trans-unit>
+      <trans-unit id="8434f49ceaa114b0" resname="Mes alertes · {site}">
+        <source>Mes alertes · {site}</source>
+        <target>Mes alertes · {site}</target>
+      </trans-unit>
+      <trans-unit id="b4ce1be8bb43a8d5" resname="Mes avis">
+        <source>Mes avis</source>
+        <target>Mes avis</target>
+      </trans-unit>
+      <trans-unit id="c9af6aebe5c9341f" resname="Mes avis publiés">
+        <source>Mes avis publiés</source>
+        <target>Mes avis publiés</target>
+      </trans-unit>
+      <trans-unit id="00b00e81c3b95058" resname="Mes avis · {site}">
+        <source>Mes avis · {site}</source>
+        <target>Mes avis · {site}</target>
+      </trans-unit>
+      <trans-unit id="1b34b4b359261a2e" resname="Mes données">
+        <source>Mes données</source>
+        <target>Mes données</target>
+      </trans-unit>
+      <trans-unit id="73e19a8afda1dda9" resname="Mes informations">
+        <source>Mes informations</source>
+        <target>Mes informations</target>
+      </trans-unit>
+      <trans-unit id="9ae629bba134cef2" resname="Mes messages">
+        <source>Mes messages</source>
+        <target>Mes messages</target>
+      </trans-unit>
+      <trans-unit id="1399536b8c8582b3" resname="Mes messages · {site}">
+        <source>Mes messages · {site}</source>
+        <target>Mes messages · {site}</target>
+      </trans-unit>
+      <trans-unit id="6bb267342cd18aa0" resname="Mes réservations">
+        <source>Mes réservations</source>
+        <target>Mes réservations</target>
+      </trans-unit>
+      <trans-unit id="32f02306dfadeadb" resname="Mes réservations · {site}">
+        <source>Mes réservations · {site}</source>
+        <target>Mes réservations · {site}</target>
+      </trans-unit>
+      <trans-unit id="b0e1e4418143c555" resname="Mes signalements">
+        <source>Mes signalements</source>
+        <target>Mes signalements</target>
+      </trans-unit>
+      <trans-unit id="956fc5c2fbf477ef" resname="Modifier le mot de passe">
+        <source>Modifier le mot de passe</source>
+        <target>Modifier le mot de passe</target>
+      </trans-unit>
+      <trans-unit id="08c18e04d8913f06" resname="Mon alerte">
+        <source>Mon alerte</source>
+        <target>Mon alerte</target>
+      </trans-unit>
+      <trans-unit id="8b53a29bcfa54419" resname="Mon compte · {site}">
+        <source>Mon compte · {site}</source>
+        <target>Mon compte · {site}</target>
+      </trans-unit>
+      <trans-unit id="55f685a23ed5787e" resname="Mot de passe actuel">
+        <source>Mot de passe actuel</source>
+        <target>Mot de passe actuel</target>
+      </trans-unit>
+      <trans-unit id="d009849722cf2584" resname="Motif d&apos;annulation">
+        <source>Motif d&apos;annulation</source>
+        <target>Motif d&apos;annulation</target>
+      </trans-unit>
+      <trans-unit id="2483a46b0803830d" resname="Motif: {moderationNote}">
+        <source>Motif: {moderationNote}</source>
+        <target>Motif: {moderationNote}</target>
+      </trans-unit>
+      <trans-unit id="67fe585082818dd7" resname="Ne plus suivre">
+        <source>Ne plus suivre</source>
+        <target>Ne plus suivre</target>
+      </trans-unit>
+      <trans-unit id="bffe05b91e5b7027" resname="Nom de l&apos;alerte">
+        <source>Nom de l&apos;alerte</source>
+        <target>Nom de l&apos;alerte</target>
+      </trans-unit>
+      <trans-unit id="788011833a5a0f22" resname="Notifications">
+        <source>Notifications</source>
+        <target>Notifications</target>
+      </trans-unit>
+      <trans-unit id="a857decef6b11227" resname="Notifications · {site}">
+        <source>Notifications · {site}</source>
+        <target>Notifications · {site}</target>
+      </trans-unit>
+      <trans-unit id="6dca07a0beddde92" resname="Nous écrire">
+        <source>Nous écrire</source>
+        <target>Nous écrire</target>
+      </trans-unit>
+      <trans-unit id="a3d65ca5697afe44" resname="Nouveau mot de passe">
+        <source>Nouveau mot de passe</source>
+        <target>Nouveau mot de passe</target>
+      </trans-unit>
+      <trans-unit id="84afea32fd571c4b" resname="Nouvelle alerte">
+        <source>Nouvelle alerte</source>
+        <target>Nouvelle alerte</target>
+      </trans-unit>
+      <trans-unit id="3f9d7e3925875bd1" resname="Oui, annuler">
+        <source>Oui, annuler</source>
+        <target>Oui, annuler</target>
+      </trans-unit>
+      <trans-unit id="4cc90079c2ff7649" resname="Pas encore de message. Nous vous répondons par e-mail et ici.">
+        <source>Pas encore de message. Nous vous répondons par e-mail et ici.</source>
+        <target>Pas encore de message. Nous vous répondons par e-mail et ici.</target>
+      </trans-unit>
+      <trans-unit id="d5e7b3ef1a6bdeeb" resname="Pièce jointe">
+        <source>Pièce jointe</source>
+        <target>Pièce jointe</target>
+      </trans-unit>
+      <trans-unit id="a9a5cc7c52b6343b" resname="Pour vous">
+        <source>Pour vous</source>
+        <target>Pour vous</target>
+      </trans-unit>
+      <trans-unit id="8389436a354c70f4" resname="Prix maximum (€)">
+        <source>Prix maximum (€)</source>
+        <target>Prix maximum (€)</target>
+      </trans-unit>
+      <trans-unit id="30c6238845e203fe" resname="Prix sur place">
+        <source>Prix sur place</source>
+        <target>Prix sur place</target>
+      </trans-unit>
+      <trans-unit id="41cb0f85ccffdc6b" resname="Prochain rendez-vous">
+        <source>Prochain rendez-vous</source>
+        <target>Prochain rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="4bc97411d337fcd0" resname="Publier mon avis">
+        <source>Publier mon avis</source>
+        <target>Publier mon avis</target>
+      </trans-unit>
+      <trans-unit id="fb8cf5a0937056d5" resname="Recevoir les alertes de créneaux et les nouveautés des établissements suivis par e-mail">
+        <source>Recevoir les alertes de créneaux et les nouveautés des établissements suivis par e-mail</source>
+        <target>Recevoir les alertes de créneaux et les nouveautés des établissements suivis par e-mail</target>
+      </trans-unit>
+      <trans-unit id="8f9f9b08ec0d1a6a" resname="Retour à l&apos;accueil">
+        <source>Retour à l&apos;accueil</source>
+        <target>Retour à l&apos;accueil</target>
+      </trans-unit>
+      <trans-unit id="04aa50390f07e72a" resname="Rien à noter pour le moment. Après chaque rendez-vous honoré, tu as {windowDays} jours pour donner ton avis.">
+        <source>Rien à noter pour le moment. Après chaque rendez-vous honoré, tu as {windowDays} jours pour donner ton avis.</source>
+        <target>Rien à noter pour le moment. Après chaque rendez-vous honoré, tu as {windowDays} jours pour donner ton avis.</target>
+      </trans-unit>
+      <trans-unit id="393ca26ab12c3370" resname="Référence">
+        <source>Référence</source>
+        <target>Référence</target>
+      </trans-unit>
+      <trans-unit id="4ed117e09c53c08a" resname="Réglages">
+        <source>Réglages</source>
+        <target>Réglages</target>
+      </trans-unit>
+      <trans-unit id="4b59d1d0c1897d0e" resname="Réglages · {site}">
+        <source>Réglages · {site}</source>
+        <target>Réglages · {site}</target>
+      </trans-unit>
+      <trans-unit id="cef669f1f80a5546" resname="Réservation concernée">
+        <source>Réservation concernée</source>
+        <target>Réservation concernée</target>
+      </trans-unit>
+      <trans-unit id="041c951d89f30576" resname="Réservation {reference} · {site}">
+        <source>Réservation {reference} · {site}</source>
+        <target>Réservation {reference} · {site}</target>
+      </trans-unit>
+      <trans-unit id="e265c451856dc6e6" resname="Sans limite">
+        <source>Sans limite</source>
+        <target>Sans limite</target>
+      </trans-unit>
+      <trans-unit id="dda00b3a8161b193" resname="Signalement {reference} · {site}">
+        <source>Signalement {reference} · {site}</source>
+        <target>Signalement {reference} · {site}</target>
+      </trans-unit>
+      <trans-unit id="fbe090b0d0bc366b" resname="Signalements · {site}">
+        <source>Signalements · {site}</source>
+        <target>Signalements · {site}</target>
+      </trans-unit>
+      <trans-unit id="2f156427f1196f77" resname="Signaler un problème">
+        <source>Signaler un problème</source>
+        <target>Signaler un problème</target>
+      </trans-unit>
+      <trans-unit id="c9cbebf39f9f3935" resname="Suivi">
+        <source>Suivi</source>
+        <target>Suivi</target>
+      </trans-unit>
+      <trans-unit id="1a797b980d16ce8e" resname="Supprimer définitivement">
+        <source>Supprimer définitivement</source>
+        <target>Supprimer définitivement</target>
+      </trans-unit>
+      <trans-unit id="8d7ce842b8fca887" resname="Supprimer mon compte">
+        <source>Supprimer mon compte</source>
+        <target>Supprimer mon compte</target>
+      </trans-unit>
+      <trans-unit id="deca7124166b9e48" resname="Tapez SUPPRIMER pour confirmer">
+        <source>Tapez SUPPRIMER pour confirmer</source>
+        <target>Tapez SUPPRIMER pour confirmer</target>
+      </trans-unit>
+      <trans-unit id="33e06b520a4868d8" resname="Ton avis aide les autres clients à choisir et les pros à s&apos;améliorer.">
+        <source>Ton avis aide les autres clients à choisir et les pros à s&apos;améliorer.</source>
+        <target>Ton avis aide les autres clients à choisir et les pros à s&apos;améliorer.</target>
+      </trans-unit>
+      <trans-unit id="02be5d9e0b2e331f" resname="Ton avis sur {establishment}">
+        <source>Ton avis sur {establishment}</source>
+        <target>Ton avis sur {establishment}</target>
+      </trans-unit>
+      <trans-unit id="0dcdcef318df5488" resname="Ton commentaire">
+        <source>Ton commentaire</source>
+        <target>Ton commentaire</target>
+      </trans-unit>
+      <trans-unit id="d0b7d6dfbf85e29a" resname="Ton prénom et l&apos;initiale de ton nom seront affichés avec ton avis. L&apos;établissement pourra y répondre.">
+        <source>Ton prénom et l&apos;initiale de ton nom seront affichés avec ton avis. L&apos;établissement pourra y répondre.</source>
+        <target>Ton prénom et l&apos;initiale de ton nom seront affichés avec ton avis. L&apos;établissement pourra y répondre.</target>
+      </trans-unit>
+      <trans-unit id="e9b30877a13adbf3" resname="Tout est lu.">
+        <source>Tout est lu.</source>
+        <target>Tout est lu.</target>
+      </trans-unit>
+      <trans-unit id="5047f41d9b1c3106" resname="Tout marquer comme lu">
+        <source>Tout marquer comme lu</source>
+        <target>Tout marquer comme lu</target>
+      </trans-unit>
+      <trans-unit id="ecca5f45eb3b1f16" resname="Tout voir">
+        <source>Tout voir</source>
+        <target>Tout voir</target>
+      </trans-unit>
+      <trans-unit id="c4a90eacd5348166" resname="Toutes catégories">
+        <source>Toutes catégories</source>
+        <target>Toutes catégories</target>
+      </trans-unit>
+      <trans-unit id="e92207923058c695" resname="Toutes les villes">
+        <source>Toutes les villes</source>
+        <target>Toutes les villes</target>
+      </trans-unit>
+      <trans-unit id="e98969ad5bedee4e" resname="Toutes mes réservations">
+        <source>Toutes mes réservations</source>
+        <target>Toutes mes réservations</target>
+      </trans-unit>
+      <trans-unit id="af6af21f081f8432" resname="Trouver un créneau">
+        <source>Trouver un créneau</source>
+        <target>Trouver un créneau</target>
+      </trans-unit>
+      <trans-unit id="8211251b322e1cf4" resname="Trouver un établissement">
+        <source>Trouver un établissement</source>
+        <target>Trouver un établissement</target>
+      </trans-unit>
+      <trans-unit id="a821a25246eb1f3e" resname="Tu n&apos;as pas encore d&apos;alerte. Crées-en une pour ne plus rater les créneaux libérés.">
+        <source>Tu n&apos;as pas encore d&apos;alerte. Crées-en une pour ne plus rater les créneaux libérés.</source>
+        <target>Tu n&apos;as pas encore d&apos;alerte. Crées-en une pour ne plus rater les créneaux libérés.</target>
+      </trans-unit>
+      <trans-unit id="85e8dc9b33897c31" resname="Tu n&apos;as pas encore donné d&apos;avis.">
+        <source>Tu n&apos;as pas encore donné d&apos;avis.</source>
+        <target>Tu n&apos;as pas encore donné d&apos;avis.</target>
+      </trans-unit>
+      <trans-unit id="64153211ecdab15c" resname="Télécharger mes données">
+        <source>Télécharger mes données</source>
+        <target>Télécharger mes données</target>
+      </trans-unit>
+      <trans-unit id="023f744680196891" resname="Téléchargez une copie de vos informations, de vos réservations et de vos alertes.">
+        <source>Téléchargez une copie de vos informations, de vos réservations et de vos alertes.</source>
+        <target>Téléchargez une copie de vos informations, de vos réservations et de vos alertes.</target>
+      </trans-unit>
+      <trans-unit id="42bb9d67a16f92a5" resname="Un avis aide les autres clients à choisir. Possible jusqu&apos;au {date}.">
+        <source>Un avis aide les autres clients à choisir. Possible jusqu&apos;au {date}.</source>
+        <target>Un avis aide les autres clients à choisir. Possible jusqu&apos;au {date}.</target>
+      </trans-unit>
+      <trans-unit id="db219d1e3e5e7559" resname="Un problème ?">
+        <source>Un problème ?</source>
+        <target>Un problème ?</target>
+      </trans-unit>
+      <trans-unit id="d54c4eb1ad23345c" resname="Un soucis avec un rendez-vous ? Prévenez-nous dans les {windowHours} h : l&apos;équipe {site} revient vers vous par e-mail.">
+        <source>Un soucis avec un rendez-vous ? Prévenez-nous dans les {windowHours} h : l&apos;équipe {site} revient vers vous par e-mail.</source>
+        <target>Un soucis avec un rendez-vous ? Prévenez-nous dans les {windowHours} h : l&apos;équipe {site} revient vers vous par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="6570c30bb898e872" resname="Voir l&apos;établissement">
+        <source>Voir l&apos;établissement</source>
+        <target>Voir l&apos;établissement</target>
+      </trans-unit>
+      <trans-unit id="014b88e44cd0a824" resname="Voir les créneaux libres">
+        <source>Voir les créneaux libres</source>
+        <target>Voir les créneaux libres</target>
+      </trans-unit>
+      <trans-unit id="9e5fc177da89e5c2" resname="Voir mes avis">
+        <source>Voir mes avis</source>
+        <target>Voir mes avis</target>
+      </trans-unit>
+      <trans-unit id="6f4386f44bb19c7a" resname="Vos réservations à venir seront annulées et vos données effacées. Cette action est définitive.">
+        <source>Vos réservations à venir seront annulées et vos données effacées. Cette action est définitive.</source>
+        <target>Vos réservations à venir seront annulées et vos données effacées. Cette action est définitive.</target>
+      </trans-unit>
+      <trans-unit id="204fbbab92cc5ab1" resname="Vos échanges avec l&apos;équipe {site}.">
+        <source>Vos échanges avec l&apos;équipe {site}.</source>
+        <target>Vos échanges avec l&apos;équipe {site}.</target>
+      </trans-unit>
+      <trans-unit id="4044559a4c1faaa8" resname="Votre message">
+        <source>Votre message</source>
+        <target>Votre message</target>
+      </trans-unit>
+      <trans-unit id="f7a6642972d13852" resname="Votre note">
+        <source>Votre note</source>
+        <target>Votre note</target>
+      </trans-unit>
+      <trans-unit id="fd368eb627e1ca45" resname="Vous n&apos;avez fait aucun signalement.">
+        <source>Vous n&apos;avez fait aucun signalement.</source>
+        <target>Vous n&apos;avez fait aucun signalement.</target>
+      </trans-unit>
+      <trans-unit id="66b6a6130350f574" resname="Vous ne suivez aucun établissement. Suivez vos adresses préférées depuis leur page pour être prévenu de leurs créneaux.">
+        <source>Vous ne suivez aucun établissement. Suivez vos adresses préférées depuis leur page pour être prévenu de leurs créneaux.</source>
+        <target>Vous ne suivez aucun établissement. Suivez vos adresses préférées depuis leur page pour être prévenu de leurs créneaux.</target>
+      </trans-unit>
+      <trans-unit id="05ef43df4ac51f2c" resname="Vous êtes prévenu dès qu&apos;ils publient un créneau.">
+        <source>Vous êtes prévenu dès qu&apos;ils publient un créneau.</source>
+        <target>Vous êtes prévenu dès qu&apos;ils publient un créneau.</target>
+      </trans-unit>
+      <trans-unit id="a1d6725f85005857" resname="avec {next}">
+        <source>avec {next}</source>
+        <target>avec {next}</target>
+      </trans-unit>
+      <trans-unit id="9caa0d21fa074b2f" resname="chez {establishmentName}">
+        <source>chez {establishmentName}</source>
+        <target>chez {establishmentName}</target>
+      </trans-unit>
+      <trans-unit id="711bc8049a5c467a" resname="entre {start} et {end}">
+        <source>entre {start} et {end}</source>
+        <target>entre {start} et {end}</target>
+      </trans-unit>
+      <trans-unit id="937be91cbd480566" resname="le {date} à {time}">
+        <source>le {date} à {time}</source>
+        <target>le {date} à {time}</target>
+      </trans-unit>
+      <trans-unit id="7cae4e4577b2c702" resname="toutes les villes">
+        <source>toutes les villes</source>
+        <target>toutes les villes</target>
+      </trans-unit>
+      <trans-unit id="8532316612c59d7b" resname="{count, plural, =0 {Rien pour l&apos;instant} one {# créneau libre} other {# créneaux libres}}">
+        <source>{count, plural, =0 {Rien pour l&apos;instant} one {# créneau libre} other {# créneaux libres}}</source>
+        <target>{count, plural, =0 {Rien pour l&apos;instant} one {# créneau libre} other {# créneaux libres}}</target>
+      </trans-unit>
+      <trans-unit id="a3818c5a165a94d5" resname="{count, plural, one {# message} other {# messages}} · dernier le {date} à {time}">
+        <source>{count, plural, one {# message} other {# messages}} · dernier le {date} à {time}</source>
+        <target>{count, plural, one {# message} other {# messages}} · dernier le {date} à {time}</target>
+      </trans-unit>
+      <trans-unit id="84a091fbffa10917" resname="{count, plural, one {# non lue} other {# non lues}}">
+        <source>{count, plural, one {# non lue} other {# non lues}}</source>
+        <target>{count, plural, one {# non lue} other {# non lues}}</target>
+      </trans-unit>
+      <trans-unit id="618a2b5bc3ce2fcc" resname="{count, plural, one {# réservation à venir maximum en même temps.} other {# réservations à venir maximum en même temps.}}">
+        <source>{count, plural, one {# réservation à venir maximum en même temps.} other {# réservations à venir maximum en même temps.}}</source>
+        <target>{count, plural, one {# réservation à venir maximum en même temps.} other {# réservations à venir maximum en même temps.}}</target>
+      </trans-unit>
+      <trans-unit id="518f0390139a45a9" resname="{count, plural, one {Au-delà de # absence non prévenue sur {window} jours, les réservations sont suspendues {suspension} jours.} other {Au-delà de # absences non prévenues sur {window} jours, les réservations sont suspendues {suspension} jours.}}">
+        <source>{count, plural, one {Au-delà de # absence non prévenue sur {window} jours, les réservations sont suspendues {suspension} jours.} other {Au-delà de # absences non prévenues sur {window} jours, les réservations sont suspendues {suspension} jours.}}</source>
+        <target>{count, plural, one {Au-delà de # absence non prévenue sur {window} jours, les réservations sont suspendues {suspension} jours.} other {Au-delà de # absences non prévenues sur {window} jours, les réservations sont suspendues {suspension} jours.}}</target>
+      </trans-unit>
+      <trans-unit id="1e9065c7c2e1715d" resname="{count, plural, one {Tu as atteint # alerte : supprime-la pour en créer une nouvelle.} other {Tu as atteint # alertes : supprimes-en une pour en créer une nouvelle.}}">
+        <source>{count, plural, one {Tu as atteint # alerte : supprime-la pour en créer une nouvelle.} other {Tu as atteint # alertes : supprimes-en une pour en créer une nouvelle.}}</source>
+        <target>{count, plural, one {Tu as atteint # alerte : supprime-la pour en créer une nouvelle.} other {Tu as atteint # alertes : supprimes-en une pour en créer une nouvelle.}}</target>
+      </trans-unit>
+      <trans-unit id="d46148a1c4359048" resname="{count, plural, one {Un e-mail et une notification dès qu&apos;un créneau se libère dans tes catégories, près de chez toi et aux heures qui t&apos;arrangent. Jusqu&apos;à # alerte.} other {Un e-mail et une notification dès qu&apos;un créneau se libère dans tes catégories, près de chez toi et aux heures qui t&apos;arrangent. Jusqu&apos;à # alertes.}}">
+        <source>{count, plural, one {Un e-mail et une notification dès qu&apos;un créneau se libère dans tes catégories, près de chez toi et aux heures qui t&apos;arrangent. Jusqu&apos;à # alerte.} other {Un e-mail et une notification dès qu&apos;un créneau se libère dans tes catégories, près de chez toi et aux heures qui t&apos;arrangent. Jusqu&apos;à # alertes.}}</source>
+        <target>{count, plural, one {Un e-mail et une notification dès qu&apos;un créneau se libère dans tes catégories, près de chez toi et aux heures qui t&apos;arrangent. Jusqu&apos;à # alerte.} other {Un e-mail et une notification dès qu&apos;un créneau se libère dans tes catégories, près de chez toi et aux heures qui t&apos;arrangent. Jusqu&apos;à # alertes.}}</target>
+      </trans-unit>
+      <trans-unit id="e936743f962a137d" resname="{price} € maximum">
+        <source>{price} € maximum</source>
+        <target>{price} € maximum</target>
+      </trans-unit>
+      <trans-unit id="d0416aa260be9c78" resname="{rating} sur 5 · {label}">
+        <source>{rating} sur 5 · {label}</source>
+        <target>{rating} sur 5 · {label}</target>
+      </trans-unit>
+      <trans-unit id="360ea0f6d091b268" resname="À noter">
+        <source>À noter</source>
+        <target>À noter</target>
+      </trans-unit>
+      <trans-unit id="50ff4859ec3d9de3" resname="À partir de">
+        <source>À partir de</source>
+        <target>À partir de</target>
+      </trans-unit>
+      <trans-unit id="df226e712bf50474" resname="Établissement fermé, prix différent, accueil refusé : dites-le nous dans les 48 h.">
+        <source>Établissement fermé, prix différent, accueil refusé : dites-le nous dans les 48 h.</source>
+        <target>Établissement fermé, prix différent, accueil refusé : dites-le nous dans les 48 h.</target>
+      </trans-unit>
+      <trans-unit id="3209b87f235bd6ba" resname="Établissements suivis">
+        <source>Établissements suivis</source>
+        <target>Établissements suivis</target>
+      </trans-unit>
+      <trans-unit id="752267f2359ce62a" resname="Établissements suivis · {site}">
+        <source>Établissements suivis · {site}</source>
+        <target>Établissements suivis · {site}</target>
+      </trans-unit>
+      <trans-unit id="797cda6794ed34b8" resname="à moins de {radius} km">
+        <source>à moins de {radius} km</source>
+        <target>à moins de {radius} km</target>
+      </trans-unit>
+      <trans-unit id="a48ddf7524c14e06" resname="à régler sur place">
+        <source>à régler sur place</source>
+        <target>à régler sur place</target>
+      </trans-unit>
+      <trans-unit id="d373defa48027c18" resname="← Mes avis">
+        <source>← Mes avis</source>
+        <target>← Mes avis</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
