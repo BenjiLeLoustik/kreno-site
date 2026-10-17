@@ -59,6 +59,7 @@ class ReviewPresenter
                 'establishment' => $review->getEstablishment()?->getName(),
                 'customerEmail' => $review->getCustomer()?->getEmail(),
                 'statusLabel' => $review->getStatus()->label(),
+                'tone' => $review->getStatus()->tone(),
                 'reportedAt' => DateHelper::iso($review->getReportedAt()),
                 'reportedBy' => $this->name($review->getReportedBy()),
                 'moderatedAt' => DateHelper::iso($review->getModeratedAt()),

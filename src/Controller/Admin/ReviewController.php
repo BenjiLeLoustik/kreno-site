@@ -33,6 +33,17 @@ class ReviewController extends AbstractAdminController
         ));
     }
 
+    #[Route('/admin/reviews/{id}', name: 'admin_review_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function show(Request $request, int $id): Response
+    {
+        $this->currentAdmin(UserRole::MODERATOR);
+
+        return $this->render('admin/review/index.html.twig', $this->pages->index(
+            ReviewRequestMapper::adminFilter($request),
+            $this->pages->review($id),
+        ));
+    }
+
     #[Csrf('admin_review')]
     #[Route('/admin/reviews/{id}/hide', name: 'admin_review_hide', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function hide(
@@ -50,7 +61,7 @@ class ReviewController extends AbstractAdminController
             );
         }
 
-        return $this->redirectToRoute('admin_reviews', ReviewRequestMapper::adminReturn($request));
+        return $this->redirectToRoute('admin_review_show', ReviewRequestMapper::adminReturn($request, $id));
     }
 
     #[Csrf('admin_review')]
@@ -66,6 +77,6 @@ class ReviewController extends AbstractAdminController
         $review = $this->pages->review($id);
         $this->attempt(fn () => $this->moderation->publish($review, $admin), ReviewFlash::PUBLISHED->text());
 
-        return $this->redirectToRoute('admin_reviews', ReviewRequestMapper::adminReturn($request));
+        return $this->redirectToRoute('admin_review_show', ReviewRequestMapper::adminReturn($request, $id));
     }
 }

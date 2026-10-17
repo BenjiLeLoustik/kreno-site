@@ -23,9 +23,18 @@ enum ReviewStatus: string
         return $this !== self::HIDDEN;
     }
 
+    public function tone(): string
+    {
+        return match ($this) {
+            self::PUBLISHED => 'success',
+            self::REPORTED => 'warning',
+            self::HIDDEN => 'danger',
+        };
+    }
+
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PUBLISHED => 'Publié',
             self::REPORTED => 'Signalé',
             self::HIDDEN => 'Masqué',
@@ -34,7 +43,7 @@ enum ReviewStatus: string
 
     public function proLabel(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PUBLISHED => 'En ligne',
             self::REPORTED => 'En cours d\'examen',
             self::HIDDEN => 'Masqué par l\'équipe',

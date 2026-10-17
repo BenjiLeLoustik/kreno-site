@@ -29,8 +29,8 @@ class ReviewRequestMapper
         return ['tab' => $tab->value];
     }
 
-    public static function adminReturn(Request $request): array
+    public static function adminReturn(Request $request, int $id): array
     {
-        return ['status' => AdminReviewFilter::of($request->request->getString('status'))->value];
+        return ['id' => $id, 'status' => AdminReviewFilter::of($request->request->getString('status'))->value];
     }
 }

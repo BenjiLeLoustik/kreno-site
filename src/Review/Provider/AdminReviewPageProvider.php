@@ -19,7 +19,7 @@ class AdminReviewPageProvider
     ) {
     }
 
-    public function index(AdminReviewFilter $filter): array
+    public function index(AdminReviewFilter $filter, ?EstablishmentReview $selected = null): array
     {
         $items = $this->reviews->findForAdmin($filter->statuses(), self::LIMIT);
 
@@ -27,6 +27,7 @@ class AdminReviewPageProvider
             'filter' => $filter->value,
             'filters' => $this->filters($filter),
             'rows' => $this->presenter->adminList($items),
+            'selected' => $this->detail($selected ?? $items[0] ?? null),
         ];
     }
 
@@ -39,6 +40,15 @@ class AdminReviewPageProvider
         }
 
         return $review;
+    }
+
+    private function detail(?EstablishmentReview $review): ?array
+    {
+        if ($review === null) {
+            return null;
+        }
+
+        return $this->presenter->forAdmin($review);
     }
 
     private function filters(AdminReviewFilter $selected): array
