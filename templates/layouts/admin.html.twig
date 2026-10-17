@@ -33,7 +33,7 @@
                     {% include 'components/side_footer_user.html.twig' with {
                         initials: (user.firstName|first ~ user.lastName|first)|upper,
                         name: user.firstName ~ ' ' ~ user.lastName|first ~ '.',
-                        role: 'Administration',
+                        role: admin_role(),
                     } only %}
                 {% endif %}
                 {% include 'components/locale_switcher.html.twig' with { variant: 'side' } only %}
