@@ -2070,6 +2070,170 @@
         <source>← Signalements</source>
         <target>← Signalements</target>
       </trans-unit>
+      <trans-unit id="4b42c6690ebeb867" resname="Administration">
+        <source>Administration</source>
+        <target>Administration</target>
+      </trans-unit>
+      <trans-unit id="2e3054e12ff491c6" resname="Aide">
+        <source>Aide</source>
+        <target>Aide</target>
+      </trans-unit>
+      <trans-unit id="5f6ffd97c3fcda79" resname="Aide et contact">
+        <source>Aide et contact</source>
+        <target>Aide et contact</target>
+      </trans-unit>
+      <trans-unit id="8d9da7236f50df9d" resname="Alertes dès qu&apos;un créneau se libère près de chez toi">
+        <source>Alertes dès qu&apos;un créneau se libère près de chez toi</source>
+        <target>Alertes dès qu&apos;un créneau se libère près de chez toi</target>
+      </trans-unit>
+      <trans-unit id="21e022b6805c3040" resname="CGU">
+        <source>CGU</source>
+        <target>CGU</target>
+      </trans-unit>
+      <trans-unit id="4b151208bce659bb" resname="Catégories">
+        <source>Catégories</source>
+        <target>Catégories</target>
+      </trans-unit>
+      <trans-unit id="7a35caf2252fd2ae" resname="Changer">
+        <source>Changer</source>
+        <target>Changer</target>
+      </trans-unit>
+      <trans-unit id="f19bb4113dafe7cf" resname="Confidentialité">
+        <source>Confidentialité</source>
+        <target>Confidentialité</target>
+      </trans-unit>
+      <trans-unit id="ab27f66819fac6a1" resname="Connexion pro">
+        <source>Connexion pro</source>
+        <target>Connexion pro</target>
+      </trans-unit>
+      <trans-unit id="a628af9809b4b8c2" resname="Créer un compte">
+        <source>Créer un compte</source>
+        <target>Créer un compte</target>
+      </trans-unit>
+      <trans-unit id="fb5f9e92c1ae57fb" resname="Déconnexion">
+        <source>Déconnexion</source>
+        <target>Déconnexion</target>
+      </trans-unit>
+      <trans-unit id="33dba28346100a4f" resname="Déjà inscrit ? {open}Se connecter{close}">
+        <source>Déjà inscrit ? {open}Se connecter{close}</source>
+        <target>Déjà inscrit ? {open}Se connecter{close}</target>
+      </trans-unit>
+      <trans-unit id="813572b42f034d57" resname="Environ 5 minutes. Vos réponses sont enregistrées à chaque étape.">
+        <source>Environ 5 minutes. Vos réponses sont enregistrées à chaque étape.</source>
+        <target>Environ 5 minutes. Vos réponses sont enregistrées à chaque étape.</target>
+      </trans-unit>
+      <trans-unit id="b764a17b5bf6e809" resname="Espace pro">
+        <source>Espace pro</source>
+        <target>Espace pro</target>
+      </trans-unit>
+      <trans-unit id="a42f29622e5918d6" resname="Espace pro · {site}">
+        <source>Espace pro · {site}</source>
+        <target>Espace pro · {site}</target>
+      </trans-unit>
+      <trans-unit id="e296aa82fe1da3ab" resname="Espace pro, tableau de bord">
+        <source>Espace pro, tableau de bord</source>
+        <target>Espace pro, tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="849469dcdf9b3804" resname="Informations légales">
+        <source>Informations légales</source>
+        <target>Informations légales</target>
+      </trans-unit>
+      <trans-unit id="b0e8e74b8a1cfd04" resname="Inscription · Espace pro">
+        <source>Inscription · Espace pro</source>
+        <target>Inscription · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="30fd1eb88dd649d2" resname="Jusqu&apos;à -50 % sur les rendez-vous annulés">
+        <source>Jusqu&apos;à -50 % sur les rendez-vous annulés</source>
+        <target>Jusqu&apos;à -50 % sur les rendez-vous annulés</target>
+      </trans-unit>
+      <trans-unit id="dc4968a27a1f8134" resname="Kréno, administration">
+        <source>Kréno, administration</source>
+        <target>Kréno, administration</target>
+      </trans-unit>
+      <trans-unit id="9b62e668b89e2f6b" resname="Le bon moment, {open}au bon prix.{close}">
+        <source>Le bon moment, {open}au bon prix.{close}</source>
+        <target>Le bon moment, {open}au bon prix.{close}</target>
+      </trans-unit>
+      <trans-unit id="e83a22fb2dc94f3c" resname="Pour les pros">
+        <source>Pour les pros</source>
+        <target>Pour les pros</target>
+      </trans-unit>
+      <trans-unit id="734c8fbc8e38829a" resname="Professionnels">
+        <source>Professionnels</source>
+        <target>Professionnels</target>
+      </trans-unit>
+      <trans-unit id="d49dbef4d9086119" resname="Pros">
+        <source>Pros</source>
+        <target>Pros</target>
+      </trans-unit>
+      <trans-unit id="a301cbe533ab0b7b" resname="Réservation en deux clics, paiement sur place">
+        <source>Réservation en deux clics, paiement sur place</source>
+        <target>Réservation en deux clics, paiement sur place</target>
+      </trans-unit>
+      <trans-unit id="a7af23f885a1cf2a" resname="Sans engagement">
+        <source>Sans engagement</source>
+        <target>Sans engagement</target>
+      </trans-unit>
+      <trans-unit id="b18aeed1a806af34" resname="Se déconnecter">
+        <source>Se déconnecter</source>
+        <target>Se déconnecter</target>
+      </trans-unit>
+      <trans-unit id="f920a4dcc296a685" resname="Tous les créneaux">
+        <source>Tous les créneaux</source>
+        <target>Tous les créneaux</target>
+      </trans-unit>
+      <trans-unit id="eada4e25cde1f52e" resname="Une question ? {contactEmail}">
+        <source>Une question ? {contactEmail}</source>
+        <target>Une question ? {contactEmail}</target>
+      </trans-unit>
+      <trans-unit id="09f67e20ee090416" resname="Villes">
+        <source>Villes</source>
+        <target>Villes</target>
+      </trans-unit>
+      <trans-unit id="749217c2a9d56469" resname="Voir le site">
+        <source>Voir le site</source>
+        <target>Voir le site</target>
+      </trans-unit>
+      <trans-unit id="bc828dd40d96edbf" resname="Vous changez de formule quand vous voulez, depuis votre espace.">
+        <source>Vous changez de formule quand vous voulez, depuis votre espace.</source>
+        <target>Vous changez de formule quand vous voulez, depuis votre espace.</target>
+      </trans-unit>
+      <trans-unit id="8209c054824271ec" resname="Vous êtes un pro ? Rejoindre {site}">
+        <source>Vous êtes un pro ? Rejoindre {site}</source>
+        <target>Vous êtes un pro ? Rejoindre {site}</target>
+      </trans-unit>
+      <trans-unit id="c8cf99b82897b069" resname="Vous êtes un professionnel ?">
+        <source>Vous êtes un professionnel ?</source>
+        <target>Vous êtes un professionnel ?</target>
+      </trans-unit>
+      <trans-unit id="a488ed98fe027a0a" resname="{contextName} est « {contextStatus} » : vos créneaux ne sont pas encore visibles des clients.">
+        <source>{contextName} est « {contextStatus} » : vos créneaux ne sont pas encore visibles des clients.</source>
+        <target>{contextName} est « {contextStatus} » : vos créneaux ne sont pas encore visibles des clients.</target>
+      </trans-unit>
+      <trans-unit id="1e4e4309f1106161" resname="{site} Pro, accueil">
+        <source>{site} Pro, accueil</source>
+        <target>{site} Pro, accueil</target>
+      </trans-unit>
+      <trans-unit id="b26031f7ba7313de" resname="{site}, accueil">
+        <source>{site}, accueil</source>
+        <target>{site}, accueil</target>
+      </trans-unit>
+      <trans-unit id="782899a1f1383996" resname="© {now} {site} · Fait à Lyon">
+        <source>© {now} {site} · Fait à Lyon</source>
+        <target>© {now} {site} · Fait à Lyon</target>
+      </trans-unit>
+      <trans-unit id="b59d622592223026" resname="Étape {signupNumber} sur {signupTotal}">
+        <source>Étape {signupNumber} sur {signupTotal}</source>
+        <target>Étape {signupNumber} sur {signupTotal}</target>
+      </trans-unit>
+      <trans-unit id="d91b75530c36fefb" resname="Étapes de l&apos;inscription">
+        <source>Étapes de l&apos;inscription</source>
+        <target>Étapes de l&apos;inscription</target>
+      </trans-unit>
+      <trans-unit id="7528237c45ae348c" resname="← Retour à la connexion pro">
+        <source>← Retour à la connexion pro</source>
+        <target>← Retour à la connexion pro</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -12,12 +12,19 @@
 
     <div class="admin">
         <aside class="admin-side">
-            <a href="{{ path('admin_dashboard') }}" class="admin-side__brand" aria-label="Kréno, administration">
-                {% include 'components/logo.html.twig' with { size: 0, light: true, badge: 'admin' } %}
+            <a href="{{ path('admin_dashboard') }}" class="admin-side__brand" aria-label="{{ translate('Kréno, administration') }}">
+                {% include 'components/logo.html.twig' with {
+                    size: 0,
+                    light: true,
+                    badge: 'admin'
+                } %}
             </a>
 
             <span class="admin-side__toggle">
-                {% include 'components/menu_toggle.html.twig' with { target: 'admin-panel', variant: 'dark' } only %}
+                {% include 'components/menu_toggle.html.twig' with {
+                    target: 'admin-panel',
+                    variant: 'dark'
+                } only %}
             </span>
 
             <div id="admin-panel" class="admin-side__panel">
@@ -47,15 +54,20 @@
                             role: admin_role(),
                         } only %}
                     {% endif %}
-                    {% include 'components/locale_switcher.html.twig' with { variant: 'side' } only %}
+
+                    {% include 'components/locale_switcher.html.twig' with {
+                        variant: 'side'
+                    } only %}
+
                     <a href="{{ path('home_index') }}" class="side-footer__action">
                         <i data-lucide="external-link" class="side-footer__icon"></i>
-                        Voir le site
+                        {{ translate('Voir le site') }}
                     </a>
+
                     <form method="post" action="{{ logout_path() }}" class="side-footer__form">
                         <button type="submit" class="side-footer__action side-footer__action--danger">
                             <i data-lucide="log-out" class="side-footer__icon"></i>
-                            Déconnexion
+                            {{ translate('Déconnexion') }}
                         </button>
                     </form>
                 </div>

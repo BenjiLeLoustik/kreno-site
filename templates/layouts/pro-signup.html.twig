@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html.twig' %}
 
 {% block title %}
-    Inscription · Espace pro
+    {{ translate('Inscription · Espace pro') }}
 {% endblock %}
 
 {% block body_class %}layout-signup{% endblock %}
@@ -14,22 +14,30 @@
     {% set site = website() %}
     <div class="signup">
         <aside class="signup-side">
-            <a href="{{ path('pro_landing') }}" class="signup-side__brand" aria-label="{{ site.siteName }} Pro, accueil">
-                {% include 'components/logo.html.twig' with { size: 34, light: true, badge: 'pro' } %}
+            <a href="{{ path('pro_landing') }}" class="signup-side__brand" aria-label="{{ translate('{site} Pro, accueil', {site: site.siteName}) }}">
+                {% include 'components/logo.html.twig' with {
+                    size: 34,
+                    light: true,
+                    badge: 'pro'
+                } %}
             </a>
             <div class="signup-side__intro">
                 <h2 class="signup-side__title">
-                    Créer mon espace pro
+                    {{ translate('Créer mon espace pro') }}
                 </h2>
                 <span class="signup-side__lead">
-                    Environ 5 minutes. Vos réponses sont enregistrées à chaque étape.
+                    {{ translate('Environ 5 minutes. Vos réponses sont enregistrées à chaque étape.') }}
                 </span>
             </div>
-            <ol class="signup-steps" aria-label="Étapes de l'inscription">
+            <ol class="signup-steps" aria-label="{{ translate('Étapes de l\'inscription') }}">
                 {% for item in signup.steps %}
                     <li class="signup-steps__item signup-steps__item--{{ item.state }}"{{ item.state == 'current' ? ' aria-current="step"' : '' }}>
                         <span class="signup-steps__mark" aria-hidden="true">
-                            {{ item.state == 'done' ? '✓' : item.number }}
+                            {% if item.state == 'done' %}
+                                ✓
+                            {% else %}
+                                {{ item.number }}
+                            {% endif %}
                         </span>
                         <span class="signup-steps__text">
                             {% if item.reachable and item.state != 'current' %}
@@ -49,13 +57,15 @@
                 {% endfor %}
             </ol>
             <div class="signup-side__note">
-                <b>Sans engagement</b>
+                <b>
+                    {{ translate('Sans engagement') }}
+                </b>
                 <span class="signup-side__note-text">
-                    Vous changez de formule quand vous voulez, depuis votre espace.
+                    {{ translate('Vous changez de formule quand vous voulez, depuis votre espace.') }}
                 </span>
                 {% if site.contactEmail %}
                     <span class="signup-side__contact">
-                        Une question ? {{ site.contactEmail }}
+                        {{ translate('Une question ? {contactEmail}', {contactEmail: site.contactEmail}) }}
                     </span>
                 {% endif %}
             </div>
@@ -66,23 +76,26 @@
                 <div class="signup-top">
                     <span class="signup-top__step">
                         {% if signup.step == 'pending' %}
-                            Inscription envoyée
+                            {{ translate('Inscription envoyée') }}
                         {% else %}
-                            Étape {{ signup.number }} sur {{ signup.total }}
+                            {{ translate('Étape {signupNumber} sur {signupTotal}', {
+                                signupNumber: signup.number,
+                                signupTotal: signup.total
+                            }) }}
                         {% endif %}
                     </span>
                     {% if signup.loggedIn %}
                         <form method="post" action="{{ logout_path() }}">
                             <button type="submit" class="signup-top__logout">
-                                Se déconnecter
+                                {{ translate('Se déconnecter') }}
                             </button>
                         </form>
                     {% else %}
                         <span class="signup-top__login">
-                            Déjà inscrit ?
-                            <a href="{{ path('pro_login') }}" class="signup-top__link">
-                                Se connecter
-                            </a>
+                            {{ translate('Déjà inscrit ? {open}Se connecter{close}', {
+                                open: '<a href="' ~ path('pro_login')|e('html_attr') ~ '" class="signup-top__link">',
+                                close: '</a>'
+                            })|raw }}
                         </span>
                     {% endif %}
                 </div>

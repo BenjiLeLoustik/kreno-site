@@ -5,8 +5,12 @@
 {% block body %}
     {% set site = website() %}
     <div class="pro-login">
-        <a href="{{ path('pro_landing') }}" class="pro-login__brand" aria-label="{{ site.siteName }} Pro, accueil">
-            {% include 'components/logo.html.twig' with { size: 0, light: true, badge: 'pro' } %}
+        <a href="{{ path('pro_landing') }}" class="pro-login__brand" aria-label="{{ translate('{site} Pro, accueil', {site: site.siteName}) }}">
+            {% include 'components/logo.html.twig' with {
+                size: 0,
+                light: true,
+                badge: 'pro'
+            } %}
         </a>
 
         <div class="pro-login__card form">
@@ -31,7 +35,7 @@
         </div>
 
         <a href="{{ path('pro_login') }}" class="pro-login__switch">
-            ← Retour à la connexion pro
+            {{ translate('← Retour à la connexion pro') }}
         </a>
     </div>
 {% endblock %}

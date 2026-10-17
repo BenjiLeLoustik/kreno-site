@@ -4,7 +4,7 @@
 {% set hasSwitch = context.establishments|length > 1 %}
 
 {% block title %}
-    Espace pro · {{ website().siteName }}
+    {{ translate('Espace pro · {site}', {site: website().siteName}) }}
 {% endblock %}
 
 {% block body_class %}layout-pro{% endblock %}
@@ -16,8 +16,12 @@
 {% block body %}
     <div class="pro">
         <aside class="pro-side{{ hasSwitch ? ' pro-side--switch' : '' }}">
-            <a href="{{ path('pro_dashboard') }}" class="pro-side__brand" aria-label="Espace pro, tableau de bord">
-                {% include 'components/logo.html.twig' with { size: 0, light: true, badge: 'pro' } %}
+            <a href="{{ path('pro_dashboard') }}" class="pro-side__brand" aria-label="{{ translate('Espace pro, tableau de bord') }}">
+                {% include 'components/logo.html.twig' with {
+                    size: 0,
+                    light: true,
+                    badge: 'pro'
+                } %}
             </a>
 
             {% if hasSwitch %}
@@ -25,7 +29,7 @@
                     {{ csrf_field('pro')|raw }}
                     <input type="hidden" name="_target" value="" data-pro-switch-target>
                     <label class="pro-switch__label" for="pro-switch">
-                        Établissement
+                        {{ translate('Établissement') }}
                     </label>
                     <select id="pro-switch" class="pro-switch__select" data-pro-switch-select>
                         {% for establishment in context.establishments %}
@@ -35,17 +39,20 @@
                         {% endfor %}
                     </select>
                     <button type="submit" class="pro-switch__apply" data-pro-apply>
-                        Changer
+                        {{ translate('Changer') }}
                     </button>
                 </form>
             {% endif %}
 
             <span class="pro-side__toggle">
-                {% include 'components/menu_toggle.html.twig' with { target: 'pro-panel', variant: 'dark' } only %}
+                {% include 'components/menu_toggle.html.twig' with {
+                    target: 'pro-panel',
+                    variant: 'dark'
+                } only %}
             </span>
 
             <div id="pro-panel" class="pro-side__panel">
-                <nav class="pro-nav" aria-label="Espace pro">
+                <nav class="pro-nav" aria-label="{{ translate('Espace pro') }}">
                     {% for item in context.nav|filter(item => route_exists(item.route)) %}
                         <a href="{{ path(item.route) }}" class="pro-nav__link{{ item.key == section ? ' pro-nav__link--active' : '' }}"{{ item.key == section ? ' aria-current="page"' : '' }}>
                             <i data-lucide="{{ item.icon }}" class="pro-nav__icon"></i>
@@ -65,7 +72,7 @@
                             <b>{{ context.current.name }}</b>
                             {% if context.current.online and context.current.city %}
                                 <a href="{{ path('shop_show', { city: context.current.city, slug: context.current.slug }) }}" class="pro-side__shop-link" target="_blank" rel="noopener">
-                                    Voir ma page publique
+                                    {{ translate('Voir ma page publique') }}
                                 </a>
                             {% else %}
                                 <span class="pro-side__shop-status">
@@ -80,11 +87,15 @@
                             name: context.user.name,
                             role: context.user.roleLabel,
                         } only %}
-                        {% include 'components/locale_switcher.html.twig' with { variant: 'side' } only %}
+
+                        {% include 'components/locale_switcher.html.twig' with {
+                            variant: 'side'
+                        } only %}
+
                         <form method="post" action="{{ logout_path() }}" class="side-footer__form">
                             <button type="submit" class="side-footer__action side-footer__action--danger">
                                 <i data-lucide="log-out" class="side-footer__icon"></i>
-                                Déconnexion
+                                {{ translate('Déconnexion') }}
                             </button>
                         </form>
                     </div>
@@ -96,7 +107,7 @@
             {% if context.current and not context.current.online %}
                 <div class="pro-banner">
                     <i data-lucide="info" class="pro-nav__icon"></i>
-                    {{ context.current.name }} est « {{ context.current.statusLabel|lower }} » : vos créneaux ne sont pas encore visibles des clients.
+                    {{ translate('{contextName} est « {contextStatus} » : vos créneaux ne sont pas encore visibles des clients.') }}
                 </div>
             {% endif %}
 

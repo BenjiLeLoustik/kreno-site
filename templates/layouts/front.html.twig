@@ -9,30 +9,32 @@
 
     <header class="site-header {% block header_class %}{% endblock %}">
         <div class="site-header__inner">
-            <a href="{{ path('home_index') }}" class="site-header__brand" aria-label="{{ site.siteName }}, accueil">
+            <a href="{{ path('home_index') }}" class="site-header__brand" aria-label="{{ translate('{site}, accueil', {site: site.siteName}) }}">
                 {% include 'components/logo.html.twig' %}
             </a>
             <span class="site-header__toggle">
-                {% include 'components/menu_toggle.html.twig' with { target: 'site-nav' } only %}
+                {% include 'components/menu_toggle.html.twig' with {
+                    target: 'site-nav'
+                } only %}
             </span>
             <nav id="site-nav" class="site-header__nav" aria-label="Navigation principale">
                 <a href="{{ path('page_how_it_works') }}" class="site-header__link">
-                    Comment ça marche
+                    {{ translate('Comment ça marche') }}
                 </a>
                 <a href="{{ path('pro_landing') }}" class="site-header__link">
-                    Pour les pros
+                    {{ translate('Pour les pros') }}
                 </a>
                 {% if user %}
                     <a href="{{ path('account_index') }}" class="site-header__link">
-                        Mon compte
+                        {{ translate('Mon compte') }}
                     </a>
                 {% else %}
                     <a href="{{ path('app_login') }}" class="site-header__link">
-                        Se connecter
+                        {{ translate('Se connecter') }}
                     </a>
                 {% endif %}
                 <a href="{{ path('pro_slot_new') }}" class="btn btn--outline site-header__cta">
-                    Publier un créneau
+                    {{ translate('Publier un créneau') }}
                 </a>
             </nav>
         </div>
@@ -54,49 +56,55 @@
         <div class="site-footer__grid">
             <div class="site-footer__intro">
                 <a href="{{ path('home_index') }}" class="site-footer__brand" aria-label="{{ site.siteName }}, accueil">
-                    {% include 'components/logo.html.twig' with { size: 34 } %}
+                    {% include 'components/logo.html.twig' with {
+                        size: 34
+                    } %}
                 </a>
-                <p class="site-footer__pitch">{{ site.siteDescription }}</p>
+                <p class="site-footer__pitch">
+                    {{ site.siteDescription }}
+                </p>
                 <a href="{{ path('pro_landing') }}" class="btn btn--outline btn--small">
-                    Vous êtes un pro ? Rejoindre {{ site.siteName }}
+                    {{ translate('Vous êtes un pro ? Rejoindre {site}', {site: site.siteName}) }}
                 </a>
             </div>
 
             <nav class="site-footer__column" aria-label="{{ site.siteName }}">
                 <b class="site-footer__title">{{ site.siteName }}</b>
                 <a href="{{ path('page_how_it_works') }}" class="site-footer__link">
-                    Comment ça marche
+                    {{ translate('Comment ça marche') }}
                 </a>
                 <a href="{{ path('search_index') }}" class="site-footer__link">
-                    Tous les créneaux
+                    {{ translate('Tous les créneaux') }}
                 </a>
                 <a href="{{ path('app_signup') }}" class="site-footer__link">
-                    Créer un compte
+                    {{ translate('Créer un compte') }}
                 </a>
                 <a href="{{ path('page_help') }}" class="site-footer__link">
-                    Aide et contact
+                    {{ translate('Aide et contact') }}
                 </a>
             </nav>
 
-            <nav class="site-footer__column" aria-label="Professionnels">
-                <b class="site-footer__title">Pros</b>
+            <nav class="site-footer__column" aria-label="{{ translate('Professionnels') }}">
+                <b class="site-footer__title">
+                    {{ translate('Pros') }}
+                </b>
                 <a href="{{ path('pro_landing') }}" class="site-footer__link">
-                    Pour les pros
+                    {{ translate('Pour les pros') }}
                 </a>
                 <a href="{{ path('pro_landing') }}#tarifs" class="site-footer__link">
-                    Tarifs
+                    {{ translate('Tarifs') }}
                 </a>
                 <a href="{{ path('pro_signup') }}" class="site-footer__link">
-                    Créer mon espace pro
+                    {{ translate('Créer mon espace pro') }}
                 </a>
                 <a href="{{ path('pro_login') }}" class="site-footer__link">
-                    Connexion pro
+                    {{ translate('Connexion pro') }}
                 </a>
             </nav>
 
-            <nav class="site-footer__column" aria-label="Catégories">
+            <nav class="site-footer__column" aria-label="{{ translate('Catégories') }}">
                 <b class="site-footer__title">
-                    Catégories
+                    {{ translate('Catégories') }}
                 </b>
                 {% for category in nav.categories|slice(0, 6) %}
                     <a href="{{ path('category_show', { slug: category.slug }) }}" class="site-footer__link">
@@ -105,9 +113,9 @@
                 {% endfor %}
             </nav>
 
-            <nav class="site-footer__column" aria-label="Villes">
+            <nav class="site-footer__column" aria-label="{{ translate('Villes') }}">
                 <b class="site-footer__title">
-                    Villes
+                    {{ translate('Villes') }}
                 </b>
                 {% for city in nav.cities|slice(0, 6) %}
                     <a href="{{ path('city_show', { slug: city.slug }) }}" class="site-footer__link">
@@ -119,26 +127,33 @@
 
         <div class="site-footer__bottom">
             <span>
-                © {{ 'now'|date('Y') }} {{ site.siteName }} · Fait à Lyon
+                {{ translate('© {now} {site} · Fait à Lyon', {
+                    now: 'now'|date('Y'),
+                    site: site.siteName
+                }) }}
                 {% if site.contactEmail %} ·
-                    <a href="mailto:{{ site.contactEmail }}">{{ site.contactEmail }}</a>
+                    <a href="mailto:{{ site.contactEmail }}">
+                        {{ site.contactEmail }}
+                    </a>
                 {% endif %}
             </span>
-            <nav class="site-footer__legal" aria-label="Informations légales">
+            <nav class="site-footer__legal" aria-label="{{ translate('Informations légales') }}">
                 <a href="{{ path('page_legal', { document: 'mentions' }) }}">
-                    Mentions légales
+                    {{ translate('Mentions légales') }}
                 </a>
                 <a href="{{ path('page_legal', { document: 'cgu' }) }}">
-                    CGU
+                    {{ translate('CGU') }}
                 </a>
                 <a href="{{ path('page_legal', { document: 'privacy' }) }}">
-                    Confidentialité
+                    {{ translate('Confidentialité') }}
                 </a>
                 <a href="{{ path('page_legal', { document: 'cgv' }) }}">
-                    Conditions pros
+                    {{ translate('Conditions pros') }}
                 </a>
             </nav>
-            {% include 'components/locale_switcher.html.twig' with { variant: 'light' } only %}
+            {% include 'components/locale_switcher.html.twig' with {
+                variant: 'light'
+            } only %}
         </div>
     </footer>
 {% endblock %}

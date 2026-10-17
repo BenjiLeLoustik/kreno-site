@@ -11,13 +11,19 @@
             <button type="button" class="account-side__toggle" aria-controls="account-nav" aria-expanded="false" data-toggle="account-nav">
                 <i data-lucide="{{ currentItem ? currentItem.icon : 'user' }}" class="account-nav__icon"></i>
                 <span class="account-side__current">
-                    {{ currentItem ? currentItem.label : 'Mon compte' }}
+                    {% if currentItem %}
+                        {{ currentItem.label }}
+                    {% else %}
+                        {{ translate('Mon compte') }}
+                    {% endif %}
                 </span>
                 <i data-lucide="chevron-down" class="account-side__chevron"></i>
             </button>
 
-            <nav id="account-nav" class="account-nav" aria-label="Mon compte">
-                <span class="account-nav__title">Mon compte</span>
+            <nav id="account-nav" class="account-nav" aria-label="{{ translate('Mon compte') }}">
+                <span class="account-nav__title">
+                    {{ translate('Mon compte') }}
+                </span>
                 {% for item in items %}
                     {% set current = item.key == account_section|default('') %}
                     <a href="{{ path(item.route) }}" class="account-nav__link{{ current ? ' account-nav__link--active' : '' }}"{{ current ? ' aria-current="page"' : '' }}>
@@ -41,7 +47,7 @@
                         <a href="{{ path('pro_dashboard') }}" class="account-nav__link account-nav__link--space">
                             <i data-lucide="briefcase" class="account-nav__icon"></i>
                             <span class="account-nav__label">
-                                Mon espace pro
+                                {{ translate('Mon espace pro') }}
                             </span>
                             <i data-lucide="arrow-up-right" class="account-nav__icon account-nav__icon--end"></i>
                         </a>
@@ -50,7 +56,7 @@
                         <a href="{{ path('admin_dashboard') }}" class="account-nav__link account-nav__link--space">
                             <i data-lucide="shield-check" class="account-nav__icon"></i>
                             <span class="account-nav__label">
-                                Administration
+                                {{ translate('Administration') }}
                             </span>
                             <i data-lucide="arrow-up-right" class="account-nav__icon account-nav__icon--end"></i>
                         </a>
@@ -59,13 +65,15 @@
                 <span class="account-nav__separator" aria-hidden="true"></span>
                 <a href="{{ path('page_help') }}" class="account-nav__link">
                     <i data-lucide="life-buoy" class="account-nav__icon"></i>
-                    <span class="account-nav__label">Aide</span>
+                    <span class="account-nav__label">
+                        {{ translate('Aide') }}
+                    </span>
                 </a>
                 <form method="post" action="{{ logout_path() }}" class="account-nav__logout">
                     <button type="submit" class="account-nav__link account-nav__link--danger">
                         <i data-lucide="log-out" class="account-nav__icon"></i>
                         <span class="account-nav__label">
-                            Se déconnecter
+                            {{ translate('Se déconnecter') }}
                         </span>
                     </button>
                 </form>

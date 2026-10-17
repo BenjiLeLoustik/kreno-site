@@ -11,30 +11,30 @@
             </a>
             <div class="login-side__pitch">
                 <h2 class="login-side__title">
-                    Le bon moment,
-                    <span class="login-side__accent">
-                        au bon prix.
-                    </span>
+                    {{ translate('Le bon moment, {open}au bon prix.{close}', {
+                        open: '<span class="login-side__accent">',
+                        close: '</span>'
+                    })|raw }}
                 </h2>
                 <ul class="auth-perks">
                     <li class="auth-perks__item">
                         <i data-lucide="bell-ring" class="auth-perks__icon"></i>
-                        Alertes dès qu'un créneau se libère près de chez toi
+                        {{ translate('Alertes dès qu\'un créneau se libère près de chez toi') }}
                     </li>
                     <li class="auth-perks__item">
                         <i data-lucide="badge-percent" class="auth-perks__icon"></i>
-                        Jusqu'à -50 % sur les rendez-vous annulés
+                        {{ translate('Jusqu\'à -50 % sur les rendez-vous annulés') }}
                     </li>
                     <li class="auth-perks__item">
                         <i data-lucide="wallet" class="auth-perks__icon"></i>
-                        Réservation en deux clics, paiement sur place
+                        {{ translate('Réservation en deux clics, paiement sur place') }}
                     </li>
                 </ul>
             </div>
             <span class="login-side__pro">
-                Vous êtes un professionnel ?
+                {{ translate('Vous êtes un professionnel ?') }}
                 <a href="{{ path('pro_login') }}" class="login-side__pro-link">
-                    Espace pro
+                    {{ translate('Espace pro') }}
                 </a>
             </span>
         </section>
