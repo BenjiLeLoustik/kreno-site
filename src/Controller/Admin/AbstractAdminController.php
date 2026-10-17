@@ -3,10 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User\User;
-use App\Entity\Website\WebsiteConfig;
 use App\Shared\Exception\BusinessRuleException;
 use App\User\Enum\UserRole;
-use App\Website\Provider\WebsiteProvider;
 use NeoPHP\Component\Controller\Contract\AbstractController;
 
 abstract class AbstractAdminController extends AbstractController
@@ -24,11 +22,6 @@ abstract class AbstractAdminController extends AbstractController
         return $user;
     }
 
-    protected function findVersion(WebsiteProvider $provider, ?string $code): WebsiteConfig
-    {
-        return $provider->getVersion($code) ?? throw $this->createNotFoundException('La version {code} n\'existe pas.', ['code' => $code ?? 'en ligne']);
-    }
-
     protected function invalid(object $input): bool
     {
         $error = $this->validate($input)->first();
@@ -42,7 +35,7 @@ abstract class AbstractAdminController extends AbstractController
         return true;
     }
 
-    protected function attempt(callable $action, string $success): bool
+    protected function attempt(callable $action, ?string $success = null): bool
     {
         try {
             $action();
@@ -52,7 +45,9 @@ abstract class AbstractAdminController extends AbstractController
             return false;
         }
 
-        $this->addFlash('success', $success);
+        if ($success !== null) {
+            $this->addFlash('success', $success);
+        }
 
         return true;
     }

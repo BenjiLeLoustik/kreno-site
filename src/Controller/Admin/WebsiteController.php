@@ -2,16 +2,15 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Website\WebsiteConfig;
-use App\Repository\Website\WebsiteConfigRepository;
-use App\Shared\Helper\DateHelper;
+use App\Shared\Mapper\AdminQueryMapper;
 use App\Website\Dto\WebsiteIdentityInput;
 use App\Website\Dto\WebsiteScheduleInput;
-use App\Website\Presenter\WebsiteConfigPresenter;
-use App\Website\Presenter\WebsitePricingPresenter;
-use App\Website\Presenter\WebsiteRulePresenter;
-use App\Website\Provider\WebsiteProvider;
+use App\Website\Enum\AdminWebsiteFlash;
+use App\Website\Provider\AdminWebsitePageProvider;
+use App\Website\Provider\WebsiteVersionProvider;
+use App\Website\Service\WebsiteScheduleService;
 use App\Website\Service\WebsiteVersionService;
+use DateTimeImmutable;
 use NeoPHP\Component\Csrf\Attribute\Csrf;
 use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Component\Http\Response\RedirectResponse;
@@ -22,12 +21,10 @@ use NeoPHP\Component\Serializer\Attribute\MapRequestPayload;
 class WebsiteController extends AbstractAdminController
 {
     public function __construct(
-        private WebsiteProvider $provider,
-        private WebsiteConfigRepository $websites,
+        private WebsiteVersionProvider $finder,
         private WebsiteVersionService $versions,
-        private WebsiteConfigPresenter $presenter,
-        private WebsiteRulePresenter $rulePresenter,
-        private WebsitePricingPresenter $pricingPresenter,
+        private WebsiteScheduleService $schedules,
+        private AdminWebsitePageProvider $pages,
     ) {
     }
 
@@ -35,8 +32,9 @@ class WebsiteController extends AbstractAdminController
     public function index(Request $request): Response
     {
         $this->currentAdmin();
+        $website = $this->finder->find(AdminQueryMapper::optional($request, 'version'));
 
-        return $this->page($this->findVersion($this->provider, $request->query->getString('version') ?: null));
+        return $this->render('admin/website/index.html.twig', $this->pages->page($website));
     }
 
     #[Route('/admin/versions/{code}', name: 'admin_website_show', methods: ['GET'])]
@@ -44,7 +42,7 @@ class WebsiteController extends AbstractAdminController
     {
         $this->currentAdmin();
 
-        return $this->page($this->findVersion($this->provider, $code));
+        return $this->render('admin/website/index.html.twig', $this->pages->page($this->finder->find($code)));
     }
 
     #[Csrf('admin_website')]
@@ -52,51 +50,55 @@ class WebsiteController extends AbstractAdminController
     public function duplicate(string $code): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $website = $this->findVersion($this->provider, $code);
+        $website = $this->finder->find($code);
         $copy = null;
-
         $this->attempt(function () use ($website, $admin, &$copy): void {
             $copy = $this->versions->duplicate($website, $admin);
-        }, sprintf('Version %s dupliquée en brouillon.', $website->getCode()));
+        }, AdminWebsiteFlash::DUPLICATED->text($website->getCode()));
 
-        return $this->back($copy?->getCode() ?? $code);
+        return $this->redirectToRoute('admin_website_show', ['code' => $copy?->getCode() ?? $code]);
     }
 
     #[Csrf('admin_website')]
     #[Route('/admin/versions/{code}/identity', name: 'admin_website_update', methods: ['POST'])]
-    public function update(string $code, #[MapRequestPayload(validate: false)] WebsiteIdentityInput $input): RedirectResponse
-    {
+    public function update(
+        string $code,
+        #[MapRequestPayload(validate: false)] WebsiteIdentityInput $input,
+    ): RedirectResponse {
         $admin = $this->currentAdmin();
-        $website = $this->findVersion($this->provider, $code);
+        $website = $this->finder->find($code);
 
         if (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->versions->updateIdentity($website, $input, $admin), 'Identité de la version enregistrée.');
+            $this->attempt(
+                fn () => $this->versions->updateIdentity($website, $input, $admin),
+                AdminWebsiteFlash::IDENTITY_SAVED->text(),
+            );
         }
 
-        return $this->back($code);
+        return $this->redirectToRoute('admin_website_show', ['code' => $code]);
     }
 
     #[Csrf('admin_website')]
     #[Route('/admin/versions/{code}/schedule', name: 'admin_website_schedule', methods: ['POST'])]
-    public function schedule(string $code, #[MapRequestPayload(validate: false)] WebsiteScheduleInput $input): RedirectResponse
-    {
+    public function schedule(
+        string $code,
+        #[MapRequestPayload(validate: false)] WebsiteScheduleInput $input,
+    ): RedirectResponse {
         $admin = $this->currentAdmin();
-        $website = $this->findVersion($this->provider, $code);
-        $date = DateHelper::parse($input->scheduledAt);
+        $website = $this->finder->find($code);
+        $date = null;
 
-        if ($this->invalid($input)) {
-            return $this->back($code);
+        if (!$this->invalid($input)) {
+            $this->attempt(function () use ($website, $input, $admin, &$date): void {
+                $date = $this->schedules->schedule($website, $input->scheduledAt, $admin);
+            });
         }
 
-        if ($date === null) {
-            $this->addFlash('error', 'La date de mise en ligne est invalide.');
-
-            return $this->back($code);
+        if ($date instanceof DateTimeImmutable) {
+            $this->addFlash('success', AdminWebsiteFlash::scheduled($date));
         }
 
-        $this->attempt(fn () => $this->versions->schedule($website, $date, $admin), sprintf('Mise en ligne planifiée le %s.', $date->format('d/m/Y à H:i')));
-
-        return $this->back($code);
+        return $this->redirectToRoute('admin_website_show', ['code' => $code]);
     }
 
     #[Csrf('admin_website')]
@@ -104,10 +106,13 @@ class WebsiteController extends AbstractAdminController
     public function unschedule(string $code): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $website = $this->findVersion($this->provider, $code);
-        $this->attempt(fn () => $this->versions->unschedule($website, $admin), 'Planification annulée. La version repasse en brouillon.');
+        $website = $this->finder->find($code);
+        $this->attempt(
+            fn () => $this->versions->unschedule($website, $admin),
+            AdminWebsiteFlash::UNSCHEDULED->text(),
+        );
 
-        return $this->back($code);
+        return $this->redirectToRoute('admin_website_show', ['code' => $code]);
     }
 
     #[Csrf('admin_website')]
@@ -115,10 +120,13 @@ class WebsiteController extends AbstractAdminController
     public function publish(string $code): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $website = $this->findVersion($this->provider, $code);
-        $this->attempt(fn () => $this->versions->publish($website, $admin), sprintf('Version %s mise en ligne.', $website->getCode()));
+        $website = $this->finder->find($code);
+        $this->attempt(
+            fn () => $this->versions->publish($website, $admin),
+            AdminWebsiteFlash::PUBLISHED->text($website->getCode()),
+        );
 
-        return $this->back($code);
+        return $this->redirectToRoute('admin_website_show', ['code' => $code]);
     }
 
     #[Csrf('admin_website')]
@@ -126,14 +134,13 @@ class WebsiteController extends AbstractAdminController
     public function restore(string $code): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $website = $this->findVersion($this->provider, $code);
+        $website = $this->finder->find($code);
         $restored = null;
-
         $this->attempt(function () use ($website, $admin, &$restored): void {
             $restored = $this->versions->restore($website, $admin);
-        }, sprintf('Retour à la version %s : sa copie est en ligne.', $website->getCode()));
+        }, AdminWebsiteFlash::RESTORED->text($website->getCode()));
 
-        return $this->back($restored?->getCode() ?? $code);
+        return $this->redirectToRoute('admin_website_show', ['code' => $restored?->getCode() ?? $code]);
     }
 
     #[Csrf('admin_website')]
@@ -141,29 +148,16 @@ class WebsiteController extends AbstractAdminController
     public function delete(string $code): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $website = $this->findVersion($this->provider, $code);
+        $website = $this->finder->find($code);
+        $deleted = $this->attempt(
+            fn () => $this->versions->delete($website, $admin),
+            AdminWebsiteFlash::DELETED->text($code),
+        );
 
-        if ($this->attempt(fn () => $this->versions->delete($website, $admin), sprintf('Version %s supprimée.', $code))) {
+        if ($deleted) {
             return $this->redirectToRoute('admin_website_index');
         }
 
-        return $this->back($code);
-    }
-
-    private function page(WebsiteConfig $website): Response
-    {
-        $live = $this->websites->findLive();
-
-        return $this->render('admin/website/index.html.twig', [
-            'versions' => $this->presenter->summaries($this->websites->findAllForAdmin()),
-            'version' => $this->presenter->detail($website, $live),
-            'rules' => $this->rulePresenter->present($website->getRule(), $live?->getRule()),
-            'pricing' => $this->pricingPresenter->present($website, $live),
-        ]);
-    }
-
-    private function back(string $code): RedirectResponse
-    {
         return $this->redirectToRoute('admin_website_show', ['code' => $code]);
     }
 }

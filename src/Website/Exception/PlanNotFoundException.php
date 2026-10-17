@@ -2,18 +2,12 @@
 
 namespace App\Website\Exception;
 
-use App\Shared\Exception\BusinessRuleException;
+use NeoPHP\Component\Http\Exception\NotFoundHttpException;
 
-class PlanNotFoundException extends BusinessRuleException
+class PlanNotFoundException extends NotFoundHttpException
 {
-    public function __construct(string $code, string $version)
+    public function __construct(string $plan)
     {
-        parent::__construct(
-            'La formule « {code} » n\'existe pas dans la {version}.',
-            [
-                'code' => $code,
-                'version' => $version
-            ],
-        );
+        parent::__construct('La formule {plan} n\'existe pas.', ['plan' => $plan]);
     }
 }

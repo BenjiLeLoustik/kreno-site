@@ -2,9 +2,9 @@
 
 namespace App\Company\Exception;
 
-use App\Shared\Exception\BusinessRuleException;
+use NeoPHP\Component\Http\Exception\NotFoundHttpException;
 
-class CompanyNotFoundException extends BusinessRuleException
+class CompanyNotFoundException extends NotFoundHttpException
 {
     public function __construct()
     {
