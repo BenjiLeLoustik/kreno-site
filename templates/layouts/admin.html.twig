@@ -33,6 +33,7 @@
                     <span class="admin-side__user">Connecté : {{ user.firstName }} {{ user.lastName|first }}.</span>
                 {% endif %}
                 <div class="admin-side__actions">
+                    {% include 'components/locale_switcher.html.twig' with { variant: 'dark' } %}
                     <a href="{{ path('home_index') }}" class="admin-side__action">
                         <i data-lucide="external-link" class="admin-nav__icon"></i>
                         Voir le site

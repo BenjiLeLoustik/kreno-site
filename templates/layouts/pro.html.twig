@@ -54,6 +54,7 @@
                         {% endif %}
                     </div>
                 {% endif %}
+                {% include 'components/locale_switcher.html.twig' with { variant: 'dark' } %}
                 <div class="pro-side__user">
                     <span class="pro-side__avatar" aria-hidden="true">{{ context.user.initials }}</span>
                     <span class="pro-side__identity">

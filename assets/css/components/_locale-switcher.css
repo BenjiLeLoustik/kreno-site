@@ -1,0 +1,43 @@
+@layer components {
+    .locale-switcher {
+        @apply relative inline-block text-sm;
+    }
+
+    .locale-switcher__toggle {
+        @apply inline-flex cursor-pointer list-none items-center gap-1.5 rounded-full px-3 py-1.5 font-medium transition-colors;
+    }
+
+    .locale-switcher__toggle::-webkit-details-marker {
+        @apply hidden;
+    }
+
+    .locale-switcher__icon,
+    .locale-switcher__chevron,
+    .locale-switcher__check {
+        @apply size-4;
+    }
+
+    .locale-switcher[open] .locale-switcher__chevron {
+        @apply rotate-180;
+    }
+
+    .locale-switcher__menu {
+        @apply absolute bottom-full left-0 z-20 mb-2 min-w-40 rounded-xl border border-sand bg-white p-1 text-ink shadow-lg;
+    }
+
+    .locale-switcher__link {
+        @apply flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-ink no-underline hover:bg-cream;
+    }
+
+    .locale-switcher__link--active {
+        @apply font-semibold;
+    }
+
+    .locale-switcher--light .locale-switcher__toggle {
+        @apply text-body hover:bg-cream;
+    }
+
+    .locale-switcher--dark .locale-switcher__toggle {
+        @apply text-white/80 hover:bg-white/10 hover:text-white;
+    }
+}

@@ -83,6 +83,8 @@
                 <a href="{{ path('page_legal', { document: 'privacy' }) }}">Confidentialité</a>
                 <a href="{{ path('page_legal', { document: 'cgv' }) }}">Conditions pros</a>
             </nav>
+
+            {% include 'components/locale_switcher.html.twig' with { variant: 'light' } %}
         </div>
     </footer>
 {% endblock %}
