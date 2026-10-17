@@ -7,7 +7,7 @@ fallbacks: [ en ]
 path: '%kernel.root_path%/translations'
 default_domain: messages
 # Format of the files created by `translation:generate`: yaml or xliff
-format: yaml
+format: xliff
 
 detection:
     # Sources of the locale, in order (remove one to disable it): {_locale} route parameter, ?lang=, session, cookie, Accept-Language
