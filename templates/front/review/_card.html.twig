@@ -1,0 +1,18 @@
+{% import 'front/review/_stars.html.twig' as stars %}
+
+<article class="review-card">
+    <header class="review-card__head">
+        <span class="review-card__author">{{ review.author }}</span>
+        {{ stars.show(review.rating) }}
+        <span class="review-card__meta">{% if review.service %}{{ review.service }} · {% endif %}{{ review.createdAt|date('d/m/Y') }}</span>
+    </header>
+    {% if review.comment %}
+        <p class="review-card__comment">{{ review.comment|nl2br }}</p>
+    {% endif %}
+    {% if review.reply %}
+        <div class="review-card__reply">
+            <span class="review-card__reply-title">Réponse de l'établissement</span>
+            <p class="review-card__reply-text">{{ review.reply|nl2br }}</p>
+        </div>
+    {% endif %}
+</article>

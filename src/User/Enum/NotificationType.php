@@ -12,6 +12,7 @@ enum NotificationType: string
     case REPORT = 'report';
     case BILLING = 'billing';
     case INFO = 'info';
+    case REVIEW = 'review';
 
     public function label(): string
     {
@@ -22,6 +23,7 @@ enum NotificationType: string
             self::REPORT => 'Signalement',
             self::BILLING => 'Facturation',
             self::INFO => 'Information',
+            self::REVIEW => 'Avis',
         };
     }
 }

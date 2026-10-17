@@ -1,0 +1,39 @@
+{% extends 'layouts/account.html.twig' %}
+
+{% set account_section = 'reviews' %}
+
+{% block title %}Donner mon avis · {{ website().siteName }}{% endblock %}
+
+{% block account_content %}
+    <header class="account-head">
+        <a href="{{ path('account_reviews') }}" class="review-back">← Mes avis</a>
+        <h1 class="account-head__title">Ton avis sur {{ booking.establishment }}</h1>
+        <p class="account-head__subtitle">{% if booking.service %}{{ booking.service }} · {% endif %}le {{ booking.startsAt|date('d/m/Y à H:i') }}</p>
+    </header>
+
+    <form method="post" action="{{ path('account_review_create', { reference: booking.reference }) }}" class="account-card review-form">
+        {{ csrf_field('account')|raw }}
+
+        <fieldset class="review-rating">
+            <legend class="review-form__label">Ta note</legend>
+            <div class="review-rating__stars">
+                {% for rating in ratings|reverse %}
+                    <input type="radio" name="rating" value="{{ rating.key }}" id="rating-{{ rating.key }}" class="review-rating__input" required>
+                    <label for="rating-{{ rating.key }}" class="review-rating__star" title="{{ rating.label }}">
+                        <i data-lucide="star" class="review-rating__icon"></i>
+                        <span class="review-rating__text">{{ rating.key }} sur 5 · {{ rating.label }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+        </fieldset>
+
+        <label class="form-field">
+            <span class="review-form__label">Ton commentaire <span class="review-form__optional">(facultatif)</span></span>
+            <textarea name="comment" rows="5" maxlength="1000" class="form-input review-form__area" placeholder="Accueil, qualité de la prestation, ponctualité…"></textarea>
+        </label>
+
+        <p class="review-form__hint">Ton prénom et l'initiale de ton nom seront affichés avec ton avis. L'établissement pourra y répondre.</p>
+
+        <button type="submit" class="btn btn--primary">Publier mon avis</button>
+    </form>
+{% endblock %}

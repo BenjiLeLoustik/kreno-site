@@ -1,0 +1,75 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% import 'front/review/_stars.html.twig' as stars %}
+
+{% set admin_section = 'reviews' %}
+
+{% block title %}Avis · Administration Kréno{% endblock %}
+
+{% block content %}
+    <div class="admin-head">
+        <h1 class="admin-title">Avis</h1>
+    </div>
+
+    <nav class="admin-tabs" aria-label="Statut">
+        {% for item in filters %}
+            <a href="{{ path('admin_reviews', { status: item.key }) }}" class="admin-tabs__link{{ item.selected ? ' admin-tabs__link--active' : '' }}"{{ item.selected ? ' aria-current="page"' : '' }}>{{ item.label }}{% if item.count is not null %} · {{ item.count }}{% endif %}</a>
+        {% endfor %}
+    </nav>
+
+    <section class="admin-card">
+        <div class="admin-rows">
+            {% for review in rows %}
+                <div class="admin-row review-admin">
+                    <div class="review-admin__head">
+                        <span class="admin-row__main">
+                            <b>{{ review.establishment }}</b>
+                            <span class="admin-row__meta">{{ review.author }}{% if review.customerEmail %} · {{ review.customerEmail }}{% endif %} · {{ review.reference }} · {{ review.createdAt|date('d/m/Y') }}</span>
+                        </span>
+                        {{ stars.show(review.rating) }}
+                        <span class="review-status review-status--{{ review.status }}">{{ review.statusLabel }}</span>
+                    </div>
+
+                    {% if review.comment %}
+                        <p class="review-admin__comment">{{ review.comment|nl2br }}</p>
+                    {% endif %}
+                    {% if review.reply %}
+                        <p class="admin-note">Réponse du pro : {{ review.reply }}</p>
+                    {% endif %}
+                    {% if review.status == 'reported' and review.reportReason %}
+                        <p class="admin-note">Signalé{% if review.reportedBy %} par {{ review.reportedBy }}{% endif %} le {{ review.reportedAt|date('d/m/Y à H:i') }} : {{ review.reportReason }}</p>
+                    {% endif %}
+                    {% if review.status == 'hidden' and review.moderationNote %}
+                        <p class="admin-note">Masqué{% if review.moderatedBy %} par {{ review.moderatedBy }}{% endif %} le {{ review.moderatedAt|date('d/m/Y à H:i') }} : {{ review.moderationNote }}</p>
+                    {% endif %}
+
+                    <div class="admin-row__actions">
+                        {% if review.status != 'published' %}
+                            <form method="post" action="{{ path('admin_review_publish', { id: review.id }) }}">
+                                {{ csrf_field('admin_review')|raw }}
+                                <input type="hidden" name="status" value="{{ filter }}">
+                                <button type="submit" class="admin-button admin-button--small">{{ review.status == 'reported' ? 'Garder en ligne' : 'Remettre en ligne' }}</button>
+                            </form>
+                        {% endif %}
+                        {% if review.status != 'hidden' %}
+                            <details class="admin-disclosure">
+                                <summary class="admin-disclosure__summary">Masquer</summary>
+                                <form method="post" action="{{ path('admin_review_hide', { id: review.id }) }}" class="admin-form admin-disclosure__body">
+                                    {{ csrf_field('admin_review')|raw }}
+                                    <input type="hidden" name="status" value="{{ filter }}">
+                                    <label class="admin-field">
+                                        Motif, envoyé au client
+                                        <textarea name="reason" rows="3" required maxlength="500" class="admin-input admin-input--area"></textarea>
+                                    </label>
+                                    <button type="submit" class="admin-button admin-button--ghost-danger">Masquer l'avis</button>
+                                </form>
+                            </details>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <p class="admin-panel__empty">Aucun avis dans cette liste.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

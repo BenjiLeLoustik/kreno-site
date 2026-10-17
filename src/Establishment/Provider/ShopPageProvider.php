@@ -13,6 +13,7 @@ use App\Establishment\Service\FollowService;
 use App\Repository\CityRepository;
 use App\Repository\Company\CompanyEstablishmentRepository;
 use App\Repository\Establishment\EstablishmentFollowerRepository;
+use App\Review\Provider\ReviewSummaryProvider;
 
 class ShopPageProvider
 {
@@ -22,6 +23,7 @@ class ShopPageProvider
         private EstablishmentFollowerRepository $followers,
         private FollowService $follows,
         private EstablishmentPagePresenter $presenter,
+        private ReviewSummaryProvider $reviews,
     ) {
     }
 
@@ -33,6 +35,7 @@ class ShopPageProvider
         return [
             'breadcrumb' => $this->breadcrumb($establishment),
             'establishment' => $this->presenter->publicPage($establishment, $user, $latitude, $longitude),
+            'reviews' => $this->reviews->forEstablishment($establishment),
         ];
     }
 

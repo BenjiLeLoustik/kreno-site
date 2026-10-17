@@ -34,3 +34,6 @@
 @import "./invitation/_show.css";
 @import "./errors/_error.css";
 @import "./install/_index.css";
+@import "./review/_index.css";
+@import "./pro/review/_index.css";
+@import "./admin/review/_index.css";
