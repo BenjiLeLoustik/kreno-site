@@ -44,7 +44,7 @@
     }
 
     .pro-switch__select {
-        @apply min-h-10 w-full cursor-pointer rounded-xl border border-ink-line bg-ink-soft px-3 font-sans text-sm font-semibold text-white;
+        @apply min-h-10 w-0 min-w-full cursor-pointer rounded-xl border border-ink-line bg-ink-soft px-3 font-sans text-sm font-semibold text-white;
     }
 
     .pro-switch__apply {
@@ -217,7 +217,7 @@
     }
 
     .pro-table {
-        @apply overflow-x-auto rounded-[20px] border border-sand bg-white;
+        @apply relative overflow-x-auto rounded-[20px] border border-sand bg-white;
     }
 
     .pro-table__table {
