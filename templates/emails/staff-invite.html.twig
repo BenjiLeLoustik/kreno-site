@@ -4,14 +4,33 @@
 
 {% block mailContent %}
 
-    <p>{{ inviter }} vous a ajouté à l’équipe Kréno avec le rôle « {{ role }} ».</p>
+    <p>
+        {{ inviter }} vous a ajouté à l’équipe Kréno avec le rôle « {{ role }} ».
+    </p>
     {% if passwordUrl %}
-        <p>Pour accéder à l’administration, choisissez d’abord votre mot de passe :</p>
-        <p style="{{ styles.actions }}"><a href="{{ passwordUrl }}" style="{{ styles.button }}">Choisir mon mot de passe</a></p>
-        <p>Ce lien est valable {{ expiresIn }}. Passé ce délai, utilisez <a href="{{ forgotUrl }}" style="{{ styles.link }}">mot de passe oublié</a>.</p>
+        <p>
+            Pour accéder à l’administration, choisissez d’abord votre mot de passe :
+        </p>
+        <p style="{{ styles.actions }}">
+            <a href="{{ passwordUrl }}" style="{{ styles.button }}">
+                Choisir mon mot de passe
+            </a>
+        </p>
+        <p>
+            Ce lien est valable {{ expiresIn }}. Passé ce délai, utilisez
+            <a href="{{ forgotUrl }}" style="{{ styles.link }}">
+                mot de passe oublié
+            </a>.
+        </p>
     {% else %}
-        <p>Connectez-vous avec votre compte habituel pour accéder à l’administration.</p>
+        <p>
+            Connectez-vous avec votre compte habituel pour accéder à l’administration.
+        </p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ adminUrl }}" style="{{ styles.button }}">Ouvrir l’administration</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ adminUrl }}" style="{{ styles.button }}">
+            Ouvrir l’administration
+        </a>
+    </p>
 
 {% endblock %}

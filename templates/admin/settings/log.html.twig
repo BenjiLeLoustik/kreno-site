@@ -1,46 +1,82 @@
 {% extends 'layouts/admin.html.twig' %}
 
 {% set admin_section = 'settings' %}
-{% set query = { group: journal.group != 'all' ? journal.group : null, q: journal.q, version: journal.version }|filter(value => value) %}
+{% set query = {
+    group: journal.group != 'all' ? journal.group : null,
+    q: journal.q,
+    version: journal.version
+}|filter(value => value) %}
 
-{% block title %}Journal d'activité · Administration Kréno{% endblock %}
+{% block title %}
+    Journal d'activité · Administration Kréno
+{% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <div>
-            <a href="{{ path('admin_settings_index') }}" class="admin-subtitle">← Réglages et journal</a>
-            <h1 class="admin-title">Journal d'activité</h1>
+            <a href="{{ path('admin_settings_index') }}" class="admin-subtitle">
+                ← Réglages et journal
+            </a>
+            <h1 class="admin-title">
+                Journal d'activité
+            </h1>
         </div>
-        <span class="admin-subtitle">{{ journal.total }} entrée{{ journal.total > 1 ? 's' : '' }}</span>
+        <span class="admin-subtitle">
+            {{ journal.total }} entrée{{ journal.total > 1 ? 's' : '' }}
+        </span>
     </div>
 
     <form method="get" action="{{ path('admin_log') }}" class="admin-toolbar">
         <nav class="admin-tabs" aria-label="Type d'activité">
             {% for filter in journal.filters %}
-                <a href="{{ path('admin_log', query|merge({ group: filter.key != 'all' ? filter.key : null })|filter(value => value)) }}" class="admin-tabs__link{{ filter.selected ? ' admin-tabs__link--active' : '' }}">{{ filter.label }}</a>
+                <a href="{{ path('admin_log', query|merge({ group: filter.key != 'all' ? filter.key : null })|filter(value => value)) }}" class="admin-tabs__link{{ filter.selected ? ' admin-tabs__link--active' : '' }}">
+                    {{ filter.label }}
+                </a>
             {% endfor %}
         </nav>
-        {% if journal.group != 'all' %}<input type="hidden" name="group" value="{{ journal.group }}">{% endif %}
+        {% if journal.group != 'all' %}
+            <input type="hidden" name="group" value="{{ journal.group }}">
+        {% endif %}
         <label class="admin-search">
             <i data-lucide="search" class="admin-nav__icon"></i>
             <input type="search" name="q" value="{{ journal.q }}" placeholder="Rechercher dans le journal" class="admin-search__input" aria-label="Rechercher dans le journal">
         </label>
         <select name="version" class="admin-select" aria-label="Version" data-admin-auto>
-            <option value="">Toutes les versions</option>
+            <option value="">
+                Toutes les versions
+            </option>
             {% for version in versions %}
-                <option value="{{ version.code }}"{{ version.code == journal.version ? ' selected' : '' }}>{{ version.code }} · {{ version.name }}</option>
+                <option value="{{ version.code }}"{{ version.code == journal.version ? ' selected' : '' }}>
+                    {{ version.code }} · {{ version.name }}
+                </option>
             {% endfor %}
         </select>
-        <button type="submit" class="admin-button">Filtrer</button>
+        <button type="submit" class="admin-button">
+            Filtrer
+        </button>
     </form>
 
     {% include 'admin/settings/_journal.html.twig' %}
 
     {% if journal.pages > 1 %}
         <div class="admin-pagination">
-            {% if journal.page > 1 %}<a href="{{ path('admin_log', query|merge({ page: journal.page - 1 })) }}" class="admin-button admin-button--small">← Plus récentes</a>{% else %}<span></span>{% endif %}
-            <span>Page {{ journal.page }} sur {{ journal.pages }}</span>
-            {% if journal.page < journal.pages %}<a href="{{ path('admin_log', query|merge({ page: journal.page + 1 })) }}" class="admin-button admin-button--small">Plus anciennes →</a>{% else %}<span></span>{% endif %}
+            {% if journal.page > 1 %}
+                <a href="{{ path('admin_log', query|merge({ page: journal.page - 1 })) }}" class="admin-button admin-button--small">
+                    ← Plus récentes
+                </a>
+            {% else %}
+                <span></span>
+            {% endif %}
+            <span>
+                Page {{ journal.page }} sur {{ journal.pages }}
+            </span>
+            {% if journal.page < journal.pages %}
+                <a href="{{ path('admin_log', query|merge({ page: journal.page + 1 })) }}" class="admin-button admin-button--small">
+                    Plus anciennes →
+                </a>
+            {% else %}
+                <span></span>
+            {% endif %}
         </div>
     {% endif %}
 {% endblock %}

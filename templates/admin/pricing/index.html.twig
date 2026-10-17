@@ -3,21 +3,34 @@
 {% set admin_section = 'pricing' %}
 {% set editable = selected.editable %}
 
-{% block title %}Tarifs et formules · Administration Kréno{% endblock %}
+{% block title %}
+    Tarifs et formules · Administration Kréno
+{% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <div>
-            <h1 class="admin-title">Tarifs et formules</h1>
-            <span class="admin-subtitle">Version {{ selected.code }} · {{ selected.statusLabel }}{% if pricing.pricingName %} · {{ pricing.pricingName }}{% endif %}</span>
+            <h1 class="admin-title">
+                Tarifs et formules
+            </h1>
+            <span class="admin-subtitle">
+                Version {{ selected.code }} · {{ selected.statusLabel }}
+                {% if pricing.pricingName %}
+                    · {{ pricing.pricingName }}
+                {% endif %}
+            </span>
         </div>
         <form method="get" action="{{ path('admin_pricing_index') }}" class="admin-toolbar">
             <select name="version" class="admin-select" aria-label="Version du site" data-admin-auto>
                 {% for version in versions %}
-                    <option value="{{ version.code }}"{{ version.code == selected.code ? ' selected' : '' }}>{{ version.code }} · {{ version.name }} ({{ version.statusLabel|lower }})</option>
+                    <option value="{{ version.code }}"{{ version.code == selected.code ? ' selected' : '' }}>
+                        {{ version.code }} · {{ version.name }} ({{ version.statusLabel|lower }})
+                    </option>
                 {% endfor %}
             </select>
-            <button type="submit" class="admin-button" data-admin-apply>Afficher</button>
+            <button type="submit" class="admin-button" data-admin-apply>
+                Afficher
+            </button>
         </form>
     </div>
 
@@ -25,59 +38,113 @@
         <div class="admin-stats">
             {% for kpi in kpis %}
                 <div class="admin-stat">
-                    <span class="admin-stat__label">{{ kpi.label }}</span>
-                    <strong class="admin-stat__value{{ kpi.tone == 'danger' ? ' admin-stat__value--alert' : '' }}">{{ kpi.value }}</strong>
-                    <span class="admin-stat__note">{{ kpi.note }}</span>
+                    <span class="admin-stat__label">
+                        {{ kpi.label }}
+                    </span>
+                    <strong class="admin-stat__value{{ kpi.tone == 'danger' ? ' admin-stat__value--alert' : '' }}">
+                        {{ kpi.value }}
+                    </strong>
+                    <span class="admin-stat__note">
+                        {{ kpi.note }}
+                    </span>
                 </div>
             {% endfor %}
         </div>
     {% endif %}
 
     {% if not editable %}
-        <div class="admin-note">Cette version n'est plus modifiable. Duplique-la depuis « Versions du site » pour préparer une nouvelle grille tarifaire.</div>
+        <div class="admin-note">
+            Cette version n'est plus modifiable. Duplique-la depuis « Versions du site » pour préparer une nouvelle grille tarifaire.
+        </div>
     {% elseif pricing.changedPlans is not empty %}
-        <div class="admin-note">Prix modifiés par rapport à la version en ligne : {{ pricing.changedPlans|join(', ') }}.</div>
+        <div class="admin-note">
+            Prix modifiés par rapport à la version en ligne : {{ pricing.changedPlans|join(', ') }}.
+        </div>
     {% endif %}
 
     <div class="admin-grid">
         <section class="admin-card">
-            <h2 class="admin-card__title">Formules</h2>
+            <h2 class="admin-card__title">
+                Formules
+            </h2>
             <div class="admin-rows">
                 {% for plan in pricing.plans %}
                     <div class="admin-row">
                         <span class="admin-row__main">
-                            <b>{{ plan.name }}{% if plan.featured %} · mise en avant{% endif %}</b>
+                            <b>
+                                {{ plan.name }}
+                                {% if plan.featured %}
+                                    · mise en avant
+                                {% endif %}
+                            </b>
                             <span class="admin-row__meta">
                                 {{ plan.priceLabel }} {{ plan.unitLabel }}
-                                {% if plan.trialDays %} · essai {{ plan.trialDays }} j{% endif %}
-                                · {{ plan.maxEstablishments ? plan.maxEstablishments ~ ' établissement' ~ (plan.maxEstablishments > 1 ? 's' : '') ~ ' max' : 'établissements illimités' }}
+                                {% if plan.trialDays %}
+                                    · essai {{ plan.trialDays }} j
+                                {% endif %}
+                                {% if plan.maxEstablishments %}
+                                    · {{ plan.maxEstablishments }} établissement{{ plan.maxEstablishments > 1 ? 's' : '' }} max
+                                {% else %}
+                                    · établissements illimités
+                                {% endif %}
                             </span>
-                            {% if plan.changed %}<span class="admin-diff">En ligne : {{ plan.livePriceLabel }}</span>{% elseif plan.isNew and selected.status != 'live' %}<span class="admin-diff">Nouvelle formule</span>{% endif %}
+                            {% if plan.changed %}
+                                <span class="admin-diff">
+                                    En ligne : {{ plan.livePriceLabel }}
+                                </span>
+                            {% elseif plan.isNew and selected.status != 'live' %}
+                                <span class="admin-diff">
+                                    Nouvelle formule
+                                </span>
+                            {% endif %}
                         </span>
-                        <span class="admin-badge admin-badge--{{ plan.active ? 'success' : 'neutral' }}">{{ plan.active ? 'Active' : 'Inactive' }}</span>
+                        <span class="admin-badge admin-badge--{{ plan.active ? 'success' : 'neutral' }}">
+                            {% if plan.active %}
+                                Active
+                            {% else %}
+                                Inactive
+                            {% endif %}
+                        </span>
                         {% if editable %}
                             <details class="admin-disclosure admin-disclosure--full">
-                                <summary class="admin-disclosure__summary">Modifier</summary>
+                                <summary class="admin-disclosure__summary">
+                                    Modifier
+                                </summary>
                                 <form method="post" action="{{ path('admin_pricing_plan_update', { code: selected.code, planCode: plan.code }) }}" class="admin-form admin-disclosure__body" data-admin-strip>
                                     {{ csrf_field('admin_pricing')|raw }}
                                     {% include 'admin/pricing/_plan_fields.html.twig' with { plan: plan } %}
-                                    <div class="admin-actions"><button type="submit" class="admin-button admin-button--primary">Enregistrer</button></div>
+                                    <div class="admin-actions">
+                                        <button type="submit" class="admin-button admin-button--primary">
+                                            Enregistrer
+                                        </button>
+                                    </div>
                                 </form>
                             </details>
                         {% endif %}
                     </div>
                 {% else %}
-                    <p class="admin-subtitle">Aucune formule.</p>
+                    <p class="admin-subtitle">
+                        Aucune formule.
+                    </p>
                 {% endfor %}
             </div>
             {% if editable %}
                 <details class="admin-disclosure">
-                    <summary class="admin-disclosure__summary">Ajouter une formule</summary>
+                    <summary class="admin-disclosure__summary">
+                        Ajouter une formule
+                    </summary>
                     <form method="post" action="{{ path('admin_pricing_plan_create', { code: selected.code }) }}" class="admin-form admin-disclosure__body" data-admin-strip>
                         {{ csrf_field('admin_pricing')|raw }}
-                        <label class="admin-field">Code<input type="text" name="code" required pattern="[a-z0-9\-]{2,40}" placeholder="premium" class="admin-input"></label>
+                        <label class="admin-field">
+                            Code
+                            <input type="text" name="code" required pattern="[a-z0-9\-]{2,40}" placeholder="premium" class="admin-input">
+                        </label>
                         {% include 'admin/pricing/_plan_fields.html.twig' %}
-                        <div class="admin-actions"><button type="submit" class="admin-button admin-button--primary">Ajouter</button></div>
+                        <div class="admin-actions">
+                            <button type="submit" class="admin-button admin-button--primary">
+                                Ajouter
+                            </button>
+                        </div>
                     </form>
                 </details>
             {% endif %}
@@ -85,62 +152,104 @@
 
         <div class="admin-form">
             <section class="admin-card">
-                <h2 class="admin-card__title">Changement de prix</h2>
+                <h2 class="admin-card__title">
+                    Changement de prix
+                </h2>
                 <form method="post" action="{{ path('admin_pricing_policy', { code: selected.code }) }}" class="admin-form">
                     {{ csrf_field('admin_pricing')|raw }}
-                    <label class="admin-field">Nom de la grille<input type="text" name="pricingName" value="{{ pricing.pricingName }}" minlength="2" maxlength="120" required class="admin-input"{{ editable ? '' : ' disabled' }}></label>
+                    <label class="admin-field">
+                        Nom de la grille
+                        <input type="text" name="pricingName" value="{{ pricing.pricingName }}" minlength="2" maxlength="120" required class="admin-input"{{ editable ? '' : ' disabled' }}>
+                    </label>
                     <label class="admin-field">
                         Abonnés existants
                         <select name="policy" class="admin-input"{{ editable ? '' : ' disabled' }}>
                             {% for policy in policies %}
-                                <option value="{{ policy.value }}"{{ policy.value == pricing.priceChangePolicy ? ' selected' : '' }}>{{ policy.label }}</option>
+                                <option value="{{ policy.value }}"{{ policy.value == pricing.priceChangePolicy ? ' selected' : '' }}>
+                                    {{ policy.label }}
+                                </option>
                             {% endfor %}
                         </select>
                     </label>
-                    <label class="admin-field">Préavis (jours)<input type="number" name="noticeDays" value="{{ pricing.priceChangeNoticeDays }}" min="0" max="90" required class="admin-input"{{ editable ? '' : ' disabled' }}></label>
+                    <label class="admin-field">
+                        Préavis (jours)
+                        <input type="number" name="noticeDays" value="{{ pricing.priceChangeNoticeDays }}" min="0" max="90" required class="admin-input"{{ editable ? '' : ' disabled' }}>
+                    </label>
                     {% if editable %}
-                        <div class="admin-actions"><button type="submit" class="admin-button admin-button--primary">Enregistrer</button></div>
+                        <div class="admin-actions">
+                            <button type="submit" class="admin-button admin-button--primary">
+                                Enregistrer
+                            </button>
+                        </div>
                     {% endif %}
                 </form>
             </section>
 
             <section class="admin-card">
-                <h2 class="admin-card__title">Codes promo</h2>
+                <h2 class="admin-card__title">
+                    Codes promo
+                </h2>
                 <div class="admin-rows">
                     {% for promo in pricing.promoCodes %}
                         <div class="admin-row">
                             <span class="admin-row__main">
                                 <b>{{ promo.code }}</b>
                                 <span class="admin-row__meta">
-                                    {% if promo.discountPercent %}-{{ promo.discountPercent }} % pendant {{ promo.durationMonths }} mois{% endif %}
-                                    {% if promo.freeMonths %}{{ promo.discountPercent ? ' · ' : '' }}{{ promo.freeMonths }} mois offert{{ promo.freeMonths > 1 ? 's' : '' }}{% endif %}
+                                    {% if promo.discountPercent %}
+                                        -{{ promo.discountPercent }} % pendant {{ promo.durationMonths }} mois
+                                    {% endif %}
+                                    {% if promo.freeMonths %}
+                                        {{ promo.discountPercent ? ' · ' : '' }}{{ promo.freeMonths }} mois offert{{ promo.freeMonths > 1 ? 's' : '' }}
+                                    {% endif %}
                                     · {{ promo.usesCount }}{{ promo.maxUses ? '/' ~ promo.maxUses : '' }} utilisation{{ promo.usesCount > 1 ? 's' : '' }}
-                                    {% if promo.endsAt %} · jusqu'au {{ promo.endsAt|date('d/m/Y') }}{% endif %}
+                                    {% if promo.endsAt %}
+                                        · jusqu'au {{ promo.endsAt|date('d/m/Y') }}
+                                    {% endif %}
                                 </span>
                             </span>
-                            <span class="admin-badge admin-badge--{{ promo.status == 'active' ? 'success' : 'neutral' }}">{{ promo.status == 'active' ? 'Actif' : 'Terminé' }}</span>
+                            <span class="admin-badge admin-badge--{{ promo.status == 'active' ? 'success' : 'neutral' }}">
+                                {% if promo.status == 'active' %}
+                                    Actif
+                                {% else %}
+                                    Terminé
+                                {% endif %}
+                            </span>
                             {% if editable %}
                                 <details class="admin-disclosure admin-disclosure--full">
-                                    <summary class="admin-disclosure__summary">Modifier</summary>
+                                    <summary class="admin-disclosure__summary">
+                                        Modifier
+                                    </summary>
                                     <form method="post" action="{{ path('admin_pricing_promo_update', { code: selected.code, promoCode: promo.code }) }}" class="admin-form admin-disclosure__body" data-admin-strip>
                                         {{ csrf_field('admin_pricing')|raw }}
                                         {% include 'admin/pricing/_promo_fields.html.twig' with { promo: promo } %}
-                                        <div class="admin-actions"><button type="submit" class="admin-button admin-button--primary">Enregistrer</button></div>
+                                        <div class="admin-actions">
+                                            <button type="submit" class="admin-button admin-button--primary">
+                                                Enregistrer
+                                            </button>
+                                        </div>
                                     </form>
                                 </details>
                             {% endif %}
                         </div>
                     {% else %}
-                        <p class="admin-subtitle">Aucun code promo.</p>
+                        <p class="admin-subtitle">
+                            Aucun code promo.
+                        </p>
                     {% endfor %}
                 </div>
                 {% if editable %}
                     <details class="admin-disclosure">
-                        <summary class="admin-disclosure__summary">Créer un code promo</summary>
+                        <summary class="admin-disclosure__summary">
+                            Créer un code promo
+                        </summary>
                         <form method="post" action="{{ path('admin_pricing_promo_create', { code: selected.code }) }}" class="admin-form admin-disclosure__body" data-admin-strip>
                             {{ csrf_field('admin_pricing')|raw }}
                             {% include 'admin/pricing/_promo_fields.html.twig' %}
-                            <div class="admin-actions"><button type="submit" class="admin-button admin-button--primary">Créer</button></div>
+                            <div class="admin-actions">
+                                <button type="submit" class="admin-button admin-button--primary">
+                                    Créer
+                                </button>
+                            </div>
                         </form>
                     </details>
                 {% endif %}

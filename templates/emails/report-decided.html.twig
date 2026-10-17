@@ -4,16 +4,30 @@
 
 {% block mailContent %}
 
-    <p>Notre équipe a traité ton signalement {{ report.reference }} concernant {{ report.establishment.name }}.</p>
+    <p>
+        Notre équipe a traité ton signalement {{ report.reference }} concernant {{ report.establishment.name }}.
+    </p>
     {% if decision == 'dismiss' %}
-        <p>Décision : classé sans suite. Après examen, nous n’avons pas retenu de manquement de la part de l’établissement.</p>
+        <p>
+            Décision : classé sans suite. Après examen, nous n’avons pas retenu de manquement de la part de l’établissement.
+        </p>
     {% else %}
-        <p>Décision : {{ report.resolution|lower }}. Merci de nous avoir alertés, cela nous aide à garder Kréno fiable pour tout le monde.</p>
+        <p>
+            Décision : {{ report.resolution|lower }}. Merci de nous avoir alertés, cela nous aide à garder Kréno fiable pour tout le monde.
+        </p>
     {% endif %}
     {% if message %}
-        <p>Message de l’équipe Kréno :</p>
-        <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
+        <p>
+            Message de l’équipe Kréno :
+        </p>
+        <blockquote style="{{ styles.quote }}">
+            {{ message|nl2br }}
+        </blockquote>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ report.url }}" style="{{ styles.button }}">Voir mon signalement</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ report.url }}" style="{{ styles.button }}">
+            Voir mon signalement
+        </a>
+    </p>
 
 {% endblock %}

@@ -2,59 +2,116 @@
 
 {% set account_section = 'reports' %}
 
-{% block title %}Signalement {{ report.reference }} · {{ website().siteName }}{% endblock %}
+{% block title %}
+    Signalement {{ report.reference }} · {{ website().siteName }}
+{% endblock %}
 
 {% block account_content %}
-    {% include 'components/breadcrumb.html.twig' with { items: [
-        { label: 'Signalements', route: 'account_reports', parameters: {} },
-        { label: report.reference, route: null },
-    ] } %}
+    {% include 'components/breadcrumb.html.twig' with {
+        items: [
+            {
+                label: 'Signalements',
+                route: 'account_reports',
+                parameters: {}
+            },
+            {
+                label: report.reference,
+                route: null
+            },
+        ]
+    } %}
 
     <header class="report-detail__head">
         <div class="account-head">
-            <h1 class="account-head__title">{{ report.title }}</h1>
-            <p class="account-head__subtitle">Envoyé {{ report.when ? 'le ' ~ report.when : '' }} · {{ report.reference }}</p>
+            <h1 class="account-head__title">
+                {{ report.title }}
+            </h1>
+            <p class="account-head__subtitle">
+                Envoyé {{ report.when ? 'le ' ~ report.when : '' }} · {{ report.reference }}
+            </p>
         </div>
-        <span class="account-status account-status--{{ report.kind }}">{{ report.status }}</span>
+        <span class="account-status account-status--{{ report.kind }}">
+            {{ report.status }}
+        </span>
     </header>
 
     <section class="account-card">
         <dl class="report-facts">
             {% if report.booking %}
-                <dt class="report-facts__label">Réservation</dt>
+                <dt class="report-facts__label">
+                    Réservation
+                </dt>
                 <dd class="report-facts__value">
-                    <a href="{{ path('account_booking_show', { reference: report.booking.reference }) }}">{{ report.booking.label ?: report.booking.reference }}</a>
+                    <a href="{{ path('account_booking_show', { reference: report.booking.reference }) }}">
+                        {{ report.booking.label ?: report.booking.reference }}
+                    </a>
                 </dd>
             {% endif %}
             {% if report.establishment %}
-                <dt class="report-facts__label">Établissement</dt>
-                <dd class="report-facts__value">{{ report.establishment.name }}{% if report.establishment.locality %} · {{ report.establishment.locality }}{% endif %}</dd>
+                <dt class="report-facts__label">
+                    Établissement
+                </dt>
+                <dd class="report-facts__value">
+                    {{ report.establishment.name }}
+                    {% if report.establishment.locality %}
+                        · {{ report.establishment.locality }}
+                    {% endif %}
+                </dd>
             {% endif %}
-            <dt class="report-facts__label">Motif</dt>
-            <dd class="report-facts__value">{{ report.reasonLabel }}</dd>
+            <dt class="report-facts__label">
+                Motif
+            </dt>
+            <dd class="report-facts__value">
+                {{ report.reasonLabel }}
+            </dd>
             {% if report.attachment %}
-                <dt class="report-facts__label">Pièce jointe</dt>
-                <dd class="report-facts__value"><a href="{{ path('account_report_attachment', { id: report.id }) }}" target="_blank" rel="noopener">{{ report.attachment.name }}</a></dd>
+                <dt class="report-facts__label">
+                    Pièce jointe
+                </dt>
+                <dd class="report-facts__value">
+                    <a href="{{ path('account_report_attachment', { id: report.id }) }}" target="_blank" rel="noopener">
+                        {{ report.attachment.name }}
+                    </a>
+                </dd>
             {% endif %}
         </dl>
-        <p class="report-detail__description">{{ report.description }}</p>
+        <p class="report-detail__description">
+            {{ report.description }}
+        </p>
         {% if report.resolution %}
-            <div class="report-detail__resolution"><b>Décision :</b> {{ report.resolution }}</div>
+            <div class="report-detail__resolution">
+                <b>
+                    Décision :
+                </b>
+                {{ report.resolution }}
+            </div>
         {% endif %}
     </section>
 
     <section class="account-card">
-        <h2 class="account-section__title">Échanges</h2>
+        <h2 class="account-section__title">
+            Échanges
+        </h2>
         {% for message in report.messages %}
             <article class="report-message">
                 <div class="report-message__head">
-                    <b class="report-message__author">{{ message.author }}</b>
-                    {% if message.createdAt %}<span class="report-message__date">{{ message.createdAt|date('d/m/Y à H:i') }}</span>{% endif %}
+                    <b class="report-message__author">
+                        {{ message.author }}
+                    </b>
+                    {% if message.createdAt %}
+                        <span class="report-message__date">
+                            {{ message.createdAt|date('d/m/Y à H:i') }}
+                        </span>
+                    {% endif %}
                 </div>
-                <p class="report-message__body">{{ message.body|nl2br }}</p>
+                <p class="report-message__body">
+                    {{ message.body|nl2br }}
+                </p>
             </article>
         {% else %}
-            <p class="account-card__muted">Pas encore de message. Nous vous répondons par e-mail et ici.</p>
+            <p class="account-card__muted">
+                Pas encore de message. Nous vous répondons par e-mail et ici.
+            </p>
         {% endfor %}
 
         {% if report.canReply %}
@@ -65,7 +122,9 @@
                     <textarea id="report-reply" name="body" rows="3" required minlength="2" maxlength="2000" class="form-input report-form__area"></textarea>
                 </label>
                 <div>
-                    <button type="submit" class="btn btn--ink btn--small">Envoyer</button>
+                    <button type="submit" class="btn btn--ink btn--small">
+                        Envoyer
+                    </button>
                 </div>
             </form>
         {% endif %}

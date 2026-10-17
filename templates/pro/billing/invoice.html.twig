@@ -1,19 +1,41 @@
 {% extends 'layouts/pro.html.twig' %}
 
 {% set pro_section = 'billing' %}
-{% set tones = { paid: 'online', failed: 'noshow', open: 'pending', refunded: 'default', void: 'default' } %}
+{% set tones = {
+    paid: 'online',
+    failed: 'noshow',
+    open: 'pending',
+    refunded: 'default',
+    void: 'default'
+} %}
 
-{% block title %}Facture {{ invoice.number }} · Espace pro{% endblock %}
+{% block title %}
+    Facture {{ invoice.number }} · Espace pro
+{% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
-            <a href="{{ path('pro_billing') }}#factures" class="pro-back">← Facturation</a>
-            <h1 class="pro-title">{{ invoice.type == 'credit_note' ? 'Avoir' : 'Facture' }} {{ invoice.number }}</h1>
-            <span class="pro-subtitle">{{ invoice.subtitle }}</span>
+            <a href="{{ path('pro_billing') }}#factures" class="pro-back">
+                ← Facturation
+            </a>
+            <h1 class="pro-title">
+                {% if invoice.type == 'credit_note' %}
+                    Avoir
+                {% else %}
+                    Facture
+                {% endif %}
+                {{ invoice.number }}
+            </h1>
+            <span class="pro-subtitle">
+                {{ invoice.subtitle }}
+            </span>
         </div>
         {% if route_exists('pro_billing_invoice_pdf') %}
-            <a href="{{ path('pro_billing_invoice_pdf', { number: invoice.number }) }}" class="pro-button"><i data-lucide="download" class="pro-nav__icon"></i>Télécharger le PDF</a>
+            <a href="{{ path('pro_billing_invoice_pdf', { number: invoice.number }) }}" class="pro-button">
+                <i data-lucide="download" class="pro-nav__icon"></i>
+                Télécharger le PDF
+            </a>
         {% endif %}
     </div>
 
@@ -21,34 +43,88 @@
         <article class="pro-card pro-columns__main invoice">
             <div class="invoice__top">
                 <span class="invoice__party">
-                    <span class="pro-stat__label">Émetteur</span>
-                    {% if invoice.issuer.name is defined %}<b>{{ invoice.issuer.name }}</b>{% endif %}
-                    {% if invoice.issuer.address is defined %}<span class="invoice__address">{{ invoice.issuer.address|nl2br }}</span>{% endif %}
-                    {% if invoice.issuer.siren is defined %}<span class="pro-row__meta">SIREN {{ invoice.issuer.siren }}</span>{% endif %}
-                    {% if invoice.issuer.vatNumber is defined %}<span class="pro-row__meta">TVA {{ invoice.issuer.vatNumber }}</span>{% endif %}
+                    <span class="pro-stat__label">
+                        Émetteur
+                    </span>
+                    {% if invoice.issuer.name is defined %}
+                        <b>
+                            {{ invoice.issuer.name }}
+                        </b>
+                    {% endif %}
+                    {% if invoice.issuer.address is defined %}
+                        <span class="invoice__address">
+                            {{ invoice.issuer.address|nl2br }}
+                        </span>
+                    {% endif %}
+                    {% if invoice.issuer.siren is defined %}
+                        <span class="pro-row__meta">
+                            SIREN {{ invoice.issuer.siren }}
+                        </span>
+                    {% endif %}
+                    {% if invoice.issuer.vatNumber is defined %}
+                        <span class="pro-row__meta">
+                            TVA {{ invoice.issuer.vatNumber }}
+                        </span>
+                    {% endif %}
                 </span>
                 <span class="invoice__party">
-                    <span class="pro-stat__label">Facturé à</span>
-                    <b>{{ invoice.billedTo.name }}</b>
-                    {% if invoice.billedTo.address %}<span class="invoice__address">{{ invoice.billedTo.address|nl2br }}</span>{% endif %}
-                    {% if invoice.billedTo.vatNumber %}<span class="pro-row__meta">TVA {{ invoice.billedTo.vatNumber }}</span>{% endif %}
-                    {% if invoice.billedTo.email %}<span class="pro-row__meta">{{ invoice.billedTo.email }}</span>{% endif %}
+                    <span class="pro-stat__label">
+                        Facturé à
+                    </span>
+                    <b>
+                        {{ invoice.billedTo.name }}
+                    </b>
+                    {% if invoice.billedTo.address %}
+                        <span class="invoice__address">
+                            {{ invoice.billedTo.address|nl2br }}
+                        </span>
+                    {% endif %}
+                    {% if invoice.billedTo.vatNumber %}
+                        <span class="pro-row__meta">
+                            TVA {{ invoice.billedTo.vatNumber }}
+                        </span>
+                    {% endif %}
+                    {% if invoice.billedTo.email %}
+                        <span class="pro-row__meta">
+                            {{ invoice.billedTo.email }}
+                        </span>
+                    {% endif %}
                 </span>
-                <span class="invoice__stamp invoice__stamp--{{ invoice.kind }}">{{ invoice.stamp }}</span>
+                <span class="invoice__stamp invoice__stamp--{{ invoice.kind }}">
+                    {{ invoice.stamp }}
+                </span>
             </div>
 
             <dl class="pro-facts">
-                <dt class="pro-facts__label">Date</dt>
-                <dd class="pro-facts__value">{{ invoice.date }}</dd>
+                <dt class="pro-facts__label">
+                    Date
+                </dt>
+                <dd class="pro-facts__value">
+                    {{ invoice.date }}
+                </dd>
                 {% if invoice.period %}
-                    <dt class="pro-facts__label">Période</dt>
-                    <dd class="pro-facts__value">{{ invoice.period }}</dd>
+                    <dt class="pro-facts__label">
+                        Période
+                    </dt>
+                    <dd class="pro-facts__value">
+                        {{ invoice.period }}
+                    </dd>
                 {% endif %}
-                <dt class="pro-facts__label">Échéance</dt>
-                <dd class="pro-facts__value">{{ invoice.due }}</dd>
+                <dt class="pro-facts__label">
+                    Échéance
+                </dt>
+                <dd class="pro-facts__value">
+                    {{ invoice.due }}
+                </dd>
                 {% if invoice.creditedInvoice %}
-                    <dt class="pro-facts__label">Facture d'origine</dt>
-                    <dd class="pro-facts__value"><a href="{{ path('pro_billing_invoice', { number: invoice.creditedInvoice }) }}">{{ invoice.creditedInvoice }}</a></dd>
+                    <dt class="pro-facts__label">
+                        Facture d'origine
+                    </dt>
+                    <dd class="pro-facts__value">
+                        <a href="{{ path('pro_billing_invoice', { number: invoice.creditedInvoice }) }}">
+                            {{ invoice.creditedInvoice }}
+                        </a>
+                    </dd>
                 {% endif %}
             </dl>
 
@@ -56,19 +132,35 @@
                 <table class="pro-table__table invoice__lines">
                     <thead>
                     <tr>
-                        <th scope="col" class="pro-table__th">Désignation</th>
-                        <th scope="col" class="pro-table__th">Qté</th>
-                        <th scope="col" class="pro-table__th">PU HT</th>
-                        <th scope="col" class="pro-table__th">Total HT</th>
+                        <th scope="col" class="pro-table__th">
+                            Désignation
+                        </th>
+                        <th scope="col" class="pro-table__th">
+                            Qté
+                        </th>
+                        <th scope="col" class="pro-table__th">
+                            PU HT
+                        </th>
+                        <th scope="col" class="pro-table__th">
+                            Total HT
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for line in invoice.lines %}
                         <tr class="pro-table__row">
-                            <td class="pro-table__td">{{ line.label }}</td>
-                            <td class="pro-table__td">{{ line.qty }}</td>
-                            <td class="pro-table__td pro-table__td--nowrap">{{ line.unit }}</td>
-                            <td class="pro-table__td pro-table__td--nowrap">{{ line.total }}</td>
+                            <td class="pro-table__td">
+                                {{ line.label }}
+                            </td>
+                            <td class="pro-table__td">
+                                {{ line.qty }}
+                            </td>
+                            <td class="pro-table__td pro-table__td--nowrap">
+                                {{ line.unit }}
+                            </td>
+                            <td class="pro-table__td pro-table__td--nowrap">
+                                {{ line.total }}
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -76,34 +168,70 @@
             </div>
 
             <dl class="invoice__totals">
-                <dt class="invoice__total-label">Total HT</dt><dd class="invoice__total-value">{{ invoice.ht }}</dd>
-                <dt class="invoice__total-label">{{ invoice.vatLabel }}</dt><dd class="invoice__total-value">{{ invoice.vat }}</dd>
-                <dt class="invoice__total-label invoice__total-label--main">Total TTC</dt><dd class="invoice__total-value invoice__total-value--main">{{ invoice.ttc }}</dd>
+                <dt class="invoice__total-label">
+                    Total HT
+                </dt>
+                <dd class="invoice__total-value">
+                    {{ invoice.ht }}
+                </dd>
+                <dt class="invoice__total-label">
+                    {{ invoice.vatLabel }}
+                </dt>
+                <dd class="invoice__total-value">
+                    {{ invoice.vat }}
+                </dd>
+                <dt class="invoice__total-label invoice__total-label--main">
+                    Total TTC
+                </dt>
+                <dd class="invoice__total-value invoice__total-value--main">
+                    {{ invoice.ttc }}
+                </dd>
             </dl>
 
-            {% if invoice.payment %}<p class="pro-note">{{ invoice.payment }}</p>{% endif %}
-            <p class="pro-field__hint">{{ invoice.legalNotice }}</p>
+            {% if invoice.payment %}
+                <p class="pro-note">
+                    {{ invoice.payment }}
+                </p>
+            {% endif %}
+            <p class="pro-field__hint">
+                {{ invoice.legalNotice }}
+            </p>
         </article>
 
         <aside class="pro-columns__aside pro-form">
             <section class="pro-card">
                 <div class="pro-card__head">
-                    <h2 class="pro-card__title">Règlement</h2>
-                    <span class="pro-badge pro-badge--{{ tones[invoice.kind] ?? 'default' }}">{{ invoice.status }}</span>
+                    <h2 class="pro-card__title">
+                        Règlement
+                    </h2>
+                    <span class="pro-badge pro-badge--{{ tones[invoice.kind] ?? 'default' }}">
+                        {{ invoice.status }}
+                    </span>
                 </div>
                 {% if invoice.canPay %}
                     {% if paymentMethods is empty %}
-                        <p class="pro-subtitle">Ajoutez un moyen de paiement pour régler cette facture.</p>
-                        <a href="{{ path('pro_billing') }}#moyens" class="pro-button pro-button--primary">Ajouter un moyen de paiement</a>
+                        <p class="pro-subtitle">
+                            Ajoutez un moyen de paiement pour régler cette facture.
+                        </p>
+                        <a href="{{ path('pro_billing') }}#moyens" class="pro-button pro-button--primary">
+                            Ajouter un moyen de paiement
+                        </a>
                     {% else %}
                         <form method="post" action="{{ path('pro_billing_invoice_pay', { number: invoice.number }) }}" class="pro-form">
                             {{ csrf_field('pro')|raw }}
                             <fieldset class="report-reasons">
-                                <legend class="pro-field">Payer avec</legend>
+                                <legend class="pro-field">
+                                    Payer avec
+                                </legend>
                                 {% for method in paymentMethods %}
                                     <label class="settings-check">
                                         <input type="radio" name="paymentMethodId" value="{{ method.id }}" class="settings-check__input" required{{ method.isDefault or (loop.first and not (paymentMethods|filter(item => item.isDefault)|length)) ? ' checked' : '' }}>
-                                        <span>{{ method.label }} <span class="pro-row__meta">{{ method.note }}</span></span>
+                                        <span>
+                                            {{ method.label }}
+                                            <span class="pro-row__meta">
+                                                {{ method.note }}
+                                            </span>
+                                        </span>
                                     </label>
                                 {% endfor %}
                             </fieldset>
@@ -112,11 +240,15 @@
                                 <input type="checkbox" name="makeDefault" value="1" class="settings-check__input">
                                 Utiliser ce moyen par défaut
                             </label>
-                            <button type="submit" class="pro-button pro-button--primary pro-button--block">Payer {{ invoice.amount }}</button>
+                            <button type="submit" class="pro-button pro-button--primary pro-button--block">
+                                Payer {{ invoice.amount }}
+                            </button>
                         </form>
                     {% endif %}
                 {% else %}
-                    <p class="pro-subtitle">Rien à régler sur ce document.</p>
+                    <p class="pro-subtitle">
+                        Rien à régler sur ce document.
+                    </p>
                 {% endif %}
             </section>
         </aside>

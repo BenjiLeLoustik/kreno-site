@@ -1,5 +1,7 @@
 <nav class="pro-tabs" aria-label="Périodicité">
     {% for item in periods %}
-        <a href="{{ path(route, (params|default({}))|merge({ period: item.key })) ~ (anchor|default('')) }}" class="pro-tabs__link{{ item.selected ? ' pro-tabs__link--active' : '' }}"{{ item.selected ? ' aria-current="page"' : '' }}>{{ item.label }}</a>
+        <a href="{{ path(route, (params|default({}))|merge({ period: item.key })) ~ (anchor|default('')) }}" class="pro-tabs__link{{ item.selected ? ' pro-tabs__link--active' : '' }}"{{ item.selected ? ' aria-current="page"' : '' }}>
+            {{ item.label }}
+        </a>
     {% endfor %}
 </nav>

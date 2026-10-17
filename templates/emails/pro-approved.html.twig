@@ -4,10 +4,27 @@
 
 {% block mailContent %}
 
-    <p>Bonne nouvelle : {{ establishment.name }} est validé et en ligne sur Kréno.</p>
-    <p>Les clients de {{ establishment.city }} peuvent désormais vous trouver et vous suivre. Publiez votre premier créneau libéré pour recevoir vos premières réservations.</p>
-    <p style="{{ styles.actions }}"><a href="{{ slotUrl }}" style="{{ styles.button }}">Publier un créneau</a></p>
-    <p>Votre page publique : <a href="{{ establishment.url }}" style="{{ styles.link }}">{{ establishment.url }}</a></p>
-    <p style="{{ styles.actions }}"><a href="{{ dashboardUrl }}" style="{{ styles.button }}">Ouvrir Kréno Pro</a></p>
+    <p>
+        Bonne nouvelle : {{ establishment.name }} est validé et en ligne sur Kréno.
+    </p>
+    <p>
+        Les clients de {{ establishment.city }} peuvent désormais vous trouver et vous suivre. Publiez votre premier créneau libéré pour recevoir vos premières réservations.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ slotUrl }}" style="{{ styles.button }}">
+            Publier un créneau
+        </a>
+    </p>
+    <p>
+        Votre page publique :
+        <a href="{{ establishment.url }}" style="{{ styles.link }}">
+            {{ establishment.url }}
+        </a>
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ dashboardUrl }}" style="{{ styles.button }}">
+            Ouvrir Kréno Pro
+        </a>
+    </p>
 
 {% endblock %}

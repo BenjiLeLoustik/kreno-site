@@ -1,6 +1,8 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% block title %}Se connecter · Kréno{% endblock %}
+{% block title %}
+    Se connecter · Kréno
+{% endblock %}
 
 {% block body_class %}layout-auth{% endblock %}
 
@@ -11,38 +13,69 @@
                 {% include 'components/logo.html.twig' with { light: true } %}
             </a>
             <div class="login-side__pitch">
-                <h2 class="login-side__title">Le bon moment, <span class="login-side__accent">au bon prix.</span></h2>
+                <h2 class="login-side__title">
+                    Le bon moment,
+                    <span class="login-side__accent">
+                        au bon prix.
+                    </span>
+                </h2>
                 <div class="login-ticket" aria-hidden="true">
                     <div class="login-ticket__when">
-                        <strong class="login-ticket__time">14:30</strong>
-                        <span class="login-ticket__duration">45 min</span>
+                        <strong class="login-ticket__time">
+                            14:30
+                        </strong>
+                        <span class="login-ticket__duration">
+                            45 min
+                        </span>
                     </div>
                     <div class="login-ticket__body">
-                        <b>Léa Coiffure</b>
-                        <span class="login-ticket__prices"><s class="login-ticket__old">38 €</s> <b class="login-ticket__price">26 €</b></span>
+                        <b>
+                            Léa Coiffure
+                        </b>
+                        <span class="login-ticket__prices">
+                            <s class="login-ticket__old">
+                                38 €
+                            </s>
+                            <b class="login-ticket__price">
+                                26 €
+                            </b>
+                        </span>
                     </div>
                     <span class="login-ticket__notch login-ticket__notch--top"></span>
                     <span class="login-ticket__notch login-ticket__notch--bottom"></span>
                 </div>
             </div>
-            <span class="login-side__pro">Vous êtes un professionnel ? <a href="{{ path('pro_login') }}" class="login-side__pro-link">Espace pro</a></span>
+            <span class="login-side__pro">
+                Vous êtes un professionnel ?
+                <a href="{{ path('pro_login') }}" class="login-side__pro-link">
+                    Espace pro
+                </a>
+            </span>
         </section>
 
         <main class="login-main">
             <div class="login-main__inner">
                 <div class="login-main__head">
-                    <h1 class="login-main__title">Se connecter</h1>
-                    <p class="login-main__lead">Content de te revoir. Connecte-toi pour réserver et suivre tes créneaux.</p>
+                    <h1 class="login-main__title">
+                        Se connecter
+                    </h1>
+                    <p class="login-main__lead">
+                        Content de te revoir. Connecte-toi pour réserver et suivre tes créneaux.
+                    </p>
                 </div>
 
                 {% for type, messages in flashes() %}
                     {% for message in messages %}
-                        <div class="form-alert form-alert--{{ type == 'success' ? 'success' : 'error' }}" role="status">{{ message }}</div>
+                        <div class="form-alert form-alert--{{ type == 'success' ? 'success' : 'error' }}" role="status">
+                            {{ message }}
+                        </div>
                     {% endfor %}
                 {% endfor %}
 
                 {% if error %}
-                    <div class="form-alert form-alert--error" role="alert">{{ error }}</div>
+                    <div class="form-alert form-alert--error" role="alert">
+                        {{ error }}
+                    </div>
                 {% endif %}
 
                 <form method="post" action="{{ path('app_login') }}" class="form">
@@ -54,7 +87,9 @@
                     <label for="login-password" class="form-field">
                         <span class="form-field__head">
                             Mot de passe
-                            <a href="{{ path('app_forgot_password') }}" class="form-field__aside">Mot de passe oublié ?</a>
+                            <a href="{{ path('app_forgot_password') }}" class="form-field__aside">
+                                Mot de passe oublié ?
+                            </a>
                         </span>
                         <input id="login-password" type="password" name="password" required autocomplete="current-password" class="form-input">
                     </label>
@@ -62,10 +97,17 @@
                         <input type="checkbox" name="_remember_me" value="1" class="form-check__input">
                         Rester connecté
                     </label>
-                    <button type="submit" class="btn btn--primary form-submit">Se connecter</button>
+                    <button type="submit" class="btn btn--primary form-submit">
+                        Se connecter
+                    </button>
                 </form>
 
-                <span class="login-main__signup">Pas encore de compte ? <a href="{{ path('app_signup') }}" class="login-main__signup-link">Créer un compte</a></span>
+                <span class="login-main__signup">
+                    Pas encore de compte ?
+                    <a href="{{ path('app_signup') }}" class="login-main__signup-link">
+                        Créer un compte
+                    </a>
+                </span>
             </div>
         </main>
     </div>

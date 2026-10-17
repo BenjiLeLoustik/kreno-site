@@ -1,36 +1,74 @@
 <section class="legal-section">
-    <h2 class="legal-section__title">1. Objet</h2>
-    <p class="legal-section__text">{{ site.siteName }} met en relation des clients et des professionnels qui publient, à prix réduit, des créneaux libérés par une annulation. {{ site.siteName }} agit comme intermédiaire : la prestation est réalisée et facturée par le professionnel.</p>
+    <h2 class="legal-section__title">
+        1. Objet
+    </h2>
+    <p class="legal-section__text">
+        {{ site.siteName }} met en relation des clients et des professionnels qui publient, à prix réduit, des créneaux libérés par une annulation. {{ site.siteName }} agit comme intermédiaire : la prestation est réalisée et facturée par le professionnel.
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">2. Compte</h2>
-    <p class="legal-section__text">Un compte est nécessaire pour réserver. Il est personnel : vous êtes responsable des informations renseignées et de la confidentialité de votre mot de passe.</p>
-    <p class="legal-section__text">Vous pouvez supprimer votre compte à tout moment depuis Mon compte, Réglages.</p>
+    <h2 class="legal-section__title">
+        2. Compte
+    </h2>
+    <p class="legal-section__text">
+        Un compte est nécessaire pour réserver. Il est personnel : vous êtes responsable des informations renseignées et de la confidentialité de votre mot de passe.
+    </p>
+    <p class="legal-section__text">
+        Vous pouvez supprimer votre compte à tout moment depuis Mon compte, Réglages.
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">3. Réservation</h2>
-    <p class="legal-section__text">La réservation bloque le créneau à votre nom. Le paiement se fait sur place, auprès du professionnel, au prix affiché au moment de la réservation.</p>
+    <h2 class="legal-section__title">
+        3. Réservation
+    </h2>
+    <p class="legal-section__text">
+        La réservation bloque le créneau à votre nom. Le paiement se fait sur place, auprès du professionnel, au prix affiché au moment de la réservation.
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">4. Annulation</h2>
-    <p class="legal-section__text">L'annulation est gratuite jusqu'à {{ rules.cancellationDelay }} avant le rendez-vous, depuis Mes réservations. Le professionnel peut annuler en cas d'imprévu : vous êtes alors prévenu par e-mail.</p>
+    <h2 class="legal-section__title">
+        4. Annulation
+    </h2>
+    <p class="legal-section__text">
+        L'annulation est gratuite jusqu'à {{ rules.cancellationDelay }} avant le rendez-vous, depuis Mes réservations. Le professionnel peut annuler en cas d'imprévu : vous êtes alors prévenu par e-mail.
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">5. Absence non prévenue</h2>
-    <p class="legal-section__text">Un rendez-vous ni honoré ni annulé est compté comme une absence. Au-delà de {{ rules.toleratedNoShows }} absence{{ rules.toleratedNoShows > 1 ? 's' : '' }}, les réservations du compte sont suspendues pendant {{ rules.suspensionDays }} jours.</p>
-    <p class="legal-section__text">Pour contester une absence, écrivez-nous à <a href="mailto:{{ supportEmail }}">{{ supportEmail }}</a>.</p>
+    <h2 class="legal-section__title">
+        5. Absence non prévenue
+    </h2>
+    <p class="legal-section__text">
+        Un rendez-vous ni honoré ni annulé est compté comme une absence. Au-delà de {{ rules.toleratedNoShows }} absence{{ rules.toleratedNoShows > 1 ? 's' : '' }}, les réservations du compte sont suspendues pendant {{ rules.suspensionDays }} jours.
+    </p>
+    <p class="legal-section__text">
+        Pour contester une absence, écrivez-nous à
+        <a href="mailto:{{ supportEmail }}">
+            {{ supportEmail }}
+        </a>.
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">6. Signalements</h2>
-    <p class="legal-section__text">Un problème sur place (établissement fermé, prix différent, prestation non conforme) peut être signalé dans les {{ rules.reportWindowHours }} h depuis le détail de la réservation.</p>
+    <h2 class="legal-section__title">
+        6. Signalements
+    </h2>
+    <p class="legal-section__text">
+        Un problème sur place (établissement fermé, prix différent, prestation non conforme) peut être signalé dans les {{ rules.reportWindowHours }} h depuis le détail de la réservation.
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">7. Responsabilité</h2>
-    <p class="legal-section__text">Le professionnel est seul responsable de la prestation réalisée. <mark class="legal-todo">À compléter : limites de responsabilité de {{ site.siteName }}.</mark></p>
+    <h2 class="legal-section__title">
+        7. Responsabilité
+    </h2>
+    <p class="legal-section__text">
+        Le professionnel est seul responsable de la prestation réalisée.
+        <mark class="legal-todo">
+            À compléter : limites de responsabilité de {{ site.siteName }}.
+        </mark>
+    </p>
 </section>

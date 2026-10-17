@@ -4,26 +4,75 @@
 
 {% block mailContent %}
 
-    <p>Votre facture Kréno Pro{% if invoice.month %} de {{ invoice.month }}{% endif %} est disponible.</p>
+    <p>
+        Votre facture Kréno Pro
+        {% if invoice.month %}
+            de {{ invoice.month }}
+        {% endif %}
+        est disponible.
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">Facture n° {{ invoice.number }} du {{ invoice.issuedAt }}</li>
+        <li style="{{ styles.item }}">
+            Facture n° {{ invoice.number }} du {{ invoice.issuedAt }}
+        </li>
         {% if invoice.period %}
-            <li style="{{ styles.item }}">Période : {{ invoice.period }}</li>
+            <li style="{{ styles.item }}">
+                Période : {{ invoice.period }}
+            </li>
         {% endif %}
     </ul>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="{{ styles.table }}">
         {% for line in invoice.lines %}
-            <tr><td style="{{ styles.cell }}">{{ line.label }}{% if line.quantity > 1 %} × {{ line.quantity }}{% endif %}</td><td style="{{ styles.cellValue }}">{{ line.amount }}</td></tr>
+            <tr>
+                <td style="{{ styles.cell }}">
+                    {{ line.label }}
+                    {% if line.quantity > 1 %}
+                        × {{ line.quantity }}
+                    {% endif %}
+                </td>
+                <td style="{{ styles.cellValue }}">
+                    {{ line.amount }}
+                </td>
+            </tr>
         {% endfor %}
-        <tr><td style="{{ styles.cell }}">Total HT</td><td style="{{ styles.cellValue }}">{{ invoice.totalExcludingTax }}</td></tr>
-        <tr><td style="{{ styles.cell }}">TVA</td><td style="{{ styles.cellValue }}">{{ invoice.tax }}</td></tr>
-        <tr><td style="{{ styles.total }}">Total TTC</td><td style="{{ styles.totalValue }}">{{ invoice.total }}</td></tr>
+        <tr>
+            <td style="{{ styles.cell }}">
+                Total HT
+            </td>
+            <td style="{{ styles.cellValue }}">
+                {{ invoice.totalExcludingTax }}
+            </td>
+        </tr>
+        <tr>
+            <td style="{{ styles.cell }}">
+                TVA
+            </td>
+            <td style="{{ styles.cellValue }}">
+                {{ invoice.tax }}
+            </td>
+        </tr>
+        <tr>
+            <td style="{{ styles.total }}">
+                Total TTC
+            </td>
+            <td style="{{ styles.totalValue }}">
+                {{ invoice.total }}
+            </td>
+        </tr>
     </table>
     {% if paymentMethod %}
-        <p>Réglée le {{ paidAt }} par {{ paymentMethod.label }}.</p>
+        <p>
+            Réglée le {{ paidAt }} par {{ paymentMethod.label }}.
+        </p>
     {% else %}
-        <p>Aucun montant n’est à régler.</p>
+        <p>
+            Aucun montant n’est à régler.
+        </p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ invoice.url }}" style="{{ styles.button }}">Voir la facture</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ invoice.url }}" style="{{ styles.button }}">
+            Voir la facture
+        </a>
+    </p>
 
 {% endblock %}

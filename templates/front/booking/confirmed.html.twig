@@ -1,6 +1,8 @@
 {% extends 'layouts/front.html.twig' %}
 
-{% block title %}Réservation confirmée · {{ website().siteName }}{% endblock %}
+{% block title %}
+    Réservation confirmée · {{ website().siteName }}
+{% endblock %}
 
 {% block header_class %}site-header--compact{% endblock %}
 
@@ -8,28 +10,71 @@
     <div class="booking-done">
         <div class="booking-done__text">
             <span class="booking-done__icon" aria-hidden="true"><i data-lucide="check" class="booking-done__check"></i></span>
-            <h1 class="booking-done__title">{{ booking.title }}</h1>
-            <p class="booking-done__message">{{ booking.message }}</p>
+            <h1 class="booking-done__title">
+                {{ booking.title }}
+            </h1>
+            <p class="booking-done__message">
+                {{ booking.message }}
+            </p>
             <div class="booking-done__actions">
-                <a href="{{ path('account_booking_calendar', { reference: booking.reference }) }}" class="btn btn--primary">Ajouter à mon agenda</a>
+                <a href="{{ path('account_booking_calendar', { reference: booking.reference }) }}" class="btn btn--primary">
+                    Ajouter à mon agenda
+                </a>
                 {% if booking.establishment and booking.establishment.directions %}
-                    <a href="{{ booking.establishment.directions }}" class="btn btn--outline" target="_blank" rel="noopener">Itinéraire</a>
+                    <a href="{{ booking.establishment.directions }}" class="btn btn--outline" target="_blank" rel="noopener">
+                        Itinéraire
+                    </a>
                 {% endif %}
-                <a href="{{ path('account_bookings') }}" class="btn btn--outline">Voir mes réservations</a>
+                <a href="{{ path('account_bookings') }}" class="btn btn--outline">
+                    Voir mes réservations
+                </a>
             </div>
             {% if booking.cancellationNotice %}
-                <p class="booking-done__notice">{{ booking.cancellationNotice }}</p>
+                <p class="booking-done__notice">
+                    {{ booking.cancellationNotice }}
+                </p>
             {% endif %}
         </div>
 
-        {% embed 'components/ticket.html.twig' with { day: booking.day, time: booking.time, duration: booking.duration, modifier: 'large' } %}
+        {% embed 'components/ticket.html.twig' with {
+            day: booking.day,
+            time: booking.time,
+            duration: booking.duration,
+            modifier: 'large'
+        } %}
+
             {% block ticket_body %}
-                <b class="ticket__name">{{ booking.establishment ? booking.establishment.name : '' }}</b>
-                <span class="ticket__what">{{ booking.what }}{% if booking.staff %} · avec {{ booking.staff }}{% endif %}</span>
-                {% if booking.establishment %}<span class="ticket__address">{{ booking.establishment.address }}</span>{% endif %}
-                <span class="ticket__prices"><s class="ticket__old">{{ booking.old }}</s> <b class="ticket__price">{{ booking.price }}</b> <span class="ticket__pay">à régler sur place</span></span>
-                <span class="ticket__reference">{{ booking.reference }}</span>
+                <b class="ticket__name">
+                    {{ booking.establishment ? booking.establishment.name : '' }}
+                </b>
+                <span class="ticket__what">
+                    {{ booking.what }}
+                    {% if booking.staff %}
+                        · avec {{ booking.staff }}
+                    {% endif %}
+                </span>
+                {% if booking.establishment %}
+                    <span class="ticket__address">
+                        {{ booking.establishment.address }}
+                    </span>
+                {% endif %}
+                <span class="ticket__prices">
+                    <s class="ticket__old">
+                        {{ booking.old }}
+                    </s>
+                    <b class="ticket__price">
+                        {{ booking.price }}
+                    </b>
+                    <span class="ticket__pay">
+                        à régler sur place
+                    </span>
+                </span>
+                <span class="ticket__reference">
+                    {{ booking.reference }}
+                </span>
             {% endblock %}
+
         {% endembed %}
+
     </div>
 {% endblock %}

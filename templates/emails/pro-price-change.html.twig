@@ -5,20 +5,43 @@
 {% block mailContent %}
 
     {% if lower %}
-        <p>Bonne nouvelle : le prix de votre formule {{ newPlan }} baisse.</p>
+        <p>
+            Bonne nouvelle : le prix de votre formule {{ newPlan }} baisse.
+        </p>
     {% else %}
-        <p>Le prix de votre formule {{ newPlan }} évolue.</p>
+        <p>
+            Le prix de votre formule {{ newPlan }} évolue.
+        </p>
     {% endif %}
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">Prix actuel : {{ currentPrice }} HT ({{ subscription.period|lower }})</li>
-        <li style="{{ styles.item }}">Nouveau prix : {{ newPrice }} HT ({{ lower ? 'soit ' ~ difference ~ ' de moins' : 'soit ' ~ difference ~ ' de plus' }})</li>
-        <li style="{{ styles.item }}">Appliqué à partir du {{ effectiveAt }}, lors de votre prochaine échéance</li>
+        <li style="{{ styles.item }}">
+            Prix actuel : {{ currentPrice }} HT ({{ subscription.period|lower }})
+        </li>
+        <li style="{{ styles.item }}">
+            Nouveau prix : {{ newPrice }} HT
+            {% if lower %}
+                (soit {{ difference }} de mois)
+            {% else %}
+                (soit {{ difference }} de plus)
+            {% endif %}
+        </li>
+        <li style="{{ styles.item }}">
+            Appliqué à partir du {{ effectiveAt }}, lors de votre prochaine échéance
+        </li>
     </ul>
     {% if lower %}
-        <p>Vous n’avez rien à faire : la baisse s’appliquera automatiquement.</p>
+        <p>
+            Vous n’avez rien à faire : la baisse s’appliquera automatiquement.
+        </p>
     {% else %}
-        <p>Vous n’avez rien à faire pour conserver votre formule. Si ce nouveau tarif ne vous convient pas, vous pouvez changer de formule ou résilier avant cette date, sans frais.</p>
+        <p>
+            Vous n’avez rien à faire pour conserver votre formule. Si ce nouveau tarif ne vous convient pas, vous pouvez changer de formule ou résilier avant cette date, sans frais.
+        </p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ subscription.url }}" style="{{ styles.button }}">Mon abonnement</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ subscription.url }}" style="{{ styles.button }}">
+            Mon abonnement
+        </a>
+    </p>
 
 {% endblock %}

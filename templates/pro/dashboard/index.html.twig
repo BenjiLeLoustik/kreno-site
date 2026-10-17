@@ -4,13 +4,19 @@
 
 {% set pro_section = 'dashboard' %}
 
-{% block title %}Tableau de bord · Espace pro{% endblock %}
+{% block title %}
+    Tableau de bord · Espace pro
+{% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
-            <span class="pro-subtitle">{{ dashboard.date }}</span>
-            <h1 class="pro-title">{{ dashboard.greeting }}</h1>
+            <span class="pro-subtitle">
+                {{ dashboard.date }}
+            </span>
+            <h1 class="pro-title">
+                {{ dashboard.greeting }}
+            </h1>
         </div>
         {% if canPublish %}
             <a href="{{ path('pro_slot_new') }}" class="pro-button pro-button--primary">
@@ -21,72 +27,126 @@
     </div>
 
     {% if establishment.status == 'rejected' and establishment.rejectionReason %}
-        <div class="pro-flash pro-flash--error">Votre établissement a été refusé : {{ establishment.rejectionReason }}</div>
+        <div class="pro-flash pro-flash--error">
+            Votre établissement a été refusé : {{ establishment.rejectionReason }}
+        </div>
     {% endif %}
 
     <div>
         <div class="pro-stats">
             {% for stat in dashboard.stats %}
                 <div class="pro-stat">
-                    <span class="pro-stat__label">{{ stat.label }}</span>
-                    <strong class="pro-stat__value">{{ stat.value }}</strong>
-                    <span class="pro-stat__note pro-stat__note--{{ stat.trend }}">{{ stat.note }}</span>
+                    <span class="pro-stat__label">
+                        {{ stat.label }}
+                    </span>
+                    <strong class="pro-stat__value">
+                        {{ stat.value }}
+                    </strong>
+                    <span class="pro-stat__note pro-stat__note--{{ stat.trend }}">
+                        {{ stat.note }}
+                    </span>
                 </div>
             {% endfor %}
         </div>
-        <p class="pro-subtitle dashboard-period">Chiffres des 30 derniers jours.</p>
+        <p class="pro-subtitle dashboard-period">
+            Chiffres des 30 derniers jours.
+        </p>
     </div>
 
     <div class="pro-columns">
         <section class="pro-card dashboard-reviews">
             <div class="pro-card__head">
-                <h2 class="pro-card__title">Avis clients</h2>
-                <a href="{{ path('pro_reviews') }}" class="pro-card__link">Voir les avis</a>
+                <h2 class="pro-card__title">
+                    Avis clients
+                </h2>
+                <a href="{{ path('pro_reviews') }}" class="pro-card__link">
+                    Voir les avis
+                </a>
             </div>
             {% if reviews.count > 0 %}
                 <div class="dashboard-reviews__body">
-                    <strong class="dashboard-reviews__average">{{ reviews.averageLabel }}</strong>
+                    <strong class="dashboard-reviews__average">
+                        {{ reviews.averageLabel }}
+                    </strong>
                     {{ stars.show(reviews.average) }}
-                    <span class="pro-row__meta">{{ reviews.countLabel }}</span>
+                    <span class="pro-row__meta">
+                        {{ reviews.countLabel }}
+                    </span>
                     {% if reviews.unanswered > 0 %}
-                        <a href="{{ path('pro_reviews', { tab: 'unanswered' }) }}" class="pro-badge dashboard-reviews__pending">{{ reviews.unanswered }} sans réponse</a>
+                        <a href="{{ path('pro_reviews', { tab: 'unanswered' }) }}" class="pro-badge dashboard-reviews__pending">
+                            {{ reviews.unanswered }} sans réponse
+                        </a>
                     {% endif %}
                 </div>
             {% else %}
-                <p class="pro-subtitle">Pas encore d'avis. Vos clients pourront en laisser après chaque rendez-vous honoré.</p>
+                <p class="pro-subtitle">
+                    Pas encore d'avis. Vos clients pourront en laisser après chaque rendez-vous honoré.
+                </p>
             {% endif %}
         </section>
         <section class="pro-card pro-columns__main">
             <div class="pro-card__head">
-                <h2 class="pro-card__title">Aujourd'hui</h2>
-                <a href="{{ path('pro_slots') }}" class="pro-card__link">Tous mes créneaux</a>
+                <h2 class="pro-card__title">
+                    Aujourd'hui
+                </h2>
+                <a href="{{ path('pro_slots') }}" class="pro-card__link">
+                    Tous mes créneaux
+                </a>
             </div>
             {% for slot in dashboard.today %}
                 <a href="{{ slot.bookingId ? path('pro_booking_show', { id: slot.bookingId }) : path('pro_slots') }}" class="pro-row">
-                    <strong class="pro-row__time">{{ slot.time }}</strong>
+                    <strong class="pro-row__time">
+                        {{ slot.time }}
+                    </strong>
                     <span class="pro-row__body">
-                        <span class="pro-row__title">{{ slot.what }}</span>
-                        <span class="pro-row__meta">{{ slot.detail }}</span>
+                        <span class="pro-row__title">
+                            {{ slot.what }}
+                        </span>
+                        <span class="pro-row__meta">
+                            {{ slot.detail }}
+                        </span>
                     </span>
-                    <span class="pro-badge pro-badge--{{ slot.kind }}">{{ slot.status }}</span>
+                    <span class="pro-badge pro-badge--{{ slot.kind }}">
+                        {{ slot.status }}
+                    </span>
                 </a>
             {% else %}
                 <div class="pro-empty">
                     Aucun créneau aujourd'hui.
-                    {% if canPublish %}<a href="{{ path('pro_slot_new') }}" class="pro-button pro-button--small">Publier un créneau</a>{% endif %}
+                    {% if canPublish %}
+                        <a href="{{ path('pro_slot_new') }}" class="pro-button pro-button--small">
+                            Publier un créneau
+                        </a>
+                    {% endif %}
                 </div>
             {% endfor %}
         </section>
 
         <section class="pro-card pro-card--dark pro-columns__aside">
-            <h2 class="pro-card__title">Dernières réservations</h2>
+            <h2 class="pro-card__title">
+                Dernières réservations
+            </h2>
             {% for booking in dashboard.recent %}
                 <a href="{{ path('pro_booking_show', { id: booking.id }) }}" class="dashboard-booking">
-                    <span class="dashboard-booking__head"><b>{{ booking.client }}</b><span class="dashboard-booking__when">{{ booking.when }}</span></span>
-                    <span class="dashboard-booking__what">{{ booking.what }} · <b class="dashboard-booking__price">{{ booking.price }}</b></span>
+                    <span class="dashboard-booking__head">
+                        <b>
+                            {{ booking.client }}
+                        </b>
+                        <span class="dashboard-booking__when">
+                            {{ booking.when }}
+                        </span>
+                    </span>
+                    <span class="dashboard-booking__what">
+                        {{ booking.what }} ·
+                        <b class="dashboard-booking__price">
+                            {{ booking.price }}
+                        </b>
+                    </span>
                 </a>
             {% else %}
-                <p class="dashboard-booking__empty">Pas encore de réservation. Elles apparaîtront ici dès qu'un client réserve un créneau.</p>
+                <p class="dashboard-booking__empty">
+                    Pas encore de réservation. Elles apparaîtront ici dès qu'un client réserve un créneau.
+                </p>
             {% endfor %}
         </section>
     </div>

@@ -1,6 +1,7 @@
 {% set size = size|default(36) %}
 {% set light = light|default(false) %}
 {% set badge = badge|default(null) %}
+
 <span class="logo{{ light ? ' logo--light' : '' }}">
     {% if size > 0 %}
         <svg class="logo__mark" width="{{ size }}" height="{{ size }}" viewBox="0 0 100 100" aria-hidden="true">
@@ -11,8 +12,12 @@
             <circle cx="36" cy="52" r="8" fill="#1B1F3B"></circle>
         </svg>
     {% endif %}
-    <span class="logo__word">kréno</span>
+    <span class="logo__word">
+        kréno
+    </span>
     {% if badge %}
-        <span class="logo__badge logo__badge--{{ badge }}">{{ badge }}</span>
+        <span class="logo__badge logo__badge--{{ badge }}">
+            {{ badge }}
+        </span>
     {% endif %}
 </span>

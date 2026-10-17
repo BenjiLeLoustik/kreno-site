@@ -2,20 +2,28 @@
 
 {% set site = website() %}
 
-{% block title %}{{ title }} · {{ site.siteName }}{% endblock %}
+{% block title %}
+    {{ title }} · {{ site.siteName }}
+{% endblock %}
 
 {% block content %}
     <div class="legal">
         <nav class="legal-nav" aria-label="Documents légaux">
             {% for item in documents %}
-                <a href="{{ path('page_legal', { document: item.key }) }}" class="legal-nav__link{{ item.selected ? ' legal-nav__link--active' : '' }}"{{ item.selected ? ' aria-current="page"' : '' }}>{{ item.label }}</a>
+                <a href="{{ path('page_legal', { document: item.key }) }}" class="legal-nav__link{{ item.selected ? ' legal-nav__link--active' : '' }}"{{ item.selected ? ' aria-current="page"' : '' }}>
+                    {{ item.label }}
+                </a>
             {% endfor %}
         </nav>
 
         <article class="legal-document">
             <header class="legal-document__head">
-                <h1 class="legal-document__title">{{ title }}</h1>
-                <span class="legal-document__date">Dernière mise à jour : {{ updatedAt }}</span>
+                <h1 class="legal-document__title">
+                    {{ title }}
+                </h1>
+                <span class="legal-document__date">
+                    Dernière mise à jour : {{ updatedAt }}
+                </span>
             </header>
 
             {% include 'front/page/legal/_' ~ document ~ '.html.twig' %}

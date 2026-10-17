@@ -2,41 +2,88 @@
 
 {% set mailType = 'moderation' %}
 
-{% block preheader %}{{ topic }} · {{ email }}{% endblock %}
+{% block preheader %}
+    {{ topic }} · {{ email }}
+{% endblock %}
 
 {% block mailContent %}
 
     {% if followUp|default(false) %}
-        <p>Le client a répondu à sa demande le {{ sentAt }}.</p>
+        <p>
+            Le client a répondu à sa demande le {{ sentAt }}.
+        </p>
     {% else %}
-        <p>Nouveau message reçu depuis le formulaire d’aide le {{ sentAt }}.</p>
+        <p>
+            Nouveau message reçu depuis le formulaire d’aide le {{ sentAt }}.
+        </p>
     {% endif %}
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">Sujet : <strong style="{{ styles.strong }}">{{ topic }}</strong></li>
-        <li style="{{ styles.item }}">E-mail : <a href="mailto:{{ email }}" style="{{ styles.link }}">{{ email }}</a></li>
+        <li style="{{ styles.item }}">
+            Sujet :
+            <strong style="{{ styles.strong }}">
+                {{ topic }}
+            </strong>
+        </li>
+        <li style="{{ styles.item }}">
+            E-mail :
+            <a href="mailto:{{ email }}" style="{{ styles.link }}">
+                {{ email }}
+            </a>
+        </li>
         {% if user %}
-            <li style="{{ styles.item }}">Compte : {{ user.name }} (#{{ user.id }}){% if user.email != email %} · {{ user.email }}{% endif %}</li>
+            <li style="{{ styles.item }}">
+                Compte : {{ user.name }} (#{{ user.id }})
+                {% if user.email != email %}
+                    · {{ user.email }}
+                {% endif %}
+            </li>
         {% else %}
-            <li style="{{ styles.item }}">Compte : visiteur non connecté</li>
+            <li style="{{ styles.item }}">
+                Compte : visiteur non connecté
+            </li>
         {% endif %}
         {% if reference %}
-            <li style="{{ styles.item }}">Réservation : <strong style="{{ styles.strong }}">{{ reference }}</strong>{% if not booking %} (introuvable){% endif %}</li>
+            <li style="{{ styles.item }}">
+                Réservation :
+                <strong style="{{ styles.strong }}">
+                    {{ reference }}
+                </strong>
+                {% if not booking %}
+                    (introuvable)
+                {% endif %}
+            </li>
         {% endif %}
         {% if booking %}
-            <li style="{{ styles.item }}">Établissement : {{ booking.establishment ?: '—' }} · statut : {{ booking.status }}</li>
+            <li style="{{ styles.item }}">
+                Établissement :
+                {{ booking.establishment ?: '-' }}
+                · statut : {{ booking.status }}
+            </li>
             {% if booking.customerEmail and booking.customerEmail != email %}
-                <li style="{{ styles.item }}">Attention : la réservation appartient à {{ booking.customerEmail }}</li>
+                <li style="{{ styles.item }}">
+                    Attention : la réservation appartient à {{ booking.customerEmail }}
+                </li>
             {% endif %}
         {% endif %}
     </ul>
 
-    <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
+    <blockquote style="{{ styles.quote }}">
+        {{ message|nl2br }}
+    </blockquote>
 
     {% if adminUrl|default(null) %}
-        <p style="{{ styles.actions }}"><a href="{{ adminUrl }}" style="{{ styles.button }}">Répondre depuis l’administration</a></p>
-        <p>Une réponse envoyée depuis l’administration reste dans l’historique de la demande. Répondre à cet e-mail écrit directement à {{ email }}, sans garder de trace.</p>
+        <p style="{{ styles.actions }}">
+            <a href="{{ adminUrl }}" style="{{ styles.button }}">
+                Répondre depuis l’administration
+            </a>
+        </p>
+        <p>
+            Une réponse envoyée depuis l’administration reste dans l’historique de la demande. Répondre à cet e-mail écrit directement à {{ email }}, sans garder de trace .
+        </p>
     {% else %}
-        <p>Répondre à cet e-mail écrit directement à {{ email }}.</p>
+        <p>
+            Répondre à cet e-mail écrit directement à {{ email }}.
+        </p>
     {% endif %}
 
 {% endblock %}

@@ -1,5 +1,7 @@
 <section class="shop-section" id="avis">
-    <h2 class="shop-section__title">Avis clients</h2>
+    <h2 class="shop-section__title">
+        Avis clients
+    </h2>
     {% if reviews.count > 0 %}
         {% include 'front/review/_summary.html.twig' with { summary: reviews } only %}
         <ul class="review-list">
@@ -7,8 +9,12 @@
                 <li>{% include 'front/review/_card.html.twig' with { review: review } only %}</li>
             {% endfor %}
         </ul>
-        <p class="review-note">Seuls les clients venus à leur rendez-vous peuvent laisser un avis.</p>
+        <p class="review-note">
+            Seuls les clients venus à leur rendez-vous peuvent laisser un avis.
+        </p>
     {% else %}
-        <p class="review-empty">Pas encore d'avis. Seuls les clients venus à leur rendez-vous peuvent en laisser un.</p>
+        <p class="review-empty">
+            Pas encore d'avis. Seuls les clients venus à leur rendez-vous peuvent en laisser un.
+        </p>
     {% endif %}
 </section>

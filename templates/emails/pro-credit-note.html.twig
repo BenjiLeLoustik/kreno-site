@@ -4,20 +4,46 @@
 
 {% block mailContent %}
 
-    <p>Un avoir a été émis sur votre compte Kréno Pro.</p>
+    <p>
+        Un avoir a été émis sur votre compte Kréno Pro.
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">Avoir n° {{ invoice.number }} du {{ invoice.issuedAt }}</li>
+        <li style="{{ styles.item }}">
+            Avoir n° {{ invoice.number }} du {{ invoice.issuedAt }}
+        </li>
         {% if credited %}
-            <li style="{{ styles.item }}">Sur la facture n° {{ credited }}</li>
+            <li style="{{ styles.item }}">
+                Sur la facture n° {{ credited }}
+            </li>
         {% endif %}
     </ul>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="{{ styles.table }}">
         {% for line in invoice.lines %}
-            <tr><td style="{{ styles.cell }}">{{ line.label }}</td><td style="{{ styles.cellValue }}">{{ line.amount }}</td></tr>
+            <tr>
+                <td style="{{ styles.cell }}">
+                    {{ line.label }}
+                </td>
+                <td style="{{ styles.cellValue }}">
+                    {{ line.amount }}
+                </td>
+            </tr>
         {% endfor %}
-        <tr><td style="{{ styles.total }}">Total TTC</td><td style="{{ styles.totalValue }}">{{ invoice.total }}</td></tr>
+        <tr>
+            <td style="{{ styles.total }}">
+                Total TTC
+            </td>
+            <td style="{{ styles.totalValue }}">
+                {{ invoice.total }}
+            </td>
+        </tr>
     </table>
-    <p>Ce montant sera déduit de vos prochaines factures ou remboursé sur votre moyen de paiement.</p>
-    <p style="{{ styles.actions }}"><a href="{{ invoice.url }}" style="{{ styles.button }}">Voir l’avoir</a></p>
+    <p>
+        Ce montant sera déduit de vos prochaines factures ou remboursé sur votre moyen de paiement.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ invoice.url }}" style="{{ styles.button }}">
+            Voir l’avoir
+        </a>
+    </p>
 
 {% endblock %}

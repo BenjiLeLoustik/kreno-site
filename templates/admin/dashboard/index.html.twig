@@ -2,22 +2,36 @@
 
 {% set admin_section = 'dashboard' %}
 
-{% block title %}Vue d'ensemble · Administration Kréno{% endblock %}
+{% block title %}
+    Vue d'ensemble · Administration Kréno
+{% endblock %}
 
 {% block content %}
-    <h1 class="admin-title">Vue d'ensemble</h1>
+    <h1 class="admin-title">
+        Vue d'ensemble
+    </h1>
 
     <div class="admin-stats">
         {% for stat in stats %}
             {% set body %}
-                <span class="admin-stat__label">{{ stat.label }}</span>
-                <strong class="admin-stat__value{{ stat.alert ? ' admin-stat__value--alert' : '' }}">{{ stat.value }}</strong>
-                <span class="admin-stat__note">{{ stat.note }}</span>
+                <span class="admin-stat__label">
+                    {{ stat.label }}
+                </span>
+                <strong class="admin-stat__value{{ stat.alert ? ' admin-stat__value--alert' : '' }}">
+                    {{ stat.value }}
+                </strong>
+                <span class="admin-stat__note">
+                    {{ stat.note }}
+                </span>
             {% endset %}
             {% if route_exists(stat.route) %}
-                <a href="{{ path(stat.route) }}" class="admin-stat">{{ body }}</a>
+                <a href="{{ path(stat.route) }}" class="admin-stat">
+                    {{ body }}
+                </a>
             {% else %}
-                <div class="admin-stat">{{ body }}</div>
+                <div class="admin-stat">
+                    {{ body }}
+                </div>
             {% endif %}
         {% endfor %}
     </div>
@@ -25,49 +39,83 @@
     <div class="admin-dashboard__panels">
         <section class="admin-panel">
             <div class="admin-panel__head">
-                <h2 class="admin-panel__title">Pros en attente de vérification</h2>
+                <h2 class="admin-panel__title">
+                    Pros en attente de vérification
+                </h2>
                 {% if is_granted('ROLE_MODERATOR') and route_exists('admin_moderation_index') %}
-                    <a href="{{ path('admin_moderation_index') }}" class="admin-panel__more">Tout voir</a>
+                    <a href="{{ path('admin_moderation_index') }}" class="admin-panel__more">
+                        Tout voir
+                    </a>
                 {% endif %}
             </div>
             {% for establishment in pending %}
                 <div class="admin-panel__row">
                     <span>
                         {% if is_granted('ROLE_MODERATOR') and route_exists('admin_moderation_show') %}
-                            <a href="{{ path('admin_moderation_show', { id: establishment.id }) }}" class="admin-panel__name">{{ establishment.name }}</a>
+                            <a href="{{ path('admin_moderation_show', { id: establishment.id }) }}" class="admin-panel__name">
+                                {{ establishment.name }}
+                            </a>
                         {% else %}
-                            <b class="admin-panel__name">{{ establishment.name }}</b>
+                            <b class="admin-panel__name">
+                                {{ establishment.name }}
+                            </b>
                         {% endif %}
-                        {% if establishment.city %}<span class="admin-panel__meta">· {{ establishment.city.name }}</span>{% endif %}
+                        {% if establishment.city %}
+                            <span class="admin-panel__meta">
+                                · {{ establishment.city.name }}
+                            </span>
+                        {% endif %}
                     </span>
-                    {% if establishment.when %}<span class="admin-panel__aside">{{ establishment.when }}</span>{% endif %}
+                    {% if establishment.when %}
+                        <span class="admin-panel__aside">
+                            {{ establishment.when }}
+                        </span>
+                    {% endif %}
                 </div>
             {% else %}
-                <p class="admin-panel__empty">Aucun pro en attente. Tout est à jour.</p>
+                <p class="admin-panel__empty">
+                    Aucun pro en attente. Tout est à jour.
+                </p>
             {% endfor %}
         </section>
 
         <section class="admin-panel">
             <div class="admin-panel__head">
-                <h2 class="admin-panel__title">Signalements ouverts</h2>
+                <h2 class="admin-panel__title">
+                    Signalements ouverts
+                </h2>
                 {% if is_granted('ROLE_MODERATOR') and route_exists('admin_reports') %}
-                    <a href="{{ path('admin_reports') }}" class="admin-panel__more">Tout voir</a>
+                    <a href="{{ path('admin_reports') }}" class="admin-panel__more">
+                        Tout voir
+                    </a>
                 {% endif %}
             </div>
             {% for report in reports %}
                 <div class="admin-panel__row">
                     <span>
                         {% if is_granted('ROLE_MODERATOR') and route_exists('admin_report_show') %}
-                            <a href="{{ path('admin_report_show', { id: report.id }) }}" class="admin-panel__name">{{ report.reasonLabel }}</a>
+                            <a href="{{ path('admin_report_show', { id: report.id }) }}" class="admin-panel__name">
+                                {{ report.reasonLabel }}
+                            </a>
                         {% else %}
-                            <b class="admin-panel__name">{{ report.reasonLabel }}</b>
+                            <b class="admin-panel__name">
+                                {{ report.reasonLabel }}
+                            </b>
                         {% endif %}
-                        {% if report.target %}<span class="admin-panel__meta">· {{ report.target }}</span>{% endif %}
+                        {% if report.target %}
+                            <span class="admin-panel__meta">
+                                · {{ report.target }}
+                            </span>
+                        {% endif %}
                     </span>
-                    <span class="admin-priority admin-priority--{{ report.priority }}">{{ report.priorityLabel }}</span>
+                    <span class="admin-priority admin-priority--{{ report.priority }}">
+                        {{ report.priorityLabel }}
+                    </span>
                 </div>
             {% else %}
-                <p class="admin-panel__empty">Aucun signalement ouvert.</p>
+                <p class="admin-panel__empty">
+                    Aucun signalement ouvert.
+                </p>
             {% endfor %}
         </section>
     </div>

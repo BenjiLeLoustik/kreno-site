@@ -4,17 +4,34 @@
 
 {% block mailContent %}
 
-    <p>Paiement reçu, merci ! La facture n° {{ invoice.number }} est réglée.</p>
+    <p>
+        Paiement reçu, merci ! La facture n° {{ invoice.number }} est réglée.
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">Montant : {{ amount }} TTC</li>
-        <li style="{{ styles.item }}">Date : {{ paidAt }}</li>
+        <li style="{{ styles.item }}">
+            Montant : {{ amount }} TTC
+        </li>
+        <li style="{{ styles.item }}">
+            Date : {{ paidAt }}
+        </li>
         {% if paymentMethod %}
-            <li style="{{ styles.item }}">Moyen de paiement : {{ paymentMethod.label }}</li>
+            <li style="{{ styles.item }}">
+                Moyen de paiement : {{ paymentMethod.label }}
+            </li>
         {% endif %}
     </ul>
     {% if subscription %}
-        <p>Votre abonnement {{ subscription.plan }} est à jour{% if subscription.periodEnd %}, prochaine échéance le {{ subscription.periodEnd }}{% endif %}.</p>
+        <p>
+            Votre abonnement {{ subscription.plan }} est à jour
+            {% if subscription.periodEnd %}
+                , prochaine échéance le {{ subscription.periodEnd }}
+            {% endif %}
+            .</p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ invoice.url }}" style="{{ styles.button }}">Voir la facture</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ invoice.url }}" style="{{ styles.button }}">
+            Voir la facture
+        </a>
+    </p>
 
 {% endblock %}

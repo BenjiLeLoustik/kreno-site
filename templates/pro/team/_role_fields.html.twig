@@ -3,7 +3,9 @@
         Rôle
         <select name="role" class="pro-input">
             {% for option in roleOptions %}
-                <option value="{{ option.value }}"{{ option.value == current ? ' selected' : '' }}>{{ option.label }}</option>
+                <option value="{{ option.value }}"{{ option.value == current ? ' selected' : '' }}>
+                    {{ option.label }}
+                </option>
             {% endfor %}
         </select>
     </label>
@@ -11,10 +13,14 @@
         Établissement
         <select name="establishmentId" class="pro-input">
             {% for establishment in manageableEstablishments %}
-                <option value="{{ establishment.id }}"{{ establishment.id == currentEstablishment ? ' selected' : '' }}>{{ establishment.name }}</option>
+                <option value="{{ establishment.id }}"{{ establishment.id == currentEstablishment ? ' selected' : '' }}>
+                    {{ establishment.name }}
+                </option>
             {% endfor %}
         </select>
-        <span class="pro-field__hint">Ignoré pour un administrateur.</span>
+        <span class="pro-field__hint">
+            Ignoré pour un administrateur.
+        </span>
     </label>
 </div>
 <label class="settings-check">

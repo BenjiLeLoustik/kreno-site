@@ -2,8 +2,12 @@
 
 {% block install %}
     <div class="install-intro">
-        <h1 class="install-intro__title">Mise en route du site</h1>
-        <p class="install-intro__lead">Aucune version n'est en ligne. Renseigne l'identité du site, ses règles et les formules des professionnels : la version 1 sera publiée immédiatement. Tout reste modifiable ensuite depuis l'administration, en créant une nouvelle version.</p>
+        <h1 class="install-intro__title">
+            Mise en route du site
+        </h1>
+        <p class="install-intro__lead">
+            Aucune version n'est en ligne. Renseigne l'identité du site, ses règles et les formules des professionnels : la version 1 sera publiée immédiatement. Tout reste modifiable ensuite depuis l'administration, en créant une nouvelle version.
+        </p>
     </div>
 
     <form method="post" action="{{ path('app_install_submit') }}" class="install-form">
@@ -11,42 +15,96 @@
 
         {% if needsAdmin %}
             <section class="pro-card">
-                <div class="install-step"><span class="install-step__number">1</span><h2 class="pro-card__title">Compte administrateur</h2></div>
-                <p class="pro-subtitle">Aucun administrateur n'existe encore : ce compte aura tous les droits sur la plateforme.</p>
+                <div class="install-step">
+                    <span class="install-step__number">
+                        1
+                    </span>
+                    <h2 class="pro-card__title">
+                        Compte administrateur
+                    </h2>
+                </div>
+                <p class="pro-subtitle">
+                    Aucun administrateur n'existe encore : ce compte aura tous les droits sur la plateforme.
+                </p>
                 <div class="pro-form__row">
-                    <label class="pro-field">Prénom<input type="text" name="admin[firstName]" value="{{ admin.firstName }}" required maxlength="80" class="pro-input"></label>
-                    <label class="pro-field">Adresse e-mail<input type="email" name="admin[email]" value="{{ admin.email }}" required maxlength="180" autocomplete="email" class="pro-input"></label>
+                    <label class="pro-field">
+                        Prénom
+                        <input type="text" name="admin[firstName]" value="{{ admin.firstName }}" required maxlength="80" class="pro-input">
+                    </label>
+                    <label class="pro-field">
+                        Adresse e-mail
+                        <input type="email" name="admin[email]" value="{{ admin.email }}" required maxlength="180" autocomplete="email" class="pro-input">
+                    </label>
                 </div>
                 <label class="pro-field">
-                    <span class="pro-field__head">Mot de passe<span class="pro-field__hint">12 caractères minimum, lettres et chiffres</span></span>
+                    <span class="pro-field__head">
+                        Mot de passe
+                        <span class="pro-field__hint">
+                            12 caractères minimum, lettres et chiffres
+                        </span>
+                    </span>
                     <input type="password" name="admin[password]" required minlength="12" autocomplete="new-password" class="pro-input">
                 </label>
             </section>
         {% endif %}
 
         <section class="pro-card">
-            <div class="install-step"><span class="install-step__number">{{ needsAdmin ? 2 : 1 }}</span><h2 class="pro-card__title">Identité du site</h2></div>
-            <div class="pro-form__row">
-                <label class="pro-field">Nom du site<input type="text" name="identity[siteName]" value="{{ identity.siteName }}" required minlength="2" maxlength="80" class="pro-input"></label>
-                <label class="pro-field">Domaine<input type="text" name="identity[domain]" value="{{ identity.domain }}" required minlength="3" maxlength="120" class="pro-input" placeholder="kreno.fr"></label>
+            <div class="install-step">
+                <span class="install-step__number">
+                    {{ needsAdmin ? 2 : 1 }}
+                </span>
+                <h2 class="pro-card__title">
+                    Identité du site
+                </h2>
             </div>
-            <label class="pro-field">Accroche<input type="text" name="identity[tagline]" value="{{ identity.tagline }}" required minlength="3" maxlength="255" class="pro-input"></label>
-            <label class="pro-field">Description<textarea name="identity[siteDescription]" rows="2" required minlength="3" class="pro-input pro-input--area">{{ identity.siteDescription }}</textarea></label>
             <div class="pro-form__row">
-                <label class="pro-field">Titre SEO<input type="text" name="identity[seoTitle]" value="{{ identity.seoTitle }}" maxlength="160" class="pro-input"></label>
-                <label class="pro-field">E-mail de contact<input type="email" name="identity[contactEmail]" value="{{ identity.contactEmail }}" required class="pro-input"></label>
+                <label class="pro-field">
+                    Nom du site
+                    <input type="text" name="identity[siteName]" value="{{ identity.siteName }}" required minlength="2" maxlength="80" class="pro-input">
+                </label>
+                <label class="pro-field">
+                    Domaine
+                    <input type="text" name="identity[domain]" value="{{ identity.domain }}" required minlength="3" maxlength="120" class="pro-input" placeholder="kreno.fr">
+                </label>
+            </div>
+            <label class="pro-field">
+                Accroche
+                <input type="text" name="identity[tagline]" value="{{ identity.tagline }}" required minlength="3" maxlength="255" class="pro-input">
+            </label>
+            <label class="pro-field">
+                Description
+                <textarea name="identity[siteDescription]" rows="2" required minlength="3" class="pro-input pro-input--area">{{ identity.siteDescription }}</textarea>
+            </label>
+            <div class="pro-form__row">
+                <label class="pro-field">
+                    Titre SEO
+                    <input type="text" name="identity[seoTitle]" value="{{ identity.seoTitle }}" maxlength="160" class="pro-input">
+                </label>
+                <label class="pro-field">
+                    E-mail de contact
+                    <input type="email" name="identity[contactEmail]" value="{{ identity.contactEmail }}" required class="pro-input">
+                </label>
             </div>
         </section>
 
         <section class="pro-card">
-            <div class="install-step"><span class="install-step__number">{{ needsAdmin ? 3 : 2 }}</span><h2 class="pro-card__title">Règles de la plateforme</h2></div>
+            <div class="install-step">
+                <span class="install-step__number">
+                    {{ needsAdmin ? 3 : 2 }}
+                </span>
+                <h2 class="pro-card__title">
+                    Règles de la plateforme
+                </h2>
+            </div>
             <div class="install-rules">
                 {% for rule in rules %}
                     <label class="pro-field install-rule">
                         {{ rule.label }}
                         <span class="install-rule__input">
                             <input type="number" name="rules[{{ rule.key }}]" value="{{ rule.current }}" required min="0" class="pro-input">
-                            <span class="install-rule__unit">{{ rule.unit }}</span>
+                            <span class="install-rule__unit">
+                                {{ rule.unit }}
+                            </span>
                         </span>
                     </label>
                 {% endfor %}
@@ -54,13 +112,26 @@
         </section>
 
         <section class="pro-card">
-            <div class="install-step"><span class="install-step__number">{{ needsAdmin ? 4 : 3 }}</span><h2 class="pro-card__title">Formules des professionnels</h2></div>
+            <div class="install-step">
+                <span class="install-step__number">
+                    {{ needsAdmin ? 4 : 3 }}
+                </span>
+                <h2 class="pro-card__title">
+                    Formules des professionnels
+                </h2>
+            </div>
             <div class="install-plans">
                 {% for plan in plans %}
                     {% set index = loop.index0 %}
                     {% set subscription = plan.billing == 'subscription' %}
                     <fieldset class="install-plan">
-                        <legend class="install-plan__legend">{{ subscription ? 'Abonnement mensuel ou annuel' : 'Facturation à la réservation' }}</legend>
+                        <legend class="install-plan__legend">
+                            {% if subscription %}
+                                Abonnement mensuel ou annuel
+                            {% else %}
+                                Facturation à la transaction
+                            {% endif %}
+                        </legend>
                         <input type="hidden" name="plans[{{ index }}][billing]" value="{{ plan.billing }}">
                         <label class="settings-check">
                             <input type="hidden" name="plans[{{ index }}][active]" value="0">
@@ -68,25 +139,56 @@
                             Proposer cette formule
                         </label>
                         <div class="pro-form__row">
-                            <label class="pro-field">Nom<input type="text" name="plans[{{ index }}][name]" value="{{ plan.name }}" maxlength="80" class="pro-input"></label>
-                            <label class="pro-field">Code<input type="text" name="plans[{{ index }}][code]" value="{{ plan.code }}" pattern="[a-z0-9\-]{2,40}" class="pro-input"></label>
+                            <label class="pro-field">
+                                Nom
+                                <input type="text" name="plans[{{ index }}][name]" value="{{ plan.name }}" maxlength="80" class="pro-input">
+                            </label>
+                            <label class="pro-field">
+                                Code
+                                <input type="text" name="plans[{{ index }}][code]" value="{{ plan.code }}" pattern="[a-z0-9\-]{2,40}" class="pro-input">
+                            </label>
                         </div>
-                        <label class="pro-field">Description<input type="text" name="plans[{{ index }}][description]" value="{{ plan.description }}" maxlength="255" class="pro-input"></label>
+                        <label class="pro-field">
+                            Description
+                            <input type="text" name="plans[{{ index }}][description]" value="{{ plan.description }}" maxlength="255" class="pro-input">
+                        </label>
                         <div class="pro-form__row">
-                            <label class="pro-field">{{ subscription ? 'Prix mensuel HT (€)' : 'Prix par créneau réservé HT (€)' }}<input type="text" name="plans[{{ index }}][price]" value="{{ plan.price }}" inputmode="decimal" class="pro-input"></label>
+                            <label class="pro-field">
+                                {% if subscription %}
+                                    Prix menseul HT (€)
+                                {% else %}
+                                    Prix par créneau réservé HT (€)
+                                {% endif %}
+                                <input type="text" name="plans[{{ index }}][price]" value="{{ plan.price }}" inputmode="decimal" class="pro-input">
+                            </label>
                             {% if subscription %}
-                                <label class="pro-field">Prix annuel HT (€)<input type="text" name="plans[{{ index }}][yearlyPrice]" value="{{ plan.yearlyPrice }}" inputmode="decimal" class="pro-input"></label>
+                                <label class="pro-field">
+                                    Prix annuel HT (€)
+                                    <input type="text" name="plans[{{ index }}][yearlyPrice]" value="{{ plan.yearlyPrice }}" inputmode="decimal" class="pro-input">
+                                </label>
                             {% endif %}
                         </div>
                         {% if subscription %}
                             <div class="pro-form__row">
-                                <label class="pro-field">Jours d'essai<input type="number" name="plans[{{ index }}][trialDays]" value="{{ plan.trialDays }}" min="0" max="90" class="pro-input"></label>
                                 <label class="pro-field">
-                                    <span class="pro-field__head">Établissements inclus<span class="pro-field__hint">vide = illimité</span></span>
+                                    Jours d'essai
+                                    <input type="number" name="plans[{{ index }}][trialDays]" value="{{ plan.trialDays }}" min="0" max="90" class="pro-input">
+                                </label>
+                                <label class="pro-field">
+                                    <span class="pro-field__head">
+                                        Établissements inclus
+                                        <span class="pro-field__hint">
+                                            vide = illimité
+                                        </span>
+                                    </span>
                                     <input type="number" name="plans[{{ index }}][maxEstablishments]" value="{{ plan.maxEstablishments }}" min="1" class="pro-input">
                                 </label>
                             </div>
-                            {% for option, label in { commissionFree: 'Sans commission', featured: 'Mise en avant', advancedStats: 'Statistiques détaillées' } %}
+                            {% for option, label in {
+                                commissionFree: 'Sans commission',
+                                featured: 'Mise en avant',
+                                advancedStats: 'Statistiques détaillées'
+                            } %}
                                 <label class="settings-check">
                                     <input type="hidden" name="plans[{{ index }}][{{ option }}]" value="0">
                                     <input type="checkbox" name="plans[{{ index }}][{{ option }}]" value="1" class="settings-check__input"{{ plan[option] ? ' checked' : '' }}>
@@ -97,11 +199,15 @@
                     </fieldset>
                 {% endfor %}
             </div>
-            <p class="pro-field__hint">TVA à 20 %. Les codes promo et les autres réglages de facturation se gèrent ensuite dans l'administration.</p>
+            <p class="pro-field__hint">
+                TVA à 20 %. Les codes promo et les autres réglages de facturation se gèrent ensuite dans l'administration.
+            </p>
         </section>
 
         <div class="install-submit">
-            <button type="submit" class="pro-button pro-button--primary">Publier la version 1</button>
+            <button type="submit" class="pro-button pro-button--primary">
+                Publier la version 1
+            </button>
         </div>
     </form>
 {% endblock %}

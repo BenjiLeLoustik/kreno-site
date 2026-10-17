@@ -1,6 +1,8 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% block title %}Installation · {{ website().siteName }}{% endblock %}
+{% block title %}
+    Installation · {{ website().siteName }}
+{% endblock %}
 
 {% block body_class %}layout-install{% endblock %}
 
@@ -12,12 +14,16 @@
     <div class="install">
         <header class="install-header">
             {% include 'components/logo.html.twig' with { size: 34 } %}
-            <span class="install-header__badge">Installation</span>
+            <span class="install-header__badge">
+                Installation
+            </span>
         </header>
 
         {% for type, messages in flashes() %}
             {% for message in messages %}
-                <div class="pro-flash pro-flash--{{ type }}" role="status">{{ message }}</div>
+                <div class="pro-flash pro-flash--{{ type }}" role="status">
+                    {{ message }}
+                </div>
             {% endfor %}
         {% endfor %}
 

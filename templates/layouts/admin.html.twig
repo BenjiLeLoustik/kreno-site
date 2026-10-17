@@ -26,9 +26,13 @@
                         {% if is_granted(item.role) and route_exists(item.route) %}
                             <a href="{{ path(item.route) }}" class="admin-nav__link{{ item.key == section ? ' admin-nav__link--active' : '' }}"{{ item.key == section ? ' aria-current="page"' : '' }}>
                                 <i data-lucide="{{ item.icon }}" class="admin-nav__icon"></i>
-                                <span class="admin-nav__label">{{ item.label }}</span>
+                                <span class="admin-nav__label">
+                                    {{ item.label }}
+                                </span>
                                 {% if item.badge > 0 %}
-                                    <span class="admin-nav__badge">{{ item.badge }}</span>
+                                    <span class="admin-nav__badge">
+                                        {{ item.badge }}
+                                    </span>
                                 {% endif %}
                             </a>
                         {% endif %}
@@ -61,7 +65,9 @@
         <main class="admin-main">
             {% for type, messages in flashes() %}
                 {% for message in messages %}
-                    <div class="admin-flash admin-flash--{{ type }}" role="status">{{ message }}</div>
+                    <div class="admin-flash admin-flash--{{ type }}" role="status">
+                        {{ message }}
+                    </div>
                 {% endfor %}
             {% endfor %}
 

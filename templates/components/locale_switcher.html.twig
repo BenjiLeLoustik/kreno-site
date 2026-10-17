@@ -5,7 +5,9 @@
     <details class="locale-switcher locale-switcher--{{ variant }}">
         <summary class="locale-switcher__toggle" aria-label="Langue : {{ switcher.current.label }}">
             <i data-lucide="globe" class="locale-switcher__icon"></i>
-            <span class="locale-switcher__current">{{ switcher.current.label }}</span>
+            <span class="locale-switcher__current">
+                {{ switcher.current.label }}
+            </span>
             <i data-lucide="chevron-up" class="locale-switcher__chevron"></i>
         </summary>
         <ul class="locale-switcher__menu">
@@ -13,7 +15,9 @@
                 <li>
                     <a href="{{ path('locale_switch', { locale: item.code }) }}" class="locale-switcher__link{{ item.current ? ' locale-switcher__link--active' : '' }}" hreflang="{{ item.code }}" lang="{{ item.code }}"{{ item.current ? ' aria-current="true"' : '' }}>
                         {{ item.label }}
-                        {% if item.current %}<i data-lucide="check" class="locale-switcher__check"></i>{% endif %}
+                        {% if item.current %}
+                            <i data-lucide="check" class="locale-switcher__check"></i>
+                        {% endif %}
                     </a>
                 </li>
             {% endfor %}

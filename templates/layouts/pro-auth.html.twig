@@ -11,19 +11,27 @@
 
         <div class="pro-login__card form">
             <div class="pro-login__head">
-                <h1 class="pro-login__title">{% block heading %}{% endblock %}</h1>
-                <span class="pro-login__lead">{% block lead %}{% endblock %}</span>
+                <h1 class="pro-login__title">
+                    {% block heading %}{% endblock %}
+                </h1>
+                <span class="pro-login__lead">
+                    {% block lead %}{% endblock %}
+                </span>
             </div>
 
             {% for type, messages in flashes() %}
                 {% for message in messages %}
-                    <div class="form-alert form-alert--{{ type == 'success' ? 'success' : 'error' }}" role="status">{{ message }}</div>
+                    <div class="form-alert form-alert--{{ type == 'success' ? 'success' : 'error' }}" role="status">
+                        {{ message }}
+                    </div>
                 {% endfor %}
             {% endfor %}
 
             {% block content %}{% endblock %}
         </div>
 
-        <a href="{{ path('pro_login') }}" class="pro-login__switch">← Retour à la connexion pro</a>
+        <a href="{{ path('pro_login') }}" class="pro-login__switch">
+            ← Retour à la connexion pro
+        </a>
     </div>
 {% endblock %}

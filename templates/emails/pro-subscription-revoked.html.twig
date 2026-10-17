@@ -4,13 +4,23 @@
 
 {% block mailContent %}
 
-    <p>Bonne nouvelle : la résiliation est annulée, votre abonnement {{ subscription.plan }} pour {{ company }} continue.</p>
+    <p>
+        Bonne nouvelle : la résiliation est annulée, votre abonnement {{ subscription.plan }} pour {{ company }} continue.
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">Prix : {{ subscription.price }} HT ({{ subscription.period|lower }})</li>
+        <li style="{{ styles.item }}">
+            Prix : {{ subscription.price }} HT ({{ subscription.period|lower }})
+        </li>
         {% if subscription.periodEnd %}
-            <li style="{{ styles.item }}">Prochaine échéance : {{ subscription.periodEnd }}</li>
+            <li style="{{ styles.item }}">
+                Prochaine échéance : {{ subscription.periodEnd }}
+            </li>
         {% endif %}
     </ul>
-    <p style="{{ styles.actions }}"><a href="{{ subscription.url }}" style="{{ styles.button }}">Mon abonnement</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ subscription.url }}" style="{{ styles.button }}">
+            Mon abonnement
+        </a>
+    </p>
 
 {% endblock %}

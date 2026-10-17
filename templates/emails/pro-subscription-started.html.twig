@@ -4,19 +4,40 @@
 
 {% block mailContent %}
 
-    <p>{{ establishment }} est en ligne et votre abonnement est actif.</p>
+    <p>
+        {{ establishment }} est en ligne et votre abonnement est actif.
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">Formule : {{ subscription.plan }} ({{ subscription.period|lower }})</li>
-        <li style="{{ styles.item }}">Prix : {{ subscription.price }} HT</li>
-        <li style="{{ styles.item }}">Début : {{ subscription.startedAt }}</li>
+        <li style="{{ styles.item }}">
+            Formule : {{ subscription.plan }} ({{ subscription.period|lower }})
+        </li>
+        <li style="{{ styles.item }}">
+            Prix : {{ subscription.price }} HT
+        </li>
+        <li style="{{ styles.item }}">
+            Début : {{ subscription.startedAt }}
+        </li>
         {% if subscription.periodEnd %}
-            <li style="{{ styles.item }}">Prochaine échéance : {{ subscription.periodEnd }}</li>
+            <li style="{{ styles.item }}">
+                Prochaine échéance : {{ subscription.periodEnd }}
+            </li>
         {% endif %}
         {% if subscription.commissionFree %}
-            <li style="{{ styles.item }}">Aucune commission sur vos réservations</li>
+            <li style="{{ styles.item }}">
+                Aucune commission sur vos réservations
+            </li>
         {% endif %}
     </ul>
-    <p>Vos factures seront disponibles dans votre espace facturation.</p>
-    <p style="{{ styles.actions }}"><a href="{{ slotUrl }}" style="{{ styles.button }}">Publier un créneau</a><a href="{{ subscription.url }}" style="{{ styles.buttonSecondary }}">Mon abonnement</a></p>
+    <p>
+        Vos factures seront disponibles dans votre espace facturation.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ slotUrl }}" style="{{ styles.button }}">
+            Publier un créneau
+        </a>
+        <a href="{{ subscription.url }}" style="{{ styles.buttonSecondary }}">
+            Mon abonnement
+        </a>
+    </p>
 
 {% endblock %}

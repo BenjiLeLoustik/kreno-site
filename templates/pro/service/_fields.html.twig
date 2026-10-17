@@ -1,13 +1,20 @@
 <div class="pro-form__row">
-    <label class="pro-field">Nom<input type="text" name="name" value="{{ service.name ?? '' }}" required minlength="2" maxlength="120" class="pro-input" placeholder="Coupe + brushing"></label>
+    <label class="pro-field">
+        Nom
+        <input type="text" name="name" value="{{ service.name ?? '' }}" required minlength="2" maxlength="120" class="pro-input" placeholder="Coupe + brushing">
+    </label>
     <label class="pro-field">
         Durée
         <select name="duration" class="pro-input" required>
             {% for minutes in durations %}
-                <option value="{{ minutes }}"{{ minutes == (service.duration ?? 30) ? ' selected' : '' }}>{{ minutes >= 60 ? (minutes // 60) ~ ' h' ~ (minutes % 60 ? ' ' ~ (minutes % 60) : '') : minutes ~ ' min' }}</option>
+                <option value="{{ minutes }}"{{ minutes == (service.duration ?? 30) ? ' selected' : '' }}>
+                    {{ minutes >= 60 ? (minutes // 60) ~ ' h' ~ (minutes % 60 ? ' ' ~ (minutes % 60) : '') : minutes ~ ' min' }}
+                </option>
             {% endfor %}
             {% if service is defined and service.duration not in durations %}
-                <option value="{{ service.duration }}" selected>{{ service.durationLabel }}</option>
+                <option value="{{ service.duration }}" selected>
+                    {{ service.durationLabel }}
+                </option>
             {% endif %}
         </select>
     </label>
@@ -20,7 +27,12 @@
     <label class="pro-field">
         Remise automatique (%)
         <input type="number" name="defaultDiscount" value="{{ service.defaultDiscount ?? '' }}" min="0" max="90" class="pro-input" placeholder="{{ defaultDiscount ?? '' }}">
-        <span class="pro-field__hint">Vide : remise par défaut de l'établissement.</span>
+        <span class="pro-field__hint">
+            Vide : remise par défaut de l'établissement.
+        </span>
     </label>
 </div>
-<label class="pro-field">Description (facultatif)<input type="text" name="description" value="{{ service.description ?? '' }}" maxlength="255" class="pro-input"></label>
+<label class="pro-field">
+    Description (facultatif)
+    <input type="text" name="description" value="{{ service.description ?? '' }}" maxlength="255" class="pro-input">
+</label>

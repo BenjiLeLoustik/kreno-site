@@ -4,24 +4,51 @@
 
 {% block mailContent %}
 
-    <p>C’est réservé ! Voici ton rendez-vous :</p>
+    <p>
+        C’est réservé ! Voici ton rendez-vous :
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ booking.service }} ({{ booking.duration }})</li>
-        <li style="{{ styles.item }}">{{ booking.day }} à {{ booking.time }}</li>
-        <li style="{{ styles.item }}">{{ booking.establishment.name }}, {{ booking.establishment.address }}</li>
-        <li style="{{ styles.item }}">{{ booking.price }} au lieu de {{ booking.originalPrice }} (tu économises {{ booking.saved }})</li>
-        <li style="{{ styles.item }}">Référence : {{ booking.reference }}</li>
+        <li style="{{ styles.item }}">
+            {{ booking.service }} ({{ booking.duration }})
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.day }} à {{ booking.time }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.establishment.name }}, {{ booking.establishment.address }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.price }} au lieu de {{ booking.originalPrice }} (tu économises {{ booking.saved }})
+        </li>
+        <li style="{{ styles.item }}">
+            Référence : {{ booking.reference }}
+        </li>
     </ul>
     {% if booking.note %}
-        <p>Ta note pour l’établissement : « {{ booking.note }} »</p>
+        <p>
+            Ta note pour l’établissement : « {{ booking.note }} »
+        </p>
     {% endif %}
-    <p>Tu règles directement sur place.</p>
+    <p>
+        Tu règles directement sur place.
+    </p>
     {% if freeCancellationUntil %}
-        <p>Annulation gratuite jusqu’au {{ freeCancellationUntil }}.</p>
+        <p>
+            Annulation gratuite jusqu’au {{ freeCancellationUntil }}.
+        </p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ booking.url }}" style="{{ styles.button }}">Voir ma réservation</a><a href="{{ booking.calendarUrl }}" style="{{ styles.buttonSecondary }}">Ajouter à mon agenda</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ booking.url }}" style="{{ styles.button }}">
+            Voir ma réservation
+        </a>
+        <a href="{{ booking.calendarUrl }}" style="{{ styles.buttonSecondary }}">
+            Ajouter à mon agenda
+        </a>
+    </p>
     {% if booking.establishment.phone %}
-        <p>Un imprévu ? Tu peux joindre l’établissement au {{ booking.establishment.phone }}.</p>
+        <p>
+            Un imprévu ? Tu peux joindre l’établissement au {{ booking.establishment.phone }}.
+        </p>
     {% endif %}
 
 {% endblock %}

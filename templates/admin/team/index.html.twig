@@ -2,43 +2,73 @@
 
 {% set admin_section = 'settings' %}
 
-{% block title %}Équipe Kréno · Administration Kréno{% endblock %}
+{% block title %}
+    Équipe Kréno · Administration Kréno
+{% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <div>
-            <a href="{{ path('admin_settings_index') }}" class="admin-subtitle">← Réglages et journal</a>
-            <h1 class="admin-title">Équipe Kréno</h1>
+            <a href="{{ path('admin_settings_index') }}" class="admin-subtitle">
+                ← Réglages et journal
+            </a>
+            <h1 class="admin-title">
+                Équipe Kréno
+            </h1>
         </div>
     </div>
 
     <div class="admin-grid">
         <section class="admin-card">
-            <h2 class="admin-card__title">Membres</h2>
+            <h2 class="admin-card__title">
+                Membres
+            </h2>
             <div class="admin-rows">
                 {% for member in members %}
                     <div class="admin-row">
-                        <span class="admin-avatar" aria-hidden="true">{{ member.initials }}</span>
+                        <span class="admin-avatar" aria-hidden="true">
+                            {{ member.initials }}
+                        </span>
                         <span class="admin-row__main">
-                            <b>{{ member.name }}{% if member.isMe %} (vous){% endif %}</b>
-                            <span class="admin-row__meta">{{ member.email }} · {{ member.pending ? 'invitation en attente' : 'dernière connexion ' ~ member.lastLogin }}</span>
+                            <b>
+                                {{ member.name }}
+                                {% if member.isMe %}
+                                    (vous)
+                                {% endif %}
+                            </b>
+                            <span class="admin-row__meta">
+                                {{ member.email }} ·
+                                {% if member.pending %}
+                                    invitation en attente
+                                {% else %}
+                                    dernière connexion {{ member.lastLogin }}
+                                {% endif %}
+                            </span>
                         </span>
                         {% if member.isMe %}
-                            <span class="admin-badge">{{ member.roleLabel }}</span>
+                            <span class="admin-badge">
+                                {{ member.roleLabel }}
+                            </span>
                         {% else %}
                             <span class="admin-row__actions">
                                 <form method="post" action="{{ path('admin_team_role', { id: member.id }) }}" class="admin-form admin-form--inline">
                                     {{ csrf_field('admin_team')|raw }}
                                     <select name="role" class="admin-select" aria-label="Rôle de {{ member.name }}" data-admin-auto>
                                         {% for role in roles %}
-                                            <option value="{{ role.value }}"{{ role.value == member.role ? ' selected' : '' }}>{{ role.label }}</option>
+                                            <option value="{{ role.value }}"{{ role.value == member.role ? ' selected' : '' }}>
+                                                {{ role.label }}
+                                            </option>
                                         {% endfor %}
                                     </select>
-                                    <button type="submit" class="admin-button admin-button--small" data-admin-apply>Changer</button>
+                                    <button type="submit" class="admin-button admin-button--small" data-admin-apply>
+                                        Changer
+                                    </button>
                                 </form>
                                 <form method="post" action="{{ path('admin_team_revoke', { id: member.id }) }}">
                                     {{ csrf_field('admin_team')|raw }}
-                                    <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger" data-admin-confirm="Retirer l'accès de {{ member.name }} ?">Retirer</button>
+                                    <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger" data-admin-confirm="Retirer l'accès de {{ member.name }} ?">
+                                        Retirer
+                                    </button>
                                 </form>
                             </span>
                         {% endif %}
@@ -48,25 +78,42 @@
         </section>
 
         <section class="admin-card">
-            <h2 class="admin-card__title">Inviter un membre</h2>
+            <h2 class="admin-card__title">
+                Inviter un membre
+            </h2>
             <form method="post" action="{{ path('admin_team_invite') }}" class="admin-form">
                 {{ csrf_field('admin_team')|raw }}
                 <div class="admin-form__row">
-                    <label class="admin-field">Prénom<input type="text" name="firstName" required maxlength="80" class="admin-input"></label>
-                    <label class="admin-field">Nom<input type="text" name="lastName" maxlength="80" class="admin-input"></label>
+                    <label class="admin-field">
+                        Prénom
+                        <input type="text" name="firstName" required maxlength="80" class="admin-input">
+                    </label>
+                    <label class="admin-field">
+                        Nom
+                        <input type="text" name="lastName" maxlength="80" class="admin-input">
+                    </label>
                 </div>
-                <label class="admin-field">E-mail<input type="email" name="email" required maxlength="180" class="admin-input"></label>
+                <label class="admin-field">
+                    E-mail
+                    <input type="email" name="email" required maxlength="180" class="admin-input">
+                </label>
                 <label class="admin-field">
                     Rôle
                     <select name="role" class="admin-input" required>
                         {% for role in roles %}
-                            <option value="{{ role.value }}"{{ role.value == 'ROLE_SUPPORT' ? ' selected' : '' }}>{{ role.label }}</option>
+                            <option value="{{ role.value }}"{{ role.value == 'ROLE_SUPPORT' ? ' selected' : '' }}>
+                                {{ role.label }}
+                            </option>
                         {% endfor %}
                     </select>
-                    <span class="admin-field__hint">Support : réservations. Modération : pros, signalements, utilisateurs. Admin : tout.</span>
+                    <span class="admin-field__hint">
+                        Support : réservations. Modération : pros, signalements, utilisateurs. Admin : tout.
+                    </span>
                 </label>
                 <div class="admin-actions">
-                    <button type="submit" class="admin-button admin-button--primary">Envoyer l'invitation</button>
+                    <button type="submit" class="admin-button admin-button--primary">
+                        Envoyer l'invitation
+                    </button>
                 </div>
             </form>
         </section>

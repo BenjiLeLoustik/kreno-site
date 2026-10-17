@@ -1,7 +1,15 @@
 <div class="side-footer__user">
-    <span class="side-footer__avatar" aria-hidden="true">{{ initials }}</span>
+    <span class="side-footer__avatar" aria-hidden="true">
+        {{ initials }}
+    </span>
     <span class="side-footer__identity">
-        <b class="side-footer__name">{{ name }}</b>
-        {% if role|default(null) %}<span class="side-footer__role">{{ role }}</span>{% endif %}
+        <b class="side-footer__name">
+            {{ name }}
+        </b>
+        {% if role|default(null) %}
+            <span class="side-footer__role">
+                {{ role }}
+            </span>
+        {% endif %}
     </span>
 </div>

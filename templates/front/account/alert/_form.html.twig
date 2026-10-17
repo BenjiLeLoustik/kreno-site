@@ -10,9 +10,13 @@
     <label for="{{ prefix }}-city" class="form-field">
         Ville
         <select id="{{ prefix }}-city" name="citySlug" class="form-input">
-            <option value="">Toutes les villes</option>
+            <option value="">
+                Toutes les villes
+            </option>
             {% for city in cities %}
-                <option value="{{ city.slug }}"{{ alert and alert.city and alert.city.slug == city.slug ? ' selected' : '' }}>{{ city.name }}</option>
+                <option value="{{ city.slug }}"{{ alert and alert.city and alert.city.slug == city.slug ? ' selected' : '' }}>
+                    {{ city.name }}
+                </option>
             {% endfor %}
         </select>
     </label>
@@ -33,11 +37,18 @@
         <input id="{{ prefix }}-price" type="number" name="maxPrice" value="{{ alert and alert.maxPrice ? alert.maxPrice / 100 : '' }}" min="0" step="1" placeholder="Sans limite" class="form-input">
     </label>
     <fieldset class="alert-form__categories">
-        <legend class="alert-form__legend">Catégories <span class="alert-form__muted">(aucune = toutes)</span></legend>
+        <legend class="alert-form__legend">
+            Catégories
+            <span class="alert-form__muted">
+                (aucune = toutes)
+            </span>
+        </legend>
         {% for category in categories %}
             <label class="alert-chip">
                 <input type="checkbox" name="categorySlugs[]" value="{{ category.slug }}" class="alert-chip__input"{{ category.slug in selectedCategories ? ' checked' : '' }}>
-                <span class="alert-chip__label">{{ category.name }}</span>
+                <span class="alert-chip__label">
+                    {{ category.name }}
+                </span>
             </label>
         {% endfor %}
     </fieldset>
@@ -46,6 +57,12 @@
         Alerte active
     </label>
     <div class="alert-form__actions">
-        <button type="submit" class="btn btn--ink btn--small">{{ alert ? 'Enregistrer' : 'Créer l\'alerte' }}</button>
+        <button type="submit" class="btn btn--ink btn--small">
+            {% if alert %}
+                Enregistrer
+            {% else %}
+                Créer l'alerte
+            {% endif %}
+        </button>
     </div>
 </form>

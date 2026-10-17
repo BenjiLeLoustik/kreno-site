@@ -2,62 +2,95 @@
 
 {% set account_section = 'reviews' %}
 
-{% block title %}Mes avis · {{ website().siteName }}{% endblock %}
+{% block title %}
+    Mes avis · {{ website().siteName }}
+{% endblock %}
 
 {% block account_content %}
     <header class="account-head">
-        <h1 class="account-head__title">Mes avis</h1>
-        <p class="account-head__subtitle">Ton avis aide les autres clients à choisir et les pros à s'améliorer.</p>
+        <h1 class="account-head__title">
+            Mes avis
+        </h1>
+        <p class="account-head__subtitle">
+            Ton avis aide les autres clients à choisir et les pros à s'améliorer.
+        </p>
     </header>
 
     <section class="account-section">
-        <h2 class="account-section__title">À noter</h2>
+        <h2 class="account-section__title">
+            À noter
+        </h2>
         {% if pending is not empty %}
             <div class="review-pending">
                 {% for booking in pending %}
                     <div class="account-card review-pending__item">
                         <span class="review-pending__text">
-                            <b>{{ booking.establishment }}</b>
-                            <span class="account-card__muted">{% if booking.service %}{{ booking.service }} · {% endif %}le {{ booking.startsAt|date('d/m/Y à H:i') }}</span>
-                            <span class="account-card__muted">Avis possible jusqu'au {{ booking.deadline|date('d/m/Y') }}</span>
+                            <b>
+                                {{ booking.establishment }}
+                            </b>
+                            <span class="account-card__muted">
+                                {% if booking.service %}
+                                    {{ booking.service }} ·
+                                {% endif %}
+                                le {{ booking.startsAt|date('d/m/Y à H:i') }}
+                            </span>
+                            <span class="account-card__muted">
+                                Avis possible jusqu'au {{ booking.deadline|date('d/m/Y') }}
+                            </span>
                         </span>
-                        <a href="{{ path('account_review_new', { reference: booking.reference }) }}" class="btn btn--primary btn--small">Donner mon avis</a>
+                        <a href="{{ path('account_review_new', { reference: booking.reference }) }}" class="btn btn--primary btn--small">
+                            Donner mon avis
+                        </a>
                     </div>
                 {% endfor %}
             </div>
         {% else %}
             <div class="account-empty">
-                <p class="account-empty__text">Rien à noter pour le moment. Après chaque rendez-vous honoré, tu as {{ windowDays }} jours pour donner ton avis.</p>
+                <p class="account-empty__text">
+                    Rien à noter pour le moment. Après chaque rendez-vous honoré, tu as {{ windowDays }} jours pour donner ton avis.
+                </p>
             </div>
         {% endif %}
     </section>
 
     <section class="account-section">
-        <h2 class="account-section__title">Mes avis publiés</h2>
+        <h2 class="account-section__title">
+            Mes avis publiés
+        </h2>
         {% if reviews is not empty %}
             <ul class="review-list">
                 {% for review in reviews %}
                     <li class="account-card review-mine">
                         <div class="review-mine__head">
                             {% if review.visible and review.city and review.slug %}
-                                <a href="{{ path('shop_show', { city: review.city, slug: review.slug }) }}#avis" class="review-mine__shop">{{ review.establishment }}</a>
+                                <a href="{{ path('shop_show', { city: review.city, slug: review.slug }) }}#avis" class="review-mine__shop">
+                                    {{ review.establishment }}
+                                </a>
                             {% else %}
-                                <b class="review-mine__shop">{{ review.establishment }}</b>
+                                <b class="review-mine__shop">
+                                    {{ review.establishment }}
+                                </b>
                             {% endif %}
                             {% if not review.visible %}
-                                <span class="review-status review-status--hidden">{{ review.statusLabel }}</span>
+                                <span class="review-status review-status--hidden">
+                                    {{ review.statusLabel }}
+                                </span>
                             {% endif %}
                         </div>
                         {% include 'front/review/_card.html.twig' with { review: review } only %}
                         {% if not review.visible and review.moderationNote %}
-                            <p class="review-mine__note">Motif : {{ review.moderationNote }}</p>
+                            <p class="review-mine__note">
+                                Motif : {{ review.moderationNote }}
+                            </p>
                         {% endif %}
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
             <div class="account-empty">
-                <p class="account-empty__text">Tu n'as pas encore donné d'avis.</p>
+                <p class="account-empty__text">
+                    Tu n'as pas encore donné d'avis.
+                </p>
             </div>
         {% endif %}
     </section>

@@ -2,45 +2,90 @@
 
 {% set pro_section = 'company' %}
 {% set config = company.config %}
-{% set tones = { online: 'online', pending_review: 'pending', draft: 'default', paused: 'noshow', rejected: 'noshow' } %}
+{% set tones = {
+    online: 'online',
+    pending_review: 'pending',
+    draft: 'default',
+    paused: 'noshow',
+    rejected: 'noshow'
+} %}
 
-{% block title %}Mon compte · Espace pro{% endblock %}
+{% block title %}
+    Mon compte · Espace pro
+{% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
-            <h1 class="pro-title">Mon compte</h1>
-            <span class="pro-subtitle">{{ company.name }} · {{ company.statusLabel }}</span>
+            <h1 class="pro-title">
+                Mon compte
+            </h1>
+            <span class="pro-subtitle">
+                {{ company.name }} · {{ company.statusLabel }}
+            </span>
         </div>
         {% if route_exists('pro_team') %}
-            <a href="{{ path('pro_team') }}" class="pro-button">Gérer l'équipe</a>
+            <a href="{{ path('pro_team') }}" class="pro-button">
+                Gérer l'équipe
+            </a>
         {% endif %}
     </div>
 
     <div class="pro-columns">
         <section class="pro-card pro-columns__main">
-            <h2 class="pro-card__title">Entreprise</h2>
+            <h2 class="pro-card__title">
+                Entreprise
+            </h2>
             <form method="post" action="{{ path('pro_company_update') }}" class="pro-form">
                 {{ csrf_field('pro')|raw }}
                 <fieldset class="settings-fieldset"{{ canEdit ? '' : ' disabled' }}>
                     <div class="pro-form__row">
-                        <label class="pro-field">Nom commercial<input type="text" name="name" value="{{ company.name }}" required minlength="2" maxlength="120" class="pro-input"></label>
-                        <label class="pro-field">Raison sociale<input type="text" name="legalName" value="{{ company.legalName }}" maxlength="160" class="pro-input"></label>
+                        <label class="pro-field">
+                            Nom commercial
+                            <input type="text" name="name" value="{{ company.name }}" required minlength="2" maxlength="120" class="pro-input">
+                        </label>
+                        <label class="pro-field">
+                            Raison sociale
+                            <input type="text" name="legalName" value="{{ company.legalName }}" maxlength="160" class="pro-input">
+                        </label>
                     </div>
                     <div class="pro-form__row">
-                        <label class="pro-field">SIREN<input type="text" name="siren" value="{{ company.sirenLabel }}" pattern="[\d ]{9,11}" class="pro-input"></label>
-                        <label class="pro-field">N° de TVA intracommunautaire<input type="text" name="vatNumber" value="{{ company.vatNumber }}" pattern="[A-Z]{2}[0-9A-Z]{2,13}" class="pro-input" placeholder="FR00123456789"></label>
+                        <label class="pro-field">
+                            SIREN
+                            <input type="text" name="siren" value="{{ company.sirenLabel }}" pattern="[\d ]{9,11}" class="pro-input">
+                        </label>
+                        <label class="pro-field">
+                            N° de TVA intracommunautaire
+                            <input type="text" name="vatNumber" value="{{ company.vatNumber }}" pattern="[A-Z]{2}[0-9A-Z]{2,13}" class="pro-input" placeholder="FR00123456789">
+                        </label>
                     </div>
-                    <label class="pro-field">Adresse du siège<input type="text" name="addressLine1" value="{{ company.address.line1 }}" maxlength="160" class="pro-input"></label>
+                    <label class="pro-field">
+                        Adresse du siège
+                        <input type="text" name="addressLine1" value="{{ company.address.line1 }}" maxlength="160" class="pro-input">
+                    </label>
                     <div class="pro-form__row">
-                        <label class="pro-field">Code postal<input type="text" name="postalCode" value="{{ company.address.postalCode }}" pattern="\d{5}" inputmode="numeric" class="pro-input"></label>
-                        <label class="pro-field">Ville<input type="text" name="locality" value="{{ company.address.locality }}" maxlength="100" class="pro-input"></label>
+                        <label class="pro-field">
+                            Code postal
+                            <input type="text" name="postalCode" value="{{ company.address.postalCode }}" pattern="\d{5}" inputmode="numeric" class="pro-input">
+                        </label>
+                        <label class="pro-field">
+                            Ville
+                            <input type="text" name="locality" value="{{ company.address.locality }}" maxlength="100" class="pro-input">
+                        </label>
                     </div>
 
-                    <h3 class="settings-subtitle">Facturation et préférences</h3>
+                    <h3 class="settings-subtitle">
+                        Facturation et préférences
+                    </h3>
                     <div class="pro-form__row">
-                        <label class="pro-field">Nom sur les factures<input type="text" name="billingName" value="{{ config ? config.billingName : '' }}" maxlength="160" class="pro-input"></label>
-                        <label class="pro-field">E-mail de facturation<input type="email" name="billingEmail" value="{{ config ? config.billingEmail : '' }}" class="pro-input"></label>
+                        <label class="pro-field">
+                            Nom sur les factures
+                            <input type="text" name="billingName" value="{{ config ? config.billingName : '' }}" maxlength="160" class="pro-input">
+                        </label>
+                        <label class="pro-field">
+                            E-mail de facturation
+                            <input type="email" name="billingEmail" value="{{ config ? config.billingEmail : '' }}" class="pro-input">
+                        </label>
                     </div>
                     <label class="pro-field">
                         Remise par défaut (%)
@@ -57,7 +102,11 @@
                         Recevoir les conseils mensuels de Kréno
                     </label>
                     {% if canEdit %}
-                        <div><button type="submit" class="pro-button pro-button--primary">Enregistrer</button></div>
+                        <div>
+                            <button type="submit" class="pro-button pro-button--primary">
+                                Enregistrer
+                            </button>
+                        </div>
                     {% endif %}
                 </fieldset>
             </form>
@@ -65,21 +114,45 @@
 
         <div class="pro-columns__aside pro-form">
             <section class="pro-card">
-                <h2 class="pro-card__title">Administrateurs</h2>
+                <h2 class="pro-card__title">
+                    Administrateurs
+                </h2>
                 {% for admin in administrators %}
                     <div class="team-person">
-                        <span class="pro-side__avatar" aria-hidden="true">{{ admin.initials }}</span>
-                        <span class="team-person__identity"><b>{{ admin.name }}{% if admin.isYou %} (vous){% endif %}</b><span class="pro-row__meta">{{ admin.email }}</span></span>
-                        <span class="pro-badge">{{ admin.roleLabel }}</span>
+                        <span class="pro-side__avatar" aria-hidden="true">
+                            {{ admin.initials }}
+                        </span>
+                        <span class="team-person__identity">
+                            <b>
+                                {{ admin.name }}
+                                {% if admin.isYou %}
+                                    (vous)
+                                {% endif %}
+                            </b>
+                            <span class="pro-row__meta">
+                                {{ admin.email }}
+                            </span>
+                        </span>
+                        <span class="pro-badge">
+                            {{ admin.roleLabel }}
+                        </span>
                     </div>
                 {% endfor %}
             </section>
 
             {% if route_exists('account_password') %}
                 <section class="pro-card">
-                    <h2 class="pro-card__title">Mon profil</h2>
-                    <p class="pro-subtitle">Nom, e-mail de connexion et mot de passe se modifient depuis votre compte personnel.</p>
-                    {% if route_exists('account_settings') %}<a href="{{ path('account_settings') }}" class="pro-button">Modifier mon profil</a>{% endif %}
+                    <h2 class="pro-card__title">
+                        Mon profil
+                    </h2>
+                    <p class="pro-subtitle">
+                        Nom, e-mail de connexion et mot de passe se modifient depuis votre compte personnel.
+                    </p>
+                    {% if route_exists('account_settings') %}
+                        <a href="{{ path('account_settings') }}" class="pro-button">
+                            Modifier mon profil
+                        </a>
+                    {% endif %}
                 </section>
             {% endif %}
         </div>
@@ -87,28 +160,53 @@
 
     <section class="pro-card">
         <div class="pro-card__head">
-            <h2 class="pro-card__title">Établissements</h2>
-            <span class="pro-subtitle">{{ establishments|length }} établissement{{ establishments|length > 1 ? 's' : '' }}</span>
+            <h2 class="pro-card__title">
+                Établissements
+            </h2>
+            <span class="pro-subtitle">
+                {{ establishments|length }} établissement{{ establishments|length > 1 ? 's' : '' }}
+            </span>
         </div>
         {% for establishment in establishments %}
             <div class="settings-line">
                 <span>
-                    <b>{{ establishment.name }}</b>
-                    <span class="pro-row__meta">{{ establishment.category ? establishment.category.name : '—' }}{% if establishment.city %} · {{ establishment.city.name }}{% endif %}{% if establishment.manager %} · géré par {{ establishment.manager }}{% endif %} · {{ establishment.membersCount }} membre{{ establishment.membersCount > 1 ? 's' : '' }}</span>
+                    <b>
+                        {{ establishment.name }}
+                    </b>
+                    <span class="pro-row__meta">
+                        {% if establishment.category %}
+                            {{ establishment.category.name }}
+                        {% else %}
+                            -
+                        {% endif %}
+                        {% if establishment.city %}
+                            · {{ establishment.city.name }}
+                        {% endif %}
+                        {% if establishment.manager %}
+                            · géré par {{ establishment.manager }}
+                        {% endif %}
+                        · {{ establishment.membersCount }} membre{{ establishment.membersCount > 1 ? 's' : '' }}
+                    </span>
                 </span>
                 <span class="settings-line__actions">
-                    <span class="pro-badge pro-badge--{{ tones[establishment.status] ?? 'default' }}">{{ establishment.statusLabel }}</span>
+                    <span class="pro-badge pro-badge--{{ tones[establishment.status] ?? 'default' }}">
+                        {{ establishment.statusLabel }}
+                    </span>
                     {% if canCreate and establishment.status in ['draft', 'rejected'] %}
                         <form method="post" action="{{ path('pro_company_establishment_submit', { id: establishment.id }) }}">
                             {{ csrf_field('pro')|raw }}
-                            <button type="submit" class="pro-button pro-button--small pro-button--primary">Envoyer en vérification</button>
+                            <button type="submit" class="pro-button pro-button--small pro-button--primary">
+                                Envoyer en vérification
+                            </button>
                         </form>
                     {% endif %}
                     {% if establishment.id != context.current.id %}
                         <form method="post" action="{{ path('pro_establishment_switch', { id: establishment.id }) }}">
                             {{ csrf_field('pro')|raw }}
                             <input type="hidden" name="_target" value="{{ path('pro_establishment') }}">
-                            <button type="submit" class="pro-button pro-button--small">Gérer</button>
+                            <button type="submit" class="pro-button pro-button--small">
+                                Gérer
+                            </button>
                         </form>
                     {% endif %}
                 </span>
@@ -117,40 +215,76 @@
 
         {% if canCreate %}
             <details class="service-row__edit">
-                <summary class="service-row__summary">Ajouter un établissement</summary>
+                <summary class="service-row__summary">
+                    Ajouter un établissement
+                </summary>
                 <form method="post" action="{{ path('pro_company_establishment_create') }}" class="pro-form service-row__form">
                     {{ csrf_field('pro')|raw }}
                     <div class="pro-form__row">
-                        <label class="pro-field">Nom<input type="text" name="name" required minlength="2" maxlength="120" class="pro-input"></label>
-                        <label class="pro-field">SIRET<input type="text" name="siret" required pattern="[\d ]{14,17}" inputmode="numeric" class="pro-input"></label>
+                        <label class="pro-field">
+                            Nom
+                            <input type="text" name="name" required minlength="2" maxlength="120" class="pro-input">
+                        </label>
+                        <label class="pro-field">
+                            SIRET
+                            <input type="text" name="siret" required pattern="[\d ]{14,17}" inputmode="numeric" class="pro-input">
+                        </label>
                     </div>
                     <div class="pro-form__row">
                         <label class="pro-field">
                             Catégorie
                             <select name="categorySlug" class="pro-input" required>
-                                {% for category in categories %}<option value="{{ category.slug }}">{{ category.name }}</option>{% endfor %}
+                                {% for category in categories %}
+                                    <option value="{{ category.slug }}">
+                                        {{ category.name }}
+                                    </option>
+                                {% endfor %}
                             </select>
                         </label>
                         <label class="pro-field">
                             Ville Kréno
                             <select name="citySlug" class="pro-input" required>
-                                {% for city in cities %}<option value="{{ city.slug }}">{{ city.name }}</option>{% endfor %}
+                                {% for city in cities %}
+                                    <option value="{{ city.slug }}">
+                                        {{ city.name }}
+                                    </option>
+                                {% endfor %}
                             </select>
                         </label>
                     </div>
-                    <label class="pro-field">Adresse<input type="text" name="addressLine1" required maxlength="160" class="pro-input"></label>
+                    <label class="pro-field">
+                        Adresse
+                        <input type="text" name="addressLine1" required maxlength="160" class="pro-input">
+                    </label>
                     <div class="pro-form__row settings-row--3">
-                        <label class="pro-field">Code postal<input type="text" name="postalCode" required pattern="\d{5}" inputmode="numeric" class="pro-input"></label>
-                        <label class="pro-field">Ville affichée<input type="text" name="locality" required maxlength="100" class="pro-input"></label>
-                        <label class="pro-field">Téléphone<input type="tel" name="phone" class="pro-input"></label>
+                        <label class="pro-field">
+                            Code postal
+                            <input type="text" name="postalCode" required pattern="\d{5}" inputmode="numeric" class="pro-input">
+                        </label>
+                        <label class="pro-field">
+                            Ville affichée
+                            <input type="text" name="locality" required maxlength="100" class="pro-input">
+                        </label>
+                        <label class="pro-field">
+                            Téléphone
+                            <input type="tel" name="phone" class="pro-input">
+                        </label>
                     </div>
                     <label class="pro-field">
                         Responsable
                         <select name="managerMemberId" class="pro-input">
-                            {% for manager in managers %}<option value="{{ manager.id }}">{{ manager.name }}</option>{% endfor %}
+                            {% for manager in managers %}
+                                <option value="{{ manager.id }}">
+                                    {{ manager.name }}
+                                </option>
+                            {% endfor %}
                         </select>
                     </label>
-                    <div><button type="submit" class="pro-button pro-button--primary">Créer l'établissement</button></div>
+                    <div>
+                        <button type="submit" class="pro-button pro-button--primary">
+                            Créer l'établissement
+                        </button>
+                    </div>
                 </form>
             </details>
         {% endif %}

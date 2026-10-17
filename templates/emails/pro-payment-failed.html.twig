@@ -4,18 +4,41 @@
 
 {% block mailContent %}
 
-    <p>Le paiement de la facture n° {{ invoice.number }} ({{ amount }} TTC) a échoué.</p>
+    <p>
+        Le paiement de la facture n° {{ invoice.number }} ({{ amount }} TTC) a échoué.
+    </p>
     {% if paymentMethod %}
-        <p>Moyen de paiement utilisé : {{ paymentMethod.label }}{% if paymentMethod.expiry %} (expire {{ paymentMethod.expiry }}){% endif %}.</p>
+        <p>
+            Moyen de paiement utilisé : {{ paymentMethod.label }}
+            {% if paymentMethod.expiry %}
+                (expire {{ paymentMethod.expiry }})
+            {% endif %}.
+        </p>
     {% endif %}
     {% if failure %}
-        <p>Raison indiquée par la banque : {{ failure }}</p>
+        <p>
+            Raison indiquée par la banque : {{ failure }}
+        </p>
     {% endif %}
     {% if final %}
-        <p>C’était notre dernière tentative automatique.{% if graceUntil %} Sans règlement avant le {{ graceUntil }}, vos créneaux ne seront plus publiés.{% endif %}</p>
+        <p>
+            C’était notre dernière tentative automatique.
+            {% if graceUntil %}
+                Sans règlement avant le {{ graceUntil }}, vos créneaux ne seront plus publiés.
+            {% endif %}
+        </p>
     {% elseif nextRetryAt %}
-        <p>Nous réessaierons automatiquement le {{ nextRetryAt }}. Vous pouvez aussi régler dès maintenant.</p>
+        <p>
+            Nous réessaierons automatiquement le {{ nextRetryAt }}. Vous pouvez aussi régler dès maintenant.
+        </p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ invoice.payUrl }}" style="{{ styles.button }}">Régler la facture</a><a href="{{ billingUrl }}" style="{{ styles.buttonSecondary }}">Changer de moyen de paiement</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ invoice.payUrl }}" style="{{ styles.button }}">
+            Régler la facture
+        </a>
+        <a href="{{ billingUrl }}" style="{{ styles.buttonSecondary }}">
+            Changer de moyen de paiement
+        </a>
+    </p>
 
 {% endblock %}

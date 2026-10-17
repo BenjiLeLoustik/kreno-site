@@ -2,14 +2,20 @@
 
 {% set pro_section = 'stats' %}
 
-{% block title %}Statistiques · Espace pro{% endblock %}
+{% block title %}
+    Statistiques · Espace pro
+{% endblock %}
 
 {% block content %}
     <div class="pro-head">
-        <h1 class="pro-title">Statistiques</h1>
+        <h1 class="pro-title">
+            Statistiques
+        </h1>
         <nav class="pro-tabs" aria-label="Période">
             {% for period in stats.periods %}
-                <a href="{{ path('pro_stats', { period: period.value }) }}" class="pro-tabs__link{{ period.selected ? ' pro-tabs__link--active' : '' }}"{{ period.selected ? ' aria-current="page"' : '' }}>{{ period.label }}</a>
+                <a href="{{ path('pro_stats', { period: period.value }) }}" class="pro-tabs__link{{ period.selected ? ' pro-tabs__link--active' : '' }}"{{ period.selected ? ' aria-current="page"' : '' }}>
+                    {{ period.label }}
+                </a>
             {% endfor %}
         </nav>
     </div>
@@ -17,9 +23,15 @@
     <div class="pro-stats">
         {% for kpi in stats.kpis %}
             <div class="pro-stat">
-                <span class="pro-stat__label">{{ kpi.label }}</span>
-                <strong class="pro-stat__value">{{ kpi.value }}</strong>
-                <span class="pro-stat__note">{{ kpi.note }}</span>
+                <span class="pro-stat__label">
+                    {{ kpi.label }}
+                </span>
+                <strong class="pro-stat__value">
+                    {{ kpi.value }}
+                </strong>
+                <span class="pro-stat__note">
+                    {{ kpi.note }}
+                </span>
             </div>
         {% endfor %}
     </div>
@@ -28,8 +40,15 @@
         <div class="pro-columns">
             <section class="pro-card pro-columns__main">
                 <div class="pro-card__head">
-                    <h2 class="pro-card__title">Créneaux publiés et réservés</h2>
-                    <span class="stats-legend"><span class="stats-legend__dot stats-legend__dot--published"></span>Publiés <span class="stats-legend__dot stats-legend__dot--booked"></span>Réservés</span>
+                    <h2 class="pro-card__title">
+                        Créneaux publiés et réservés
+                    </h2>
+                    <span class="stats-legend">
+                        <span class="stats-legend__dot stats-legend__dot--published"></span>
+                        Publiés
+                        <span class="stats-legend__dot stats-legend__dot--booked"></span>
+                        Réservés
+                    </span>
                 </div>
                 <div class="stats-chart">
                     {% for week in stats.weeks %}
@@ -38,42 +57,67 @@
                                 <span class="stats-chart__bar stats-chart__bar--published" style="--value: {{ week.publishedPercent }};"></span>
                                 <span class="stats-chart__bar stats-chart__bar--booked" style="--value: {{ week.bookedPercent }};"></span>
                             </div>
-                            <span class="stats-chart__label">{{ week.label }}</span>
+                            <span class="stats-chart__label">
+                                {{ week.label }}
+                            </span>
                         </div>
                     {% endfor %}
                 </div>
             </section>
 
             <section class="pro-card pro-columns__aside">
-                <h2 class="pro-card__title">Prestations les plus réservées</h2>
+                <h2 class="pro-card__title">
+                    Prestations les plus réservées
+                </h2>
                 {% for service in stats.services %}
                     <div class="stats-service">
-                        <span class="stats-service__head"><b>{{ service.name }}</b><span class="pro-row__meta">{{ service.label }}</span></span>
-                        <span class="stats-service__track"><span class="stats-service__fill" style="--value: {{ service.percent }};"></span></span>
+                        <span class="stats-service__head">
+                            <b>
+                                {{ service.name }}
+                            </b>
+                            <span class="pro-row__meta">
+                                {{ service.label }}
+                            </span>
+                        </span>
+                        <span class="stats-service__track">
+                            <span class="stats-service__fill" style="--value: {{ service.percent }};"></span>
+                        </span>
                     </div>
                 {% else %}
-                    <p class="pro-subtitle">Pas encore de réservation sur la période.</p>
+                    <p class="pro-subtitle">
+                        Pas encore de réservation sur la période.
+                    </p>
                 {% endfor %}
             </section>
         </div>
 
         {% if stats.heatmap %}
             <section class="pro-card">
-                <h2 class="pro-card__title">Rapidité de réservation selon le moment</h2>
+                <h2 class="pro-card__title">
+                    Rapidité de réservation selon le moment
+                </h2>
                 <div class="stats-heatmap">
                     <table class="stats-heatmap__table">
                         <thead>
                         <tr>
-                            <th scope="col"><span class="sr-only">Jour</span></th>
+                            <th scope="col">
+                                <span class="sr-only">
+                                    Jour
+                                </span>
+                            </th>
                             {% for hour in stats.heatmap.hours %}
-                                <th scope="col" class="stats-heatmap__hour">{{ hour }}</th>
+                                <th scope="col" class="stats-heatmap__hour">
+                                    {{ hour }}
+                                </th>
                             {% endfor %}
                         </tr>
                         </thead>
                         <tbody>
                         {% for row in stats.heatmap.rows %}
                             <tr>
-                                <th scope="row" class="stats-heatmap__day">{{ row.day }}</th>
+                                <th scope="row" class="stats-heatmap__day">
+                                    {{ row.day }}
+                                </th>
                                 {% for cell in row.cells %}
                                     <td class="stats-heatmap__cell stats-heatmap__cell--{{ cell.level }}" title="{{ cell.title }}"></td>
                                 {% endfor %}
@@ -83,17 +127,23 @@
                     </table>
                 </div>
                 {% if stats.heatmap.tip %}
-                    <div class="pro-note">{{ stats.heatmap.tip }}</div>
+                    <div class="pro-note">
+                        {{ stats.heatmap.tip }}
+                    </div>
                 {% endif %}
             </section>
         {% endif %}
     {% else %}
         <div class="pro-empty">
             <i data-lucide="chart-column" class="stats-upsell__icon"></i>
-            <b>Statistiques détaillées</b>
+            <b>
+                Statistiques détaillées
+            </b>
             Évolution semaine par semaine, prestations les plus demandées et meilleurs moments pour publier : inclus dans l'abonnement.
             {% if route_exists('pro_subscription') and (context.permissions.company['company.billing'] ?? false) %}
-                <a href="{{ path('pro_subscription') }}" class="pro-button pro-button--primary">Voir l'abonnement</a>
+                <a href="{{ path('pro_subscription') }}" class="pro-button pro-button--primary">
+                    Voir l'abonnement
+                </a>
             {% endif %}
         </div>
     {% endif %}

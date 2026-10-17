@@ -1,8 +1,14 @@
 <div class="ticket{{ (modifier ?? null) ? ' ticket--' ~ modifier : '' }}">
     <div class="ticket__when">
-        <span class="ticket__day{{ (today ?? false) ? ' ticket__day--today' : '' }}">{{ day }}</span>
-        <strong class="ticket__time">{{ time }}</strong>
-        <span class="ticket__duration">{{ duration }}</span>
+        <span class="ticket__day{{ (today ?? false) ? ' ticket__day--today' : '' }}">
+            {{ day }}
+        </span>
+        <strong class="ticket__time">
+            {{ time }}
+        </strong>
+        <span class="ticket__duration">
+            {{ duration }}
+        </span>
     </div>
     <div class="ticket__body">
         {% block ticket_body %}{% endblock %}

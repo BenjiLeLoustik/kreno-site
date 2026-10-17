@@ -4,18 +4,44 @@
 
 {% block mailContent %}
 
-    <p>Votre créneau a trouvé preneur !</p>
+    <p>
+        Votre créneau a trouvé preneur !
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ booking.service }} ({{ booking.duration }})</li>
-        <li style="{{ styles.item }}">{{ booking.day }} à {{ booking.time }}</li>
-        <li style="{{ styles.item }}">Client : {{ booking.customer.name }}{% if booking.customer.phone %} · {{ booking.customer.phone }}{% endif %}</li>
-        <li style="{{ styles.item }}">Prix : {{ booking.price }} (au lieu de {{ booking.originalPrice }}), réglé sur place</li>
-        <li style="{{ styles.item }}">Référence : {{ booking.reference }}</li>
+        <li style="{{ styles.item }}">
+            {{ booking.service }} ({{ booking.duration }})
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.day }} à {{ booking.time }}
+        </li>
+        <li style="{{ styles.item }}">
+            Client : {{ booking.customer.name }}
+            {% if booking.customer.phone %}
+                · {{ booking.customer.phone }}
+            {% endif %}
+        </li>
+        <li style="{{ styles.item }}">
+            Prix : {{ booking.price }} (au lieu de {{ booking.originalPrice }}), réglé sur place
+        </li>
+        <li style="{{ styles.item }}">
+            Référence : {{ booking.reference }}
+        </li>
     </ul>
     {% if booking.note %}
-        <p>Note du client : « {{ booking.note }} »</p>
+        <p>
+            Note du client : « {{ booking.note }} »
+        </p>
     {% endif %}
-    <p>Après le rendez-vous, pensez à indiquer s’il a été honoré.</p>
-    <p style="{{ styles.actions }}"><a href="{{ booking.proUrl }}" style="{{ styles.button }}">Voir la réservation</a><a href="{{ bookingsUrl }}" style="{{ styles.buttonSecondary }}">Toutes les réservations</a></p>
+    <p>
+        Après le rendez-vous, pensez à indiquer s’il a été honoré.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ booking.proUrl }}" style="{{ styles.button }}">
+            Voir la réservation
+        </a>
+        <a href="{{ bookingsUrl }}" style="{{ styles.buttonSecondary }}">
+            Toutes les réservations
+        </a>
+    </p>
 
 {% endblock %}

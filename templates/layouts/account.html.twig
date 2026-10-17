@@ -10,7 +10,9 @@
         <aside class="account-side">
             <button type="button" class="account-side__toggle" aria-controls="account-nav" aria-expanded="false" data-toggle="account-nav">
                 <i data-lucide="{{ currentItem ? currentItem.icon : 'user' }}" class="account-nav__icon"></i>
-                <span class="account-side__current">{{ currentItem ? currentItem.label : 'Mon compte' }}</span>
+                <span class="account-side__current">
+                    {{ currentItem ? currentItem.label : 'Mon compte' }}
+                </span>
                 <i data-lucide="chevron-down" class="account-side__chevron"></i>
             </button>
 
@@ -20,9 +22,13 @@
                     {% set current = item.key == account_section|default('') %}
                     <a href="{{ path(item.route) }}" class="account-nav__link{{ current ? ' account-nav__link--active' : '' }}"{{ current ? ' aria-current="page"' : '' }}>
                         <i data-lucide="{{ item.icon }}" class="account-nav__icon"></i>
-                        <span class="account-nav__label">{{ item.label }}</span>
+                        <span class="account-nav__label">
+                            {{ item.label }}
+                        </span>
                         {% if item.badge > 0 %}
-                            <span class="account-nav__badge">{{ item.badge }}</span>
+                            <span class="account-nav__badge">
+                                {{ item.badge }}
+                            </span>
                         {% endif %}
                     </a>
                 {% endfor %}
@@ -34,14 +40,18 @@
                     {% if isPro %}
                         <a href="{{ path('pro_dashboard') }}" class="account-nav__link account-nav__link--space">
                             <i data-lucide="briefcase" class="account-nav__icon"></i>
-                            <span class="account-nav__label">Mon espace pro</span>
+                            <span class="account-nav__label">
+                                Mon espace pro
+                            </span>
                             <i data-lucide="arrow-up-right" class="account-nav__icon account-nav__icon--end"></i>
                         </a>
                     {% endif %}
                     {% if isStaff %}
                         <a href="{{ path('admin_dashboard') }}" class="account-nav__link account-nav__link--space">
                             <i data-lucide="shield-check" class="account-nav__icon"></i>
-                            <span class="account-nav__label">Administration</span>
+                            <span class="account-nav__label">
+                                Administration
+                            </span>
                             <i data-lucide="arrow-up-right" class="account-nav__icon account-nav__icon--end"></i>
                         </a>
                     {% endif %}
@@ -54,7 +64,9 @@
                 <form method="post" action="{{ logout_path() }}" class="account-nav__logout">
                     <button type="submit" class="account-nav__link account-nav__link--danger">
                         <i data-lucide="log-out" class="account-nav__icon"></i>
-                        <span class="account-nav__label">Se déconnecter</span>
+                        <span class="account-nav__label">
+                            Se déconnecter
+                        </span>
                     </button>
                 </form>
             </nav>

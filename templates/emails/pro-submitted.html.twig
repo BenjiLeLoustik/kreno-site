@@ -4,9 +4,19 @@
 
 {% block mailContent %}
 
-    <p>Merci ! L’inscription de {{ establishment.name }} est complète.</p>
-    <p>Notre équipe vérifie vos informations (SIRET, adresse, prestations) sous {{ delay }}. Vous recevrez un e-mail dès que votre établissement sera en ligne.</p>
-    <p>En attendant, vous pouvez compléter votre page : photos, horaires, description.</p>
-    <p style="{{ styles.actions }}"><a href="{{ dashboardUrl }}" style="{{ styles.button }}">Ouvrir Kréno Pro</a></p>
+    <p>
+        Merci ! L’inscription de {{ establishment.name }} est complète.
+    </p>
+    <p>
+        Notre équipe vérifie vos informations (SIRET, adresse, prestations) sous {{ delay }}. Vous recevrez un e-mail dès que votre établissement sera en ligne.
+    </p>
+    <p>
+        En attendant, vous pouvez compléter votre page : photos, horaires, description.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ dashboardUrl }}" style="{{ styles.button }}">
+            Ouvrir Kréno Pro
+        </a>
+    </p>
 
 {% endblock %}

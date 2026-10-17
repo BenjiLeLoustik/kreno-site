@@ -2,12 +2,18 @@
 
 {% set account_section = 'follows' %}
 
-{% block title %}Établissements suivis · {{ website().siteName }}{% endblock %}
+{% block title %}
+    Établissements suivis · {{ website().siteName }}
+{% endblock %}
 
 {% block account_content %}
     <header class="account-head">
-        <h1 class="account-head__title">Établissements suivis</h1>
-        <p class="account-head__subtitle">Vous êtes prévenu dès qu'ils publient un créneau.</p>
+        <h1 class="account-head__title">
+            Établissements suivis
+        </h1>
+        <p class="account-head__subtitle">
+            Vous êtes prévenu dès qu'ils publient un créneau.
+        </p>
     </header>
 
     {% if follows is not empty %}
@@ -18,31 +24,56 @@
                     {% if shop.cover %}
                         <img src="{{ shop.cover }}" alt="" class="follow-card__cover" loading="lazy">
                     {% else %}
-                        <span class="follow-card__cover follow-card__cover--empty" aria-hidden="true">{{ shop.name|first|upper }}</span>
+                        <span class="follow-card__cover follow-card__cover--empty" aria-hidden="true">
+                            {{ shop.name|first|upper }}
+                        </span>
                     {% endif %}
                     <div class="follow-card__body">
                         {% if url %}
-                            <a href="{{ url }}" class="follow-card__name">{{ shop.name }}</a>
+                            <a href="{{ url }}" class="follow-card__name">
+                                {{ shop.name }}
+                            </a>
                         {% else %}
-                            <b class="follow-card__name">{{ shop.name }}</b>
+                            <b class="follow-card__name">
+                                {{ shop.name }}
+                            </b>
                         {% endif %}
-                        <span class="follow-card__meta">{{ shop.category ? shop.category.name : '' }}{% if shop.category and shop.city %} · {% endif %}{{ shop.city ? shop.city.name : '' }}</span>
-                        <span class="follow-card__slots{{ shop.availableSlots > 0 ? ' follow-card__slots--available' : '' }}">
-                            {{ shop.availableSlots > 0 ? shop.availableSlots ~ ' créneau' ~ (shop.availableSlots > 1 ? 'x' : '') ~ ' libre' ~ (shop.availableSlots > 1 ? 's' : '') : 'Rien pour l\'instant' }}
+                        <span class="follow-card__meta">
+                            {{ shop.category ? shop.category.name : '' }}
+                            {% if shop.category and shop.city %}
+                                · {% endif %}
+                            {{ shop.city ? shop.city.name : '' }}
                         </span>
-                        {% if shop.openNow.label %}<span class="follow-card__hours">{{ shop.openNow.label }}</span>{% endif %}
+                        <span class="follow-card__slots{{ shop.availableSlots > 0 ? ' follow-card__slots--available' : '' }}">
+                            {% if shop.availableSlots > 0 %}
+                                {{ shop.availableSlots }} créneau{{ show.availableSlots > 1 ? 'x' : '' }} libre{{ show.availableSlots > 1 ? 's' : '' }}
+                            {% else %}
+                                Rien pour l'instant
+                            {% endif %}
+                        </span>
+                        {% if shop.openNow.label %}
+                            <span class="follow-card__hours">
+                                {{ shop.openNow.label }}
+                            </span>
+                        {% endif %}
                     </div>
                     <form method="post" action="{{ path('account_follow_delete', { id: shop.id }) }}" class="follow-card__form">
                         {{ csrf_field('account')|raw }}
-                        <button type="submit" class="follow-card__unfollow">Ne plus suivre</button>
+                        <button type="submit" class="follow-card__unfollow">
+                            Ne plus suivre
+                        </button>
                     </form>
                 </article>
             {% endfor %}
         </div>
     {% else %}
         <div class="account-empty">
-            <p class="account-empty__text">Vous ne suivez aucun établissement. Suivez vos adresses préférées depuis leur page pour être prévenu de leurs créneaux.</p>
-            <a href="{{ path('search_index') }}" class="btn btn--primary btn--small">Trouver un établissement</a>
+            <p class="account-empty__text">
+                Vous ne suivez aucun établissement. Suivez vos adresses préférées depuis leur page pour être prévenu de leurs créneaux.
+            </p>
+            <a href="{{ path('search_index') }}" class="btn btn--primary btn--small">
+                Trouver un établissement
+            </a>
         </div>
     {% endif %}
 {% endblock %}

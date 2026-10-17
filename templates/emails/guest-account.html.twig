@@ -4,10 +4,28 @@
 
 {% block mailContent %}
 
-    <p>Pour ta réservation, nous avons créé ton compte Kréno. Il te permet de retrouver tes rendez-vous, de les annuler et de recevoir tes rappels.</p>
-    <p>Choisis ton mot de passe pour y accéder :</p>
-    <p style="{{ styles.actions }}"><a href="{{ passwordUrl }}" style="{{ styles.button }}">Choisir mon mot de passe</a></p>
-    <p>Ce lien est valable {{ expiresIn }}. Passé ce délai, utilise <a href="{{ forgotUrl }}" style="{{ styles.link }}">mot de passe oublié</a> pour en recevoir un nouveau.</p>
-    <p style="{{ styles.actions }}"><a href="{{ bookingsUrl }}" style="{{ styles.button }}">Voir mes réservations</a></p>
+    <p>
+        Pour ta réservation, nous avons créé ton compte Kréno. Il te permet de retrouver tes rendez-vous, de les annuler et de recevoir tes rappels.
+    </p>
+    <p>
+        Choisis ton mot de passe pour y accéder :
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ passwordUrl }}" style="{{ styles.button }}">
+            Choisir mon mot de passe
+        </a>
+    </p>
+    <p>
+        Ce lien est valable {{ expiresIn }}. Passé ce délai, utilise
+        <a href="{{ forgotUrl }}" style="{{ styles.link }}">
+            mot de passe oublié
+        </a>
+        pour en recevoir un nouveau.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ bookingsUrl }}" style="{{ styles.button }}">
+            Voir mes réservations
+        </a>
+    </p>
 
 {% endblock %}

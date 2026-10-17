@@ -4,20 +4,42 @@
 
 {% block mailContent %}
 
-    <p>{{ booking.customer.name }} a annulé son rendez-vous :</p>
+    <p>
+        {{ booking.customer.name }} a annulé son rendez-vous :
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ booking.service }}</li>
-        <li style="{{ styles.item }}">{{ booking.day }} à {{ booking.time }}</li>
-        <li style="{{ styles.item }}">Référence : {{ booking.reference }}</li>
+        <li style="{{ styles.item }}">
+            {{ booking.service }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.day }} à {{ booking.time }}
+        </li>
+        <li style="{{ styles.item }}">
+            Référence : {{ booking.reference }}
+        </li>
     </ul>
     {% if booking.cancellationReason %}
-        <p>Motif indiqué : « {{ booking.cancellationReason }} »</p>
+        <p>
+            Motif indiqué : « {{ booking.cancellationReason }} »
+        </p>
     {% endif %}
     {% if slotReleased %}
-        <p>Le créneau est automatiquement remis en ligne : il peut encore trouver preneur.</p>
+        <p>
+            Le créneau est automatiquement remis en ligne : il peut encore trouver preneur.
+        </p>
     {% else %}
-        <p>Le créneau n’a pas pu être remis en ligne (trop proche de l’heure du rendez-vous). Vous pouvez en <a href="{{ slotUrl }}" style="{{ styles.link }}">publier un nouveau</a>.</p>
+        <p>
+            Le créneau n’a pas pu être remis en ligne (trop proche de l’heure du rendez-vous). Vous pouvez en
+            <a href="{{ slotUrl }}" style="{{ styles.link }}">
+                publier un nouveau
+            </a>
+            .
+        </p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ bookingsUrl }}" style="{{ styles.button }}">Voir les réservations</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ bookingsUrl }}" style="{{ styles.button }}">
+            Voir les réservations
+        </a>
+    </p>
 
 {% endblock %}

@@ -4,8 +4,16 @@
 
 {% block mailContent %}
 
-    <p>Malgré nos relances, un paiement de votre abonnement {{ subscription.plan }} reste impayé. Les créneaux de {{ company }} ne sont plus publiés sur Kréno.</p>
-    <p>Réglez la facture en attente pour retrouver immédiatement l’accès à la publication. Vous pouvez aussi mettre à jour votre moyen de paiement.</p>
-    <p style="{{ styles.actions }}"><a href="{{ billingUrl }}" style="{{ styles.button }}">Régulariser ma situation</a></p>
+    <p>
+        Malgré nos relances, un paiement de votre abonnement {{ subscription.plan }} reste impayé. Les créneaux de {{ company }} ne sont plus publiés sur Kréno.
+    </p>
+    <p>
+        Réglez la facture en attente pour retrouver immédiatement l’accès à la publication. Vous pouvez aussi mettre à jour votre moyen de paiement.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ billingUrl }}" style="{{ styles.button }}">
+            Régulariser ma situation
+        </a>
+    </p>
 
 {% endblock %}

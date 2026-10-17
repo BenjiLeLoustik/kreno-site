@@ -4,13 +4,28 @@
 
 {% block mailContent %}
 
-    <p>Nous n’avons pas pu valider l’inscription de {{ establishment.name }} sur Kréno.</p>
-    <p>Motif : {{ reason }}</p>
+    <p>
+        Nous n’avons pas pu valider l’inscription de {{ establishment.name }} sur Kréno.
+    </p>
+    <p>
+        Motif : {{ reason }}
+    </p>
     {% if message %}
-        <p>Précisions de notre équipe :</p>
-        <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
+        <p>
+            Précisions de notre équipe :
+        </p>
+        <blockquote style="{{ styles.quote }}">
+            {{ message|nl2br }}
+        </blockquote>
     {% endif %}
-    <p>Si vous pouvez corriger ce point, reprenez votre inscription : <a href="{{ signupUrl }}" style="{{ styles.link }}">modifier mon inscription</a></p>
-    <p>Une question ? Répondez à cet e-mail ou écrivez-nous à {{ supportEmail }}.</p>
+    <p>
+        Si vous pouvez corriger ce point, reprenez votre inscription :
+        <a href="{{ signupUrl }}" style="{{ styles.link }}">
+            modifier mon inscription
+        </a>
+    </p>
+    <p>
+        Une question ? Répondez à cet e-mail ou écrivez-nous à {{ supportEmail }}.
+    </p>
 
 {% endblock %}

@@ -4,9 +4,19 @@
 
 {% block mailContent %}
 
-    <p>Nous vous avions annoncé que le prix de votre abonnement {{ subscription.plan }} passerait à {{ announcedPrice }} HT à partir du {{ effectiveAt }}.</p>
-    <p>Ce changement est annulé : votre abonnement reste à {{ subscription.price }} HT ({{ subscription.period|lower }}).</p>
-    <p>Vous n’avez rien à faire.</p>
-    <p><a href="{{ subscription.url }}">Mon abonnement</a></p>
+    <p>
+        Nous vous avions annoncé que le prix de votre abonnement {{ subscription.plan }} passerait à {{ announcedPrice }} HT à partir du {{ effectiveAt }}.
+    </p>
+    <p>
+        Ce changement est annulé : votre abonnement reste à {{ subscription.price }} HT ({{ subscription.period|lower }}).
+    </p>
+    <p>
+        Vous n’avez rien à faire.
+    </p>
+    <p>
+        <a href="{{ subscription.url }}">
+            Mon abonnement
+        </a>
+    </p>
 
 {% endblock %}

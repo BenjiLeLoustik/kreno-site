@@ -3,54 +3,115 @@
 {% set admin_section = 'bookings' %}
 {% set tones = { coming: 'info', pending: 'warning', done: 'success', noshow: 'danger', cancelled: 'neutral', cancelled_by_establishment: 'danger' } %}
 
-{% block title %}Réservation {{ booking.reference }} · Administration Kréno{% endblock %}
+{% block title %}
+    Réservation {{ booking.reference }} · Administration Kréno
+{% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <div>
-            <a href="{{ path('admin_bookings') }}" class="admin-subtitle">← Toutes les réservations</a>
-            <h1 class="admin-title">Réservation {{ booking.reference }}</h1>
+            <a href="{{ path('admin_bookings') }}" class="admin-subtitle">
+                ← Toutes les réservations
+            </a>
+            <h1 class="admin-title">
+                Réservation {{ booking.reference }}
+            </h1>
         </div>
-        <span class="admin-badge admin-badge--{{ tones[booking.kind] ?? 'neutral' }}">{{ booking.statusLabel }}</span>
+        <span class="admin-badge admin-badge--{{ tones[booking.kind] ?? 'neutral' }}">
+            {{ booking.statusLabel }}
+        </span>
     </div>
 
     <div class="admin-grid">
         <section class="admin-card">
-            <h2 class="admin-card__title">Créneau</h2>
+            <h2 class="admin-card__title">
+                Créneau
+            </h2>
             <dl class="admin-facts">
-                <dt class="admin-facts__label">Prestation</dt>
-                <dd class="admin-facts__value">{{ booking.what ?: '—' }}{% if booking.duration %} · {{ booking.duration }}{% endif %}</dd>
-                <dt class="admin-facts__label">Date</dt>
-                <dd class="admin-facts__value">{{ booking.startsAt ? booking.startsAt|date('d/m/Y à H:i') : '—' }}</dd>
-                <dt class="admin-facts__label">Établissement</dt>
+                <dt class="admin-facts__label">
+                    Prestation
+                </dt>
+                <dd class="admin-facts__value">
+                    {{ booking.what ?: '—' }}
+                    {% if booking.duration %}
+                        · {{ booking.duration }}
+                    {% endif %}
+                </dd>
+                <dt class="admin-facts__label">
+                    Date
+                </dt>
+                <dd class="admin-facts__value">
+                    {{ booking.startsAt ? booking.startsAt|date('d/m/Y à H:i') : '-' }}
+                </dd>
+                <dt class="admin-facts__label">
+                    Établissement
+                </dt>
                 <dd class="admin-facts__value">
                     {% if booking.establishment %}
                         {% if is_granted('ROLE_MODERATOR') and route_exists('admin_establishment_show') %}
-                            <a href="{{ path('admin_establishment_show', { id: booking.establishment.id }) }}">{{ booking.establishment.name }}</a>
+                            <a href="{{ path('admin_establishment_show', { id: booking.establishment.id }) }}">
+                                {{ booking.establishment.name }}
+                            </a>
                         {% else %}
                             {{ booking.establishment.name }}
                         {% endif %}
-                        <br><span class="admin-row__meta">{{ booking.establishment.address }}</span>
+                        <br>
+                        <span class="admin-row__meta">
+                        {{ booking.establishment.address }}
+                    </span>
                     {% else %}
-                        —
+                        -
                     {% endif %}
                 </dd>
-                <dt class="admin-facts__label">Prix payé sur place</dt>
-                <dd class="admin-facts__value">{{ booking.price }} <s class="admin-row__meta">{{ booking.old }}</s>{% if booking.discountLabel %} · {{ booking.discountLabel }}{% endif %}</dd>
-                <dt class="admin-facts__label">Commission Kréno</dt>
-                <dd class="admin-facts__value">{{ booking.fee }}</dd>
-                <dt class="admin-facts__label">Réservée le</dt>
-                <dd class="admin-facts__value">{{ booking.createdAt ? booking.createdAt|date('d/m/Y à H:i') : '—' }}</dd>
+                <dt class="admin-facts__label">
+                    Prix payé sur place
+                </dt>
+                <dd class="admin-facts__value">
+                    {{ booking.price }}
+                    <s class="admin-row__meta">
+                        {{ booking.old }}
+                    </s>
+                    {% if booking.discountLabel %}
+                        · {{ booking.discountLabel }}
+                    {% endif %}
+                </dd>
+                <dt class="admin-facts__label">
+                    Commission Kréno
+                </dt>
+                <dd class="admin-facts__value">
+                    {{ booking.fee }}
+                </dd>
+                <dt class="admin-facts__label">
+                    Réservée le
+                </dt>
+                <dd class="admin-facts__value">
+                    {{ booking.createdAt ? booking.createdAt|date('d/m/Y à H:i') : '-' }}
+                </dd>
                 {% if booking.note %}
-                    <dt class="admin-facts__label">Note du client</dt>
-                    <dd class="admin-facts__value">{{ booking.note }}</dd>
+                    <dt class="admin-facts__label">
+                        Note du client
+                    </dt>
+                    <dd class="admin-facts__value">
+                        {{ booking.note }}
+                    </dd>
                 {% endif %}
                 {% if booking.cancelledAt %}
-                    <dt class="admin-facts__label">Annulée le</dt>
-                    <dd class="admin-facts__value">{{ booking.cancelledAt|date('d/m/Y à H:i') }}{% if booking.cancelledBy %} par {{ booking.cancelledBy }}{% endif %}</dd>
+                    <dt class="admin-facts__label">
+                        Annulée le
+                    </dt>
+                    <dd class="admin-facts__value">
+                        {{ booking.cancelledAt|date('d/m/Y à H:i') }}
+                        {% if booking.cancelledBy %}
+                            par {{ booking.cancelledBy }}
+                        {% endif %}
+                    </dd>
                     {% if booking.cancellationReason %}
-                        <dt class="admin-facts__label">Motif</dt>
-                        <dd class="admin-facts__value">{{ booking.cancellationReason }}</dd>
+                        <dt class="admin-facts__label">
+                            Motif
+                        </dt>
+                        <dd class="admin-facts__value">
+                            {{ booking.cancellationReason }}
+                        </dd>
                     {% endif %}
                 {% endif %}
             </dl>
@@ -58,35 +119,59 @@
 
         <div class="admin-form">
             <section class="admin-card">
-                <h2 class="admin-card__title">Client</h2>
+                <h2 class="admin-card__title">
+                    Client
+                </h2>
                 {% if booking.customer %}
                     <dl class="admin-facts">
-                        <dt class="admin-facts__label">Nom</dt>
+                        <dt class="admin-facts__label">
+                            Nom
+                        </dt>
                         <dd class="admin-facts__value">
                             {% if is_granted('ROLE_MODERATOR') and route_exists('admin_user_show') %}
-                                <a href="{{ path('admin_user_show', { id: booking.customer.id }) }}">{{ booking.customer.name }}</a>
+                                <a href="{{ path('admin_user_show', { id: booking.customer.id }) }}">
+                                    {{ booking.customer.name }}
+                                </a>
                             {% else %}
                                 {{ booking.customer.name }}
                             {% endif %}
                         </dd>
-                        <dt class="admin-facts__label">E-mail</dt>
-                        <dd class="admin-facts__value"><a href="mailto:{{ booking.customer.email }}">{{ booking.customer.email }}</a></dd>
-                        <dt class="admin-facts__label">Téléphone</dt>
-                        <dd class="admin-facts__value">{{ booking.customer.phone ?: '—' }}</dd>
+                        <dt class="admin-facts__label">
+                            E-mail
+                        </dt>
+                        <dd class="admin-facts__value">
+                            <a href="mailto:{{ booking.customer.email }}">
+                                {{ booking.customer.email }}
+                            </a>
+                        </dd>
+                        <dt class="admin-facts__label">
+                            Téléphone
+                        </dt>
+                        <dd class="admin-facts__value">
+                            {{ booking.customer.phone ?: '-' }}
+                        </dd>
                     </dl>
                 {% else %}
-                    <p class="admin-subtitle">Compte supprimé.</p>
+                    <p class="admin-subtitle">
+                        Compte supprimé.
+                    </p>
                 {% endif %}
             </section>
 
             <section class="admin-card">
-                <h2 class="admin-card__title">Historique</h2>
+                <h2 class="admin-card__title">
+                    Historique
+                </h2>
                 <ol class="admin-timeline">
                     {% for step in booking.timeline %}
                         <li class="admin-timeline__item">
                             <span class="admin-timeline__dot admin-timeline__dot--{{ step.tone }}" aria-hidden="true"></span>
                             {{ step.label }}
-                            {% if step.at %}<span class="admin-timeline__time">{{ step.at|date('d/m H:i') }}</span>{% endif %}
+                            {% if step.at %}
+                                <span class="admin-timeline__time">
+                                    {{ step.at|date('d/m H:i') }}
+                                </span>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ol>

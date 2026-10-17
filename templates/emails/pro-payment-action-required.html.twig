@@ -4,8 +4,16 @@
 
 {% block mailContent %}
 
-    <p>Votre banque demande une confirmation pour le paiement de la facture n° {{ invoice.number }} ({{ amount }} TTC).</p>
-    <p>Sans cette confirmation, le paiement ne peut pas aboutir.</p>
-    <p style="{{ styles.actions }}"><a href="{{ paymentUrl }}" style="{{ styles.button }}">Confirmer le paiement</a></p>
+    <p>
+        Votre banque demande une confirmation pour le paiement de la facture n° {{ invoice.number }} ({{ amount }} TTC).
+    </p>
+    <p>
+        Sans cette confirmation, le paiement ne peut pas aboutir.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ paymentUrl }}" style="{{ styles.button }}">
+            Confirmer le paiement
+        </a>
+    </p>
 
 {% endblock %}

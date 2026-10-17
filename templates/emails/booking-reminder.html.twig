@@ -4,17 +4,38 @@
 
 {% block mailContent %}
 
-    <p>Petit rappel : ton rendez-vous, c’est dans une heure.</p>
+    <p>
+        Petit rappel : ton rendez-vous, c’est dans une heure.
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ booking.service }} ({{ booking.duration }})</li>
-        <li style="{{ styles.item }}">Aujourd’hui à {{ booking.time }}</li>
-        <li style="{{ styles.item }}">{{ booking.establishment.name }}, {{ booking.establishment.address }}</li>
-        <li style="{{ styles.item }}">{{ booking.price }}, à régler sur place</li>
+        <li style="{{ styles.item }}">
+            {{ booking.service }} ({{ booking.duration }})
+        </li>
+        <li style="{{ styles.item }}">
+            Aujourd’hui à {{ booking.time }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.establishment.name }}, {{ booking.establishment.address }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.price }}, à régler sur place
+        </li>
     </ul>
     {% if canCancel %}
-        <p>Un empêchement ? Tu peux encore annuler gratuitement depuis <a href="{{ booking.url }}" style="{{ styles.link }}">ta réservation</a>.</p>
+        <p>
+            Un empêchement ? Tu peux encore annuler gratuitement depuis
+            <a href="{{ booking.url }}" style="{{ styles.link }}">
+                ta réservation
+            </a>.
+        </p>
     {% else %}
-        <p>Un empêchement ? Préviens l’établissement{% if booking.establishment.phone %} au {{ booking.establishment.phone }}{% endif %}. Une absence non prévenue peut entraîner la suspension de ton compte.</p>
+        <p>
+            Un empêchement ? Préviens l’établissement
+            {% if booking.establishment.phone %}
+                au {{ booking.establishment.phone }}
+            {% endif %}
+            . Une absence non prévenue peut entraîner la suspension de ton compte.
+        </p>
     {% endif %}
 
 {% endblock %}

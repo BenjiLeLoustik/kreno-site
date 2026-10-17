@@ -4,11 +4,30 @@
 
 {% block mailContent %}
 
-    <p>Bienvenue sur Kréno ! Tu peux désormais réserver en quelques secondes les créneaux libérés par les établissements près de chez toi, à prix réduit.</p>
-    <p>Pour activer ton compte, confirme ton adresse e-mail :</p>
-    <p style="{{ styles.actions }}"><a href="{{ verifyUrl }}" style="{{ styles.button }}">Confirmer mon adresse e-mail</a></p>
-    <p>Ce lien est valable {{ expiresIn }}.</p>
-    <p>Pour ne rater aucun bon plan, crée une alerte : on te prévient dès qu’un créneau correspond à tes envies.</p>
-    <p style="{{ styles.actions }}"><a href="{{ alertsUrl }}" style="{{ styles.button }}">Créer une alerte</a><a href="{{ homeUrl }}" style="{{ styles.buttonSecondary }}">Voir les créneaux du moment</a></p>
+    <p>
+        Bienvenue sur Kréno ! Tu peux désormais réserver en quelques secondes les créneaux libérés par les établissements près de chez toi, à prix réduit.
+    </p>
+    <p>
+        Pour activer ton compte, confirme ton adresse e-mail :
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ verifyUrl }}" style="{{ styles.button }}">
+            Confirmer mon adresse e-mail
+        </a>
+    </p>
+    <p>
+        Ce lien est valable {{ expiresIn }}.
+    </p>
+    <p>
+        Pour ne rater aucun bon plan, crée une alerte : on te prévient dès qu’un créneau correspond à tes envies.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ alertsUrl }}" style="{{ styles.button }}">
+            Créer une alerte
+        </a>
+        <a href="{{ homeUrl }}" style="{{ styles.buttonSecondary }}">
+            Voir les créneaux du moment
+        </a>
+    </p>
 
 {% endblock %}

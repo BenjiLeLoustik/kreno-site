@@ -5,51 +5,109 @@
 {% set next = dashboard.next %}
 {% set minutes = rules.freeCancellationMinutes %}
 
-{% block title %}Mon compte · {{ website().siteName }}{% endblock %}
+{% block title %}
+    Mon compte · {{ website().siteName }}
+{% endblock %}
 
 {% block account_content %}
     <header class="account-head">
-        <span class="account-head__date">{{ dashboard.date }}</span>
-        <h1 class="account-head__title">{{ dashboard.greeting }}</h1>
+        <span class="account-head__date">
+            {{ dashboard.date }}
+        </span>
+        <h1 class="account-head__title">
+            {{ dashboard.greeting }}
+        </h1>
         {% if dashboard.since %}
-            <p class="account-head__subtitle">Membre {{ dashboard.since }} · {{ dashboard.savedTotal }} économisés avec {{ website().siteName }}</p>
+            <p class="account-head__subtitle">
+                Membre {{ dashboard.since }} · {{ dashboard.savedTotal }} économisés avec {{ website().siteName }}
+            </p>
         {% endif %}
     </header>
 
     <section class="account-section">
         <div class="account-section__head">
-            <h2 class="account-section__title">Prochain rendez-vous</h2>
-            <a href="{{ path('account_bookings') }}" class="account-section__more">Toutes mes réservations</a>
+            <h2 class="account-section__title">
+                Prochain rendez-vous
+            </h2>
+            <a href="{{ path('account_bookings') }}" class="account-section__more">
+                Toutes mes réservations
+            </a>
         </div>
         {% if next %}
             <div class="account-next">
-                {% embed 'components/ticket.html.twig' with { day: next.day, time: next.time, duration: next.duration } %}
+                {% embed 'components/ticket.html.twig' with {
+                    day: next.day,
+                    time: next.time,
+                    duration: next.duration
+                } %}
+
                     {% block ticket_body %}
-                        <b class="ticket__name">{{ next.establishment ? next.establishment.name : '' }}</b>
-                        <span class="ticket__what">{{ next.what }}{% if next.staff %} · avec {{ next.staff }}{% endif %}</span>
-                        {% if next.establishment %}<span class="ticket__address">{{ next.establishment.address }}</span>{% endif %}
-                        <span class="ticket__prices"><s class="ticket__old">{{ next.old }}</s> <b class="ticket__price">{{ next.price }}</b> <span class="ticket__pay">à régler sur place</span></span>
-                        <span class="ticket__reference">{{ next.reference }}</span>
+                        <b class="ticket__name">
+                            {{ next.establishment ? next.establishment.name : '' }}
+                        </b>
+                        <span class="ticket__what">
+                            {{ next.what }}
+                            {% if next.staff %}
+                                · avec {{ next.staff }}
+                            {% endif %}
+                        </span>
+                        {% if next.establishment %}
+                            <span class="ticket__address">
+                                {{ next.establishment.address }}
+                            </span>
+                        {% endif %}
+                        <span class="ticket__prices">
+                            <s class="ticket__old">
+                                {{ next.old }}
+                            </s>
+                            <b class="ticket__price">
+                                {{ next.price }}
+                            </b>
+                            <span class="ticket__pay">
+                                à régler sur place
+                            </span>
+                        </span>
+                        <span class="ticket__reference">
+                            {{ next.reference }}
+                        </span>
                     {% endblock %}
+
                 {% endembed %}
+
                 <div class="account-next__side">
-                    {% if next.in %}<span class="account-next__in">{{ next.in }}</span>{% endif %}
+                    {% if next.in %}
+                        <span class="account-next__in">
+                            {{ next.in }}
+                        </span>
+                    {% endif %}
                     {% if next.canCancel and next.freeCancellationUntil %}
-                        <span class="account-next__notice">Annulation gratuite jusqu'à {{ next.freeCancellationUntil }}</span>
+                        <span class="account-next__notice">
+                            Annulation gratuite jusqu'à {{ next.freeCancellationUntil }}
+                        </span>
                     {% endif %}
                     <div class="account-next__actions">
-                        <a href="{{ path('account_booking_show', { reference: next.reference }) }}" class="btn btn--ink btn--small">Détails</a>
-                        <a href="{{ path('account_booking_calendar', { reference: next.reference }) }}" class="btn btn--outline btn--small">Ajouter à mon agenda</a>
+                        <a href="{{ path('account_booking_show', { reference: next.reference }) }}" class="btn btn--ink btn--small">
+                            Détails
+                        </a>
+                        <a href="{{ path('account_booking_calendar', { reference: next.reference }) }}" class="btn btn--outline btn--small">
+                            Ajouter à mon agenda
+                        </a>
                         {% if next.establishment and next.establishment.directions %}
-                            <a href="{{ next.establishment.directions }}" class="btn btn--outline btn--small" target="_blank" rel="noopener">Itinéraire</a>
+                            <a href="{{ next.establishment.directions }}" class="btn btn--outline btn--small" target="_blank" rel="noopener">
+                                Itinéraire
+                            </a>
                         {% endif %}
                     </div>
                 </div>
             </div>
         {% else %}
             <div class="account-empty">
-                <p class="account-empty__text">Aucune réservation à venir. Des créneaux se libèrent tous les jours près de chez vous.</p>
-                <a href="{{ path('search_index') }}" class="btn btn--primary btn--small">Trouver un créneau</a>
+                <p class="account-empty__text">
+                    Aucune réservation à venir. Des créneaux se libèrent tous les jours près de chez vous.
+                </p>
+                <a href="{{ path('search_index') }}" class="btn btn--primary btn--small">
+                    Trouver un créneau
+                </a>
             </div>
         {% endif %}
     </section>
@@ -57,9 +115,15 @@
     <div class="account-stats">
         {% for stat in dashboard.stats %}
             <div class="account-stat">
-                <span class="account-stat__label">{{ stat.label }}</span>
-                <strong class="account-stat__value{{ stat.key == 'noShows' and stat.value > 0 ? ' account-stat__value--alert' : '' }}">{{ stat.value }}</strong>
-                <span class="account-stat__note">{{ stat.note }}</span>
+                <span class="account-stat__label">
+                    {{ stat.label }}
+                </span>
+                <strong class="account-stat__value{{ stat.key == 'noShows' and stat.value > 0 ? ' account-stat__value--alert' : '' }}">
+                    {{ stat.value }}
+                </strong>
+                <span class="account-stat__note">
+                    {{ stat.note }}
+                </span>
             </div>
         {% endfor %}
     </div>
@@ -67,29 +131,57 @@
     <div class="account-columns">
         <section class="account-card">
             <div class="account-section__head">
-                <h2 class="account-section__title">Mon alerte</h2>
-                <a href="{{ path('account_alerts') }}" class="account-section__more">{{ dashboard.alert ? 'Gérer' : 'Créer' }}</a>
+                <h2 class="account-section__title">
+                    Mon alerte
+                </h2>
+                <a href="{{ path('account_alerts') }}" class="account-section__more">
+                    {% if dashboard.alert %}
+                        Gérer
+                    {% else %}
+                        Créer
+                    {% endif %}
+                </a>
             </div>
             {% if dashboard.alert %}
-                <p class="account-card__text">{{ dashboard.alert.summary }}</p>
+                <p class="account-card__text">
+                    {{ dashboard.alert.summary }}
+                </p>
             {% else %}
-                <p class="account-card__muted">Aucune alerte active. Soyez prévenu dès qu'un créneau se libère dans vos catégories préférées.</p>
+                <p class="account-card__muted">
+                    Aucune alerte active. Soyez prévenu dès qu'un créneau se libère dans vos catégories préférées.
+                </p>
             {% endif %}
         </section>
 
         <section class="account-card">
             <div class="account-section__head">
-                <h2 class="account-section__title">Notifications</h2>
-                <a href="{{ path('account_notifications') }}" class="account-section__more">Tout voir</a>
+                <h2 class="account-section__title">
+                    Notifications
+                </h2>
+                <a href="{{ path('account_notifications') }}" class="account-section__more">
+                    Tout voir
+                </a>
             </div>
             {% for notification in dashboard.notifications %}
                 <a href="{{ notification.link ?: path('account_notifications') }}" class="account-notification{{ notification.read ? '' : ' account-notification--unread' }}">
-                    <span class="account-notification__title">{{ notification.title }}</span>
-                    {% if notification.body %}<span class="account-notification__body">{{ notification.body }}</span>{% endif %}
-                    {% if notification.createdAt %}<span class="account-notification__date">{{ notification.createdAt|date('d/m à H:i') }}</span>{% endif %}
+                    <span class="account-notification__title">
+                        {{ notification.title }}
+                    </span>
+                    {% if notification.body %}
+                        <span class="account-notification__body">
+                            {{ notification.body }}
+                        </span>
+                    {% endif %}
+                    {% if notification.createdAt %}
+                        <span class="account-notification__date">
+                            {{ notification.createdAt|date('d/m à H:i') }}
+                        </span>
+                    {% endif %}
                 </a>
             {% else %}
-                <p class="account-card__muted">Aucune notification pour le moment.</p>
+                <p class="account-card__muted">
+                    Aucune notification pour le moment.
+                </p>
             {% endfor %}
         </section>
     </div>
@@ -97,23 +189,37 @@
     {% if dashboard.picks is not empty %}
         <section class="account-section">
             <div class="account-section__head">
-                <h2 class="account-section__title">Pour vous</h2>
-                <a href="{{ path('search_index') }}" class="account-section__more">Tous les créneaux</a>
+                <h2 class="account-section__title">
+                    Pour vous
+                </h2>
+                <a href="{{ path('search_index') }}" class="account-section__more">
+                    Tous les créneaux
+                </a>
             </div>
             <div class="account-picks">
                 {% for slot in dashboard.picks %}
-                    {% include 'components/slot_card.html.twig' with { slot: slot } %}
+                    {% include 'components/slot_card.html.twig' with {
+                        slot: slot
+                    } %}
                 {% endfor %}
             </div>
         </section>
     {% endif %}
 
     <section class="account-card">
-        <h2 class="account-section__title">Bon à savoir</h2>
+        <h2 class="account-section__title">
+            Bon à savoir
+        </h2>
         <ul class="account-rules">
-            <li class="account-rules__item">Annulation gratuite jusqu'à {{ minutes >= 60 and minutes % 60 == 0 ? (minutes // 60) ~ ' h' : minutes ~ ' min' }} avant le rendez-vous.</li>
-            <li class="account-rules__item">{{ rules.maxUpcomingBookings }} réservation{{ rules.maxUpcomingBookings > 1 ? 's' : '' }} à venir maximum en même temps.</li>
-            <li class="account-rules__item">Au-delà de {{ rules.toleratedNoShows }} absence{{ rules.toleratedNoShows > 1 ? 's' : '' }} non prévenue{{ rules.toleratedNoShows > 1 ? 's' : '' }} sur {{ rules.noShowWindowDays }} jours, les réservations sont suspendues {{ rules.suspensionDays }} jours.</li>
+            <li class="account-rules__item">
+                Annulation gratuite jusqu'à {{ minutes >= 60 and minutes % 60 == 0 ? (minutes // 60) ~ ' h' : minutes ~ ' min' }} avant le rendez-vous.
+            </li>
+            <li class="account-rules__item">
+                {{ rules.maxUpcomingBookings }} réservation{{ rules.maxUpcomingBookings > 1 ? 's' : '' }} à venir maximum en même temps.
+            </li>
+            <li class="account-rules__item">
+                Au-delà de {{ rules.toleratedNoShows }} absence{{ rules.toleratedNoShows > 1 ? 's' : '' }} non prévenue{{ rules.toleratedNoShows > 1 ? 's' : '' }} sur {{ rules.noShowWindowDays }} jours, les réservations sont suspendues {{ rules.suspensionDays }} jours.
+            </li>
         </ul>
     </section>
 {% endblock %}

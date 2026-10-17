@@ -2,9 +2,13 @@
 
 {% set site = website() %}
 
-{% block title %}{{ site.siteName }} Pro : remplissez vos créneaux annulés{% endblock %}
+{% block title %}
+    {{ site.siteName }} Pro : remplissez vos créneaux annulés
+{% endblock %}
 
-{% block meta_description %}Publiez vos rendez-vous annulés en quelques secondes : {{ site.siteName }} prévient les clients du quartier qui cherchent justement ce créneau-là.{% endblock %}
+{% block meta_description %}
+    Publiez vos rendez-vous annulés en quelques secondes : {{ site.siteName }} prévient les clients du quartier qui cherchent justement ce créneau-là.
+{% endblock %}
 
 {% block body_class %}layout-landing{% endblock %}
 
@@ -15,13 +19,23 @@
                 {% include 'components/logo.html.twig' with { size: 34, light: true, badge: 'pro' } %}
             </a>
             <nav class="landing-header__nav" aria-label="Pros">
-                <a href="#tarifs" class="landing-header__link">Tarifs</a>
-                <a href="#questions" class="landing-header__link">Questions</a>
+                <a href="#tarifs" class="landing-header__link">
+                    Tarifs
+                </a>
+                <a href="#questions" class="landing-header__link">
+                    Questions
+                </a>
                 {% if isPro %}
-                    <a href="{{ path('pro_dashboard') }}" class="btn btn--primary btn--small">Mon espace pro</a>
+                    <a href="{{ path('pro_dashboard') }}" class="btn btn--primary btn--small">
+                        Mon espace pro
+                    </a>
                 {% else %}
-                    <a href="{{ path('pro_login') }}" class="landing-header__link">Se connecter</a>
-                    <a href="{{ path('pro_signup') }}" class="btn btn--primary btn--small">Créer mon espace pro</a>
+                    <a href="{{ path('pro_login') }}" class="landing-header__link">
+                        Se connecter
+                    </a>
+                    <a href="{{ path('pro_signup') }}" class="btn btn--primary btn--small">
+                        Créer mon espace pro
+                    </a>
                 {% endif %}
             </nav>
         </div>
@@ -30,34 +44,78 @@
     <main class="landing">
         <section class="landing-hero">
             <div class="landing-hero__text">
-                <h1 class="landing-hero__title">Un client annule.<br><span class="landing-hero__accent">Un autre arrive.</span></h1>
-                <p class="landing-hero__lead">Publiez vos créneaux libérés en quelques secondes. {{ site.siteName }} prévient les clients du quartier qui cherchent justement ce créneau-là.</p>
+                <h1 class="landing-hero__title">
+                    Un client annule.
+                    <br>
+                    <span class="landing-hero__accent">
+                        Un autre arrive.
+                    </span>
+                </h1>
+                <p class="landing-hero__lead">
+                    Publiez vos créneaux libérés en quelques secondes. {{ site.siteName }} prévient les clients du quartier qui cherchent justement ce créneau-là.
+                </p>
                 <div class="landing-hero__actions">
-                    <a href="{{ isPro ? path('pro_dashboard') : path('pro_signup') }}" class="btn btn--primary btn--large">{{ isPro ? 'Ouvrir mon espace' : 'Créer mon espace pro' }}</a>
-                    <a href="#comment" class="btn btn--outline-light btn--large">Comment ça marche</a>
+                    <a href="{{ isPro ? path('pro_dashboard') : path('pro_signup') }}" class="btn btn--primary btn--large">
+                        {% if isPro %}
+                            Ouvrir mon espace
+                        {% else %}
+                            Créer mon espace pro
+                        {% endif %}
+                    </a>
+                    <a href="#comment" class="btn btn--outline-light btn--large">
+                        Comment ça marche
+                    </a>
                 </div>
-                <span class="landing-hero__note">Sans engagement. Changez de formule quand vous voulez.</span>
+                <span class="landing-hero__note">
+                    Sans engagement. Changez de formule quand vous voulez.
+                </span>
             </div>
             <div class="landing-hero__visual" aria-hidden="true">
                 <div class="landing-notice">
-                    <span class="landing-notice__icon"><i data-lucide="bell-ring"></i></span>
-                    <span class="landing-notice__body"><b>Votre créneau de 16 h a trouvé preneur.</b><span class="landing-notice__meta">Camille R. · Coupe + brushing · 29 €</span></span>
+                    <span class="landing-notice__icon">
+                        <i data-lucide="bell-ring"></i>
+                    </span>
+                    <span class="landing-notice__body">
+                        <b>
+                            Votre créneau de 16 h a trouvé preneur.
+                        </b>
+                        <span class="landing-notice__meta">
+                            Camille R. · Coupe + brushing · 29 €
+                        </span>
+                    </span>
                 </div>
                 <div class="landing-notice landing-notice--muted">
-                    <span class="landing-notice__icon landing-notice__icon--mint"><i data-lucide="clock"></i></span>
-                    <span class="landing-notice__body"><b>Votre créneau de 14 h 30 est en ligne.</b><span class="landing-notice__meta">Il disparaîtra à 14 h 20 s'il n'est pas réservé.</span></span>
+                    <span class="landing-notice__icon landing-notice__icon--mint">
+                        <i data-lucide="clock"></i>
+                    </span>
+                    <span class="landing-notice__body">
+                        <b>
+                            Votre créneau de 14 h 30 est en ligne.
+                        </b>
+                        <span class="landing-notice__meta">
+                            Il disparaîtra à 14 h 20 s'il n'est pas réservé.
+                        </span>
+                    </span>
                 </div>
             </div>
         </section>
 
         <section class="landing-section" id="comment">
-            <h2 class="landing-section__title">Trois gestes, pas un de plus</h2>
+            <h2 class="landing-section__title">
+                Trois gestes, pas un de plus
+            </h2>
             <ol class="landing-steps">
                 {% for step in steps %}
                     <li class="landing-step">
-                        <span class="landing-step__number">{{ loop.index }}</span>
-                        <b class="landing-step__title">{{ step.title }}</b>
-                        <span class="landing-step__text">{{ step.text }}</span>
+                        <span class="landing-step__number">
+                            {{ loop.index }}
+                        </span>
+                        <b class="landing-step__title">
+                            {{ step.title }}
+                        </b>
+                        <span class="landing-step__text">
+                            {{ step.text }}
+                        </span>
                     </li>
                 {% endfor %}
             </ol>
@@ -65,47 +123,91 @@
 
         <section class="landing-section" id="tarifs">
             <div class="landing-section__head">
-                <h2 class="landing-section__title">Tarifs</h2>
-                {% include 'components/period_tabs.html.twig' with { route: 'pro_landing', anchor: '#tarifs' } %}
+                <h2 class="landing-section__title">
+                    Tarifs
+                </h2>
+                {% include 'components/period_tabs.html.twig' with {
+                    route: 'pro_landing',
+                    anchor: '#tarifs'
+                } %}
             </div>
             <div class="plan-grid">
                 {% for plan in plans %}
                     <div class="plan-card">
                         {% include 'components/plan_card.html.twig' %}
-                        <a href="{{ isPro ? path('pro_subscription') : path('pro_signup') }}" class="btn {{ plan.tag ? 'btn--primary' : 'btn--outline' }} plan-card__cta">{{ isPro ? 'Changer de formule' : 'Commencer' }}</a>
+                        <a href="{{ isPro ? path('pro_subscription') : path('pro_signup') }}" class="btn {{ plan.tag ? 'btn--primary' : 'btn--outline' }} plan-card__cta">
+                            {% if isPro %}
+                                Changer de formule
+                            {% else %}
+                                Commencer
+                            {% endif %}
+                        </a>
                     </div>
                 {% else %}
-                    <p class="landing-section__empty">Les formules seront bientôt disponibles.</p>
+                    <p class="landing-section__empty">
+                        Les formules seront bientôt disponibles.
+                    </p>
                 {% endfor %}
             </div>
-            <span class="landing-section__note">Prix hors taxes. Les clients paient sur place, {{ site.siteName }} ne prélève jamais à leur place.</span>
+            <span class="landing-section__note">
+                Prix hors taxes. Les clients paient sur place, {{ site.siteName }} ne prélève jamais à leur place.
+            </span>
         </section>
 
         <section class="landing-section" id="questions">
-            <h2 class="landing-section__title">Questions fréquentes</h2>
+            <h2 class="landing-section__title">
+                Questions fréquentes
+            </h2>
             <div class="landing-faq">
                 {% for item in faq %}
                     <details class="landing-faq__item"{{ loop.first ? ' open' : '' }}>
-                        <summary class="landing-faq__question">{{ item.question }}<span class="landing-faq__sign" aria-hidden="true"></span></summary>
-                        <p class="landing-faq__answer">{{ item.answer }}</p>
+                        <summary class="landing-faq__question">
+                            {{ item.question }}
+                            <span class="landing-faq__sign" aria-hidden="true"></span>
+                        </summary>
+                        <p class="landing-faq__answer">
+                            {{ item.answer }}
+                        </p>
                     </details>
                 {% endfor %}
             </div>
         </section>
 
         <section class="landing-cta">
-            <h2 class="landing-cta__title">Prêt à remplir vos trous d'agenda ?</h2>
-            <a href="{{ isPro ? path('pro_dashboard') : path('pro_signup') }}" class="btn btn--primary btn--large">{{ isPro ? 'Ouvrir mon espace' : 'Créer mon espace pro' }}</a>
+            <h2 class="landing-cta__title">
+                Prêt à remplir vos trous d'agenda ?
+            </h2>
+            <a href="{{ isPro ? path('pro_dashboard') : path('pro_signup') }}" class="btn btn--primary btn--large">
+                {% if isPro %}
+                    Ouvrir mon espace
+                {% else %}
+                    Créer mon espace pro
+                {% endif %}
+            </a>
         </section>
     </main>
 
     <footer class="landing-footer">
-        <span>© {{ 'now'|date('Y') }} {{ site.siteName }} Pro{% if site.contactEmail %} · <a href="mailto:{{ site.contactEmail }}" class="landing-footer__link">{{ site.contactEmail }}</a>{% endif %}</span>
+        <span>
+            © {{ 'now'|date('Y') }} {{ site.siteName }} Pro
+            {% if site.contactEmail %}
+                ·
+                <a href="mailto:{{ site.contactEmail }}" class="landing-footer__link">
+                    {{ site.contactEmail }}
+                </a>
+            {% endif %}
+        </span>
         <nav class="landing-footer__nav" aria-label="Liens">
-            <a href="{{ path('home_index') }}" class="landing-footer__link">Retour au site client</a>
+            <a href="{{ path('home_index') }}" class="landing-footer__link">
+                Retour au site client
+            </a>
             {% if route_exists('page_legal') %}
-                <a href="{{ path('page_legal', { document: 'cgv' }) }}" class="landing-footer__link">Conditions pros</a>
-                <a href="{{ path('page_legal', { document: 'mentions' }) }}" class="landing-footer__link">Mentions légales</a>
+                <a href="{{ path('page_legal', { document: 'cgv' }) }}" class="landing-footer__link">
+                    Conditions pros
+                </a>
+                <a href="{{ path('page_legal', { document: 'mentions' }) }}" class="landing-footer__link">
+                    Mentions légales
+                </a>
             {% endif %}
         </nav>
     </footer>

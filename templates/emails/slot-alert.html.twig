@@ -5,18 +5,43 @@
 {% block mailContent %}
 
     {% if alert %}
-        <p>Un créneau correspond à ton alerte « {{ alert.label }} » ({{ alert.description }}) :</p>
+        <p>
+            Un créneau correspond à ton alerte « {{ alert.label }} » ({{ alert.description }}) :
+        </p>
     {% else %}
-        <p>{{ slot.establishment.name }}, que tu suis, vient de libérer un créneau :</p>
+        <p>
+            {{ slot.establishment.name }}, que tu suis, vient de libérer un créneau :
+        </p>
     {% endif %}
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ slot.establishment.name }}, {{ slot.establishment.address }}</li>
-        <li style="{{ styles.item }}">{{ slot.service }} ({{ slot.duration }})</li>
-        <li style="{{ styles.item }}">{{ slot.day }} à {{ slot.time }}</li>
-        <li style="{{ styles.item }}">{{ slot.price }} au lieu de {{ slot.originalPrice }} ({{ slot.discount }})</li>
+        <li style="{{ styles.item }}">
+            {{ slot.establishment.name }}, {{ slot.establishment.address }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ slot.service }} ({{ slot.duration }})
+        </li>
+        <li style="{{ styles.item }}">
+            {{ slot.day }} à {{ slot.time }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ slot.price }} au lieu de {{ slot.originalPrice }} ({{ slot.discount }})
+        </li>
     </ul>
-    <p style="{{ styles.actions }}"><a href="{{ slot.url }}" style="{{ styles.button }}">Réserver ce créneau</a></p>
-    <p>Les créneaux partent vite : premier arrivé, premier servi.</p>
-    <p style="{{ styles.actions }}"><a href="{{ alertsUrl }}" style="{{ styles.button }}">Gérer mes alertes</a><a href="{{ settingsUrl }}" style="{{ styles.buttonSecondary }}">Ne plus recevoir ces e-mails</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ slot.url }}" style="{{ styles.button }}">
+            Réserver ce créneau
+        </a>
+    </p>
+    <p>
+        Les créneaux partent vite : premier arrivé, premier servi.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ alertsUrl }}" style="{{ styles.button }}">
+            Gérer mes alertes
+        </a>
+        <a href="{{ settingsUrl }}" style="{{ styles.buttonSecondary }}">
+            Ne plus recevoir ces e-mails
+        </a>
+    </p>
 
 {% endblock %}

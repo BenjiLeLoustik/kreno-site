@@ -4,24 +4,46 @@
 
 {% block mailContent %}
 
-    <p>Désolés : {{ booking.establishment.name }} a dû annuler ton rendez-vous.</p>
+    <p>
+        Désolés : {{ booking.establishment.name }} a dû annuler ton rendez-vous.
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ booking.service }}</li>
-        <li style="{{ styles.item }}">{{ booking.day }} à {{ booking.time }}</li>
-        <li style="{{ styles.item }}">Référence : {{ booking.reference }}</li>
+        <li style="{{ styles.item }}">
+            {{ booking.service }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.day }} à {{ booking.time }}
+        </li>
+        <li style="{{ styles.item }}">
+            Référence : {{ booking.reference }}
+        </li>
     </ul>
     {% if booking.cancellationReason %}
-        <p>Message de l’établissement : « {{ booking.cancellationReason }} »</p>
+        <p>
+            Message de l’établissement : « {{ booking.cancellationReason }} »
+        </p>
     {% endif %}
-    <p>Rien ne t’a été facturé.</p>
+    <p>
+        Rien ne t’a été facturé.
+    </p>
     {% if alternatives is not empty %}
-        <p>Ces créneaux pourraient te plaire :</p>
+        <p>
+            Ces créneaux pourraient te plaire :
+        </p>
         <ul style="{{ styles.list }}">
             {% for slot in alternatives %}
-                <li style="{{ styles.item }}"><a href="{{ slot.url }}" style="{{ styles.link }}">{{ slot.establishment.name }} · {{ slot.service }}, {{ slot.day }} à {{ slot.time }}, {{ slot.price }} ({{ slot.discount }})</a></li>
+                <li style="{{ styles.item }}">
+                    <a href="{{ slot.url }}" style="{{ styles.link }}">
+                        {{ slot.establishment.name }} · {{ slot.service }}, {{ slot.day }} à {{ slot.time }}, {{ slot.price }} ({{ slot.discount }})
+                    </a>
+                </li>
             {% endfor %}
         </ul>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ homeUrl }}" style="{{ styles.button }}">Voir tous les créneaux du moment</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ homeUrl }}" style="{{ styles.button }}">
+            Voir tous les créneaux du moment
+        </a>
+    </p>
 
 {% endblock %}

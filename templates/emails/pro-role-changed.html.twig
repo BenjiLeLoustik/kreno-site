@@ -4,12 +4,28 @@
 
 {% block mailContent %}
 
-    <p>Votre rôle chez {{ company }}{% if establishment %} pour {{ establishment }}{% endif %} a changé :</p>
+    <p>
+        Votre rôle chez {{ company }}
+        {% if establishment %}
+            pour {{ establishment }}
+        {% endif %}
+        a changé :
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">Avant : {{ previousRole }}</li>
-        <li style="{{ styles.item }}">Maintenant : {{ newRole }}</li>
+        <li style="{{ styles.item }}">
+            Avant : {{ previousRole }}
+        </li>
+        <li style="{{ styles.item }}">
+            Maintenant : {{ newRole }}
+        </li>
     </ul>
-    <p>Vos accès sont mis à jour dès maintenant.</p>
-    <p style="{{ styles.actions }}"><a href="{{ dashboardUrl }}" style="{{ styles.button }}">Ouvrir Kréno Pro</a></p>
+    <p>
+        Vos accès sont mis à jour dès maintenant.
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ dashboardUrl }}" style="{{ styles.button }}">
+            Ouvrir Kréno Pro
+        </a>
+    </p>
 
 {% endblock %}
