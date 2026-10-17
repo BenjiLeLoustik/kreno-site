@@ -1,6 +1,7 @@
 {% extends 'layouts/base.html.twig' %}
 
 {% set section = pro_section|default('dashboard') %}
+{% set hasSwitch = context.establishments|length > 1 %}
 
 {% block title %}Espace pro · {{ website().siteName }}{% endblock %}
 
@@ -12,12 +13,12 @@
 
 {% block body %}
     <div class="pro">
-        <aside class="pro-side">
+        <aside class="pro-side{{ hasSwitch ? ' pro-side--switch' : '' }}">
             <a href="{{ path('pro_dashboard') }}" class="pro-side__brand" aria-label="Espace pro, tableau de bord">
                 {% include 'components/logo.html.twig' with { size: 0, light: true, badge: 'pro' } %}
             </a>
 
-            {% if context.establishments|length > 1 %}
+            {% if hasSwitch %}
                 <form method="post" action="{{ path('pro_establishment_switch', { id: context.current.id }) }}" class="pro-switch" data-pro-switch>
                     {{ csrf_field('pro')|raw }}
                     <input type="hidden" name="_target" value="" data-pro-switch-target>
@@ -31,42 +32,48 @@
                 </form>
             {% endif %}
 
-            <nav class="pro-nav" aria-label="Espace pro">
-                {% for item in context.nav|filter(item => route_exists(item.route)) %}
-                    <a href="{{ path(item.route) }}" class="pro-nav__link{{ item.key == section ? ' pro-nav__link--active' : '' }}"{{ item.key == section ? ' aria-current="page"' : '' }}>
-                        <i data-lucide="{{ item.icon }}" class="pro-nav__icon"></i>
-                        {{ item.label }}
-                        {% if item.badge > 0 %}
-                            <span class="pro-nav__badge">{{ item.badge }}</span>
-                        {% endif %}
-                    </a>
-                {% endfor %}
-            </nav>
+            <span class="pro-side__toggle">
+                {% include 'components/menu_toggle.html.twig' with { target: 'pro-panel', variant: 'dark' } only %}
+            </span>
 
-            <div class="pro-side__footer">
-                {% if context.current %}
-                    <div class="pro-side__shop">
-                        <b>{{ context.current.name }}</b>
-                        {% if context.current.online and context.current.city %}
-                            <a href="{{ path('shop_show', { city: context.current.city, slug: context.current.slug }) }}" class="pro-side__shop-link" target="_blank" rel="noopener">Voir ma page publique</a>
-                        {% else %}
-                            <span class="pro-side__shop-status">{{ context.current.statusLabel }}</span>
-                        {% endif %}
+            <div id="pro-panel" class="pro-side__panel">
+                <nav class="pro-nav" aria-label="Espace pro">
+                    {% for item in context.nav|filter(item => route_exists(item.route)) %}
+                        <a href="{{ path(item.route) }}" class="pro-nav__link{{ item.key == section ? ' pro-nav__link--active' : '' }}"{{ item.key == section ? ' aria-current="page"' : '' }}>
+                            <i data-lucide="{{ item.icon }}" class="pro-nav__icon"></i>
+                            {{ item.label }}
+                            {% if item.badge > 0 %}
+                                <span class="pro-nav__badge">{{ item.badge }}</span>
+                            {% endif %}
+                        </a>
+                    {% endfor %}
+                </nav>
+
+                <div class="pro-side__footer">
+                    {% if context.current %}
+                        <div class="pro-side__shop">
+                            <b>{{ context.current.name }}</b>
+                            {% if context.current.online and context.current.city %}
+                                <a href="{{ path('shop_show', { city: context.current.city, slug: context.current.slug }) }}" class="pro-side__shop-link" target="_blank" rel="noopener">Voir ma page publique</a>
+                            {% else %}
+                                <span class="pro-side__shop-status">{{ context.current.statusLabel }}</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    <div class="side-footer">
+                        {% include 'components/side_footer_user.html.twig' with {
+                            initials: context.user.initials,
+                            name: context.user.name,
+                            role: context.user.roleLabel,
+                        } only %}
+                        {% include 'components/locale_switcher.html.twig' with { variant: 'side' } only %}
+                        <form method="post" action="{{ logout_path() }}" class="side-footer__form">
+                            <button type="submit" class="side-footer__action side-footer__action--danger">
+                                <i data-lucide="log-out" class="side-footer__icon"></i>
+                                Déconnexion
+                            </button>
+                        </form>
                     </div>
-                {% endif %}
-                <div class="side-footer">
-                    {% include 'components/side_footer_user.html.twig' with {
-                        initials: context.user.initials,
-                        name: context.user.name,
-                        role: context.user.roleLabel,
-                    } only %}
-                    {% include 'components/locale_switcher.html.twig' with { variant: 'side' } only %}
-                    <form method="post" action="{{ logout_path() }}" class="side-footer__form">
-                        <button type="submit" class="side-footer__action side-footer__action--danger">
-                            <i data-lucide="log-out" class="side-footer__icon"></i>
-                            Déconnexion
-                        </button>
-                    </form>
                 </div>
             </div>
         </aside>

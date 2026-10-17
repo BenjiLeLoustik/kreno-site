@@ -1,0 +1,5 @@
+<button type="button" class="menu-toggle menu-toggle--{{ variant|default('light') }}" aria-controls="{{ target }}" aria-expanded="false" data-toggle="{{ target }}">
+    <i data-lucide="menu" class="menu-toggle__icon menu-toggle__icon--open"></i>
+    <i data-lucide="x" class="menu-toggle__icon menu-toggle__icon--close"></i>
+    <span class="menu-toggle__label">{{ label|default('Menu') }}</span>
+</button>

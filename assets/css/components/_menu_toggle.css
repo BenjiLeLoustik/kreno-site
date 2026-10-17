@@ -1,0 +1,22 @@
+@layer components {
+    .menu-toggle {
+        @apply inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-xl border-0 px-3 font-sans text-sm font-semibold transition-colors;
+    }
+
+    .menu-toggle__icon {
+        @apply size-5;
+    }
+
+    .menu-toggle[aria-expanded='true'] .menu-toggle__icon--open,
+    .menu-toggle[aria-expanded='false'] .menu-toggle__icon--close {
+        @apply hidden;
+    }
+
+    .menu-toggle--light {
+        @apply border-[1.5px] border-sand bg-white text-ink hover:border-ink;
+    }
+
+    .menu-toggle--dark {
+        @apply bg-ink-soft text-white hover:bg-white/15;
+    }
+}

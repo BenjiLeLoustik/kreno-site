@@ -5,13 +5,17 @@
 {% block body %}
     {% set nav = navigation() %}
     {% set user = app_user() %}
+    {% set site = website() %}
 
     <header class="site-header {% block header_class %}{% endblock %}">
         <div class="site-header__inner">
-            <a href="{{ path('home_index') }}" class="site-header__brand" aria-label="Kréno, accueil">
+            <a href="{{ path('home_index') }}" class="site-header__brand" aria-label="{{ site.siteName }}, accueil">
                 {% include 'components/logo.html.twig' %}
             </a>
-            <nav class="site-header__nav" aria-label="Navigation principale">
+            <span class="site-header__toggle">
+                {% include 'components/menu_toggle.html.twig' with { target: 'site-nav' } only %}
+            </span>
+            <nav id="site-nav" class="site-header__nav" aria-label="Navigation principale">
                 <a href="{{ path('page_how_it_works') }}" class="site-header__link">Comment ça marche</a>
                 <a href="{{ path('pro_landing') }}" class="site-header__link">Pour les pros</a>
                 {% if user %}
@@ -19,7 +23,7 @@
                 {% else %}
                     <a href="{{ path('app_login') }}" class="site-header__link">Se connecter</a>
                 {% endif %}
-                <a href="{{ path('pro_slot_new') }}" class="btn btn--outline">Publier un créneau</a>
+                <a href="{{ path('pro_slot_new') }}" class="btn btn--outline site-header__cta">Publier un créneau</a>
             </nav>
         </div>
     </header>
@@ -37,15 +41,15 @@
     <footer class="site-footer">
         <div class="site-footer__grid">
             <div class="site-footer__intro">
-                <a href="{{ path('home_index') }}" class="site-footer__brand" aria-label="Kréno, accueil">
+                <a href="{{ path('home_index') }}" class="site-footer__brand" aria-label="{{ site.siteName }}, accueil">
                     {% include 'components/logo.html.twig' with { size: 34 } %}
                 </a>
-                <p class="site-footer__pitch">Les créneaux libérés de ton quartier, à prix réduit. Tu réserves en deux clics, tu paies sur place.</p>
-                <a href="{{ path('pro_landing') }}" class="btn btn--outline btn--small">Vous êtes un pro ? Rejoindre Kréno</a>
+                <p class="site-footer__pitch">{{ site.siteDescription }}</p>
+                <a href="{{ path('pro_landing') }}" class="btn btn--outline btn--small">Vous êtes un pro ? Rejoindre {{ site.siteName }}</a>
             </div>
 
-            <nav class="site-footer__column" aria-label="Kréno">
-                <b class="site-footer__title">Kréno</b>
+            <nav class="site-footer__column" aria-label="{{ site.siteName }}">
+                <b class="site-footer__title">{{ site.siteName }}</b>
                 <a href="{{ path('page_how_it_works') }}" class="site-footer__link">Comment ça marche</a>
                 <a href="{{ path('search_index') }}" class="site-footer__link">Tous les créneaux</a>
                 <a href="{{ path('app_signup') }}" class="site-footer__link">Créer un compte</a>
@@ -76,15 +80,14 @@
         </div>
 
         <div class="site-footer__bottom">
-            <span>© {{ 'now'|date('Y') }} Kréno · Fait à Lyon</span>
+            <span>© {{ 'now'|date('Y') }} {{ site.siteName }} · Fait à Lyon{% if site.contactEmail %} · <a href="mailto:{{ site.contactEmail }}">{{ site.contactEmail }}</a>{% endif %}</span>
             <nav class="site-footer__legal" aria-label="Informations légales">
                 <a href="{{ path('page_legal', { document: 'mentions' }) }}">Mentions légales</a>
                 <a href="{{ path('page_legal', { document: 'cgu' }) }}">CGU</a>
                 <a href="{{ path('page_legal', { document: 'privacy' }) }}">Confidentialité</a>
                 <a href="{{ path('page_legal', { document: 'cgv' }) }}">Conditions pros</a>
             </nav>
-
-            {% include 'components/locale_switcher.html.twig' with { variant: 'light' } %}
+            {% include 'components/locale_switcher.html.twig' with { variant: 'light' } only %}
         </div>
     </footer>
 {% endblock %}

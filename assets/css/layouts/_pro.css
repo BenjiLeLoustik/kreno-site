@@ -8,11 +8,15 @@
     }
 
     .pro-side {
-        @apply flex flex-col gap-5 bg-ink px-4 py-6 text-frost lg:sticky lg:top-0 lg:h-screen lg:w-[260px] lg:shrink-0 lg:overflow-y-auto;
+        @apply sticky top-0 z-30 flex flex-row flex-wrap items-center justify-between gap-3 bg-ink px-4 py-3 text-frost lg:h-screen lg:w-[260px] lg:shrink-0 lg:flex-col lg:flex-nowrap lg:items-stretch lg:justify-start lg:gap-5 lg:overflow-y-auto lg:py-6;
     }
 
     .pro-side__brand {
-        @apply self-start px-2 no-underline;
+        @apply px-2 no-underline lg:self-start;
+    }
+
+    .pro-side--switch .pro-side__brand {
+        @apply hidden lg:block;
     }
 
     .pro-side__brand .logo__word {
@@ -20,11 +24,23 @@
     }
 
     .pro-switch {
-        @apply flex flex-col gap-1 px-2;
+        @apply flex min-w-0 flex-1 flex-col gap-1 lg:flex-none lg:px-2;
     }
 
     .pro-switch__label {
-        @apply text-xs font-semibold tracking-[0.06em] text-mist uppercase;
+        @apply sr-only text-xs font-semibold tracking-[0.06em] text-mist uppercase lg:not-sr-only;
+    }
+
+    .pro-side__toggle {
+        @apply lg:hidden;
+    }
+
+    .pro-side__panel {
+        @apply hidden max-h-[calc(100vh-4.5rem)] w-full flex-col gap-4 overflow-y-auto pb-2 lg:flex lg:max-h-none lg:flex-1 lg:overflow-visible lg:pb-0;
+    }
+
+    .pro-side__panel.is-open {
+        @apply flex;
     }
 
     .pro-switch__select {
@@ -36,7 +52,7 @@
     }
 
     .pro-nav {
-        @apply flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible;
+        @apply flex flex-col gap-1;
     }
 
     .pro-nav__link {
