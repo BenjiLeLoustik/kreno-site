@@ -52,6 +52,11 @@ class CustomerReviewPageProvider
         ];
     }
 
+    public function pendingCount(User $user): int
+    {
+        return count($this->pending($user, $this->reviewedIds($this->reviews->findForCustomer($user))));
+    }
+
     private function pending(User $user, array $reviewedIds): array
     {
         $now = new DateTimeImmutable();

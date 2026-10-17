@@ -3,28 +3,17 @@
 {% block header_class %}site-header--compact{% endblock %}
 
 {% block content %}
-    {% set sections = [
-        { key: 'dashboard', label: 'Tableau de bord', route: 'account_index', icon: 'layout-dashboard' },
-        { key: 'bookings', label: 'Mes réservations', route: 'account_bookings', icon: 'calendar-check' },
-        { key: 'alerts', label: 'Mes alertes', route: 'account_alerts', icon: 'bell-ring' },
-        { key: 'follows', label: 'Établissements suivis', route: 'account_follows', icon: 'heart' },
-        { key: 'notifications', label: 'Notifications', route: 'account_notifications', icon: 'inbox' },
-        { key: 'messages', label: 'Mes messages', route: 'account_messages', icon: 'message-circle' },
-        { key: 'reviews', label: 'Mes avis', route: 'account_reviews', icon: 'star' },
-        { key: 'reports', label: 'Signalements', route: 'account_reports', icon: 'flag' },
-        { key: 'settings', label: 'Réglages', route: 'account_settings', icon: 'settings' },
-    ] %}
 
     <div class="account">
         <nav class="account-nav" aria-label="Mon compte">
             <span class="account-nav__title">Mon compte</span>
-            {% for section in sections %}
-                {% set current = section.key == account_section|default('') %}
-                <a href="{{ path(section.route) }}" class="account-nav__link{{ current ? ' account-nav__link--active' : '' }}"{{ current ? ' aria-current="page"' : '' }}>
-                    <i data-lucide="{{ section.icon }}" class="account-nav__icon"></i>
-                    <span class="account-nav__label">{{ section.label }}</span>
-                    {% if section.key == 'notifications' and unreadNotifications|default(0) > 0 %}
-                        <span class="account-nav__badge">{{ unreadNotifications }}</span>
+            {% for item in account_nav()|filter(item => route_exists(item.route)) %}
+                {% set current = item.key == account_section|default('') %}
+                <a href="{{ path(item.route) }}" class="account-nav__link{{ current ? ' account-nav__link--active' : '' }}"{{ current ? ' aria-current="page"' : '' }}>
+                    <i data-lucide="{{ item.icon }}" class="account-nav__icon"></i>
+                    <span class="account-nav__label">{{ item.label }}</span>
+                    {% if item.badge > 0 %}
+                        <span class="account-nav__badge">{{ item.badge }}</span>
                     {% endif %}
                 </a>
             {% endfor %}

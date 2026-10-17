@@ -3,6 +3,7 @@
 namespace App\Company\Provider;
 
 use App\Company\Exception\EstablishmentInaccessibleException;
+use App\Company\Navbar\ProNavbarRegistry;
 use App\Company\Security\PermissionResolver;
 use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Company\CompanyMember;
@@ -14,6 +15,7 @@ class ProContextProvider
     public function __construct(
         private CurrentCompanyProvider $context,
         private PermissionResolver $resolver,
+        private ProNavbarRegistry $navbar,
     ) {
     }
 
@@ -30,6 +32,7 @@ class ProContextProvider
                 'company' => $this->companyPermissions($member),
                 'establishment' => $this->establishmentPermissions($member, $current),
             ],
+            'nav' => $this->navbar->items($member, $current),
         ];
     }
 
