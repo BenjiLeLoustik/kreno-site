@@ -1,4 +1,6 @@
 window.App = {
+    toggles: [],
+
     init() {
         if (window.lucide) {
             window.lucide.createIcons();
@@ -8,16 +10,30 @@ window.App = {
     },
 
     initToggles() {
-        const buttons = document.querySelectorAll('[data-toggle]');
+        this.toggles = [...document.querySelectorAll('[data-toggle]')];
 
-        buttons.forEach((button) => {
+        this.toggles.forEach((button) => {
             button.addEventListener('click', () => this.toggle(button, button.getAttribute('aria-expanded') !== 'true'));
         });
 
+        document.addEventListener('click', (event) => this.closeOutside(event.target));
+
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
-                buttons.forEach((button) => this.toggle(button, false));
+                this.toggles.forEach((button) => this.toggle(button, false));
             }
+        });
+    },
+
+    closeOutside(target) {
+        this.toggles.forEach((button) => {
+            const panel = document.getElementById(button.dataset.toggle);
+
+            if (button.contains(target) || panel?.contains(target)) {
+                return;
+            }
+
+            this.toggle(button, false);
         });
     },
 
