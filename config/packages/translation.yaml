@@ -1,9 +1,9 @@
 # Translations (key packages.translation): translations/{domain}.{locale}.yaml, {{ 'home.title'|trans }}
-default_locale: en
+default_locale: fr
 # Enabled locales, e.g. [en, fr]
-locales: [ en ]
+locales: [ fr ]
 # Locales tried when a key is missing
-fallbacks: [ en ]
+fallbacks: [ fr ]
 path: '%kernel.root_path%/translations'
 default_domain: messages
 # Format of the files created by `translation:generate`: yaml or xliff
