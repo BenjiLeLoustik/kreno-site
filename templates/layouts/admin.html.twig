@@ -28,23 +28,25 @@
                     {% endif %}
                 {% endfor %}
             </nav>
-            <div class="admin-side__footer">
+            <div class="side-footer">
                 {% if user %}
-                    <span class="admin-side__user">Connecté : {{ user.firstName }} {{ user.lastName|first }}.</span>
+                    {% include 'components/side_footer_user.html.twig' with {
+                        initials: (user.firstName|first ~ user.lastName|first)|upper,
+                        name: user.firstName ~ ' ' ~ user.lastName|first ~ '.',
+                        role: 'Administration',
+                    } only %}
                 {% endif %}
-                <div class="admin-side__actions">
-                    {% include 'components/locale_switcher.html.twig' with { variant: 'dark' } %}
-                    <a href="{{ path('home_index') }}" class="admin-side__action">
-                        <i data-lucide="external-link" class="admin-nav__icon"></i>
-                        Voir le site
-                    </a>
-                    <form method="post" action="{{ logout_path() }}" class="admin-side__logout">
-                        <button type="submit" class="admin-side__action">
-                            <i data-lucide="log-out" class="admin-nav__icon"></i>
-                            Déconnexion
-                        </button>
-                    </form>
-                </div>
+                {% include 'components/locale_switcher.html.twig' with { variant: 'side' } only %}
+                <a href="{{ path('home_index') }}" class="side-footer__action">
+                    <i data-lucide="external-link" class="side-footer__icon"></i>
+                    Voir le site
+                </a>
+                <form method="post" action="{{ logout_path() }}" class="side-footer__form">
+                    <button type="submit" class="side-footer__action side-footer__action--danger">
+                        <i data-lucide="log-out" class="side-footer__icon"></i>
+                        Déconnexion
+                    </button>
+                </form>
             </div>
         </aside>
 

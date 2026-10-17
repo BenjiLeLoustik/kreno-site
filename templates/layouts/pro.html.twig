@@ -54,20 +54,20 @@
                         {% endif %}
                     </div>
                 {% endif %}
-                {% include 'components/locale_switcher.html.twig' with { variant: 'dark' } %}
-                <div class="pro-side__user">
-                    <span class="pro-side__avatar" aria-hidden="true">{{ context.user.initials }}</span>
-                    <span class="pro-side__identity">
-                        <b>{{ context.user.name }}</b>
-                        {% if context.user.roleLabel %}<span class="pro-side__role">{{ context.user.roleLabel }}</span>{% endif %}
-                    </span>
+                <div class="side-footer">
+                    {% include 'components/side_footer_user.html.twig' with {
+                        initials: context.user.initials,
+                        name: context.user.name,
+                        role: context.user.roleLabel,
+                    } only %}
+                    {% include 'components/locale_switcher.html.twig' with { variant: 'side' } only %}
+                    <form method="post" action="{{ logout_path() }}" class="side-footer__form">
+                        <button type="submit" class="side-footer__action side-footer__action--danger">
+                            <i data-lucide="log-out" class="side-footer__icon"></i>
+                            Déconnexion
+                        </button>
+                    </form>
                 </div>
-                <form method="post" action="{{ logout_path() }}">
-                    <button type="submit" class="pro-side__logout">
-                        <i data-lucide="log-out" class="pro-nav__icon"></i>
-                        Déconnexion
-                    </button>
-                </form>
             </div>
         </aside>
 

@@ -75,30 +75,6 @@
         @apply text-sm text-amber;
     }
 
-    .pro-side__user {
-        @apply flex items-center gap-2.5 px-2;
-    }
-
-    .pro-side__avatar {
-        @apply grid size-9 flex-none place-items-center rounded-full bg-coral text-[13px] font-bold text-white;
-    }
-
-    .pro-side__identity {
-        @apply flex min-w-0 flex-col text-sm;
-    }
-
-    .pro-side__role {
-        @apply text-xs text-mist;
-    }
-
-    .pro-side__logout {
-        @apply inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent px-2 font-sans text-[13px] font-medium text-mist;
-    }
-
-    .pro-side__logout:hover {
-        @apply text-white;
-    }
-
     .pro-main {
         @apply flex min-w-0 flex-1 flex-col gap-6 p-5 md:p-8;
     }
