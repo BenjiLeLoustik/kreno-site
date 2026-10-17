@@ -9,7 +9,7 @@
 <div class="pro-card__head">
     <span class="billing-plan">
         <span class="pro-stat__label">
-            Formule actuelle
+            {{ translate('Formule actuelle') }}
         </span>
         <b class="billing-plan__name">
             {{ subscription.plan.name ?? '-' }}
@@ -28,14 +28,14 @@
 <dl class="pro-facts">
     {% if subscription.nextInvoice %}
         <dt class="pro-facts__label">
-            Prochaine facture
+            {{ translate('Prochaine facture') }}
         </dt>
         <dd class="pro-facts__value">
-            {{ subscription.nextInvoice.amount }} le {{ subscription.nextInvoice.date }}
+            {{ translate('{amount} le {date}', { amount: subscription.nextInvoice.amount, date: subscription.nextInvoice.date }) }}
         </dd>
     {% elseif subscription.nextDate and not subscription.plan.perBooking %}
         <dt class="pro-facts__label">
-            Fin de période
+            {{ translate('Fin de période') }}
         </dt>
         <dd class="pro-facts__value">
             {{ subscription.nextDate }}
@@ -43,24 +43,24 @@
     {% endif %}
     {% if subscription.plan.perBooking %}
         <dt class="pro-facts__label">
-            Facturation
+            {{ translate('Facturation') }}
         </dt>
         <dd class="pro-facts__value">
-            En fin de mois, selon les créneaux réservés
+            {{ translate('En fin de mois, selon les créneaux réservés') }}
         </dd>
     {% endif %}
     <dt class="pro-facts__label">
-        Établissements
+        {{ translate('Établissements') }}
     </dt>
     <dd class="pro-facts__value">
         {{ subscription.establishments.total }}
         {% if subscription.establishments.uncovered > 0 %}
-            · {{ subscription.establishments.uncovered }} hors formule
+            · {{ translate('{count} hors formule', { count: subscription.establishments.uncovered }) }}
         {% endif %}
     </dd>
     {% if subscription.promo %}
         <dt class="pro-facts__label">
-            Promotion
+            {{ translate('Promotion') }}
         </dt>
         <dd class="pro-facts__value">
             {{ subscription.promo }}
@@ -69,17 +69,17 @@
 </dl>
 {% if subscription.scheduled %}
     <p class="pro-note">
-        Passage à « {{ subscription.scheduled.plan }} » le {{ subscription.scheduled.date }}.
+        {{ translate('Passage à « {plan} » le {date}.', { plan: subscription.scheduled.plan, date: subscription.scheduled.date }) }}
     </p>
 {% endif %}
 {% if subscription.cancelAt %}
     <p class="pro-note">
-        Résiliation programmée : la formule s'arrête le {{ subscription.cancelAt }}.
+        {{ translate('Résiliation programmée : la formule s\'arrête le {date}.', { date: subscription.cancelAt }) }}
     </p>
 {% endif %}
 {% if subscription.pausedUntil %}
     <p class="pro-note">
-        En pause jusqu'au {{ subscription.pausedUntil }}.
+        {{ translate('En pause jusqu\'au {date}.', { date: subscription.pausedUntil }) }}
     </p>
 {% endif %}
 {% if subscription.blockingReason %}

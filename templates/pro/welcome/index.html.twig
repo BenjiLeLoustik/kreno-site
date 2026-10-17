@@ -3,14 +3,14 @@
 {% set pro_section = 'dashboard' %}
 
 {% block title %}
-    Bienvenue · Espace pro
+    {{ translate('Bienvenue · Espace pro') }}
 {% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
             <h1 class="pro-title">
-                Bienvenue {{ welcome.firstName }} !
+                {{ translate('Bienvenue {firstName} !', { firstName: welcome.firstName }) }}
             </h1>
             <span class="pro-subtitle">
                 {{ welcome.establishment.name }}
@@ -20,7 +20,7 @@
             </span>
         </div>
         <a href="{{ path('pro_dashboard') }}" class="pro-button">
-            Aller au tableau de bord
+            {{ translate('Aller au tableau de bord') }}
         </a>
     </div>
 
@@ -28,13 +28,13 @@
         <div class="pro-card__head">
             <h2 class="pro-card__title">
                 {% if welcome.completed %}
-                    Tout est prêt
+                    {{ translate('Tout est prêt') }}
                 {% else %}
-                    Plus que quelques étapes
+                    {{ translate('Plus que quelques étapes') }}
                 {% endif %}
             </h2>
             <span class="pro-subtitle">
-                {{ welcome.done }} sur {{ welcome.total }}
+                {{ translate('{done} sur {total}', { done: welcome.done, total: welcome.total }) }}
             </span>
         </div>
         <span class="welcome-progress" role="progressbar" aria-valuenow="{{ welcome.progress }}" aria-valuemin="0" aria-valuemax="100">
@@ -70,18 +70,18 @@
     {% if welcome.shareUrl %}
         <section class="pro-card">
             <h2 class="pro-card__title">
-                Votre page est en ligne
+                {{ translate('Votre page est en ligne') }}
             </h2>
             <p class="pro-subtitle">
-                Partagez-la à vos clients : ils pourront vous suivre et être prévenus dès qu'un créneau se libère.
+                {{ translate('Partagez-la à vos clients : ils pourront vous suivre et être prévenus dès qu\'un créneau se libère.') }}
             </p>
             <div class="welcome-share">
-                <input type="text" value="{{ welcome.shareUrl }}" readonly class="pro-input" aria-label="Adresse de votre page" data-welcome-share>
+                <input type="text" value="{{ welcome.shareUrl }}" readonly class="pro-input" aria-label="{{ translate('Adresse de votre page') }}" data-welcome-share>
                 <button type="button" class="pro-button" data-welcome-copy>
-                    Copier
+                    {{ translate('Copier') }}
                 </button>
                 <a href="{{ welcome.shareUrl }}" class="pro-button" target="_blank" rel="noopener">
-                    Ouvrir
+                    {{ translate('Ouvrir') }}
                 </a>
             </div>
         </section>

@@ -1,0 +1,2075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="fr" datatype="plaintext" original="messages">
+    <body>
+      <trans-unit id="306018c936b1d238" resname="Agenda · Espace pro">
+        <source>Agenda · Espace pro</source>
+        <target>Agenda · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="0fdf485f5bfd3762" resname="Agenda">
+        <source>Agenda</source>
+        <target>Agenda</target>
+      </trans-unit>
+      <trans-unit id="8e30493d86848ee8" resname="Avec votre IBAN">
+        <source>Avec votre IBAN</source>
+        <target>Avec votre IBAN</target>
+      </trans-unit>
+      <trans-unit id="66664eadfdde3ed0" resname="Carte bancaire">
+        <source>Carte bancaire</source>
+        <target>Carte bancaire</target>
+      </trans-unit>
+      <trans-unit id="44efef4c82adbaef" resname="Cette semaine">
+        <source>Cette semaine</source>
+        <target>Cette semaine</target>
+      </trans-unit>
+      <trans-unit id="97c9ea6600691693" resname="Cliquez sur un créneau pour voir la réservation, le gérer ou le republier.">
+        <source>Cliquez sur un créneau pour voir la réservation, le gérer ou le republier.</source>
+        <target>Cliquez sur un créneau pour voir la réservation, le gérer ou le republier.</target>
+      </trans-unit>
+      <trans-unit id="7b785def45740eb9" resname="J&apos;autorise {websiteSiteName} et son prestataire de paiement à envoyer des instructions à ma banque pour débiter mon compte, conformément au mandat SEPA.">
+        <source>J&apos;autorise {websiteSiteName} et son prestataire de paiement à envoyer des instructions à ma banque pour débiter mon compte, conformément au mandat SEPA.</source>
+        <target>J&apos;autorise {websiteSiteName} et son prestataire de paiement à envoyer des instructions à ma banque pour débiter mon compte, conformément au mandat SEPA.</target>
+      </trans-unit>
+      <trans-unit id="0f0965fc6774895a" resname="JavaScript est nécessaire pour enregistrer un moyen de paiement de façon sécurisée.">
+        <source>JavaScript est nécessaire pour enregistrer un moyen de paiement de façon sécurisée.</source>
+        <target>JavaScript est nécessaire pour enregistrer un moyen de paiement de façon sécurisée.</target>
+      </trans-unit>
+      <trans-unit id="ad4f2ff061822871" resname="Moyen de paiement">
+        <source>Moyen de paiement</source>
+        <target>Moyen de paiement</target>
+      </trans-unit>
+      <trans-unit id="383d3426b5805de5" resname="Prélèvement SEPA">
+        <source>Prélèvement SEPA</source>
+        <target>Prélèvement SEPA</target>
+      </trans-unit>
+      <trans-unit id="74c320fd2891afe9" resname="Publier un créneau">
+        <source>Publier un créneau</source>
+        <target>Publier un créneau</target>
+      </trans-unit>
+      <trans-unit id="514db0d41666fecc" resname="Semaine précédente">
+        <source>Semaine précédente</source>
+        <target>Semaine précédente</target>
+      </trans-unit>
+      <trans-unit id="fa063d47c1698955" resname="Semaine suivante">
+        <source>Semaine suivante</source>
+        <target>Semaine suivante</target>
+      </trans-unit>
+      <trans-unit id="c41dbc5e24f28f9d" resname="Visa, Mastercard, CB">
+        <source>Visa, Mastercard, CB</source>
+        <target>Visa, Mastercard, CB</target>
+      </trans-unit>
+      <trans-unit id="24d90b91d71e0ab0" resname="(vous)">
+        <source>(vous)</source>
+        <target>(vous)</target>
+      </trans-unit>
+      <trans-unit id="f2d840d21b13529a" resname="+ Ajouter une prestation">
+        <source>+ Ajouter une prestation</source>
+        <target>+ Ajouter une prestation</target>
+      </trans-unit>
+      <trans-unit id="895c5cbb8224a59c" resname=", le {failed}">
+        <source>, le {failed}</source>
+        <target>, le {failed}</target>
+      </trans-unit>
+      <trans-unit id="deadc38f3d172219" resname="04 00 00 00 00">
+        <source>04 00 00 00 00</source>
+        <target>04 00 00 00 00</target>
+      </trans-unit>
+      <trans-unit id="68f9f830bdd05947" resname="06 00 00 00 00">
+        <source>06 00 00 00 00</source>
+        <target>06 00 00 00 00</target>
+      </trans-unit>
+      <trans-unit id="1c8f781235a9506d" resname="12 caractères minimum">
+        <source>12 caractères minimum</source>
+        <target>12 caractères minimum</target>
+      </trans-unit>
+      <trans-unit id="f63e5910f4b385f7" resname="12 caractères minimum, avec des lettres et des chiffres.">
+        <source>12 caractères minimum, avec des lettres et des chiffres.</source>
+        <target>12 caractères minimum, avec des lettres et des chiffres.</target>
+      </trans-unit>
+      <trans-unit id="b0b78649c14a6a16" resname="14 chiffres, sur votre Kbis ou votre avis de situation INSEE.">
+        <source>14 chiffres, sur votre Kbis ou votre avis de situation INSEE.</source>
+        <target>14 chiffres, sur votre Kbis ou votre avis de situation INSEE.</target>
+      </trans-unit>
+      <trans-unit id="4953e69620d8e892" resname="Abonnement · Espace pro">
+        <source>Abonnement · Espace pro</source>
+        <target>Abonnement · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="533161735639c51a" resname="Accueil">
+        <source>Accueil</source>
+        <target>Accueil</target>
+      </trans-unit>
+      <trans-unit id="64cff1319d2fd2cb" resname="Action">
+        <source>Action</source>
+        <target>Action</target>
+      </trans-unit>
+      <trans-unit id="ff8059dc6752afdd" resname="Actions">
+        <source>Actions</source>
+        <target>Actions</target>
+      </trans-unit>
+      <trans-unit id="99b52a5f9d92d2a8" resname="Activité (APE)">
+        <source>Activité (APE)</source>
+        <target>Activité (APE)</target>
+      </trans-unit>
+      <trans-unit id="f93317e6d34159f5" resname="Actualiser le statut">
+        <source>Actualiser le statut</source>
+        <target>Actualiser le statut</target>
+      </trans-unit>
+      <trans-unit id="57f34cb190152c5c" resname="Administrateur (toute l&apos;équipe)">
+        <source>Administrateur (toute l&apos;équipe)</source>
+        <target>Administrateur (toute l&apos;équipe)</target>
+      </trans-unit>
+      <trans-unit id="c597d4c1c7482c63" resname="Administrateurs">
+        <source>Administrateurs</source>
+        <target>Administrateurs</target>
+      </trans-unit>
+      <trans-unit id="79e5cf20de0ba454" resname="Adresse">
+        <source>Adresse</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="1c4166ec10a214be" resname="Adresse de votre page">
+        <source>Adresse de votre page</source>
+        <target>Adresse de votre page</target>
+      </trans-unit>
+      <trans-unit id="00c4066327cb749c" resname="Adresse du siège">
+        <source>Adresse du siège</source>
+        <target>Adresse du siège</target>
+      </trans-unit>
+      <trans-unit id="3681c5ac9fdaad9c" resname="Adresse e-mail professionnelle">
+        <source>Adresse e-mail professionnelle</source>
+        <target>Adresse e-mail professionnelle</target>
+      </trans-unit>
+      <trans-unit id="dd91cf3a08fbca96" resname="Adresse où se déroulent les rendez-vous">
+        <source>Adresse où se déroulent les rendez-vous</source>
+        <target>Adresse où se déroulent les rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="00f9c5334547a30f" resname="Ajouter">
+        <source>Ajouter</source>
+        <target>Ajouter</target>
+      </trans-unit>
+      <trans-unit id="bd255c77c275637f" resname="Ajouter un autre moyen de paiement">
+        <source>Ajouter un autre moyen de paiement</source>
+        <target>Ajouter un autre moyen de paiement</target>
+      </trans-unit>
+      <trans-unit id="280d4a4b4b9f86cc" resname="Ajouter un moyen de paiement">
+        <source>Ajouter un moyen de paiement</source>
+        <target>Ajouter un moyen de paiement</target>
+      </trans-unit>
+      <trans-unit id="38193f24e48fa357" resname="Ajouter un établissement">
+        <source>Ajouter un établissement</source>
+        <target>Ajouter un établissement</target>
+      </trans-unit>
+      <trans-unit id="29c285b69200d594" resname="Ajouter une photo">
+        <source>Ajouter une photo</source>
+        <target>Ajouter une photo</target>
+      </trans-unit>
+      <trans-unit id="6baf7100ca93331e" resname="Ajouter une prestation">
+        <source>Ajouter une prestation</source>
+        <target>Ajouter une prestation</target>
+      </trans-unit>
+      <trans-unit id="a31f4d79fe783bc0" resname="Ajouter une précision">
+        <source>Ajouter une précision</source>
+        <target>Ajouter une précision</target>
+      </trans-unit>
+      <trans-unit id="6b8d2586671ff34d" resname="Ajoutez au moins une prestation avec sa durée et son prix habituel.">
+        <source>Ajoutez au moins une prestation avec sa durée et son prix habituel.</source>
+        <target>Ajoutez au moins une prestation avec sa durée et son prix habituel.</target>
+      </trans-unit>
+      <trans-unit id="d0e788cc9b7d8be8" resname="Ajoutez d&apos;abord un moyen de paiement.">
+        <source>Ajoutez d&apos;abord un moyen de paiement.</source>
+        <target>Ajoutez d&apos;abord un moyen de paiement.</target>
+      </trans-unit>
+      <trans-unit id="a0aa43886bd7de37" resname="Ajoutez d&apos;abord une prestation : c&apos;est elle qui fixe la durée et le prix habituel du créneau.">
+        <source>Ajoutez d&apos;abord une prestation : c&apos;est elle qui fixe la durée et le prix habituel du créneau.</source>
+        <target>Ajoutez d&apos;abord une prestation : c&apos;est elle qui fixe la durée et le prix habituel du créneau.</target>
+      </trans-unit>
+      <trans-unit id="863f7dc9d76391bc" resname="Ajoutez des photos et précisez vos prestations.">
+        <source>Ajoutez des photos et précisez vos prestations.</source>
+        <target>Ajoutez des photos et précisez vos prestations.</target>
+      </trans-unit>
+      <trans-unit id="9180f0aa5af36d49" resname="Ajoutez un moyen de paiement pour régler cette facture.">
+        <source>Ajoutez un moyen de paiement pour régler cette facture.</source>
+        <target>Ajoutez un moyen de paiement pour régler cette facture.</target>
+      </trans-unit>
+      <trans-unit id="d19fa576dfc0be4c" resname="Aller au tableau de bord">
+        <source>Aller au tableau de bord</source>
+        <target>Aller au tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="46ad3916f6a09798" resname="Annuler">
+        <source>Annuler</source>
+        <target>Annuler</target>
+      </trans-unit>
+      <trans-unit id="391b571661faf24b" resname="Annuler ce rendez-vous (imprévu)">
+        <source>Annuler ce rendez-vous (imprévu)</source>
+        <target>Annuler ce rendez-vous (imprévu)</target>
+      </trans-unit>
+      <trans-unit id="ed420fb51996e105" resname="Annuler la résiliation">
+        <source>Annuler la résiliation</source>
+        <target>Annuler la résiliation</target>
+      </trans-unit>
+      <trans-unit id="b094f03c961fdad3" resname="Annuler le rendez-vous">
+        <source>Annuler le rendez-vous</source>
+        <target>Annuler le rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="e5b99256e53e9d59" resname="Annuler le rendez-vous de {client} ? Il sera prévenu par e-mail.">
+        <source>Annuler le rendez-vous de {client} ? Il sera prévenu par e-mail.</source>
+        <target>Annuler le rendez-vous de {client} ? Il sera prévenu par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="57be879ec712c7e2" resname="Aperçu client">
+        <source>Aperçu client</source>
+        <target>Aperçu client</target>
+      </trans-unit>
+      <trans-unit id="b4c8b1dd7acdc2e0" resname="Appliquer">
+        <source>Appliquer</source>
+        <target>Appliquer</target>
+      </trans-unit>
+      <trans-unit id="ccb9c5a4b0ab000a" resname="Après le rendez-vous">
+        <source>Après le rendez-vous</source>
+        <target>Après le rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="3325c2b56f2bd494" resname="Au">
+        <source>Au</source>
+        <target>Au</target>
+      </trans-unit>
+      <trans-unit id="5b42115d02080173" resname="Aucun avis dans cette liste.">
+        <source>Aucun avis dans cette liste.</source>
+        <target>Aucun avis dans cette liste.</target>
+      </trans-unit>
+      <trans-unit id="4315dfb1026f0055" resname="Aucun créneau dans cette catégorie.">
+        <source>Aucun créneau dans cette catégorie.</source>
+        <target>Aucun créneau dans cette catégorie.</target>
+      </trans-unit>
+      <trans-unit id="40e341d5ea31776a" resname="Aucun membre pour ce filtre.">
+        <source>Aucun membre pour ce filtre.</source>
+        <target>Aucun membre pour ce filtre.</target>
+      </trans-unit>
+      <trans-unit id="63af0de5f7576a05" resname="Aucun moyen de paiement enregistré.">
+        <source>Aucun moyen de paiement enregistré.</source>
+        <target>Aucun moyen de paiement enregistré.</target>
+      </trans-unit>
+      <trans-unit id="75a86eb5585cc3c2" resname="Aucun signalement sur votre établissement">
+        <source>Aucun signalement sur votre établissement</source>
+        <target>Aucun signalement sur votre établissement</target>
+      </trans-unit>
+      <trans-unit id="feb20901cc1f152c" resname="Aucune facture pour le moment.">
+        <source>Aucune facture pour le moment.</source>
+        <target>Aucune facture pour le moment.</target>
+      </trans-unit>
+      <trans-unit id="f601272c137693f7" resname="Aucune fermeture prévue.">
+        <source>Aucune fermeture prévue.</source>
+        <target>Aucune fermeture prévue.</target>
+      </trans-unit>
+      <trans-unit id="7722f616f0f41fb4" resname="Aucune formule active.">
+        <source>Aucune formule active.</source>
+        <target>Aucune formule active.</target>
+      </trans-unit>
+      <trans-unit id="8432872b77e40124" resname="Aucune prestation pour le moment.">
+        <source>Aucune prestation pour le moment.</source>
+        <target>Aucune prestation pour le moment.</target>
+      </trans-unit>
+      <trans-unit id="405b56bb3db2f856" resname="Aucune prestation.">
+        <source>Aucune prestation.</source>
+        <target>Aucune prestation.</target>
+      </trans-unit>
+      <trans-unit id="f815788b5f62c586" resname="Aucune réservation passée à signaler.">
+        <source>Aucune réservation passée à signaler.</source>
+        <target>Aucune réservation passée à signaler.</target>
+      </trans-unit>
+      <trans-unit id="507ceb4ee3c2e453" resname="Aucune réservation pour le moment.">
+        <source>Aucune réservation pour le moment.</source>
+        <target>Aucune réservation pour le moment.</target>
+      </trans-unit>
+      <trans-unit id="99099b6e904f2359" resname="Aujourd&apos;hui">
+        <source>Aujourd&apos;hui</source>
+        <target>Aujourd&apos;hui</target>
+      </trans-unit>
+      <trans-unit id="a5ff11ad3027f583" resname="Aujourd&apos;hui : {plan} · {price}">
+        <source>Aujourd&apos;hui : {plan} · {price}</source>
+        <target>Aujourd&apos;hui : {plan} · {price}</target>
+      </trans-unit>
+      <trans-unit id="e00076f8bf546488" resname="Avancer la photo">
+        <source>Avancer la photo</source>
+        <target>Avancer la photo</target>
+      </trans-unit>
+      <trans-unit id="4c11d949908b66dd" resname="Avec">
+        <source>Avec</source>
+        <target>Avec</target>
+      </trans-unit>
+      <trans-unit id="f866303cb2f05fef" resname="Avis clients">
+        <source>Avis clients</source>
+        <target>Avis clients</target>
+      </trans-unit>
+      <trans-unit id="071ab213d3bdc3d4" resname="Avis clients · Espace pro">
+        <source>Avis clients · Espace pro</source>
+        <target>Avis clients · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="429e1d1d1f59eb6d" resname="Avoir">
+        <source>Avoir</source>
+        <target>Avoir</target>
+      </trans-unit>
+      <trans-unit id="2fc31283d92efe5c" resname="Bienvenue {firstName} !">
+        <source>Bienvenue {firstName} !</source>
+        <target>Bienvenue {firstName} !</target>
+      </trans-unit>
+      <trans-unit id="f060f4db05904c27" resname="Bienvenue · Espace pro">
+        <source>Bienvenue · Espace pro</source>
+        <target>Bienvenue · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="d1e2003bfe9758d0" resname="C&apos;est ce que les clients voient avant de réserver. Vous pourrez compléter plus tard.">
+        <source>C&apos;est ce que les clients voient avant de réserver. Vous pourrez compléter plus tard.</source>
+        <target>C&apos;est ce que les clients voient avant de réserver. Vous pourrez compléter plus tard.</target>
+      </trans-unit>
+      <trans-unit id="d725476dcb9d21e6" resname="Camille R. · Coupe + brushing · 29 €">
+        <source>Camille R. · Coupe + brushing · 29 €</source>
+        <target>Camille R. · Coupe + brushing · 29 €</target>
+      </trans-unit>
+      <trans-unit id="68a5341fc6bd0263" resname="Catégorie">
+        <source>Catégorie</source>
+        <target>Catégorie</target>
+      </trans-unit>
+      <trans-unit id="369f6c396ff672ce" resname="Ce changement prendra effet à la fin de votre période en cours, le {date}. Rien n&apos;est prélevé aujourd&apos;hui.">
+        <source>Ce changement prendra effet à la fin de votre période en cours, le {date}. Rien n&apos;est prélevé aujourd&apos;hui.</source>
+        <target>Ce changement prendra effet à la fin de votre période en cours, le {date}. Rien n&apos;est prélevé aujourd&apos;hui.</target>
+      </trans-unit>
+      <trans-unit id="c6495b07c291437c" resname="Ce changement prendra effet à la fin de votre période en cours. Rien n&apos;est prélevé aujourd&apos;hui.">
+        <source>Ce changement prendra effet à la fin de votre période en cours. Rien n&apos;est prélevé aujourd&apos;hui.</source>
+        <target>Ce changement prendra effet à la fin de votre période en cours. Rien n&apos;est prélevé aujourd&apos;hui.</target>
+      </trans-unit>
+      <trans-unit id="b533ebf59761ea05" resname="Ce que vous proposez">
+        <source>Ce que vous proposez</source>
+        <target>Ce que vous proposez</target>
+      </trans-unit>
+      <trans-unit id="db69d42412f2d661" resname="Ce que vous proposez, avec la durée et le prix habituel. La remise s&apos;applique sur ce prix.">
+        <source>Ce que vous proposez, avec la durée et le prix habituel. La remise s&apos;applique sur ce prix.</source>
+        <target>Ce que vous proposez, avec la durée et le prix habituel. La remise s&apos;applique sur ce prix.</target>
+      </trans-unit>
+      <trans-unit id="832044ffb15db50d" resname="Ce qui change">
+        <source>Ce qui change</source>
+        <target>Ce qui change</target>
+      </trans-unit>
+      <trans-unit id="d23bcaf6920c1fbe" resname="Ce qui s&apos;est passé">
+        <source>Ce qui s&apos;est passé</source>
+        <target>Ce qui s&apos;est passé</target>
+      </trans-unit>
+      <trans-unit id="abbe4ced817cc3a0" resname="Ce signalement est traité. Contactez l&apos;équipe Kréno pour toute question.">
+        <source>Ce signalement est traité. Contactez l&apos;équipe Kréno pour toute question.</source>
+        <target>Ce signalement est traité. Contactez l&apos;équipe Kréno pour toute question.</target>
+      </trans-unit>
+      <trans-unit id="5fa4891173c18537" resname="Ces informations servent à vous connecter et à vous joindre. Elles ne sont pas affichées aux clients.">
+        <source>Ces informations servent à vous connecter et à vous joindre. Elles ne sont pas affichées aux clients.</source>
+        <target>Ces informations servent à vous connecter et à vous joindre. Elles ne sont pas affichées aux clients.</target>
+      </trans-unit>
+      <trans-unit id="8c61596d9984f381" resname="Changer de formule">
+        <source>Changer de formule</source>
+        <target>Changer de formule</target>
+      </trans-unit>
+      <trans-unit id="cbb0c6dd29f26c7b" resname="Changer de formule · Espace pro">
+        <source>Changer de formule · Espace pro</source>
+        <target>Changer de formule · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="fe223e7a94e6c8af" resname="Chez vous via Kréno">
+        <source>Chez vous via Kréno</source>
+        <target>Chez vous via Kréno</target>
+      </trans-unit>
+      <trans-unit id="333b3955863deb00" resname="Chiffres des 30 derniers jours.">
+        <source>Chiffres des 30 derniers jours.</source>
+        <target>Chiffres des 30 derniers jours.</target>
+      </trans-unit>
+      <trans-unit id="3f2aaae20144dbd0" resname="Choisir">
+        <source>Choisir</source>
+        <target>Choisir</target>
+      </trans-unit>
+      <trans-unit id="a7d74592d8aa4784" resname="Choisir une formule">
+        <source>Choisir une formule</source>
+        <target>Choisir une formule</target>
+      </trans-unit>
+      <trans-unit id="2a4ef5fa027a628a" resname="Choisissez votre formule">
+        <source>Choisissez votre formule</source>
+        <target>Choisissez votre formule</target>
+      </trans-unit>
+      <trans-unit id="0c77fe09ab336a3e" resname="Client">
+        <source>Client</source>
+        <target>Client</target>
+      </trans-unit>
+      <trans-unit id="39f4a15e98760e78" resname="Code de vérification">
+        <source>Code de vérification</source>
+        <target>Code de vérification</target>
+      </trans-unit>
+      <trans-unit id="be7071612b3c7662" resname="Code postal">
+        <source>Code postal</source>
+        <target>Code postal</target>
+      </trans-unit>
+      <trans-unit id="5016ba928c0a8b5c" resname="Code promo">
+        <source>Code promo</source>
+        <target>Code promo</target>
+      </trans-unit>
+      <trans-unit id="94b4ed038d1d37a7" resname="Code {code} : {label}">
+        <source>Code {code} : {label}</source>
+        <target>Code {code} : {label}</target>
+      </trans-unit>
+      <trans-unit id="38b910afbd136958" resname="Commencer">
+        <source>Commencer</source>
+        <target>Commencer</target>
+      </trans-unit>
+      <trans-unit id="df01d4b731c3df46" resname="Comment ça marche">
+        <source>Comment ça marche</source>
+        <target>Comment ça marche</target>
+      </trans-unit>
+      <trans-unit id="f0f7ace5d170d1c8" resname="Commençons par vous">
+        <source>Commençons par vous</source>
+        <target>Commençons par vous</target>
+      </trans-unit>
+      <trans-unit id="0bd930d241140a0d" resname="Complément">
+        <source>Complément</source>
+        <target>Complément</target>
+      </trans-unit>
+      <trans-unit id="b6aaab4e2de5db56" resname="Complément d&apos;adresse">
+        <source>Complément d&apos;adresse</source>
+        <target>Complément d&apos;adresse</target>
+      </trans-unit>
+      <trans-unit id="dec4e44a85390394" resname="Compléter ma page en attendant">
+        <source>Compléter ma page en attendant</source>
+        <target>Compléter ma page en attendant</target>
+      </trans-unit>
+      <trans-unit id="7bf78a23f55fda5f" resname="Compléter plus tard">
+        <source>Compléter plus tard</source>
+        <target>Compléter plus tard</target>
+      </trans-unit>
+      <trans-unit id="5d0a6688808a81c9" resname="Compte client supprimé.">
+        <source>Compte client supprimé.</source>
+        <target>Compte client supprimé.</target>
+      </trans-unit>
+      <trans-unit id="06fdb71502a387e6" resname="Conditions pros">
+        <source>Conditions pros</source>
+        <target>Conditions pros</target>
+      </trans-unit>
+      <trans-unit id="30a8b7846961bb63" resname="Confirmer">
+        <source>Confirmer</source>
+        <target>Confirmer</target>
+      </trans-unit>
+      <trans-unit id="e58c36b75f995288" resname="Confirmer l&apos;absence de {client} ? Elle est signalée à Kréno et peut suspendre son compte.">
+        <source>Confirmer l&apos;absence de {client} ? Elle est signalée à Kréno et peut suspendre son compte.</source>
+        <target>Confirmer l&apos;absence de {client} ? Elle est signalée à Kréno et peut suspendre son compte.</target>
+      </trans-unit>
+      <trans-unit id="b449bc7a79c59e3d" resname="Confirmer la résiliation">
+        <source>Confirmer la résiliation</source>
+        <target>Confirmer la résiliation</target>
+      </trans-unit>
+      <trans-unit id="33571ef4cd369850" resname="Confirmer le changement">
+        <source>Confirmer le changement</source>
+        <target>Confirmer le changement</target>
+      </trans-unit>
+      <trans-unit id="fca93c1ef7639e12" resname="Congés, travaux…">
+        <source>Congés, travaux…</source>
+        <target>Congés, travaux…</target>
+      </trans-unit>
+      <trans-unit id="f4e1273e4e7b6632" resname="Connectez-vous pour publier vos créneaux.">
+        <source>Connectez-vous pour publier vos créneaux.</source>
+        <target>Connectez-vous pour publier vos créneaux.</target>
+      </trans-unit>
+      <trans-unit id="648ceee678ebba86" resname="Connexion · Kréno Pro">
+        <source>Connexion · Kréno Pro</source>
+        <target>Connexion · Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="496b4c608bc839f1" resname="Contactez-nous">
+        <source>Contactez-nous</source>
+        <target>Contactez-nous</target>
+      </trans-unit>
+      <trans-unit id="3bc3807f225b2e66" resname="Continuer">
+        <source>Continuer</source>
+        <target>Continuer</target>
+      </trans-unit>
+      <trans-unit id="84b03702780e4858" resname="Copier">
+        <source>Copier</source>
+        <target>Copier</target>
+      </trans-unit>
+      <trans-unit id="3e78d201ade830ad" resname="Couverture">
+        <source>Couverture</source>
+        <target>Couverture</target>
+      </trans-unit>
+      <trans-unit id="218a528c07f4f1b1" resname="Crédit non utilisé">
+        <source>Crédit non utilisé</source>
+        <target>Crédit non utilisé</target>
+      </trans-unit>
+      <trans-unit id="17e21fcf429f8a94" resname="Créer l&apos;établissement">
+        <source>Créer l&apos;établissement</source>
+        <target>Créer l&apos;établissement</target>
+      </trans-unit>
+      <trans-unit id="53004b2e59069e87" resname="Créer mon espace pro">
+        <source>Créer mon espace pro</source>
+        <target>Créer mon espace pro</target>
+      </trans-unit>
+      <trans-unit id="3806abdcaaad46a6" resname="Créneau">
+        <source>Créneau</source>
+        <target>Créneau</target>
+      </trans-unit>
+      <trans-unit id="971fbf7a34a3f57c" resname="Créneaux publiés et réservés">
+        <source>Créneaux publiés et réservés</source>
+        <target>Créneaux publiés et réservés</target>
+      </trans-unit>
+      <trans-unit id="99c40ab405926cb5" resname="Date">
+        <source>Date</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="c9be62dd7dc8197c" resname="Dernières réservations">
+        <source>Dernières réservations</source>
+        <target>Dernières réservations</target>
+      </trans-unit>
+      <trans-unit id="67159970e4c3c7da" resname="Descendre {serviceName}">
+        <source>Descendre {serviceName}</source>
+        <target>Descendre {serviceName}</target>
+      </trans-unit>
+      <trans-unit id="526e0087cc3f254d" resname="Description">
+        <source>Description</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="345cb10f59b1b18d" resname="Description (facultatif)">
+        <source>Description (facultatif)</source>
+        <target>Description (facultatif)</target>
+      </trans-unit>
+      <trans-unit id="3b0ad0b3201291ad" resname="Description de la photo">
+        <source>Description de la photo</source>
+        <target>Description de la photo</target>
+      </trans-unit>
+      <trans-unit id="0b6722a8adfb9354" resname="Du">
+        <source>Du</source>
+        <target>Du</target>
+      </trans-unit>
+      <trans-unit id="71d0bad42af1144f" resname="Durée">
+        <source>Durée</source>
+        <target>Durée</target>
+      </trans-unit>
+      <trans-unit id="bd5025c22716c18d" resname="Décision :">
+        <source>Décision :</source>
+        <target>Décision :</target>
+      </trans-unit>
+      <trans-unit id="356e15e815d1a1df" resname="Découvrir mon espace">
+        <source>Découvrir mon espace</source>
+        <target>Découvrir mon espace</target>
+      </trans-unit>
+      <trans-unit id="25a08c475c72b7b1" resname="Décrire la photo">
+        <source>Décrire la photo</source>
+        <target>Décrire la photo</target>
+      </trans-unit>
+      <trans-unit id="9582f721d6c7e697" resname="Dénomination">
+        <source>Dénomination</source>
+        <target>Dénomination</target>
+      </trans-unit>
+      <trans-unit id="c07050ca89333056" resname="Désactiver">
+        <source>Désactiver</source>
+        <target>Désactiver</target>
+      </trans-unit>
+      <trans-unit id="fe9b1b3182fd6104" resname="Désactivée">
+        <source>Désactivée</source>
+        <target>Désactivée</target>
+      </trans-unit>
+      <trans-unit id="8fef39c5fcf443c8" resname="Désignation">
+        <source>Désignation</source>
+        <target>Désignation</target>
+      </trans-unit>
+      <trans-unit id="3175df75860e612e" resname="Détail">
+        <source>Détail</source>
+        <target>Détail</target>
+      </trans-unit>
+      <trans-unit id="2550d962e536e7c0" resname="E-mail">
+        <source>E-mail</source>
+        <target>E-mail</target>
+      </trans-unit>
+      <trans-unit id="9359d0f663abfbba" resname="E-mail de facturation">
+        <source>E-mail de facturation</source>
+        <target>E-mail de facturation</target>
+      </trans-unit>
+      <trans-unit id="ad6c0b85ac1d11dc" resname="E-mail des factures">
+        <source>E-mail des factures</source>
+        <target>E-mail des factures</target>
+      </trans-unit>
+      <trans-unit id="2e9290bad52298d0" resname="E-mail professionnel">
+        <source>E-mail professionnel</source>
+        <target>E-mail professionnel</target>
+      </trans-unit>
+      <trans-unit id="6a60387e44a365e9" resname="Employé">
+        <source>Employé</source>
+        <target>Employé</target>
+      </trans-unit>
+      <trans-unit id="7adb5f55b2ff1796" resname="En fin de mois, selon les créneaux réservés">
+        <source>En fin de mois, selon les créneaux réservés</source>
+        <target>En fin de mois, selon les créneaux réservés</target>
+      </trans-unit>
+      <trans-unit id="68ac1636c581f236" resname="En pause jusqu&apos;au {date}.">
+        <source>En pause jusqu&apos;au {date}.</source>
+        <target>En pause jusqu&apos;au {date}.</target>
+      </trans-unit>
+      <trans-unit id="71dc74873e23107d" resname="Enregistrer">
+        <source>Enregistrer</source>
+        <target>Enregistrer</target>
+      </trans-unit>
+      <trans-unit id="42732eb5f122f1ab" resname="Enregistrer les horaires">
+        <source>Enregistrer les horaires</source>
+        <target>Enregistrer les horaires</target>
+      </trans-unit>
+      <trans-unit id="e93b8d9d95d8249c" resname="Enregistrez un moyen de paiement puis envoyez votre inscription : l&apos;équipe la vérifie avant la mise en ligne.">
+        <source>Enregistrez un moyen de paiement puis envoyez votre inscription : l&apos;équipe la vérifie avant la mise en ligne.</source>
+        <target>Enregistrez un moyen de paiement puis envoyez votre inscription : l&apos;équipe la vérifie avant la mise en ligne.</target>
+      </trans-unit>
+      <trans-unit id="b15426cfd6bea162" resname="Enseigne">
+        <source>Enseigne</source>
+        <target>Enseigne</target>
+      </trans-unit>
+      <trans-unit id="0c96669bbe68a9ac" resname="Entre {min} % et {max} %.">
+        <source>Entre {min} % et {max} %.</source>
+        <target>Entre {min} % et {max} %.</target>
+      </trans-unit>
+      <trans-unit id="4b000c1c5bffef44" resname="Entreprise">
+        <source>Entreprise</source>
+        <target>Entreprise</target>
+      </trans-unit>
+      <trans-unit id="79075209f2bb8865" resname="Envoyer">
+        <source>Envoyer</source>
+        <target>Envoyer</target>
+      </trans-unit>
+      <trans-unit id="1a6293a101bc0773" resname="Envoyer en vérification">
+        <source>Envoyer en vérification</source>
+        <target>Envoyer en vérification</target>
+      </trans-unit>
+      <trans-unit id="fac0c204df83a236" resname="Envoyer l&apos;invitation">
+        <source>Envoyer l&apos;invitation</source>
+        <target>Envoyer l&apos;invitation</target>
+      </trans-unit>
+      <trans-unit id="19ab4121b64d150f" resname="Envoyer la photo">
+        <source>Envoyer la photo</source>
+        <target>Envoyer la photo</target>
+      </trans-unit>
+      <trans-unit id="2e7c26a10b08973d" resname="Envoyer le signalement">
+        <source>Envoyer le signalement</source>
+        <target>Envoyer le signalement</target>
+      </trans-unit>
+      <trans-unit id="92a625dea46dbf65" resname="Envoyer mon inscription">
+        <source>Envoyer mon inscription</source>
+        <target>Envoyer mon inscription</target>
+      </trans-unit>
+      <trans-unit id="672a7eb59e9ecea5" resname="Espace professionnel">
+        <source>Espace professionnel</source>
+        <target>Espace professionnel</target>
+      </trans-unit>
+      <trans-unit id="155c359b88d26fe4" resname="Et maintenant ?">
+        <source>Et maintenant ?</source>
+        <target>Et maintenant ?</target>
+      </trans-unit>
+      <trans-unit id="114f94ae984f43a2" resname="Ex. : fermeture exceptionnelle">
+        <source>Ex. : fermeture exceptionnelle</source>
+        <target>Ex. : fermeture exceptionnelle</target>
+      </trans-unit>
+      <trans-unit id="c99e02f72b5d08c5" resname="Exemple : {name} à {price} passe à {discounted} pour le client.">
+        <source>Exemple : {name} à {price} passe à {discounted} pour le client.</source>
+        <target>Exemple : {name} à {price} passe à {discounted} pour le client.</target>
+      </trans-unit>
+      <trans-unit id="54e2980e6d2f726f" resname="Facturation">
+        <source>Facturation</source>
+        <target>Facturation</target>
+      </trans-unit>
+      <trans-unit id="70504f3be11ecd00" resname="Facturation et préférences">
+        <source>Facturation et préférences</source>
+        <target>Facturation et préférences</target>
+      </trans-unit>
+      <trans-unit id="2f099c4b2b039fba" resname="Facturation · Espace pro">
+        <source>Facturation · Espace pro</source>
+        <target>Facturation · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="7ba96f08a0bfe8e4" resname="Facture">
+        <source>Facture</source>
+        <target>Facture</target>
+      </trans-unit>
+      <trans-unit id="d1bdad922ebf63c8" resname="Facture d&apos;origine">
+        <source>Facture d&apos;origine</source>
+        <target>Facture d&apos;origine</target>
+      </trans-unit>
+      <trans-unit id="449b56418c39676e" resname="Facture {number} · Espace pro">
+        <source>Facture {number} · Espace pro</source>
+        <target>Facture {number} · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="cf728fa6fc3f1634" resname="Factures">
+        <source>Factures</source>
+        <target>Factures</target>
+      </trans-unit>
+      <trans-unit id="44c6fa8b44aede28" resname="Facturé à">
+        <source>Facturé à</source>
+        <target>Facturé à</target>
+      </trans-unit>
+      <trans-unit id="5ba7a19926240bad" resname="Fermetures exceptionnelles">
+        <source>Fermetures exceptionnelles</source>
+        <target>Fermetures exceptionnelles</target>
+      </trans-unit>
+      <trans-unit id="ec16710e0e6cac43" resname="Filtrer">
+        <source>Filtrer</source>
+        <target>Filtrer</target>
+      </trans-unit>
+      <trans-unit id="fad3ff6cbe278e3a" resname="Filtrer par statut">
+        <source>Filtrer par statut</source>
+        <target>Filtrer par statut</target>
+      </trans-unit>
+      <trans-unit id="f0508789dcaf4d65" resname="Fin de la formule">
+        <source>Fin de la formule</source>
+        <target>Fin de la formule</target>
+      </trans-unit>
+      <trans-unit id="ee4e4de4e491eb52" resname="Fin de période">
+        <source>Fin de période</source>
+        <target>Fin de période</target>
+      </trans-unit>
+      <trans-unit id="e7c95542e4496957" resname="Formule">
+        <source>Formule</source>
+        <target>Formule</target>
+      </trans-unit>
+      <trans-unit id="5ef089adbd622cdc" resname="Formule actuelle">
+        <source>Formule actuelle</source>
+        <target>Formule actuelle</target>
+      </trans-unit>
+      <trans-unit id="dbf6518f22b744a6" resname="Formule · Inscription pro">
+        <source>Formule · Inscription pro</source>
+        <target>Formule · Inscription pro</target>
+      </trans-unit>
+      <trans-unit id="99c29285eef8aac4" resname="Formules">
+        <source>Formules</source>
+        <target>Formules</target>
+      </trans-unit>
+      <trans-unit id="15de14759b86b0ed" resname="Garder ma formule">
+        <source>Garder ma formule</source>
+        <target>Garder ma formule</target>
+      </trans-unit>
+      <trans-unit id="0e03f3b9266e127c" resname="Gérant">
+        <source>Gérant</source>
+        <target>Gérant</target>
+      </trans-unit>
+      <trans-unit id="bd413de7835ae4ff" resname="Gérer">
+        <source>Gérer</source>
+        <target>Gérer</target>
+      </trans-unit>
+      <trans-unit id="63461aabae9f394b" resname="Gérer l&apos;équipe">
+        <source>Gérer l&apos;équipe</source>
+        <target>Gérer l&apos;équipe</target>
+      </trans-unit>
+      <trans-unit id="56ff9400e9277cd2" resname="Heure">
+        <source>Heure</source>
+        <target>Heure</target>
+      </trans-unit>
+      <trans-unit id="d4cedd8140336739" resname="Horaires">
+        <source>Horaires</source>
+        <target>Horaires</target>
+      </trans-unit>
+      <trans-unit id="74625ed16904eb55" resname="Horaires d&apos;ouverture">
+        <source>Horaires d&apos;ouverture</source>
+        <target>Horaires d&apos;ouverture</target>
+      </trans-unit>
+      <trans-unit id="91f606b32dfc475e" resname="Identification">
+        <source>Identification</source>
+        <target>Identification</target>
+      </trans-unit>
+      <trans-unit id="52281e22a16b041a" resname="Ignoré pour un administrateur.">
+        <source>Ignoré pour un administrateur.</source>
+        <target>Ignoré pour un administrateur.</target>
+      </trans-unit>
+      <trans-unit id="5bf29e981df7e43d" resname="Il sera visible par les clients du quartier jusqu&apos;à l&apos;heure d&apos;expiration.">
+        <source>Il sera visible par les clients du quartier jusqu&apos;à l&apos;heure d&apos;expiration.</source>
+        <target>Il sera visible par les clients du quartier jusqu&apos;à l&apos;heure d&apos;expiration.</target>
+      </trans-unit>
+      <trans-unit id="110b9b18d09cbf2f" resname="Indiquez votre SIRET : nous retrouvons le nom et l&apos;adresse pour vous.">
+        <source>Indiquez votre SIRET : nous retrouvons le nom et l&apos;adresse pour vous.</source>
+        <target>Indiquez votre SIRET : nous retrouvons le nom et l&apos;adresse pour vous.</target>
+      </trans-unit>
+      <trans-unit id="412be0b9cd4073db" resname="Informations">
+        <source>Informations</source>
+        <target>Informations</target>
+      </trans-unit>
+      <trans-unit id="208f6af7ac5abcec" resname="Informations de facturation">
+        <source>Informations de facturation</source>
+        <target>Informations de facturation</target>
+      </trans-unit>
+      <trans-unit id="7717038217254887" resname="Inscription envoyée">
+        <source>Inscription envoyée</source>
+        <target>Inscription envoyée</target>
+      </trans-unit>
+      <trans-unit id="b5e4daf8f2003a61" resname="Inscription envoyée · Espace pro">
+        <source>Inscription envoyée · Espace pro</source>
+        <target>Inscription envoyée · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="186ae57f64c50ab6" resname="Invitations en attente">
+        <source>Invitations en attente</source>
+        <target>Invitations en attente</target>
+      </trans-unit>
+      <trans-unit id="5882d70d24a83a88" resname="Inviter un collaborateur">
+        <source>Inviter un collaborateur</source>
+        <target>Inviter un collaborateur</target>
+      </trans-unit>
+      <trans-unit id="efdefe0e6787b580" resname="J&apos;accepte les {terms} et je certifie être habilité·e à représenter cet établissement.">
+        <source>J&apos;accepte les {terms} et je certifie être habilité·e à représenter cet établissement.</source>
+        <target>J&apos;accepte les {terms} et je certifie être habilité·e à représenter cet établissement.</target>
+      </trans-unit>
+      <trans-unit id="6bdb3026b0aa3b62" resname="J&apos;autorise {site} et son prestataire de paiement à envoyer des instructions à ma banque pour débiter mon compte, conformément au mandat SEPA.">
+        <source>J&apos;autorise {site} et son prestataire de paiement à envoyer des instructions à ma banque pour débiter mon compte, conformément au mandat SEPA.</source>
+        <target>J&apos;autorise {site} et son prestataire de paiement à envoyer des instructions à ma banque pour débiter mon compte, conformément au mandat SEPA.</target>
+      </trans-unit>
+      <trans-unit id="3eb0f64015faca7b" resname="Jour">
+        <source>Jour</source>
+        <target>Jour</target>
+      </trans-unit>
+      <trans-unit id="13b0db669c442aea" resname="La facture acquittée est envoyée à {billingEmail}.">
+        <source>La facture acquittée est envoyée à {billingEmail}.</source>
+        <target>La facture acquittée est envoyée à {billingEmail}.</target>
+      </trans-unit>
+      <trans-unit id="40d2593b411da3f3" resname="Laissez vide pour un jour fermé. Deuxième plage pour une pause du midi.">
+        <source>Laissez vide pour un jour fermé. Deuxième plage pour une pause du midi.</source>
+        <target>Laissez vide pour un jour fermé. Deuxième plage pour une pause du midi.</target>
+      </trans-unit>
+      <trans-unit id="d23aa7b8d32ac6eb" resname="Le client est venu">
+        <source>Le client est venu</source>
+        <target>Le client est venu</target>
+      </trans-unit>
+      <trans-unit id="12ec2561ec8e23a6" resname="Le client ne s&apos;est pas présenté">
+        <source>Le client ne s&apos;est pas présenté</source>
+        <target>Le client ne s&apos;est pas présenté</target>
+      </trans-unit>
+      <trans-unit id="61b0678678679903" resname="Le dernier paiment a échoué">
+        <source>Le dernier paiment a échoué</source>
+        <target>Le dernier paiment a échoué</target>
+      </trans-unit>
+      <trans-unit id="97967f479217961f" resname="Le paiement est en cours de traitement par votre banque. Un prélèvement SEPA peut prendre jusqu&apos;à 2 jours ouvrés.">
+        <source>Le paiement est en cours de traitement par votre banque. Un prélèvement SEPA peut prendre jusqu&apos;à 2 jours ouvrés.</source>
+        <target>Le paiement est en cours de traitement par votre banque. Un prélèvement SEPA peut prendre jusqu&apos;à 2 jours ouvrés.</target>
+      </trans-unit>
+      <trans-unit id="ac1d49bc22e1bd19" resname="Les clients peuvent réserver jusqu&apos;à {minutes} min avant le rendez-vous.">
+        <source>Les clients peuvent réserver jusqu&apos;à {minutes} min avant le rendez-vous.</source>
+        <target>Les clients peuvent réserver jusqu&apos;à {minutes} min avant le rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="60b053f33d26f6b3" resname="Les formules seront bientôt disponibles.">
+        <source>Les formules seront bientôt disponibles.</source>
+        <target>Les formules seront bientôt disponibles.</target>
+      </trans-unit>
+      <trans-unit id="bdae0a0fd67b4dc9" resname="Les photos sont enregistrées dès l&apos;envoi.">
+        <source>Les photos sont enregistrées dès l&apos;envoi.</source>
+        <target>Les photos sont enregistrées dès l&apos;envoi.</target>
+      </trans-unit>
+      <trans-unit id="27cc2dbb93064ac0" resname="Masqué par l&apos;équipe : {moderationNote}">
+        <source>Masqué par l&apos;équipe : {moderationNote}</source>
+        <target>Masqué par l&apos;équipe : {moderationNote}</target>
+      </trans-unit>
+      <trans-unit id="aa52b1f704b746a8" resname="Membres">
+        <source>Membres</source>
+        <target>Membres</target>
+      </trans-unit>
+      <trans-unit id="cce9c0a1b975aca0" resname="Mentions légales">
+        <source>Mentions légales</source>
+        <target>Mentions légales</target>
+      </trans-unit>
+      <trans-unit id="af01299c38cd3590" resname="Merci {firstName}, c&apos;est envoyé !">
+        <source>Merci {firstName}, c&apos;est envoyé !</source>
+        <target>Merci {firstName}, c&apos;est envoyé !</target>
+      </trans-unit>
+      <trans-unit id="9632256b4464ebf9" resname="Merci, c&apos;est envoyé !">
+        <source>Merci, c&apos;est envoyé !</source>
+        <target>Merci, c&apos;est envoyé !</target>
+      </trans-unit>
+      <trans-unit id="594777061cdda6ff" resname="Merci, c&apos;est réglé.">
+        <source>Merci, c&apos;est réglé.</source>
+        <target>Merci, c&apos;est réglé.</target>
+      </trans-unit>
+      <trans-unit id="90aff26e892186e1" resname="Mes créneaux">
+        <source>Mes créneaux</source>
+        <target>Mes créneaux</target>
+      </trans-unit>
+      <trans-unit id="8573a2d5c0cf3f64" resname="Mes créneaux · Espace pro">
+        <source>Mes créneaux · Espace pro</source>
+        <target>Mes créneaux · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="0106392fc4551d8c" resname="Message à l&apos;équipe Kréno">
+        <source>Message à l&apos;équipe Kréno</source>
+        <target>Message à l&apos;équipe Kréno</target>
+      </trans-unit>
+      <trans-unit id="2c2ed5eda5221b23" resname="Mettre en ligne">
+        <source>Mettre en ligne</source>
+        <target>Mettre en ligne</target>
+      </trans-unit>
+      <trans-unit id="767af741f02666e2" resname="Mise en ligne">
+        <source>Mise en ligne</source>
+        <target>Mise en ligne</target>
+      </trans-unit>
+      <trans-unit id="42e37604b638b627" resname="Modifier">
+        <source>Modifier</source>
+        <target>Modifier</target>
+      </trans-unit>
+      <trans-unit id="c1d2fc2dbff202b0" resname="Modifier le rôle">
+        <source>Modifier le rôle</source>
+        <target>Modifier le rôle</target>
+      </trans-unit>
+      <trans-unit id="a17b2e080e01c2f6" resname="Modifier ma réponse">
+        <source>Modifier ma réponse</source>
+        <target>Modifier ma réponse</target>
+      </trans-unit>
+      <trans-unit id="0f35567a74899e12" resname="Modifier mon profil">
+        <source>Modifier mon profil</source>
+        <target>Modifier mon profil</target>
+      </trans-unit>
+      <trans-unit id="28f4571f28bd0a25" resname="Mon compte">
+        <source>Mon compte</source>
+        <target>Mon compte</target>
+      </trans-unit>
+      <trans-unit id="35eec26d85a380ec" resname="Mon compte · Espace pro">
+        <source>Mon compte · Espace pro</source>
+        <target>Mon compte · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="d3ff01fd37c89209" resname="Mon espace pro">
+        <source>Mon espace pro</source>
+        <target>Mon espace pro</target>
+      </trans-unit>
+      <trans-unit id="ab451c6b48a79581" resname="Mon profil">
+        <source>Mon profil</source>
+        <target>Mon profil</target>
+      </trans-unit>
+      <trans-unit id="68d2f1070a096cb6" resname="Mon établissement">
+        <source>Mon établissement</source>
+        <target>Mon établissement</target>
+      </trans-unit>
+      <trans-unit id="067bd2b4149c8d84" resname="Montant TTC">
+        <source>Montant TTC</source>
+        <target>Montant TTC</target>
+      </trans-unit>
+      <trans-unit id="c30cf4c8cf34cddb" resname="Montant de la formule">
+        <source>Montant de la formule</source>
+        <target>Montant de la formule</target>
+      </trans-unit>
+      <trans-unit id="e1da5318fcfd884e" resname="Monter {serviceName}">
+        <source>Monter {serviceName}</source>
+        <target>Monter {serviceName}</target>
+      </trans-unit>
+      <trans-unit id="ff9c8b8c0677c3d0" resname="Mot de passe">
+        <source>Mot de passe</source>
+        <target>Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="fec229b8b8478faf" resname="Mot de passe oublié ?">
+        <source>Mot de passe oublié ?</source>
+        <target>Mot de passe oublié ?</target>
+      </trans-unit>
+      <trans-unit id="c89ac8f0d41a87f2" resname="Motif">
+        <source>Motif</source>
+        <target>Motif</target>
+      </trans-unit>
+      <trans-unit id="f591f88614666c87" resname="Motif (envoyé au client)">
+        <source>Motif (envoyé au client)</source>
+        <target>Motif (envoyé au client)</target>
+      </trans-unit>
+      <trans-unit id="69f1cf00849f5402" resname="Motif: {cancellationReason}">
+        <source>Motif: {cancellationReason}</source>
+        <target>Motif: {cancellationReason}</target>
+      </trans-unit>
+      <trans-unit id="34cd9a9507da3aa4" resname="Motif: {reason}">
+        <source>Motif: {reason}</source>
+        <target>Motif: {reason}</target>
+      </trans-unit>
+      <trans-unit id="9724eca5c380db29" resname="Moyens de paiement">
+        <source>Moyens de paiement</source>
+        <target>Moyens de paiement</target>
+      </trans-unit>
+      <trans-unit id="b2c124536d218059" resname="Nom">
+        <source>Nom</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="cc70093327b7085c" resname="Nom affiché aux clients">
+        <source>Nom affiché aux clients</source>
+        <target>Nom affiché aux clients</target>
+      </trans-unit>
+      <trans-unit id="2d40c40efaadd3ee" resname="Nom commercial">
+        <source>Nom commercial</source>
+        <target>Nom commercial</target>
+      </trans-unit>
+      <trans-unit id="a4652b3d959e3e8c" resname="Nom de la prestation">
+        <source>Nom de la prestation</source>
+        <target>Nom de la prestation</target>
+      </trans-unit>
+      <trans-unit id="9ee53de184d9b557" resname="Nom sur les factures">
+        <source>Nom sur les factures</source>
+        <target>Nom sur les factures</target>
+      </trans-unit>
+      <trans-unit id="d539fcf203fb04dd" resname="Nom, e-mail de connexion et mot de passe se modifient depuis votre compte personnel.">
+        <source>Nom, e-mail de connexion et mot de passe se modifient depuis votre compte personnel.</source>
+        <target>Nom, e-mail de connexion et mot de passe se modifient depuis votre compte personnel.</target>
+      </trans-unit>
+      <trans-unit id="bf5693e5d661b3e4" resname="Notre équipe examine votre signalement. L&apos;avis reste visible en attendant.">
+        <source>Notre équipe examine votre signalement. L&apos;avis reste visible en attendant.</source>
+        <target>Notre équipe examine votre signalement. L&apos;avis reste visible en attendant.</target>
+      </trans-unit>
+      <trans-unit id="40fe3de9edb4a298" resname="Nous avons envoyé un code à 6 chiffres à {email}.">
+        <source>Nous avons envoyé un code à 6 chiffres à {email}.</source>
+        <target>Nous avons envoyé un code à 6 chiffres à {email}.</target>
+      </trans-unit>
+      <trans-unit id="71c1bb654be19bbb" resname="Nous vérifions {establishment} avant la mise en ligne. Vous recevrez un e-mail à {email} dès que c&apos;est fait.">
+        <source>Nous vérifions {establishment} avant la mise en ligne. Vous recevrez un e-mail à {email} dès que c&apos;est fait.</source>
+        <target>Nous vérifions {establishment} avant la mise en ligne. Vous recevrez un e-mail à {email} dès que c&apos;est fait.</target>
+      </trans-unit>
+      <trans-unit id="c28db8f6bdeed9e9" resname="Nouvelle période">
+        <source>Nouvelle période</source>
+        <target>Nouvelle période</target>
+      </trans-unit>
+      <trans-unit id="6453d32a180e0f72" resname="Nouvelle tentative le {date}">
+        <source>Nouvelle tentative le {date}</source>
+        <target>Nouvelle tentative le {date}</target>
+      </trans-unit>
+      <trans-unit id="a61794270e4f40c7" resname="Numéro">
+        <source>Numéro</source>
+        <target>Numéro</target>
+      </trans-unit>
+      <trans-unit id="ef3cee33f733935a" resname="Numéro SIRET">
+        <source>Numéro SIRET</source>
+        <target>Numéro SIRET</target>
+      </trans-unit>
+      <trans-unit id="ed36edd1590b5fcd" resname="N° TVA (facultatif)">
+        <source>N° TVA (facultatif)</source>
+        <target>N° TVA (facultatif)</target>
+      </trans-unit>
+      <trans-unit id="b502c79d59166f29" resname="N° TVA intracommunautaire">
+        <source>N° TVA intracommunautaire</source>
+        <target>N° TVA intracommunautaire</target>
+      </trans-unit>
+      <trans-unit id="0e346cd038d1b125" resname="N° de TVA intracommunautaire">
+        <source>N° de TVA intracommunautaire</source>
+        <target>N° de TVA intracommunautaire</target>
+      </trans-unit>
+      <trans-unit id="565339bc4d33d728" resname="OK">
+        <source>OK</source>
+        <target>OK</target>
+      </trans-unit>
+      <trans-unit id="9fb440435a046647" resname="Ouvrir">
+        <source>Ouvrir</source>
+        <target>Ouvrir</target>
+      </trans-unit>
+      <trans-unit id="f187710cca5c1ccf" resname="Ouvrir mon espace">
+        <source>Ouvrir mon espace</source>
+        <target>Ouvrir mon espace</target>
+      </trans-unit>
+      <trans-unit id="1d393b0081b632c5" resname="PDF">
+        <source>PDF</source>
+        <target>PDF</target>
+      </trans-unit>
+      <trans-unit id="ec5d675298c19aef" resname="PU HT">
+        <source>PU HT</source>
+        <target>PU HT</target>
+      </trans-unit>
+      <trans-unit id="6e1a79ba8f84c69f" resname="Page publique · Inscription pro">
+        <source>Page publique · Inscription pro</source>
+        <target>Page publique · Inscription pro</target>
+      </trans-unit>
+      <trans-unit id="2874e7e3508dfaaf" resname="Paiement en cours">
+        <source>Paiement en cours</source>
+        <target>Paiement en cours</target>
+      </trans-unit>
+      <trans-unit id="c6f35a073eeb10b4" resname="Paiement et validation">
+        <source>Paiement et validation</source>
+        <target>Paiement et validation</target>
+      </trans-unit>
+      <trans-unit id="347e3af3af338487" resname="Paiement refusé">
+        <source>Paiement refusé</source>
+        <target>Paiement refusé</target>
+      </trans-unit>
+      <trans-unit id="99a89d55e77781a9" resname="Paiement réussi">
+        <source>Paiement réussi</source>
+        <target>Paiement réussi</target>
+      </trans-unit>
+      <trans-unit id="b3148da92f412c12" resname="Paiement · Espace pro">
+        <source>Paiement · Espace pro</source>
+        <target>Paiement · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="320f5b3cbf602b23" resname="Paiement · Inscription pro">
+        <source>Paiement · Inscription pro</source>
+        <target>Paiement · Inscription pro</target>
+      </trans-unit>
+      <trans-unit id="291b4fc834dc08c6" resname="Par défaut">
+        <source>Par défaut</source>
+        <target>Par défaut</target>
+      </trans-unit>
+      <trans-unit id="08850fd12731921d" resname="Partagez-la à vos clients : ils pourront vous suivre et être prévenus dès qu&apos;un créneau se libère.">
+        <source>Partagez-la à vos clients : ils pourront vous suivre et être prévenus dès qu&apos;un créneau se libère.</source>
+        <target>Partagez-la à vos clients : ils pourront vous suivre et être prévenus dès qu&apos;un créneau se libère.</target>
+      </trans-unit>
+      <trans-unit id="c489b342dcb600c5" resname="Pas encore d&apos;avis. Vos clients pourront en laisser après chaque rendez-vous honoré.">
+        <source>Pas encore d&apos;avis. Vos clients pourront en laisser après chaque rendez-vous honoré.</source>
+        <target>Pas encore d&apos;avis. Vos clients pourront en laisser après chaque rendez-vous honoré.</target>
+      </trans-unit>
+      <trans-unit id="d02101e80f90e1e9" resname="Pas encore d&apos;échange.">
+        <source>Pas encore d&apos;échange.</source>
+        <target>Pas encore d&apos;échange.</target>
+      </trans-unit>
+      <trans-unit id="ea3b1f40ab35bc20" resname="Pas encore de SIRET ?">
+        <source>Pas encore de SIRET ?</source>
+        <target>Pas encore de SIRET ?</target>
+      </trans-unit>
+      <trans-unit id="676d5b0025190b67" resname="Pas encore de photo. Les pages avec photos sont deux fois plus réservées.">
+        <source>Pas encore de photo. Les pages avec photos sont deux fois plus réservées.</source>
+        <target>Pas encore de photo. Les pages avec photos sont deux fois plus réservées.</target>
+      </trans-unit>
+      <trans-unit id="ccac815ae412fe62" resname="Pas encore de réservation sur la période.">
+        <source>Pas encore de réservation sur la période.</source>
+        <target>Pas encore de réservation sur la période.</target>
+      </trans-unit>
+      <trans-unit id="bd4172d7e8eab456" resname="Pas encore de réservation. Elles apparaîtront ici dès qu&apos;un client réserve un créneau.">
+        <source>Pas encore de réservation. Elles apparaîtront ici dès qu&apos;un client réserve un créneau.</source>
+        <target>Pas encore de réservation. Elles apparaîtront ici dès qu&apos;un client réserve un créneau.</target>
+      </trans-unit>
+      <trans-unit id="05659dba050ce82e" resname="Pas encore partenaire ?">
+        <source>Pas encore partenaire ?</source>
+        <target>Pas encore partenaire ?</target>
+      </trans-unit>
+      <trans-unit id="a5493aed9cd831eb" resname="Passage à « {plan} » le {date}.">
+        <source>Passage à « {plan} » le {date}.</source>
+        <target>Passage à « {plan} » le {date}.</target>
+      </trans-unit>
+      <trans-unit id="33bdfd82872eb310" resname="Passer à « {plan} »">
+        <source>Passer à « {plan} »</source>
+        <target>Passer à « {plan} »</target>
+      </trans-unit>
+      <trans-unit id="10c940caf116bb48" resname="Payer avec">
+        <source>Payer avec</source>
+        <target>Payer avec</target>
+      </trans-unit>
+      <trans-unit id="4ade866e608d3ecf" resname="Payer {amount}">
+        <source>Payer {amount}</source>
+        <target>Payer {amount}</target>
+      </trans-unit>
+      <trans-unit id="10d437d8898d0dff" resname="Payer {amount} et changer">
+        <source>Payer {amount} et changer</source>
+        <target>Payer {amount} et changer</target>
+      </trans-unit>
+      <trans-unit id="3ce7a48962e9688d" resname="Peu importe">
+        <source>Peu importe</source>
+        <target>Peu importe</target>
+      </trans-unit>
+      <trans-unit id="031c119ce162f45a" resname="Peut aussi gérer les réservations (planificateur, employé)">
+        <source>Peut aussi gérer les réservations (planificateur, employé)</source>
+        <target>Peut aussi gérer les réservations (planificateur, employé)</target>
+      </trans-unit>
+      <trans-unit id="5e3147ab51e0084c" resname="Photos">
+        <source>Photos</source>
+        <target>Photos</target>
+      </trans-unit>
+      <trans-unit id="9caf6e1885d4599a" resname="Planificateur">
+        <source>Planificateur</source>
+        <target>Planificateur</target>
+      </trans-unit>
+      <trans-unit id="119fd62f212f51e7" resname="Plus que quelques étapes">
+        <source>Plus que quelques étapes</source>
+        <target>Plus que quelques étapes</target>
+      </trans-unit>
+      <trans-unit id="7c54e2a630dca181" resname="Pour modifier le SIRET, contactez l&apos;équipe Kréno.">
+        <source>Pour modifier le SIRET, contactez l&apos;équipe Kréno.</source>
+        <target>Pour modifier le SIRET, contactez l&apos;équipe Kréno.</target>
+      </trans-unit>
+      <trans-unit id="80bc47420a2ce09c" resname="Pourquoi cet avis pose-t-il problème ?">
+        <source>Pourquoi cet avis pose-t-il problème ?</source>
+        <target>Pourquoi cet avis pose-t-il problème ?</target>
+      </trans-unit>
+      <trans-unit id="3aae812c7b07105b" resname="Pourquoi partez-vous ?">
+        <source>Pourquoi partez-vous ?</source>
+        <target>Pourquoi partez-vous ?</target>
+      </trans-unit>
+      <trans-unit id="9f0a143140ab8aa7" resname="Première échéance">
+        <source>Première échéance</source>
+        <target>Première échéance</target>
+      </trans-unit>
+      <trans-unit id="e8af6a99f773b8ae" resname="Prestation">
+        <source>Prestation</source>
+        <target>Prestation</target>
+      </trans-unit>
+      <trans-unit id="aaa59cd97593960d" resname="Prestations">
+        <source>Prestations</source>
+        <target>Prestations</target>
+      </trans-unit>
+      <trans-unit id="6d149df79dd25ac3" resname="Prestations les plus réservées">
+        <source>Prestations les plus réservées</source>
+        <target>Prestations les plus réservées</target>
+      </trans-unit>
+      <trans-unit id="0d8ab28afb44a890" resname="Prestations · Espace pro">
+        <source>Prestations · Espace pro</source>
+        <target>Prestations · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="2ad499cdc467660f" resname="Prestations · Inscription pro">
+        <source>Prestations · Inscription pro</source>
+        <target>Prestations · Inscription pro</target>
+      </trans-unit>
+      <trans-unit id="54c324f6c12fad53" resname="Prix">
+        <source>Prix</source>
+        <target>Prix</target>
+      </trans-unit>
+      <trans-unit id="4f69fc75f1aeba86" resname="Prix Kréno">
+        <source>Prix Kréno</source>
+        <target>Prix Kréno</target>
+      </trans-unit>
+      <trans-unit id="754e6d8abcc50982" resname="Prix habituel">
+        <source>Prix habituel</source>
+        <target>Prix habituel</target>
+      </trans-unit>
+      <trans-unit id="efce525949be5684" resname="Prix habituel (€)">
+        <source>Prix habituel (€)</source>
+        <target>Prix habituel (€)</target>
+      </trans-unit>
+      <trans-unit id="fa7f3503443c24bc" resname="Prix habituel en euros">
+        <source>Prix habituel en euros</source>
+        <target>Prix habituel en euros</target>
+      </trans-unit>
+      <trans-unit id="0c3d8dd1cb2c4d0f" resname="Prix hors taxes. Les clients paient sur place, {site} ne prélève jamais à leur place.">
+        <source>Prix hors taxes. Les clients paient sur place, {site} ne prélève jamais à leur place.</source>
+        <target>Prix hors taxes. Les clients paient sur place, {site} ne prélève jamais à leur place.</target>
+      </trans-unit>
+      <trans-unit id="41148dbcc8d01b88" resname="Prochaine facture">
+        <source>Prochaine facture</source>
+        <target>Prochaine facture</target>
+      </trans-unit>
+      <trans-unit id="8c6a0024dad9f069" resname="Promotion">
+        <source>Promotion</source>
+        <target>Promotion</target>
+      </trans-unit>
+      <trans-unit id="bc5a5dfc78e5a0fe" resname="Propos injurieux, avis sans rapport avec la prestation…">
+        <source>Propos injurieux, avis sans rapport avec la prestation…</source>
+        <target>Propos injurieux, avis sans rapport avec la prestation…</target>
+      </trans-unit>
+      <trans-unit id="696040748fb637a4" resname="Proposée par défaut quand vous publiez un créneau.">
+        <source>Proposée par défaut quand vous publiez un créneau.</source>
+        <target>Proposée par défaut quand vous publiez un créneau.</target>
+      </trans-unit>
+      <trans-unit id="e325bf8f903fa1d4" resname="Prénom">
+        <source>Prénom</source>
+        <target>Prénom</target>
+      </trans-unit>
+      <trans-unit id="9e8bf4c5c3cb0c6b" resname="Présentation">
+        <source>Présentation</source>
+        <target>Présentation</target>
+      </trans-unit>
+      <trans-unit id="06447a42cd3faf12" resname="Présentez votre établissement en deux ou trois phrases.">
+        <source>Présentez votre établissement en deux ou trois phrases.</source>
+        <target>Présentez votre établissement en deux ou trois phrases.</target>
+      </trans-unit>
+      <trans-unit id="83acb619a06c78e6" resname="Prêt à remplir vos trous d&apos;agenda ?">
+        <source>Prêt à remplir vos trous d&apos;agenda ?</source>
+        <target>Prêt à remplir vos trous d&apos;agenda ?</target>
+      </trans-unit>
+      <trans-unit id="4d158456ed6855bb" resname="Publier la réponse">
+        <source>Publier la réponse</source>
+        <target>Publier la réponse</target>
+      </trans-unit>
+      <trans-unit id="7d9075a53c704fe3" resname="Publier un créneau libéré">
+        <source>Publier un créneau libéré</source>
+        <target>Publier un créneau libéré</target>
+      </trans-unit>
+      <trans-unit id="e797930549a74c46" resname="Publier un créneau · Espace pro">
+        <source>Publier un créneau · Espace pro</source>
+        <target>Publier un créneau · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="91a05727a26aee56" resname="Publiez vos créneaux libérés en quelques secondes. {site} prévient les clients du quartier qui cherchent justement ce créneau-là.">
+        <source>Publiez vos créneaux libérés en quelques secondes. {site} prévient les clients du quartier qui cherchent justement ce créneau-là.</source>
+        <target>Publiez vos créneaux libérés en quelques secondes. {site} prévient les clients du quartier qui cherchent justement ce créneau-là.</target>
+      </trans-unit>
+      <trans-unit id="c38ff5182d5039b9" resname="Publiez vos rendez-vous annulés en quelques secondes : {site} prévient les clients du quartier qui cherchent justement ce créneau-là">
+        <source>Publiez vos rendez-vous annulés en quelques secondes : {site} prévient les clients du quartier qui cherchent justement ce créneau-là</source>
+        <target>Publiez vos rendez-vous annulés en quelques secondes : {site} prévient les clients du quartier qui cherchent justement ce créneau-là</target>
+      </trans-unit>
+      <trans-unit id="891e40d5f4cdbb30" resname="Publiés">
+        <source>Publiés</source>
+        <target>Publiés</target>
+      </trans-unit>
+      <trans-unit id="2171009f4e2a3d1c" resname="Période">
+        <source>Période</source>
+        <target>Période</target>
+      </trans-unit>
+      <trans-unit id="3849f9d2a8fa1ded" resname="Qté">
+        <source>Qté</source>
+        <target>Qté</target>
+      </trans-unit>
+      <trans-unit id="9a72221a27476f3e" resname="Questions">
+        <source>Questions</source>
+        <target>Questions</target>
+      </trans-unit>
+      <trans-unit id="928357c592333fea" resname="Questions fréquentes">
+        <source>Questions fréquentes</source>
+        <target>Questions fréquentes</target>
+      </trans-unit>
+      <trans-unit id="06f6d902297a37cc" resname="Qui peut faire quoi ?">
+        <source>Qui peut faire quoi ?</source>
+        <target>Qui peut faire quoi ?</target>
+      </trans-unit>
+      <trans-unit id="d6f8250dd1e4c3b5" resname="Qui peut publier des créneaux, gérer les réservations ou modifier l&apos;établissement.">
+        <source>Qui peut publier des créneaux, gérer les réservations ou modifier l&apos;établissement.</source>
+        <target>Qui peut publier des créneaux, gérer les réservations ou modifier l&apos;établissement.</target>
+      </trans-unit>
+      <trans-unit id="5272b41e9cc706f9" resname="Raison sociale">
+        <source>Raison sociale</source>
+        <target>Raison sociale</target>
+      </trans-unit>
+      <trans-unit id="d216c7258a9260de" resname="Rapidité de réservation selon le moment">
+        <source>Rapidité de réservation selon le moment</source>
+        <target>Rapidité de réservation selon le moment</target>
+      </trans-unit>
+      <trans-unit id="84c3d282d67cf170" resname="Recevoir les conseils mensuels de Kréno">
+        <source>Recevoir les conseils mensuels de Kréno</source>
+        <target>Recevoir les conseils mensuels de Kréno</target>
+      </trans-unit>
+      <trans-unit id="6ce84b7f2ff85492" resname="Recevoir un e-mail à chaque réservation">
+        <source>Recevoir un e-mail à chaque réservation</source>
+        <target>Recevoir un e-mail à chaque réservation</target>
+      </trans-unit>
+      <trans-unit id="733d1c742675f537" resname="Rechercher">
+        <source>Rechercher</source>
+        <target>Rechercher</target>
+      </trans-unit>
+      <trans-unit id="322f151829bd1b52" resname="Reculer la photo">
+        <source>Reculer la photo</source>
+        <target>Reculer la photo</target>
+      </trans-unit>
+      <trans-unit id="1d2bff7fbeda230a" resname="Remboursement">
+        <source>Remboursement</source>
+        <target>Remboursement</target>
+      </trans-unit>
+      <trans-unit id="d596fa4703816f9a" resname="Remise">
+        <source>Remise</source>
+        <target>Remise</target>
+      </trans-unit>
+      <trans-unit id="91fa9cfaa2ab2559" resname="Remise automatique (%)">
+        <source>Remise automatique (%)</source>
+        <target>Remise automatique (%)</target>
+      </trans-unit>
+      <trans-unit id="faf29d76d9fab472" resname="Remise par défaut (%)">
+        <source>Remise par défaut (%)</source>
+        <target>Remise par défaut (%)</target>
+      </trans-unit>
+      <trans-unit id="bba7e4b5cc6aad3f" resname="Remise proposée par défaut sur vos créneaux libérés">
+        <source>Remise proposée par défaut sur vos créneaux libérés</source>
+        <target>Remise proposée par défaut sur vos créneaux libérés</target>
+      </trans-unit>
+      <trans-unit id="a467c49fc6061647" resname="Rendez-vous clos">
+        <source>Rendez-vous clos</source>
+        <target>Rendez-vous clos</target>
+      </trans-unit>
+      <trans-unit id="8fe41566c8423739" resname="Renvoyer un code">
+        <source>Renvoyer un code</source>
+        <target>Renvoyer un code</target>
+      </trans-unit>
+      <trans-unit id="97316b86675e60ae" resname="Republier">
+        <source>Republier</source>
+        <target>Republier</target>
+      </trans-unit>
+      <trans-unit id="62c1aec4ffc86fa0" resname="Responsable">
+        <source>Responsable</source>
+        <target>Responsable</target>
+      </trans-unit>
+      <trans-unit id="451e45bf43604df9" resname="Rester connecté">
+        <source>Rester connecté</source>
+        <target>Rester connecté</target>
+      </trans-unit>
+      <trans-unit id="41e22ed93372748e" resname="Retirer">
+        <source>Retirer</source>
+        <target>Retirer</target>
+      </trans-unit>
+      <trans-unit id="c17dc2b0ce1f2958" resname="Retirer de l&apos;entreprise">
+        <source>Retirer de l&apos;entreprise</source>
+        <target>Retirer de l&apos;entreprise</target>
+      </trans-unit>
+      <trans-unit id="979a9d0fa33acf20" resname="Retirer l&apos;accès de {name} à {establishment} ?">
+        <source>Retirer l&apos;accès de {name} à {establishment} ?</source>
+        <target>Retirer l&apos;accès de {name} à {establishment} ?</target>
+      </trans-unit>
+      <trans-unit id="47590e0b96b22dc5" resname="Retirer l&apos;accès à {establishment}">
+        <source>Retirer l&apos;accès à {establishment}</source>
+        <target>Retirer l&apos;accès à {establishment}</target>
+      </trans-unit>
+      <trans-unit id="d4bc2aa7a45777ee" resname="Retirer la prestation">
+        <source>Retirer la prestation</source>
+        <target>Retirer la prestation</target>
+      </trans-unit>
+      <trans-unit id="2a1c826654b0833b" resname="Retirer le créneau">
+        <source>Retirer le créneau</source>
+        <target>Retirer le créneau</target>
+      </trans-unit>
+      <trans-unit id="0558286e4fef5449" resname="Retirer le créneau de {time} ? Il ne sera plus visible des clients.">
+        <source>Retirer le créneau de {time} ? Il ne sera plus visible des clients.</source>
+        <target>Retirer le créneau de {time} ? Il ne sera plus visible des clients.</target>
+      </trans-unit>
+      <trans-unit id="0aa1242dee0f342f" resname="Retirer {name} de l&apos;entreprise ?">
+        <source>Retirer {name} de l&apos;entreprise ?</source>
+        <target>Retirer {name} de l&apos;entreprise ?</target>
+      </trans-unit>
+      <trans-unit id="22759eaa38aed049" resname="Retour au site client">
+        <source>Retour au site client</source>
+        <target>Retour au site client</target>
+      </trans-unit>
+      <trans-unit id="6a3036aeb4c7661d" resname="Rien reçu ? Regardez dans les indésirables.">
+        <source>Rien reçu ? Regardez dans les indésirables.</source>
+        <target>Rien reçu ? Regardez dans les indésirables.</target>
+      </trans-unit>
+      <trans-unit id="3bf066e8efe14f97" resname="Rien à régler sur ce document.">
+        <source>Rien à régler sur ce document.</source>
+        <target>Rien à régler sur ce document.</target>
+      </trans-unit>
+      <trans-unit id="54d5138b57b9af0d" resname="Règlement">
+        <source>Règlement</source>
+        <target>Règlement</target>
+      </trans-unit>
+      <trans-unit id="0efc2e864fe1820d" resname="Réactiver">
+        <source>Réactiver</source>
+        <target>Réactiver</target>
+      </trans-unit>
+      <trans-unit id="56f79c075b14a4c1" resname="Régler">
+        <source>Régler</source>
+        <target>Régler</target>
+      </trans-unit>
+      <trans-unit id="40b4f83c46a1dc27" resname="Régler maintenant">
+        <source>Régler maintenant</source>
+        <target>Régler maintenant</target>
+      </trans-unit>
+      <trans-unit id="05af80398c58d921" resname="Répondre">
+        <source>Répondre</source>
+        <target>Répondre</target>
+      </trans-unit>
+      <trans-unit id="b40fcf1666a3db75" resname="Réponse attendue sous {replyRemaining}">
+        <source>Réponse attendue sous {replyRemaining}</source>
+        <target>Réponse attendue sous {replyRemaining}</target>
+      </trans-unit>
+      <trans-unit id="1571733f30d594a3" resname="Réponse attendue sous {replyRemaining}. Sans réponse, l&apos;équipe Kréno décide sur la base du signalement.">
+        <source>Réponse attendue sous {replyRemaining}. Sans réponse, l&apos;équipe Kréno décide sur la base du signalement.</source>
+        <target>Réponse attendue sous {replyRemaining}. Sans réponse, l&apos;équipe Kréno décide sur la base du signalement.</target>
+      </trans-unit>
+      <trans-unit id="007fbf3c0e6aa25f" resname="Réservation">
+        <source>Réservation</source>
+        <target>Réservation</target>
+      </trans-unit>
+      <trans-unit id="2d3e212d7a8dcc83" resname="Réservation {reference}">
+        <source>Réservation {reference}</source>
+        <target>Réservation {reference}</target>
+      </trans-unit>
+      <trans-unit id="00048a64e2ee491b" resname="Réservation {reference} · Espace pro">
+        <source>Réservation {reference} · Espace pro</source>
+        <target>Réservation {reference} · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="9cc256a335fba0a8" resname="Réservations">
+        <source>Réservations</source>
+        <target>Réservations</target>
+      </trans-unit>
+      <trans-unit id="77c4dd6c510e949d" resname="Réservations · Espace pro">
+        <source>Réservations · Espace pro</source>
+        <target>Réservations · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="f5385c96e084e0ba" resname="Réservés">
+        <source>Réservés</source>
+        <target>Réservés</target>
+      </trans-unit>
+      <trans-unit id="de6ba2ae76113955" resname="Résiliation programmée : la formule s&apos;arrête le {date}.">
+        <source>Résiliation programmée : la formule s&apos;arrête le {date}.</source>
+        <target>Résiliation programmée : la formule s&apos;arrête le {date}.</target>
+      </trans-unit>
+      <trans-unit id="1f30f6df010e68c2" resname="Résilier">
+        <source>Résilier</source>
+        <target>Résilier</target>
+      </trans-unit>
+      <trans-unit id="70fe4210b929fe9a" resname="Résilier ma formule">
+        <source>Résilier ma formule</source>
+        <target>Résilier ma formule</target>
+      </trans-unit>
+      <trans-unit id="a8f3afcb3b9adaf7" resname="Résilier « {plan} »">
+        <source>Résilier « {plan} »</source>
+        <target>Résilier « {plan} »</target>
+      </trans-unit>
+      <trans-unit id="3b4683046090a88e" resname="Résilier · Espace pro">
+        <source>Résilier · Espace pro</source>
+        <target>Résilier · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="a1fc967c55879693" resname="Rôle">
+        <source>Rôle</source>
+        <target>Rôle</target>
+      </trans-unit>
+      <trans-unit id="f8f87159fcb3a6a0" resname="SIREN">
+        <source>SIREN</source>
+        <target>SIREN</target>
+      </trans-unit>
+      <trans-unit id="6c5eb7f5a34a29bb" resname="SIREN {siren}">
+        <source>SIREN {siren}</source>
+        <target>SIREN {siren}</target>
+      </trans-unit>
+      <trans-unit id="a91b5f1cd9446cf2" resname="SIRET">
+        <source>SIRET</source>
+        <target>SIRET</target>
+      </trans-unit>
+      <trans-unit id="b4598b94cf29d69e" resname="Sans engagement. Changez de formule quand vous voulez.">
+        <source>Sans engagement. Changez de formule quand vous voulez.</source>
+        <target>Sans engagement. Changez de formule quand vous voulez.</target>
+      </trans-unit>
+      <trans-unit id="51063121cadb8240" resname="Sans règlement avant le {date}, vos créneaux ne sont plus publiés.">
+        <source>Sans règlement avant le {date}, vos créneaux ne sont plus publiés.</source>
+        <target>Sans règlement avant le {date}, vos créneaux ne sont plus publiés.</target>
+      </trans-unit>
+      <trans-unit id="0ac3d2cb30052ced" resname="Se connecter">
+        <source>Se connecter</source>
+        <target>Se connecter</target>
+      </trans-unit>
+      <trans-unit id="689cf427250c7240" resname="Seuls les clients venus à leur rendez-vous peuvent laisser un avis. Une réponse courtoise rassure vos futurs clients.">
+        <source>Seuls les clients venus à leur rendez-vous peuvent laisser un avis. Une réponse courtoise rassure vos futurs clients.</source>
+        <target>Seuls les clients venus à leur rendez-vous peuvent laisser un avis. Une réponse courtoise rassure vos futurs clients.</target>
+      </trans-unit>
+      <trans-unit id="3c7bb149b7f56b79" resname="Signalement clos">
+        <source>Signalement clos</source>
+        <target>Signalement clos</target>
+      </trans-unit>
+      <trans-unit id="aef3437acc7ea402" resname="Signalement {reference} · Espace pro">
+        <source>Signalement {reference} · Espace pro</source>
+        <target>Signalement {reference} · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="a9b5a3f2e7534efd" resname="Signalements">
+        <source>Signalements</source>
+        <target>Signalements</target>
+      </trans-unit>
+      <trans-unit id="c3b8079e7137a198" resname="Signalements · Espace pro">
+        <source>Signalements · Espace pro</source>
+        <target>Signalements · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="537b15538beeb883" resname="Signaler">
+        <source>Signaler</source>
+        <target>Signaler</target>
+      </trans-unit>
+      <trans-unit id="56709edd591b3247" resname="Signaler un problème avec un client">
+        <source>Signaler un problème avec un client</source>
+        <target>Signaler un problème avec un client</target>
+      </trans-unit>
+      <trans-unit id="eca85827a8d517ac" resname="Site web">
+        <source>Site web</source>
+        <target>Site web</target>
+      </trans-unit>
+      <trans-unit id="ddd798cdc3ce24e4" resname="Son établissement">
+        <source>Son établissement</source>
+        <target>Son établissement</target>
+      </trans-unit>
+      <trans-unit id="de2151f9fcb976a7" resname="Statistiques">
+        <source>Statistiques</source>
+        <target>Statistiques</target>
+      </trans-unit>
+      <trans-unit id="425388e91d3ac964" resname="Statistiques détaillées">
+        <source>Statistiques détaillées</source>
+        <target>Statistiques détaillées</target>
+      </trans-unit>
+      <trans-unit id="a5f4a38cad4456a8" resname="Statistiques · Espace pro">
+        <source>Statistiques · Espace pro</source>
+        <target>Statistiques · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="dee377cfd8cddfb8" resname="Statut">
+        <source>Statut</source>
+        <target>Statut</target>
+      </trans-unit>
+      <trans-unit id="16c1d601fc669504" resname="Suggestions">
+        <source>Suggestions</source>
+        <target>Suggestions</target>
+      </trans-unit>
+      <trans-unit id="5e5d0216ce0b5b9e" resname="Supprimer">
+        <source>Supprimer</source>
+        <target>Supprimer</target>
+      </trans-unit>
+      <trans-unit id="d09de7146642b314" resname="Supprimer cette photo ?">
+        <source>Supprimer cette photo ?</source>
+        <target>Supprimer cette photo ?</target>
+      </trans-unit>
+      <trans-unit id="e73dee541c526251" resname="Supprimer la photo">
+        <source>Supprimer la photo</source>
+        <target>Supprimer la photo</target>
+      </trans-unit>
+      <trans-unit id="d1d160c22a10fa87" resname="Supprimer {label}">
+        <source>Supprimer {label}</source>
+        <target>Supprimer {label}</target>
+      </trans-unit>
+      <trans-unit id="7794971bce929fa4" resname="Supprimer {label} ?">
+        <source>Supprimer {label} ?</source>
+        <target>Supprimer {label} ?</target>
+      </trans-unit>
+      <trans-unit id="9fb5e00f3c6d3e18" resname="Supprimer « {serviceName} » ? Si elle a déjà des créneaux, elle sera seulement désactivée.">
+        <source>Supprimer « {serviceName} » ? Si elle a déjà des créneaux, elle sera seulement désactivée.</source>
+        <target>Supprimer « {serviceName} » ? Si elle a déjà des créneaux, elle sera seulement désactivée.</target>
+      </trans-unit>
+      <trans-unit id="b7a8fe5dba281081" resname="Sur option">
+        <source>Sur option</source>
+        <target>Sur option</target>
+      </trans-unit>
+      <trans-unit id="545aa45089029d8a" resname="TVA {vat}">
+        <source>TVA {vat}</source>
+        <target>TVA {vat}</target>
+      </trans-unit>
+      <trans-unit id="094324c646c89855" resname="Tableau de bord · Espace pro">
+        <source>Tableau de bord · Espace pro</source>
+        <target>Tableau de bord · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="09d23a2f0211e24c" resname="Tarif">
+        <source>Tarif</source>
+        <target>Tarif</target>
+      </trans-unit>
+      <trans-unit id="fb30ae8c285e3b5f" resname="Tarifs">
+        <source>Tarifs</source>
+        <target>Tarifs</target>
+      </trans-unit>
+      <trans-unit id="2f36b8f612950a41" resname="Titulaire">
+        <source>Titulaire</source>
+        <target>Titulaire</target>
+      </trans-unit>
+      <trans-unit id="f1587f7b08731bfb" resname="Total HT">
+        <source>Total HT</source>
+        <target>Total HT</target>
+      </trans-unit>
+      <trans-unit id="7324c65710823973" resname="Total TTC">
+        <source>Total TTC</source>
+        <target>Total TTC</target>
+      </trans-unit>
+      <trans-unit id="a46df375a5270eec" resname="Tous les établissements">
+        <source>Tous les établissements</source>
+        <target>Tous les établissements</target>
+      </trans-unit>
+      <trans-unit id="59b309664eac2752" resname="Tous mes créneaux">
+        <source>Tous mes créneaux</source>
+        <target>Tous mes créneaux</target>
+      </trans-unit>
+      <trans-unit id="a0530ebbc6b0c8ac" resname="Tout est prêt">
+        <source>Tout est prêt</source>
+        <target>Tout est prêt</target>
+      </trans-unit>
+      <trans-unit id="135621945dd17f0e" resname="Trois gestes, pas un de plus">
+        <source>Trois gestes, pas un de plus</source>
+        <target>Trois gestes, pas un de plus</target>
+      </trans-unit>
+      <trans-unit id="613e3ab6f2e4b522" resname="Trouvé dans le registre public des entreprises">
+        <source>Trouvé dans le registre public des entreprises</source>
+        <target>Trouvé dans le registre public des entreprises</target>
+      </trans-unit>
+      <trans-unit id="341fbb2ae02e2e65" resname="Type de signalement">
+        <source>Type de signalement</source>
+        <target>Type de signalement</target>
+      </trans-unit>
+      <trans-unit id="e5b8f6463a32ee0c" resname="Télécharger le PDF">
+        <source>Télécharger le PDF</source>
+        <target>Télécharger le PDF</target>
+      </trans-unit>
+      <trans-unit id="cc4c424b571fc354" resname="Téléphone">
+        <source>Téléphone</source>
+        <target>Téléphone</target>
+      </trans-unit>
+      <trans-unit id="19a16c512f8a8923" resname="Téléphone de l&apos;établissement">
+        <source>Téléphone de l&apos;établissement</source>
+        <target>Téléphone de l&apos;établissement</target>
+      </trans-unit>
+      <trans-unit id="7bffcadc148dd200" resname="Téléphone portable">
+        <source>Téléphone portable</source>
+        <target>Téléphone portable</target>
+      </trans-unit>
+      <trans-unit id="9dd329fde07f017d" resname="Un autre arrive.">
+        <source>Un autre arrive.</source>
+        <target>Un autre arrive.</target>
+      </trans-unit>
+      <trans-unit id="8d9619531d67fc6d" resname="Un client annule.">
+        <source>Un client annule.</source>
+        <target>Un client annule.</target>
+      </trans-unit>
+      <trans-unit id="91f85e77b015ef33" resname="Un commentaire (facultatif)">
+        <source>Un commentaire (facultatif)</source>
+        <target>Un commentaire (facultatif)</target>
+      </trans-unit>
+      <trans-unit id="2375f698d585f3e1" resname="Un document vous sera peut-être demandé (Kbis ou avis de situation INSEE).">
+        <source>Un document vous sera peut-être demandé (Kbis ou avis de situation INSEE).</source>
+        <target>Un document vous sera peut-être demandé (Kbis ou avis de situation INSEE).</target>
+      </trans-unit>
+      <trans-unit id="7e71ca0dabb75455" resname="Un problème avec un client, ou un signalement d&apos;un client sur votre établissement.">
+        <source>Un problème avec un client, ou un signalement d&apos;un client sur votre établissement.</source>
+        <target>Un problème avec un client, ou un signalement d&apos;un client sur votre établissement.</target>
+      </trans-unit>
+      <trans-unit id="26b1e4fc593a997d" resname="Une absence est signalée à Kréno et peut suspendre le compte du client.">
+        <source>Une absence est signalée à Kréno et peut suspendre le compte du client.</source>
+        <target>Une absence est signalée à Kréno et peut suspendre le compte du client.</target>
+      </trans-unit>
+      <trans-unit id="bec093ce99b8deea" resname="Une question ? Écrivez à {contactEmail}.">
+        <source>Une question ? Écrivez à {contactEmail}.</source>
+        <target>Une question ? Écrivez à {contactEmail}.</target>
+      </trans-unit>
+      <trans-unit id="6946b3ef7c69ffc9" resname="Utiliser ce moyen par défaut">
+        <source>Utiliser ce moyen par défaut</source>
+        <target>Utiliser ce moyen par défaut</target>
+      </trans-unit>
+      <trans-unit id="cb40af6d1ac3f8da" resname="Utiliser par défaut">
+        <source>Utiliser par défaut</source>
+        <target>Utiliser par défaut</target>
+      </trans-unit>
+      <trans-unit id="1b92f94fd97ec677" resname="Validation bancaire requise">
+        <source>Validation bancaire requise</source>
+        <target>Validation bancaire requise</target>
+      </trans-unit>
+      <trans-unit id="6609f4f2f33c1ac9" resname="Valider avec ma banque">
+        <source>Valider avec ma banque</source>
+        <target>Valider avec ma banque</target>
+      </trans-unit>
+      <trans-unit id="9eb6a726c619255e" resname="Vide : remise par défaut de l&apos;établissement.">
+        <source>Vide : remise par défaut de l&apos;établissement.</source>
+        <target>Vide : remise par défaut de l&apos;établissement.</target>
+      </trans-unit>
+      <trans-unit id="0ebd25a341eadf08" resname="Ville">
+        <source>Ville</source>
+        <target>Ville</target>
+      </trans-unit>
+      <trans-unit id="8bb53eb47e9395b9" resname="Ville Kréno">
+        <source>Ville Kréno</source>
+        <target>Ville Kréno</target>
+      </trans-unit>
+      <trans-unit id="ef6a357661cd2028" resname="Ville affichée">
+        <source>Ville affichée</source>
+        <target>Ville affichée</target>
+      </trans-unit>
+      <trans-unit id="e7cd9ae88fa2df84" resname="Visible jusqu&apos;à {expires}. Vous gagnez {earn} au lieu de 0 € sur ce créneau vide.">
+        <source>Visible jusqu&apos;à {expires}. Vous gagnez {earn} au lieu de 0 € sur ce créneau vide.</source>
+        <target>Visible jusqu&apos;à {expires}. Vous gagnez {earn} au lieu de 0 € sur ce créneau vide.</target>
+      </trans-unit>
+      <trans-unit id="4a1e847ec470eb43" resname="Voir">
+        <source>Voir</source>
+        <target>Voir</target>
+      </trans-unit>
+      <trans-unit id="eae3d62f6dd5235d" resname="Voir l&apos;abonnement">
+        <source>Voir l&apos;abonnement</source>
+        <target>Voir l&apos;abonnement</target>
+      </trans-unit>
+      <trans-unit id="66a0a99e2d683205" resname="Voir la facture">
+        <source>Voir la facture</source>
+        <target>Voir la facture</target>
+      </trans-unit>
+      <trans-unit id="e2a1b50c3557b8e8" resname="Voir les avis">
+        <source>Voir les avis</source>
+        <target>Voir les avis</target>
+      </trans-unit>
+      <trans-unit id="4ff9e32d6898f922" resname="Voir les formules">
+        <source>Voir les formules</source>
+        <target>Voir les formules</target>
+      </trans-unit>
+      <trans-unit id="b349373bcde82c5e" resname="Voir ma page publique">
+        <source>Voir ma page publique</source>
+        <target>Voir ma page publique</target>
+      </trans-unit>
+      <trans-unit id="104abdb25500f966" resname="Voir mes créneaux">
+        <source>Voir mes créneaux</source>
+        <target>Voir mes créneaux</target>
+      </trans-unit>
+      <trans-unit id="7d1696ed45f4c0f2" resname="Vos créneaux deviennent visibles des clients du quartier.">
+        <source>Vos créneaux deviennent visibles des clients du quartier.</source>
+        <target>Vos créneaux deviennent visibles des clients du quartier.</target>
+      </trans-unit>
+      <trans-unit id="c59c257d3c43392f" resname="Vos créneaux ne sont plus publiés">
+        <source>Vos créneaux ne sont plus publiés</source>
+        <target>Vos créneaux ne sont plus publiés</target>
+      </trans-unit>
+      <trans-unit id="17fa4b0a56fe1089" resname="Votre banque demande une confirmation (3D Secure) pour ce paiement.">
+        <source>Votre banque demande une confirmation (3D Secure) pour ce paiement.</source>
+        <target>Votre banque demande une confirmation (3D Secure) pour ce paiement.</target>
+      </trans-unit>
+      <trans-unit id="abb3ce3d2143939e" resname="Votre compte · Inscription pro">
+        <source>Votre compte · Inscription pro</source>
+        <target>Votre compte · Inscription pro</target>
+      </trans-unit>
+      <trans-unit id="a1c664cc3dd5c3ff" resname="Votre créneau de 14 h 30 est en ligne.">
+        <source>Votre créneau de 14 h 30 est en ligne.</source>
+        <target>Votre créneau de 14 h 30 est en ligne.</target>
+      </trans-unit>
+      <trans-unit id="0b86b285cd127714" resname="Votre créneau de 16 h a trouvé preneur.">
+        <source>Votre créneau de 16 h a trouvé preneur.</source>
+        <target>Votre créneau de 16 h a trouvé preneur.</target>
+      </trans-unit>
+      <trans-unit id="eb9d2c523494404c" resname="Votre formule">
+        <source>Votre formule</source>
+        <target>Votre formule</target>
+      </trans-unit>
+      <trans-unit id="f6798de039b79cb9" resname="Votre moyen de paiement est enregistré.">
+        <source>Votre moyen de paiement est enregistré.</source>
+        <target>Votre moyen de paiement est enregistré.</target>
+      </trans-unit>
+      <trans-unit id="20d88bd2db4c2b22" resname="Votre page est en ligne">
+        <source>Votre page est en ligne</source>
+        <target>Votre page est en ligne</target>
+      </trans-unit>
+      <trans-unit id="63a8814c6de3583e" resname="Votre page publique">
+        <source>Votre page publique</source>
+        <target>Votre page publique</target>
+      </trans-unit>
+      <trans-unit id="9523d91fa013557b" resname="Votre réponse">
+        <source>Votre réponse</source>
+        <target>Votre réponse</target>
+      </trans-unit>
+      <trans-unit id="43ac66912e6a4aad" resname="Votre réponse publique">
+        <source>Votre réponse publique</source>
+        <target>Votre réponse publique</target>
+      </trans-unit>
+      <trans-unit id="21131930b3126eee" resname="Votre rôle ne permet pas d&apos;inviter.">
+        <source>Votre rôle ne permet pas d&apos;inviter.</source>
+        <target>Votre rôle ne permet pas d&apos;inviter.</target>
+      </trans-unit>
+      <trans-unit id="0c9c1c658cc02d34" resname="Votre signalement : {reportReason}">
+        <source>Votre signalement : {reportReason}</source>
+        <target>Votre signalement : {reportReason}</target>
+      </trans-unit>
+      <trans-unit id="3373b441a325fcc0" resname="Votre établissement">
+        <source>Votre établissement</source>
+        <target>Votre établissement</target>
+      </trans-unit>
+      <trans-unit id="08b2b1b8a216d041" resname="Votre établissement a été regusé: {rejectionReason}">
+        <source>Votre établissement a été regusé: {rejectionReason}</source>
+        <target>Votre établissement a été regusé: {rejectionReason}</target>
+      </trans-unit>
+      <trans-unit id="875212154e27e453" resname="Vous gardez">
+        <source>Vous gardez</source>
+        <target>Vous gardez</target>
+      </trans-unit>
+      <trans-unit id="94fffd015691b30f" resname="Vous n&apos;avez encoyé aucun signalement">
+        <source>Vous n&apos;avez encoyé aucun signalement</source>
+        <target>Vous n&apos;avez encoyé aucun signalement</target>
+      </trans-unit>
+      <trans-unit id="843e4b5e19369698" resname="Vous n&apos;avez pas encore reçu d&apos;avis.">
+        <source>Vous n&apos;avez pas encore reçu d&apos;avis.</source>
+        <target>Vous n&apos;avez pas encore reçu d&apos;avis.</target>
+      </trans-unit>
+      <trans-unit id="33be3d195d3df018" resname="Vous perdez">
+        <source>Vous perdez</source>
+        <target>Vous perdez</target>
+      </trans-unit>
+      <trans-unit id="d05e01beff3fe254" resname="Vous pourrez changer de formule à tout moment depuis votre espace.">
+        <source>Vous pourrez changer de formule à tout moment depuis votre espace.</source>
+        <target>Vous pourrez changer de formule à tout moment depuis votre espace.</target>
+      </trans-unit>
+      <trans-unit id="23efdf5f8d91af3e" resname="Vous pourrez indiquer si le client est venu à partir de l&apos;heure du rendez-vous.">
+        <source>Vous pourrez indiquer si le client est venu à partir de l&apos;heure du rendez-vous.</source>
+        <target>Vous pourrez indiquer si le client est venu à partir de l&apos;heure du rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="d9b7e70991bea651" resname="Vous pouvez préparer vos créneaux, ils seront publiés à la validation.">
+        <source>Vous pouvez préparer vos créneaux, ils seront publiés à la validation.</source>
+        <target>Vous pouvez préparer vos créneaux, ils seront publiés à la validation.</target>
+      </trans-unit>
+      <trans-unit id="020fe7adbe1b70bb" resname="Vous êtes">
+        <source>Vous êtes</source>
+        <target>Vous êtes</target>
+      </trans-unit>
+      <trans-unit id="070758e4466cf8d7" resname="Vous êtes client ? Connexion client">
+        <source>Vous êtes client ? Connexion client</source>
+        <target>Vous êtes client ? Connexion client</target>
+      </trans-unit>
+      <trans-unit id="1fd65a6769e9947f" resname="Vous êtes connecté {email} : votre mot de passe actuel reste inchangé.">
+        <source>Vous êtes connecté {email} : votre mot de passe actuel reste inchangé.</source>
+        <target>Vous êtes connecté {email} : votre mot de passe actuel reste inchangé.</target>
+      </trans-unit>
+      <trans-unit id="ef94becd499ecdd7" resname="Vérification par l&apos;équipe">
+        <source>Vérification par l&apos;équipe</source>
+        <target>Vérification par l&apos;équipe</target>
+      </trans-unit>
+      <trans-unit id="0d620a1566ec1f0a" resname="Vérification · Inscription pro">
+        <source>Vérification · Inscription pro</source>
+        <target>Vérification · Inscription pro</target>
+      </trans-unit>
+      <trans-unit id="abe1a6f6656ab753" resname="Vérifier et continuer">
+        <source>Vérifier et continuer</source>
+        <target>Vérifier et continuer</target>
+      </trans-unit>
+      <trans-unit id="317e7cc6bd788cfb" resname="Vérifiez votre e-mail">
+        <source>Vérifiez votre e-mail</source>
+        <target>Vérifiez votre e-mail</target>
+      </trans-unit>
+      <trans-unit id="1fb2adfd3fac34dc" resname="avec {name}">
+        <source>avec {name}</source>
+        <target>avec {name}</target>
+      </trans-unit>
+      <trans-unit id="154544132179d0c1" resname="conditions générales de vente pro">
+        <source>conditions générales de vente pro</source>
+        <target>conditions générales de vente pro</target>
+      </trans-unit>
+      <trans-unit id="9b76f5ec820bb841" resname="expire le {date}">
+        <source>expire le {date}</source>
+        <target>expire le {date}</target>
+      </trans-unit>
+      <trans-unit id="c5bda12f7cb60b9a" resname="jusqu&apos;au {date}">
+        <source>jusqu&apos;au {date}</source>
+        <target>jusqu&apos;au {date}</target>
+      </trans-unit>
+      <trans-unit id="0750fda88af1bbe0" resname="jusqu&apos;à {imagesMax}, la première sert de couverture">
+        <source>jusqu&apos;à {imagesMax}, la première sert de couverture</source>
+        <target>jusqu&apos;à {imagesMax}, la première sert de couverture</target>
+      </trans-unit>
+      <trans-unit id="b555ebc780d1246e" resname="prenom@exemple.fr">
+        <source>prenom@exemple.fr</source>
+        <target>prenom@exemple.fr</target>
+      </trans-unit>
+      <trans-unit id="33cae8922c8a5d88" resname="réservations">
+        <source>réservations</source>
+        <target>réservations</target>
+      </trans-unit>
+      <trans-unit id="39c99c895e784b47" resname="soit {amount}">
+        <source>soit {amount}</source>
+        <target>soit {amount}</target>
+      </trans-unit>
+      <trans-unit id="83454c3dd27523ec" resname="transmis au client après réservation">
+        <source>transmis au client après réservation</source>
+        <target>transmis au client après réservation</target>
+      </trans-unit>
+      <trans-unit id="21c7fafbce932776" resname="{amount} TTC">
+        <source>{amount} TTC</source>
+        <target>{amount} TTC</target>
+      </trans-unit>
+      <trans-unit id="cd5330a0897852ad" resname="{amount} TTC (au prorata)">
+        <source>{amount} TTC (au prorata)</source>
+        <target>{amount} TTC (au prorata)</target>
+      </trans-unit>
+      <trans-unit id="4fef2ddb29b389b9" resname="{amount} le {date}">
+        <source>{amount} le {date}</source>
+        <target>{amount} le {date}</target>
+      </trans-unit>
+      <trans-unit id="55a7c70e5642387c" resname="{company} · votre formule reste active jusqu&apos;au {date}.">
+        <source>{company} · votre formule reste active jusqu&apos;au {date}.</source>
+        <target>{company} · votre formule reste active jusqu&apos;au {date}.</target>
+      </trans-unit>
+      <trans-unit id="cd80df2523c3d8b1" resname="{count, plural, one {# abonné} other {# abonnés}}">
+        <source>{count, plural, one {# abonné} other {# abonnés}}</source>
+        <target>{count, plural, one {# abonné} other {# abonnés}}</target>
+      </trans-unit>
+      <trans-unit id="384d4a9cb313c1c3" resname="{count, plural, one {# membre} other {# membres}}">
+        <source>{count, plural, one {# membre} other {# membres}}</source>
+        <target>{count, plural, one {# membre} other {# membres}}</target>
+      </trans-unit>
+      <trans-unit id="b6b07ee0b07e414d" resname="{count, plural, one {# établissement facturable. Le changement vers un abonnement est immédiat, au prorata.} other {# établissements facturables. Le changement vers un abonnement est immédiat, au prorata.}}">
+        <source>{count, plural, one {# établissement facturable. Le changement vers un abonnement est immédiat, au prorata.} other {# établissements facturables. Le changement vers un abonnement est immédiat, au prorata.}}</source>
+        <target>{count, plural, one {# établissement facturable. Le changement vers un abonnement est immédiat, au prorata.} other {# établissements facturables. Le changement vers un abonnement est immédiat, au prorata.}}</target>
+      </trans-unit>
+      <trans-unit id="7e07a634e5b995a0" resname="{count, plural, one {# établissement ne sera pas couvert par cette formule et sera facturé à la réservation.} other {# établissements ne seront pas couverts par cette formule et seront facturés à la réservation.}}">
+        <source>{count, plural, one {# établissement ne sera pas couvert par cette formule et sera facturé à la réservation.} other {# établissements ne seront pas couverts par cette formule et seront facturés à la réservation.}}</source>
+        <target>{count, plural, one {# établissement ne sera pas couvert par cette formule et sera facturé à la réservation.} other {# établissements ne seront pas couverts par cette formule et seront facturés à la réservation.}}</target>
+      </trans-unit>
+      <trans-unit id="33823d1ca655ba86" resname="{count, plural, one {# établissement} other {# établissements}}">
+        <source>{count, plural, one {# établissement} other {# établissements}}</source>
+        <target>{count, plural, one {# établissement} other {# établissements}}</target>
+      </trans-unit>
+      <trans-unit id="b85a19e2822c97b1" resname="{count, plural, one {Créneaux à venir et ceux du dernier jour.} other {Créneaux à venir et ceux des # derniers jours.}}">
+        <source>{count, plural, one {Créneaux à venir et ceux du dernier jour.} other {Créneaux à venir et ceux des # derniers jours.}}</source>
+        <target>{count, plural, one {Créneaux à venir et ceux du dernier jour.} other {Créneaux à venir et ceux des # derniers jours.}}</target>
+      </trans-unit>
+      <trans-unit id="ee98b7476b196487" resname="{count, plural, one {Votre entreprise compte # établissement : vérifiez le nombre inclus dans la formule.} other {Votre entreprise compte # établissements : vérifiez le nombre inclus dans la formule.}}">
+        <source>{count, plural, one {Votre entreprise compte # établissement : vérifiez le nombre inclus dans la formule.} other {Votre entreprise compte # établissements : vérifiez le nombre inclus dans la formule.}}</source>
+        <target>{count, plural, one {Votre entreprise compte # établissement : vérifiez le nombre inclus dans la formule.} other {Votre entreprise compte # établissements : vérifiez le nombre inclus dans la formule.}}</target>
+      </trans-unit>
+      <trans-unit id="3a33f0953bb46951" resname="{count} hors formule">
+        <source>{count} hors formule</source>
+        <target>{count} hors formule</target>
+      </trans-unit>
+      <trans-unit id="cf2ce978e24099f4" resname="{day}, fermeture {index}">
+        <source>{day}, fermeture {index}</source>
+        <target>{day}, fermeture {index}</target>
+      </trans-unit>
+      <trans-unit id="d81135f356f91706" resname="{day}, ouverture {index}">
+        <source>{day}, ouverture {index}</source>
+        <target>{day}, ouverture {index}</target>
+      </trans-unit>
+      <trans-unit id="686df018a94937a3" resname="{done} sur {total}">
+        <source>{done} sur {total}</source>
+        <target>{done} sur {total}</target>
+      </trans-unit>
+      <trans-unit id="ce794569e740cb5c" resname="{hours} h avant">
+        <source>{hours} h avant</source>
+        <target>{hours} h avant</target>
+      </trans-unit>
+      <trans-unit id="5ea682570fb22a49" resname="{hours} h {minutes} min avant">
+        <source>{hours} h {minutes} min avant</source>
+        <target>{hours} h {minutes} min avant</target>
+      </trans-unit>
+      <trans-unit id="0cf3012fc502af3f" resname="{minutes} min avant">
+        <source>{minutes} min avant</source>
+        <target>{minutes} min avant</target>
+      </trans-unit>
+      <trans-unit id="23e0fa5c383e6a28" resname="{site} Pro : remplissez vos créneaux annulés">
+        <source>{site} Pro : remplissez vos créneaux annulés</source>
+        <target>{site} Pro : remplissez vos créneaux annulés</target>
+      </trans-unit>
+      <trans-unit id="edc247de626399e5" resname="{trialDays} jours d&apos;essai">
+        <source>{trialDays} jours d&apos;essai</source>
+        <target>{trialDays} jours d&apos;essai</target>
+      </trans-unit>
+      <trans-unit id="61472a40577cd887" resname="{unanswered} sans réponse">
+        <source>{unanswered} sans réponse</source>
+        <target>{unanswered} sans réponse</target>
+      </trans-unit>
+      <trans-unit id="c802bed58639a27c" resname="· facture {number}">
+        <source>· facture {number}</source>
+        <target>· facture {number}</target>
+      </trans-unit>
+      <trans-unit id="e82b36ce42ea91b6" resname="· géré par {manager}">
+        <source>· géré par {manager}</source>
+        <target>· géré par {manager}</target>
+      </trans-unit>
+      <trans-unit id="7a9e4a1d18967621" resname="· remise auto {discountLabel}">
+        <source>· remise auto {discountLabel}</source>
+        <target>· remise auto {discountLabel}</target>
+      </trans-unit>
+      <trans-unit id="d914b392f9a8b8d5" resname="· soit {monthlyEquivalent}">
+        <source>· soit {monthlyEquivalent}</source>
+        <target>· soit {monthlyEquivalent}</target>
+      </trans-unit>
+      <trans-unit id="f276559a9615f3d7" resname="À encaisser">
+        <source>À encaisser</source>
+        <target>À encaisser</target>
+      </trans-unit>
+      <trans-unit id="78f1da7a4030c393" resname="À partir du">
+        <source>À partir du</source>
+        <target>À partir du</target>
+      </trans-unit>
+      <trans-unit id="2a88e124603e9ea0" resname="À payer aujourd&apos;hui">
+        <source>À payer aujourd&apos;hui</source>
+        <target>À payer aujourd&apos;hui</target>
+      </trans-unit>
+      <trans-unit id="2c101793589107e4" resname="Échanges">
+        <source>Échanges</source>
+        <target>Échanges</target>
+      </trans-unit>
+      <trans-unit id="394c9623432421e4" resname="Échéance">
+        <source>Échéance</source>
+        <target>Échéance</target>
+      </trans-unit>
+      <trans-unit id="82a1e6f7f269a04d" resname="Émetteur">
+        <source>Émetteur</source>
+        <target>Émetteur</target>
+      </trans-unit>
+      <trans-unit id="4af42e8cb4ec03ec" resname="Équipe">
+        <source>Équipe</source>
+        <target>Équipe</target>
+      </trans-unit>
+      <trans-unit id="cdb8f2430ea6ab15" resname="Équipe · Espace pro">
+        <source>Équipe · Espace pro</source>
+        <target>Équipe · Espace pro</target>
+      </trans-unit>
+      <trans-unit id="60873c3ae14aed61" resname="Établissement">
+        <source>Établissement</source>
+        <target>Établissement</target>
+      </trans-unit>
+      <trans-unit id="d3947b680b485670" resname="Établissement · Inscription pro">
+        <source>Établissement · Inscription pro</source>
+        <target>Établissement · Inscription pro</target>
+      </trans-unit>
+      <trans-unit id="2ed17174a0aed178" resname="Établissements">
+        <source>Établissements</source>
+        <target>Établissements</target>
+      </trans-unit>
+      <trans-unit id="070c0e6bf13bcaeb" resname="Évolution semaine par semaine, prestations les plus demandées et meilleurs moments pour publier : inclus dans l&apos;abonnement.">
+        <source>Évolution semaine par semaine, prestations les plus demandées et meilleurs moments pour publier : inclus dans l&apos;abonnement.</source>
+        <target>Évolution semaine par semaine, prestations les plus demandées et meilleurs moments pour publier : inclus dans l&apos;abonnement.</target>
+      </trans-unit>
+      <trans-unit id="21a5157f1e454e4a" resname="← Facturation">
+        <source>← Facturation</source>
+        <target>← Facturation</target>
+      </trans-unit>
+      <trans-unit id="6b5b69edfaf416f3" resname="← Mon établissement">
+        <source>← Mon établissement</source>
+        <target>← Mon établissement</target>
+      </trans-unit>
+      <trans-unit id="de0fc125772ac4a6" resname="← Retour">
+        <source>← Retour</source>
+        <target>← Retour</target>
+      </trans-unit>
+      <trans-unit id="0998143e4fa243c8" resname="← Réservations">
+        <source>← Réservations</source>
+        <target>← Réservations</target>
+      </trans-unit>
+      <trans-unit id="88996a4514fcd335" resname="← Signalements">
+        <source>← Signalements</source>
+        <target>← Signalements</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

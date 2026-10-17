@@ -5,7 +5,7 @@
 {% set pro_section = 'dashboard' %}
 
 {% block title %}
-    Tableau de bord · Espace pro
+    {{ translate('Tableau de bord · Espace pro') }}
 {% endblock %}
 
 {% block content %}
@@ -21,14 +21,14 @@
         {% if canPublish %}
             <a href="{{ path('pro_slot_new') }}" class="pro-button pro-button--primary">
                 <i data-lucide="circle-plus" class="pro-nav__icon"></i>
-                Publier un créneau libéré
+                {{ translate('Publier un créneau libéré') }}
             </a>
         {% endif %}
     </div>
 
     {% if establishment.status == 'rejected' and establishment.rejectionReason %}
         <div class="pro-flash pro-flash--error">
-            Votre établissement a été refusé : {{ establishment.rejectionReason }}
+            {{ translate('Votre établissement a été regusé: {rejectionReason}', {rejectionReason: establishment.rejectionReason}) }}
         </div>
     {% endif %}
 
@@ -49,7 +49,7 @@
             {% endfor %}
         </div>
         <p class="pro-subtitle dashboard-period">
-            Chiffres des 30 derniers jours.
+            {{ translate('Chiffres des 30 derniers jours.') }}
         </p>
     </div>
 
@@ -57,10 +57,10 @@
         <section class="pro-card dashboard-reviews">
             <div class="pro-card__head">
                 <h2 class="pro-card__title">
-                    Avis clients
+                    {{ translate('Avis clients') }}
                 </h2>
                 <a href="{{ path('pro_reviews') }}" class="pro-card__link">
-                    Voir les avis
+                    {{ translate('Voir les avis') }}
                 </a>
             </div>
             {% if reviews.count > 0 %}
@@ -74,23 +74,23 @@
                     </span>
                     {% if reviews.unanswered > 0 %}
                         <a href="{{ path('pro_reviews', { tab: 'unanswered' }) }}" class="pro-badge dashboard-reviews__pending">
-                            {{ reviews.unanswered }} sans réponse
+                            {{ translate('{unanswered} sans réponse', {unanswered: reviews.unanswered}) }}
                         </a>
                     {% endif %}
                 </div>
             {% else %}
                 <p class="pro-subtitle">
-                    Pas encore d'avis. Vos clients pourront en laisser après chaque rendez-vous honoré.
+                    {{ translate('Pas encore d\'avis. Vos clients pourront en laisser après chaque rendez-vous honoré.') }}
                 </p>
             {% endif %}
         </section>
         <section class="pro-card pro-columns__main">
             <div class="pro-card__head">
                 <h2 class="pro-card__title">
-                    Aujourd'hui
+                    {{ translate('Aujourd\'hui') }}
                 </h2>
                 <a href="{{ path('pro_slots') }}" class="pro-card__link">
-                    Tous mes créneaux
+                    {{ translate('Tous mes créneaux') }}
                 </a>
             </div>
             {% for slot in dashboard.today %}
@@ -115,7 +115,7 @@
                     Aucun créneau aujourd'hui.
                     {% if canPublish %}
                         <a href="{{ path('pro_slot_new') }}" class="pro-button pro-button--small">
-                            Publier un créneau
+                            {{ translate('Publier un créneau') }}
                         </a>
                     {% endif %}
                 </div>
@@ -124,7 +124,7 @@
 
         <section class="pro-card pro-card--dark pro-columns__aside">
             <h2 class="pro-card__title">
-                Dernières réservations
+                {{ translate('Dernières réservations') }}
             </h2>
             {% for booking in dashboard.recent %}
                 <a href="{{ path('pro_booking_show', { id: booking.id }) }}" class="dashboard-booking">
@@ -145,7 +145,7 @@
                 </a>
             {% else %}
                 <p class="dashboard-booking__empty">
-                    Pas encore de réservation. Elles apparaîtront ici dès qu'un client réserve un créneau.
+                    {{ translate('Pas encore de réservation. Elles apparaîtront ici dès qu\'un client réserve un créneau.') }}
                 </p>
             {% endfor %}
         </section>

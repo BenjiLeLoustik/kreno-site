@@ -1,11 +1,11 @@
 <div class="signup-actions">
     {% if signup.previous %}
         <a href="{{ path('pro_signup_step', { step: signup.previous }) }}" class="signup-actions__back">
-            ← Retour
+            {{ translate('← Retour') }}
         </a>
     {% elseif signup.step == 'account' %}
         <a href="{{ path('pro_landing') }}" class="signup-actions__back">
-            ← Retour
+            {{ translate('← Retour') }}
         </a>
     {% else %}
         <span></span>
@@ -13,11 +13,11 @@
     <span class="signup-actions__end">
         {% if skip ?? false %}
             <button type="submit" form="signup-skip" class="pro-button">
-                Compléter plus tard
+                {{ translate('Compléter plus tard') }}
             </button>
         {% endif %}
         <button type="submit" class="pro-button pro-button--primary signup-actions__next"{{ (stripe ?? false) ? ' data-stripe-submit' : '' }}>
-            {{ label|default('Continuer') }}
+            {{ label|default(translate('Continuer')) }}
         </button>
     </span>
 </div>

@@ -1,24 +1,24 @@
 <fieldset class="signup-fieldset stripe-fields">
     <legend class="signup-legend">
-        Moyen de paiement
+        {{ translate('Moyen de paiement') }}
     </legend>
     <div class="signup-choices">
         <label class="signup-choice">
             <input type="radio" name="type" value="card" class="signup-choice__input" checked data-stripe-type>
             <b class="signup-choice__title">
-                Carte bancaire
+                {{ translate('Carte bancaire') }}
             </b>
             <span class="signup-choice__text">
-                Visa, Mastercard, CB
+                {{ translate('Visa, Mastercard, CB') }}
             </span>
         </label>
         <label class="signup-choice">
             <input type="radio" name="type" value="sepa_debit" class="signup-choice__input" data-stripe-type>
             <b class="signup-choice__title">
-                Prélèvement SEPA
+                {{ translate('Prélèvement SEPA') }}
             </b>
             <span class="signup-choice__text">
-                Avec votre IBAN
+                {{ translate('Avec votre IBAN') }}
             </span>
         </label>
     </div>
@@ -28,14 +28,14 @@
         <input type="hidden" name="mandateAccepted" value="0">
         <input type="checkbox" name="mandateAccepted" value="1" class="settings-check__input">
         <span>
-            J'autorise {{ website().siteName }} et son prestataire de paiement à envoyer des instructions à ma banque pour débiter mon compte, conformément au mandat SEPA.
+            {{ translate('J\'autorise {site} et son prestataire de paiement à envoyer des instructions à ma banque pour débiter mon compte, conformément au mandat SEPA.', {site: website().siteName}) }}
         </span>
     </label>
     <input type="hidden" name="setupReference" value="" data-stripe-reference>
     <p class="pro-flash pro-flash--error" data-stripe-error hidden></p>
     <noscript>
         <p class="pro-flash pro-flash--error">
-            JavaScript est nécessaire pour enregistrer un moyen de paiement de façon sécurisée.
+            {{ translate('JavaScript est nécessaire pour enregistrer un moyen de paiement de façon sécurisée.') }}
         </p>
     </noscript>
 </fieldset>

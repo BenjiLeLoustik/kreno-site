@@ -3,15 +3,15 @@
 {% set pro_section = 'stats' %}
 
 {% block title %}
-    Statistiques · Espace pro
+    {{ translate('Statistiques · Espace pro') }}
 {% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <h1 class="pro-title">
-            Statistiques
+            {{ translate('Statistiques') }}
         </h1>
-        <nav class="pro-tabs" aria-label="Période">
+        <nav class="pro-tabs" aria-label="{{ translate('Période') }}">
             {% for period in stats.periods %}
                 <a href="{{ path('pro_stats', { period: period.value }) }}" class="pro-tabs__link{{ period.selected ? ' pro-tabs__link--active' : '' }}"{{ period.selected ? ' aria-current="page"' : '' }}>
                     {{ period.label }}
@@ -41,13 +41,13 @@
             <section class="pro-card pro-columns__main">
                 <div class="pro-card__head">
                     <h2 class="pro-card__title">
-                        Créneaux publiés et réservés
+                        {{ translate('Créneaux publiés et réservés') }}
                     </h2>
                     <span class="stats-legend">
                         <span class="stats-legend__dot stats-legend__dot--published"></span>
-                        Publiés
+                        {{ translate('Publiés') }}
                         <span class="stats-legend__dot stats-legend__dot--booked"></span>
-                        Réservés
+                        {{ translate('Réservés') }}
                     </span>
                 </div>
                 <div class="stats-chart">
@@ -67,7 +67,7 @@
 
             <section class="pro-card pro-columns__aside">
                 <h2 class="pro-card__title">
-                    Prestations les plus réservées
+                    {{ translate('Prestations les plus réservées') }}
                 </h2>
                 {% for service in stats.services %}
                     <div class="stats-service">
@@ -85,7 +85,7 @@
                     </div>
                 {% else %}
                     <p class="pro-subtitle">
-                        Pas encore de réservation sur la période.
+                        {{ translate('Pas encore de réservation sur la période.') }}
                     </p>
                 {% endfor %}
             </section>
@@ -94,7 +94,7 @@
         {% if stats.heatmap %}
             <section class="pro-card">
                 <h2 class="pro-card__title">
-                    Rapidité de réservation selon le moment
+                    {{ translate('Rapidité de réservation selon le moment') }}
                 </h2>
                 <div class="stats-heatmap">
                     <table class="stats-heatmap__table">
@@ -102,7 +102,7 @@
                         <tr>
                             <th scope="col">
                                 <span class="sr-only">
-                                    Jour
+                                    {{ translate('Jour') }}
                                 </span>
                             </th>
                             {% for hour in stats.heatmap.hours %}
@@ -137,12 +137,12 @@
         <div class="pro-empty">
             <i data-lucide="chart-column" class="stats-upsell__icon"></i>
             <b>
-                Statistiques détaillées
+                {{ translate('Statistiques détaillées') }}
             </b>
-            Évolution semaine par semaine, prestations les plus demandées et meilleurs moments pour publier : inclus dans l'abonnement.
+            {{ translate('Évolution semaine par semaine, prestations les plus demandées et meilleurs moments pour publier : inclus dans l\'abonnement.') }}
             {% if route_exists('pro_subscription') and (context.permissions.company['company.billing'] ?? false) %}
                 <a href="{{ path('pro_subscription') }}" class="pro-button pro-button--primary">
-                    Voir l'abonnement
+                    {{ translate('Voir l\'abonnement') }}
                 </a>
             {% endif %}
         </div>

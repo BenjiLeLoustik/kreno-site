@@ -1,23 +1,23 @@
 {% extends 'layouts/pro-signup.html.twig' %}
 
 {% block title %}
-    Inscription envoyée · Espace pro
+    {{ translate('Inscription envoyée · Espace pro') }}
 {% endblock %}
 
 {% block heading %}
-    Merci
     {% if firstName %}
-        {{ firstName }}
+        {{ translate('Merci {firstName}, c\'est envoyé !', { firstName: firstName }) }}
+    {% else %}
+        {{ translate('Merci, c\'est envoyé !') }}
     {% endif %}
-    , c'est envoyé !
 {% endblock %}
 
 {% block lead %}
-    Nous vérifions {{ establishmentName }} avant la mise en ligne. Vous recevrez un e-mail à
-    <b>
-        {{ email }}
-    </b>
-    dès que c'est fait.
+    {% set emailTag = '<b>' ~ email ~ '</b>' %}
+    {{ translate('Nous vérifions {establishment} avant la mise en ligne. Vous recevrez un e-mail à {email} dès que c\'est fait.', {
+        establishment: establishmentName,
+        email: emailTag,
+    }) }}
 {% endblock %}
 
 {% block content %}
@@ -28,10 +28,10 @@
             </span>
             <span>
                 <b>
-                    Inscription envoyée
+                    {{ translate('Inscription envoyée') }}
                 </b>
                 <span class="pro-row__meta">
-                    Votre moyen de paiement est enregistré.
+                    {{ translate('Votre moyen de paiement est enregistré.') }}
                 </span>
             </span>
         </li>
@@ -41,10 +41,10 @@
             </span>
             <span>
                 <b>
-                    Vérification par l'équipe
+                    {{ translate('Vérification par l\'équipe') }}
                 </b>
                 <span class="pro-row__meta">
-                    {{ statusLabel }} · sous 48 h ouvrées en général.
+                    {{ '{status} · sous 48 h ouvrées en général.', {status: statusLabel} }}
                 </span>
             </span>
         </li>
@@ -54,10 +54,10 @@
             </span>
             <span>
                 <b>
-                    Mise en ligne
+                    {{ translate('Mise en ligne') }}
                 </b>
                 <span class="pro-row__meta">
-                    Vos créneaux deviennent visibles des clients du quartier.
+                    {{ translate('Vos créneaux deviennent visibles des clients du quartier.') }}
                 </span>
             </span>
         </li>
@@ -66,18 +66,18 @@
     <div class="signup-next">
         <a href="{{ path('pro_establishment') }}" class="signup-next__card">
             <b>
-                Compléter ma page en attendant
+                {{ translate('Compléter ma page en attendant') }}
             </b>
             <span class="pro-row__meta">
-                Ajoutez des photos et précisez vos prestations.
+                {{ translate('Ajoutez des photos et précisez vos prestations.') }}
             </span>
         </a>
         <a href="{{ path('pro_dashboard') }}" class="signup-next__card">
             <b>
-                Découvrir mon espace
+                {{ translate('Découvrir mon espace') }}
             </b>
             <span class="pro-row__meta">
-                Vous pouvez préparer vos créneaux, ils seront publiés à la validation.
+                {{ translate('Vous pouvez préparer vos créneaux, ils seront publiés à la validation.') }}
             </span>
         </a>
     </div>
@@ -98,9 +98,9 @@
     {% endif %}
 
     <p class="pro-field__hint">
-        Un document vous sera peut-être demandé (Kbis ou avis de situation INSEE).
+        {{ translate('Un document vous sera peut-être demandé (Kbis ou avis de situation INSEE).') }}
         {% if website().contactEmail %}
-            Une question ? Écrivez à {{ website().contactEmail }}.
+            {{ translate('Une question ? Écrivez à {contactEmail}.', {contactEmail: website().contactEmail()}) }}
         {% endif %}
     </p>
 {% endblock %}

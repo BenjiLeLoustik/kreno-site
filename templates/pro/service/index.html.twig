@@ -23,7 +23,7 @@
 {% endmacro %}
 
 {% block title %}
-    Prestations · Espace pro
+    {{ translate('Prestations · Espace pro') }}
 {% endblock %}
 
 {% block content %}
@@ -32,13 +32,13 @@
     <div class="pro-head">
         <div class="pro-head__text">
             <a href="{{ path('pro_establishment') }}" class="pro-back">
-                ← Mon établissement
+                {{ translate('← Mon établissement') }}
             </a>
             <h1 class="pro-title">
-                Prestations
+                {{ translate('Prestations') }}
             </h1>
             <span class="pro-subtitle">
-                Ce que vous proposez, avec la durée et le prix habituel. La remise s'applique sur ce prix.
+                {{ translate('Ce que vous proposez, avec la durée et le prix habituel. La remise s\'applique sur ce prix.') }}
             </span>
         </div>
     </div>
@@ -53,7 +53,7 @@
                     <span class="pro-row__meta">
                         {{ service.durationLabel }}
                         {% if service.discountLabel %}
-                            · remise auto {{ service.discountLabel }}
+                            {{ translate('· remise auto {discountLabel}', {discoutLabel: service.discountLabel}) }}
                         {% endif %}
                         {% if service.description %}
                             · {{ service.description }}
@@ -65,7 +65,7 @@
                 </span>
                 {% if not service.active %}
                     <span class="pro-badge">
-                        Désactivée
+                        {{ translate('Désactivée') }}
                     </span>
                 {% endif %}
                 {% if canManage %}
@@ -74,14 +74,15 @@
                             ids,
                             loop.index0,
                             -1,
-                            'Monter ' ~ service.name,
+                            translate('Monter {serviceName}', {serviceName: service.name}),
                             'arrow-up'
                         ) }}
 
-                        {{ ui.move(ids,
+                        {{ ui.move(
+                            ids,
                             loop.index0,
                             1,
-                            'Descendre ' ~ service.name,
+                            translate('Descendre {serviceName}', {serviceName: service.name}),
                             'arrow-down'
                         ) }}
 
@@ -89,29 +90,31 @@
                             {{ csrf_field('pro')|raw }}
                             <button type="submit" class="pro-button pro-button--small">
                                 {% if service.active %}
-                                    Désactiver
+                                    {{ translate('Désactiver') }}
                                 {% else %}
-                                    Réactiver
+                                    {{ translate('Réactiver') }}
                                 {% endif %}
                             </button>
                         </form>
                         <form method="post" action="{{ path('pro_service_delete', { id: service.id }) }}">
                             {{ csrf_field('pro')|raw }}
-                            <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="Supprimer « {{ service.name }} » ? Si elle a déjà des créneaux, elle sera seulement désactivée.">
-                                Supprimer
+                            <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="{{ translate('Supprimer « {serviceName} » ? Si elle a déjà des créneaux, elle sera seulement désactivée.', {serviceName: service.name }) }}">
+                                {{ translate('Supprimer') }}
                             </button>
                         </form>
                     </span>
                     <details class="service-row__edit">
                         <summary class="service-row__summary">
-                            Modifier
+                            {{ translate('Modifier') }}
                         </summary>
                         <form method="post" action="{{ path('pro_service_update', { id: service.id }) }}" class="pro-form service-row__form">
                             {{ csrf_field('pro')|raw }}
-                            {% include 'pro/service/_fields.html.twig' with { service: service } %}
+                            {% include 'pro/service/_fields.html.twig' with {
+                                service: service
+                            } %}
                             <div>
                                 <button type="submit" class="pro-button pro-button--primary">
-                                    Enregistrer
+                                    {{ translate('Enregistrer') }}
                                 </button>
                             </div>
                         </form>
@@ -120,7 +123,7 @@
             </div>
         {% else %}
             <p class="pro-subtitle">
-                Aucune prestation pour le moment.
+                {{ translate('Aucune prestation pour le moment.') }}
             </p>
         {% endfor %}
     </section>
@@ -128,14 +131,14 @@
     {% if canManage %}
         <section class="pro-card">
             <h2 class="pro-card__title">
-                Ajouter une prestation
+                {{ translate('Ajouter une prestation') }}
             </h2>
             <form method="post" action="{{ path('pro_service_create') }}" class="pro-form">
                 {{ csrf_field('pro')|raw }}
                 {% include 'pro/service/_fields.html.twig' %}
                 <div>
                     <button type="submit" class="pro-button pro-button--primary">
-                        Ajouter
+                        {{ translate('Ajouter') }}
                     </button>
                 </div>
             </form>

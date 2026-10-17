@@ -1,7 +1,7 @@
 {% extends 'layouts/pro-signup.html.twig' %}
 
 {% block title %}
-    Page publique · Inscription pro
+    {{ translate('Page publique · Inscription pro') }}
 {% endblock %}
 
 {% block javascripts %}
@@ -9,20 +9,20 @@
 {% endblock %}
 
 {% block heading %}
-    Votre page publique
+    {{ translate('Votre page publique') }}
 {% endblock %}
 
 {% block lead %}
-    C'est ce que les clients voient avant de réserver. Vous pourrez compléter plus tard.
+    {{ translate('C\'est ce que les clients voient avant de réserver. Vous pourrez compléter plus tard.') }}
 {% endblock %}
 
 {% block content %}
     <section class="signup-section" id="photos">
         <div class="signup-section__head">
             <span class="signup-legend">
-                Photos
+                {{ translate('Photos') }}
                 <span class="pro-field__hint">
-                    jusqu'à {{ page.imagesMax }}, la première sert de couverture
+                    {{ translate('jusqu\'à {imagesMax}, la première sert de couverture', {imagesMax: page.imagesMax}) }}
                 </span>
             </span>
             <span class="pro-field__hint">
@@ -35,14 +35,14 @@
                     <img src="{{ image.url }}" alt="{{ image.alt ?: page.preview.name }}" class="settings-photo__image" loading="lazy">
                     {% if image.cover %}
                         <span class="settings-photo__cover">
-                            Couverture
+                            {{ translate('Couverture') }}
                         </span>
                     {% endif %}
                     <figcaption class="settings-photo__actions">
                         <form method="post" action="{{ path('pro_signup_image_delete', { id: image.id }) }}">
                             {{ csrf_field('pro')|raw }}
-                            <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="Supprimer cette photo ?">
-                                Supprimer
+                            <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="{{ translate('Supprimer cette photo ?') }}">
+                                {{ translate('Supprimer') }}
                             </button>
                         </form>
                     </figcaption>
@@ -53,15 +53,15 @@
             <form method="post" action="{{ path('pro_signup_image') }}" enctype="multipart/form-data" class="settings-inline">
                 {{ csrf_field('pro')|raw }}
                 <label class="pro-field settings-inline__grow">
-                    Ajouter une photo
+                    {{ translate('Ajouter une photo') }}
                     <input type="file" name="image" accept="image/jpeg,image/png,image/webp" required class="pro-input settings-file">
                 </label>
                 <button type="submit" class="pro-button">
-                    Envoyer
+                    {{ translate('Envoyer') }}
                 </button>
             </form>
             <span class="pro-field__hint">
-                Les photos sont enregistrées dès l'envoi.
+                {{ translate('Les photos sont enregistrées dès l\'envoi.') }}
             </span>
         {% endif %}
     </section>
@@ -70,17 +70,17 @@
         {{ csrf_field('pro')|raw }}
         <label class="pro-field">
             <span class="pro-field__head">
-                Présentation
+                {{ translate('Présentation') }}
                 <span class="pro-field__hint" data-signup-count-output>
                     {{ (page.description ?? '')|length }} / {{ page.descriptionMax }}
                 </span>
             </span>
-            <textarea name="description" rows="4" maxlength="{{ page.descriptionMax }}" class="pro-input pro-input--area" placeholder="Présentez votre établissement en deux ou trois phrases." data-signup-count>{{ page.description }}</textarea>
+            <textarea name="description" rows="4" maxlength="{{ page.descriptionMax }}" class="pro-input pro-input--area" placeholder="{{ translate('Présentez votre établissement en deux ou trois phrases.') }}" data-signup-count>{{ page.description }}</textarea>
         </label>
 
         <div class="signup-section">
             <span class="signup-legend">
-                Horaires d'ouverture
+                {{ translate('Horaires d\'ouverture') }}
             </span>
             <div class="settings-hours">
                 {% set row = 0 %}
@@ -94,9 +94,9 @@
                                 {% set range = day.ranges[index] ?? null %}
                                 <span class="settings-hours__range">
                                     <input type="hidden" name="hours[{{ row }}][weekday]" value="{{ day.weekday }}">
-                                    <input type="time" name="hours[{{ row }}][opensAt]" value="{{ range ? range.opensAt : '' }}" step="900" class="pro-input settings-hours__time" aria-label="{{ day.day }}, ouverture {{ index + 1 }}">
+                                    <input type="time" name="hours[{{ row }}][opensAt]" value="{{ range ? range.opensAt : '' }}" step="900" class="pro-input settings-hours__time" aria-label="{{ translate('{day}, ouverture {index}', {day: day.day, index: index + 1}) }}">
                                     <span aria-hidden="true">–</span>
-                                    <input type="time" name="hours[{{ row }}][closesAt]" value="{{ range ? range.closesAt : '' }}" step="900" class="pro-input settings-hours__time" aria-label="{{ day.day }}, fermeture {{ index + 1 }}">
+                                    <input type="time" name="hours[{{ row }}][closesAt]" value="{{ range ? range.closesAt : '' }}" step="900" class="pro-input settings-hours__time" aria-label="{{ translate('{day}, fermeture {index}', {day: day.day, index: index + 1}) }}">
                                 </span>
                                 {% set row = row + 1 %}
                             {% endfor %}
@@ -108,7 +108,7 @@
                 {% endfor %}
             </div>
             <span class="pro-field__hint">
-                Laissez vide pour un jour fermé. Deuxième plage pour une pause du midi.
+                {{ translate('Laissez vide pour un jour fermé. Deuxième plage pour une pause du midi.') }}
             </span>
         </div>
 

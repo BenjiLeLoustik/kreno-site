@@ -2,7 +2,7 @@
 
 {% macro row(index, service, durations) %}
     <div class="signup-service" data-signup-service>
-        <input type="text" name="services[{{ index }}][name]" value="{{ service.name ?? '' }}" maxlength="120" class="pro-input" placeholder="Nom de la prestation" aria-label="Prestation" data-signup-service-name>
+        <input type="text" name="services[{{ index }}][name]" value="{{ service.name ?? '' }}" maxlength="120" class="pro-input" placeholder="{{ translate('Nom de la prestation') }}" aria-label="{{ translate('Prestation') }}" data-signup-service-name>
         <select name="services[{{ index }}][duration]" class="pro-input" aria-label="Durée" data-signup-service-duration>
             {% for minutes in durations %}
                 <option value="{{ minutes }}"{{ minutes == (service.duration ?? 30) ? ' selected' : '' }}>
@@ -16,19 +16,19 @@
             {% endif %}
         </select>
         <span class="signup-service__price">
-            <input type="text" name="services[{{ index }}][price]" value="{{ service.price is defined ? (service.price / 100)|number_format(2, ',', '') : '' }}" inputmode="decimal" pattern="\d+([.,]\d{1,2})?" class="pro-input" placeholder="38,00" aria-label="Prix habituel en euros" data-signup-service-price>
+            <input type="text" name="services[{{ index }}][price]" value="{{ service.price is defined ? (service.price / 100)|number_format(2, ',', '') : '' }}" inputmode="decimal" pattern="\d+([.,]\d{1,2})?" class="pro-input" placeholder="38,00" aria-label="{{ translate('Prix habituel en euros') }}" data-signup-service-price>
             <span class="signup-service__unit">
                 €
             </span>
         </span>
-        <button type="button" class="signup-service__remove" aria-label="Retirer la prestation" data-signup-service-remove hidden>
+        <button type="button" class="signup-service__remove" aria-label="{{ translate('Retirer la prestation') }}" data-signup-service-remove hidden>
             ×
         </button>
     </div>
 {% endmacro %}
 
 {% block title %}
-    Prestations · Inscription pro
+    {{ translate('Prestations · Inscription pro') }}
 {% endblock %}
 
 {% block javascripts %}
@@ -36,11 +36,11 @@
 {% endblock %}
 
 {% block heading %}
-    Ce que vous proposez
+    {{ translate('Ce que vous proposez') }}
 {% endblock %}
 
 {% block lead %}
-    Ajoutez au moins une prestation avec sa durée et son prix habituel.
+    {{ translate('Ajoutez au moins une prestation avec sa durée et son prix habituel.') }}
 {% endblock %}
 
 {% block content %}
@@ -54,7 +54,7 @@
         {% if services.suggestions is not empty %}
             <div class="signup-suggestions" data-signup-suggestions hidden>
                 <span class="signup-legend">
-                    Suggestions
+                    {{ translate('Suggestions') }}
                     {% if services.categoryName %}
                         pour {{ services.categoryName|lower }}
                     {% endif %}
@@ -72,34 +72,42 @@
         <div class="signup-services">
             <div class="signup-service signup-service--head" aria-hidden="true">
                 <span>
-                    Prestation
+                    {{ translate('Prestation') }}
                 </span>
                 <span>
-                    Durée
+                    {{ translate('Durée') }}
                 </span>
                 <span>
-                    Prix habituel
+                    {{ translate('Prix habituel') }}
                 </span>
                 <span></span>
             </div>
             <div class="signup-services__rows" data-signup-service-rows>
                 {% for service in rows %}
-                    {{ ui.row(loop.index0, service, durations) }}
+                    {{ ui.row(
+                        loop.index0,
+                        service,
+                        durations
+                    ) }}
                 {% endfor %}
                 {% for index in 0..(emptyRows - 1) %}
-                    {{ ui.row(rows|length + index, {}, durations) }}
+                    {{ ui.row(
+                        rows|length + index,
+                        {},
+                        durations
+                    ) }}
                 {% endfor %}
             </div>
             <template data-signup-service-template>{{ ui.row('__index__', {}, durations) }}</template>
             <button type="button" class="signup-services__add" data-signup-service-add hidden>
-                + Ajouter une prestation
+                {{ translate('+ Ajouter une prestation') }}
             </button>
         </div>
 
         <div class="signup-discount">
             <label class="pro-field" for="signup-discount">
                 <span class="pro-field__head">
-                    Remise proposée par défaut sur vos créneaux libérés
+                    {{ translate('Remise proposée par défaut sur vos créneaux libérés') }}
                     <b class="signup-discount__value" data-signup-discount-value>
                         −{{ services.defaultDiscount }} %
                     </b>
@@ -108,11 +116,12 @@
             </label>
             {% if first %}
                 <span class="pro-field__hint" data-signup-example data-name="{{ first.name }}" data-price="{{ first.price }}">
-                    Exemple : {{ first.name }} à {{ first.priceLabel }} passe à
-                    <b data-signup-example-price>
-                        {{ services.example.discounted }}
-                    </b>
-                    pour le client.
+                    {% set discountedTag = '<b data-signup-example-price>' ~ services.example.discounted|e ~ '</b>' %}
+                    {{ translate('Exemple : {name} à {price} passe à {discounted} pour le client.', {
+                        name: first.name|e,
+                        price: first.priceLabel|e,
+                        discounted: discountedTag,
+                    })|raw }}
                 </span>
             {% endif %}
         </div>

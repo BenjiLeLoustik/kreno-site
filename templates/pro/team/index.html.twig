@@ -2,40 +2,40 @@
 
 {% set pro_section = 'team' %}
 {% set roleOptions = (canInviteAdmins ? [
-    { value: 'admin', label: 'Administrateur (toute l\'équipe)' }
+    { value: 'admin', label: translate('Administrateur (toute l\'équipe)') }
 ] : [])|merge([
-    { value: 'manager', label: 'Gérant' },
-    { value: 'planner', label: 'Planificateur' },
-    { value: 'receptionist', label: 'Accueil' },
-    { value: 'employee', label: 'Employé' },
+    { value: 'manager', label: translate('Gérant') },
+    { value: 'planner', label: translate('Planificateur') },
+    { value: 'receptionist', label: translate('Accueil') },
+    { value: 'employee', label: translate('Employé') },
 ]) %}
 
 {% set marks = {
     yes: '✓',
     no: '-',
-    scope: 'Son établissement',
-    on_demand: 'Sur option'
+    scope: translate('Son établissement'),
+    on_demand: translate('Sur option')
 } %}
 
 {% block title %}
-    Équipe · Espace pro
+    {{ translate('Équipe · Espace pro') }}
 {% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
             <h1 class="pro-title">
-                Équipe
+                {{ translate('Équipe') }}
             </h1>
             <span class="pro-subtitle">
-                Qui peut publier des créneaux, gérer les réservations ou modifier l'établissement.
+                {{ translate('Qui peut publier des créneaux, gérer les réservations ou modifier l\'établissement.') }}
             </span>
         </div>
         {% if establishments|length > 1 %}
             <form method="get" action="{{ path('pro_team') }}">
-                <select name="establishment" class="pro-input" aria-label="Établissement" data-pro-auto>
+                <select name="establishment" class="pro-input" aria-label="{{ translate('Établissement') }}" data-pro-auto>
                     <option value="all">
-                        Tous les établissements
+                        {{ translate('Tous les établissements') }}
                     </option>
                     {% for establishment in establishments %}
                         <option value="{{ establishment.id }}"{{ establishment.id ~ '' == filter ? ' selected' : '' }}>
@@ -44,7 +44,7 @@
                     {% endfor %}
                 </select>
                 <button type="submit" class="pro-button" data-pro-apply>
-                    Filtrer
+                    {{ translate('Filtrer') }}
                 </button>
             </form>
         {% endif %}
@@ -52,7 +52,7 @@
 
     <section class="pro-card">
         <h2 class="pro-card__title">
-            Membres
+            {{ translate('Membres') }}
         </h2>
         {% for member in members %}
             <div class="team-member">
@@ -64,7 +64,7 @@
                         <b>
                             {{ member.name }}
                             {% if member.isYou %}
-                                (vous)
+                                {{ translate('(vous)') }}
                             {% endif %}
                         </b>
                         <span class="pro-row__meta">
@@ -85,12 +85,12 @@
                             <span class="team-scope__item">
                                 {{ scope.establishment }} · {{ scope.roleLabel }}
                                 {% if scope.canManageBookings %}
-                                    · réservations
+                                    · {{ translate('réservations') }}
                                 {% endif %}
                                 {% if scope.manageable and not member.isYou %}
                                     <form method="post" action="{{ path('pro_team_member_establishment_remove', { id: member.id, establishmentId: scope.establishmentId }) }}">
                                         {{ csrf_field('pro')|raw }}
-                                        <button type="submit" class="team-scope__remove" aria-label="Retirer l'accès à {{ scope.establishment }}" data-pro-confirm="Retirer l'accès de {{ member.name }} à {{ scope.establishment }} ?">
+                                        <button type="submit" class="team-scope__remove" aria-label="{{ translate('Retirer l\'accès à {establishment}', { establishment: scope.establishment }) }}" data-pro-confirm="{{ translate('Retirer l\'accès de {name} à {establishment} ?', { name: member.name, establishment: scope.establishment }) }}">
                                             ×
                                         </button>
                                     </form>
@@ -103,21 +103,21 @@
                 {% if not member.isYou and not member.isOwner and manageableEstablishments is not empty %}
                     <details class="service-row__edit">
                         <summary class="service-row__summary">
-                            Modifier le rôle
+                            {{ translate('Modifier le rôle') }}
                         </summary>
                         <form method="post" action="{{ path('pro_team_member_role', { id: member.id }) }}" class="pro-form service-row__form">
                             {{ csrf_field('pro')|raw }}
                             {% include 'pro/team/_role_fields.html.twig' with { current: member.companyRole ?? (member.scope|first).role ?? 'employee', currentEstablishment: (member.scope|first).establishmentId ?? null, currentBookings: (member.scope|first).canManageBookings ?? false } %}
                             <div class="settings-line__actions">
                                 <button type="submit" class="pro-button pro-button--primary">
-                                    Enregistrer
+                                    {{ translate('Enregistrer') }}
                                 </button>
                             </div>
                         </form>
                         <form method="post" action="{{ path('pro_team_member_remove', { id: member.id }) }}" class="service-row__form">
                             {{ csrf_field('pro')|raw }}
-                            <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="Retirer {{ member.name }} de l'entreprise ?">
-                                Retirer de l'entreprise
+                            <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="{{ translate('Retirer {name} de l\'entreprise ?', { name: member.name }) }}">
+                                {{ translate('Retirer de l\'entreprise') }}
                             </button>
                         </form>
                     </details>
@@ -125,7 +125,7 @@
             </div>
         {% else %}
             <p class="pro-subtitle">
-                Aucun membre pour ce filtre.
+                {{ translate('Aucun membre pour ce filtre.') }}
             </p>
         {% endfor %}
     </section>
@@ -133,16 +133,19 @@
     <div class="pro-columns">
         <section class="pro-card pro-columns__main">
             <h2 class="pro-card__title">
-                Inviter un collaborateur
+                {{ translate('Inviter un collaborateur') }}
             </h2>
             {% if manageableEstablishments is empty and not canInviteAdmins %}
                 <p class="pro-subtitle">
-                    Votre rôle ne permet pas d'inviter.
+                    {{ translate('Votre rôle ne permet pas d\'inviter.') }}
                 </p>
             {% else %}
                 <form method="post" action="{{ path('pro_team_invite') }}" class="pro-form">
                     {{ csrf_field('pro')|raw }}
-                    <label class="pro-field">E-mail<input type="email" name="email" required class="pro-input" placeholder="prenom@exemple.fr"></label>
+                    <label class="pro-field">
+                        {{ translate('E-mail') }}
+                        <input type="email" name="email" required class="pro-input" placeholder="{{ translate('prenom@exemple.fr') }}">
+                    </label>
                     {% include 'pro/team/_role_fields.html.twig' with {
                         current: 'employee',
                         currentEstablishment: context.current.id,
@@ -150,7 +153,7 @@
                     } %}
                     <div>
                         <button type="submit" class="pro-button pro-button--primary">
-                            Envoyer l'invitation
+                            {{ translate('Envoyer l\'invitation') }}
                         </button>
                     </div>
                 </form>
@@ -158,7 +161,7 @@
 
             {% if invitations is not empty %}
                 <h3 class="settings-subtitle">
-                    Invitations en attente
+                    {{ translate('Invitations en attente') }}
                 </h3>
                 {% for invitation in invitations %}
                     <div class="settings-line">
@@ -172,14 +175,14 @@
                                     · {{ invitation.establishment }}
                                 {% endif %}
                                 {% if invitation.expiresAt %}
-                                    · expire le {{ invitation.expiresAt|date('d/m/Y') }}
+                                    · {{ translate('expire le {date}', { date: invitation.expiresAt|date('d/m/Y') }) }}
                                 {% endif %}
                             </span>
                         </span>
                         <form method="post" action="{{ path('pro_team_invitation_revoke', { id: invitation.id }) }}">
                             {{ csrf_field('pro')|raw }}
                             <button type="submit" class="pro-button pro-button--small pro-button--danger">
-                                Annuler
+                                {{ translate('Annuler') }}
                             </button>
                         </form>
                     </div>
@@ -189,7 +192,7 @@
 
         <section class="pro-card pro-columns__aside">
             <h2 class="pro-card__title">
-                Qui peut faire quoi ?
+                {{ translate('Qui peut faire quoi ?') }}
             </h2>
             <div class="team-matrix">
                 <table class="team-matrix__table">
@@ -197,7 +200,7 @@
                     <tr>
                         <th scope="col" class="team-matrix__th">
                             <span class="sr-only">
-                                Action
+                                {{ translate('Action') }}
                             </span>
                         </th>
                         {% for column in roleMatrix.columns %}

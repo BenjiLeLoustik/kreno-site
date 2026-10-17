@@ -4,7 +4,7 @@
 {% set current = services|filter(service => service.id == prefill.serviceId)|first ?: services|first %}
 
 {% block title %}
-    Publier un créneau · Espace pro
+    {{ translate('Publier un créneau · Espace pro') }}
 {% endblock %}
 
 {% block javascripts %}
@@ -15,23 +15,23 @@
     <div class="pro-head">
         <div class="pro-head__text">
             <h1 class="pro-title">
-                Publier un créneau libéré
+                {{ translate('Publier un créneau libéré') }}
             </h1>
             <span class="pro-subtitle">
-                Il sera visible par les clients du quartier jusqu'à l'heure d'expiration.
+                {{ translate('Il sera visible par les clients du quartier jusqu\'à l\'heure d\'expiration.') }}
             </span>
         </div>
         <a href="{{ path('pro_slots') }}" class="pro-button">
-            Voir mes créneaux
+            {{ translate('Voir mes créneaux') }}
         </a>
     </div>
 
     {% if services is empty %}
         <div class="pro-empty">
-            Ajoutez d'abord une prestation : c'est elle qui fixe la durée et le prix habituel du créneau.
+            {{ translate('Ajoutez d\'abord une prestation : c\'est elle qui fixe la durée et le prix habituel du créneau.') }}
             {% if route_exists('pro_services') %}
                 <a href="{{ path('pro_services') }}" class="pro-button pro-button--primary">
-                    Ajouter une prestation
+                    {{ translate('Ajouter une prestation') }}
                 </a>
             {% endif %}
         </div>
@@ -41,7 +41,7 @@
                 {{ csrf_field('pro')|raw }}
 
                 <label class="pro-field">
-                    Prestation
+                    {{ translate('Prestation') }}
                     <select name="serviceId" class="pro-input" required data-publish-service>
                         {% for service in services %}
                             <option value="{{ service.id }}" data-price="{{ service.price }}" data-duration="{{ service.durationLabel }}" data-name="{{ service.name }}"{{ service.id == current.id ? ' selected' : '' }}>
@@ -53,7 +53,7 @@
 
                 <div class="pro-form__row">
                     <label class="pro-field">
-                        Jour
+                        {{ translate('Jour') }}
                         <select name="day" class="pro-input" required data-publish-day>
                             {% for day in days %}
                                 <option value="{{ day.value }}"{{ day.value == prefill.day ? ' selected' : '' }}>
@@ -63,41 +63,49 @@
                         </select>
                     </label>
                     <label class="pro-field">
-                        Heure
+                        {{ translate('Heure') }}
                         <input type="time" name="time" value="{{ prefill.time }}" required step="300" class="pro-input" data-publish-time>
                     </label>
                 </div>
 
                 <label class="pro-field">
                     <span class="pro-field__head">
-                        Remise
+                        {{ translate('Remise') }}
                         <b class="publish-discount" data-publish-discount-label>
                             -{{ prefill.discount }} %
                         </b>
                     </span>
                     <input type="range" name="discount" min="{{ defaults.minDiscount }}" max="{{ defaults.maxDiscount }}" step="5" value="{{ prefill.discount }}" class="pro-range" data-publish-discount>
                     <span class="pro-field__hint">
-                        Entre {{ defaults.minDiscount }} % et {{ defaults.maxDiscount }} %.
+                        {{ translate('Entre {min} % et {max} %.', { min: defaults.minDiscount, max: defaults.maxDiscount }) }}
                     </span>
                 </label>
 
                 <div class="pro-form__row">
                     <label class="pro-field">
-                        Retirer le créneau
+                        {{ translate('Retirer le créneau') }}
                         <select name="removalMinutes" class="pro-input" data-publish-removal>
                             {% for minutes in defaults.removalChoices %}
+                                {% set hours = minutes // 60 %}
+                                {% set rest = minutes % 60 %}
                                 <option value="{{ minutes }}"{{ minutes == defaults.removalMinutes ? ' selected' : '' }}>
-                                    {{ minutes >= 60 ? (minutes // 60) ~ ' h' ~ (minutes % 60 ? ' ' ~ (minutes % 60) ~ ' min' : '') : minutes ~ ' min' }} avant
+                                    {% if hours == 0 %}
+                                        {{ translate('{minutes} min avant', { minutes: rest }) }}
+                                    {% elseif rest == 0 %}
+                                        {{ translate('{hours} h avant', { hours: hours }) }}
+                                    {% else %}
+                                        {{ translate('{hours} h {minutes} min avant', { hours: hours, minutes: rest }) }}
+                                    {% endif %}
                                 </option>
                             {% endfor %}
                         </select>
                     </label>
                     {% if staff|length > 1 %}
                         <label class="pro-field">
-                            Avec
+                            {{ translate('Avec') }}
                             <select name="staffId" class="pro-input">
                                 <option value="">
-                                    Peu importe
+                                    {{ translate('Peu importe') }}
                                 </option>
                                 {% for member in staff %}
                                     <option value="{{ member.id }}"{{ member.id == prefill.staffId ? ' selected' : '' }}>
@@ -110,17 +118,17 @@
                 </div>
 
                 <span class="pro-field__hint">
-                    Les clients peuvent réserver jusqu'à {{ defaults.bookingLeadMinutes }} min avant le rendez-vous.
+                    {{ translate('Les clients peuvent réserver jusqu\'à {minutes} min avant le rendez-vous.', { minutes: defaults.bookingLeadMinutes }) }}
                 </span>
 
                 <button type="submit" class="pro-button pro-button--primary pro-button--block">
-                    Mettre en ligne
+                    {{ translate('Mettre en ligne') }}
                 </button>
             </form>
 
             <aside class="pro-columns__aside publish-preview">
                 <span class="publish-preview__label">
-                    Aperçu client
+                    {{ translate('Aperçu client') }}
                 </span>
                 <article class="publish-ticket">
                     <div class="publish-ticket__when">
@@ -162,11 +170,10 @@
                     <span class="publish-ticket__notch publish-ticket__notch--bottom"></span>
                 </article>
                 <p class="pro-subtitle publish-preview__text">
-                    Visible jusqu'à
-                    <b data-preview-expires>-</b>
-                    . Vous gagnez
-                    <b data-preview-earn>-</b>
-                    au lieu de 0 € sur ce créneau vide.
+                    {{ translate('Visible jusqu\'à {expires}. Vous gagnez {earn} au lieu de 0 € sur ce créneau vide.', {
+                        expires: '<b data-preview-expires>-</b>',
+                        earn: '<b data-preview-earn>-</b>',
+                    })|raw }}
                 </p>
             </aside>
         </div>

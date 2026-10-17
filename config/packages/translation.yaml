@@ -1,7 +1,7 @@
 # Translations (key packages.translation): translations/{domain}.{locale}.yaml, {{ 'home.title'|trans }}
 default_locale: fr
 # Enabled locales, e.g. [en, fr]
-locales: [ fr, en ]
+locales: [ fr ]
 # Locales tried when a key is missing
 fallbacks: [ fr ]
 path: '%kernel.root_path%/translations'

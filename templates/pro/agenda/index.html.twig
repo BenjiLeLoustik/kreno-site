@@ -3,28 +3,28 @@
 {% set pro_section = 'agenda' %}
 
 {% block title %}
-    Agenda · Espace pro
+    {{ translate('Agenda · Espace pro') }}
 {% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
             <h1 class="pro-title">
-                Agenda
+                {{ translate('Agenda') }}
             </h1>
             <div class="agenda-week">
-                <a href="{{ path('pro_agenda', { week: agenda.previousWeek }) }}" class="pro-button pro-button--small" aria-label="Semaine précédente">
+                <a href="{{ path('pro_agenda', { week: agenda.previousWeek }) }}" class="pro-button pro-button--small" aria-label="{{ translate('Semaine précédente') }}">
                     <i data-lucide="chevron-left" class="pro-nav__icon"></i>
                 </a>
                 <span class="agenda-week__label">
                     {{ agenda.weekLabel }}
                 </span>
-                <a href="{{ path('pro_agenda', { week: agenda.nextWeek }) }}" class="pro-button pro-button--small" aria-label="Semaine suivante">
+                <a href="{{ path('pro_agenda', { week: agenda.nextWeek }) }}" class="pro-button pro-button--small" aria-label="{{ translate('Semaine suivante') }}">
                     <i data-lucide="chevron-right" class="pro-nav__icon"></i>
                 </a>
                 {% if agenda.week != agenda.currentWeek %}
                     <a href="{{ path('pro_agenda') }}" class="pro-button pro-button--small">
-                        Cette semaine
+                        {{ translate('Cette semaine') }}
                     </a>
                 {% endif %}
             </div>
@@ -38,7 +38,7 @@
             {% endfor %}
             {% if canPublish %}
                 <a href="{{ path('pro_slot_new') }}" class="pro-button pro-button--primary">
-                    Publier un créneau
+                    {{ translate('Publier un créneau') }}
                 </a>
             {% endif %}
         </div>
@@ -84,6 +84,6 @@
         </div>
     </div>
     <p class="pro-subtitle">
-        Cliquez sur un créneau pour voir la réservation, le gérer ou le republier.
+        {{ translate('Cliquez sur un créneau pour voir la réservation, le gérer ou le republier.') }}
     </p>
 {% endblock %}

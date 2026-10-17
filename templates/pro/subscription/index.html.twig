@@ -3,20 +3,20 @@
 {% set pro_section = 'billing' %}
 
 {% block title %}
-    Abonnement · Espace pro
+    {{ translate('Abonnement · Espace pro') }}
 {% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
             <a href="{{ path('pro_billing') }}" class="pro-back">
-                ← Facturation
+                ← {{ translate('Facturation') }}
             </a>
             <h1 class="pro-title">
-                Formules
+                {{ translate('Formules') }}
             </h1>
             <span class="pro-subtitle">
-                {{ establishmentsCount }} établissement{{ establishmentsCount > 1 ? 's' : '' }} facturable{{ establishmentsCount > 1 ? 's' : '' }}. Le changement vers un abonnement est immédiat, au prorata.
+                {{ translate('{count, plural, one {# établissement facturable. Le changement vers un abonnement est immédiat, au prorata.} other {# établissements facturables. Le changement vers un abonnement est immédiat, au prorata.}}', { count: establishmentsCount }) }}
             </span>
         </div>
     </div>
@@ -28,14 +28,14 @@
             <div class="settings-line__actions">
                 {% if current.canCancel %}
                     <a href="{{ path('pro_subscription_cancel_form') }}" class="pro-button pro-button--small pro-button--danger">
-                        Résilier
+                        {{ translate('Résilier') }}
                     </a>
                 {% endif %}
                 {% if current.canRevoke %}
                     <form method="post" action="{{ path('pro_subscription_cancel_revoke') }}">
                         {{ csrf_field('pro')|raw }}
                         <button type="submit" class="pro-button pro-button--small pro-button--success">
-                            Annuler la résiliation
+                            {{ translate('Annuler la résiliation') }}
                         </button>
                     </form>
                 {% endif %}
@@ -51,11 +51,11 @@
                 {% include 'components/plan_card.html.twig' %}
                 {% if plan.current %}
                     <span class="plan-card__cta plan-card__cta--muted">
-                        Votre formule
+                        {{ translate('Votre formule') }}
                     </span>
                 {% else %}
                     <a href="{{ path('pro_subscription_quote', { plan: plan.code, period: period }) }}" class="pro-button pro-button--primary plan-card__cta">
-                        Choisir
+                        {{ translate('Choisir') }}
                     </a>
                 {% endif %}
             </div>

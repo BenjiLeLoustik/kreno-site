@@ -3,7 +3,7 @@
 {% set pro_section = 'billing' %}
 
 {% block title %}
-    Paiement · Espace pro
+    {{ translate('Paiement · Espace pro') }}
 {% endblock %}
 
 {% block javascripts %}
@@ -17,23 +17,23 @@
     <div class="pro-head">
         <div class="pro-head__text">
             <a href="{{ path('pro_billing') }}" class="pro-back">
-                ← Facturation
+                {{ translate('← Facturation') }}
             </a>
             <h1 class="pro-title">
                 {% if payment.status == 'succeeded' %}
-                    Paiement réussi
+                    {{ translate('Paiement réussi') }}
                 {% elseif payment.status == 'requires_action' %}
-                    Validation bancaire requise
+                    {{ translate('Validation bancaire requise') }}
                 {% elseif payment.status == 'pending' %}
-                    Paiement en cours
+                    {{ translate('Paiement en cours') }}
                 {% else %}
-                    Paiement refusé
+                    {{ translate('Paiement refusé') }}
                 {% endif %}
             </h1>
             <span class="pro-subtitle">
                 {{ payment.amount }}
                 {% if payment.invoice %}
-                    · facture {{ payment.invoice.number }}
+                    {{ translate('· facture {number}', {number: payment.invoice.number}) }}
                 {% endif %}
                 {% if payment.date %}
                     · {{ payment.date }}
@@ -42,7 +42,7 @@
         </div>
         {% if payment.invoice %}
             <a href="{{ path('pro_billing_invoice', { number: payment.invoice.number }) }}" class="pro-button">
-                Voir la facture
+                {{ translate('Voir la facture') }}
             </a>
         {% endif %}
     </div>
@@ -53,7 +53,7 @@
                 <i data-lucide="check"></i>
             </span>
             <h2 class="pro-card__title">
-                Merci, c'est réglé.
+                {{ translate('Merci, c\'est réglé.') }}
             </h2>
             <dl class="pro-facts">
                 {% for fact in payment.facts ?? [] %}
@@ -67,7 +67,7 @@
             </dl>
             {% if billingEmail %}
                 <p class="pro-field__hint">
-                    La facture acquittée est envoyée à {{ billingEmail }}.
+                    {{ translate('La facture acquittée est envoyée à {billingEmail}.', {billingEmail: billingEmail}) }}
                 </p>
             {% endif %}
         </section>
@@ -75,20 +75,20 @@
         <section class="pro-card payment-result">
             {% if payment.status == 'requires_action' %}
                 <p>
-                    Votre banque demande une confirmation (3D Secure) pour ce paiement.
+                    {{ translate('Votre banque demande une confirmation (3D Secure) pour ce paiement.') }}
                 </p>
             {% else %}
                 <p>
-                    Le paiement est en cours de traitement par votre banque. Un prélèvement SEPA peut prendre jusqu'à 2 jours ouvrés.
+                    {{ translate('Le paiement est en cours de traitement par votre banque. Un prélèvement SEPA peut prendre jusqu\'à 2 jours ouvrés.') }}
                 </p>
             {% endif %}
             <form method="post" action="{{ path('pro_billing_payment_confirm', { id: payment.id }) }}" class="settings-line__actions"{% if action %} data-stripe-action data-stripe-key="{{ action.gatewayKey }}" data-stripe-secret="{{ action.clientSecret }}"{% endif %}>
                 {{ csrf_field('pro')|raw }}
                 <button type="submit" class="pro-button pro-button--primary">
                     {% if action %}
-                        Valider avec ma banque
+                        {{ translate('Valider avec ma banque') }}
                     {% else %}
-                        Actualiser le statut
+                        {{ translate('Actualiser le statut') }}
                     {% endif %}
                 </button>
             </form>
@@ -101,11 +101,11 @@
             <section class="pro-card pro-columns__main">
                 {% if payment.reason %}
                     <p class="pro-flash pro-flash--error">
-                        Motif : {{ payment.reason }}
+                        {{ translate('Motif: {reason}', {reason: payment.reason}) }}
                     </p>
                 {% endif %}
                 <h2 class="pro-card__title">
-                    Et maintenant ?
+                    {{ translate('Et maintenant ?') }}
                 </h2>
                 <ol class="payment-timeline">
                     {% for step in payment.timeline %}
@@ -123,7 +123,7 @@
             {% if payment.invoice and payment.invoice.status != 'paid' %}
                 <section class="pro-card pro-columns__aside">
                     <h2 class="pro-card__title">
-                        Régler maintenant
+                        {{ translate('Régler maintenant') }}
                     </h2>
                     {% for option in payment.retryOptions %}
                         {% if not option.expired %}
@@ -147,7 +147,7 @@
                         {% endif %}
                     {% endfor %}
                     <a href="{{ path('pro_billing') }}#moyens" class="pro-button">
-                        Ajouter un autre moyen de paiement
+                        {{ translate('Ajouter un autre moyen de paiement') }}
                     </a>
                 </section>
             {% endif %}

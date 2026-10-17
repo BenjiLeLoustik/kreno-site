@@ -3,14 +3,14 @@
 {% set pro_section = 'reports' %}
 
 {% block title %}
-    Signalement {{ report.reference }} · Espace pro
+    {{ translate('Signalement {reference} · Espace pro', {reference: report.reference}) }}
 {% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
             <a href="{{ path('pro_reports', { tab: received ? 'received' : 'mine' }) }}" class="pro-back">
-                ← Signalements · {{ report.reference }}
+                {{ translate('← Signalements') }} · {{ report.reference }}
             </a>
             <h1 class="pro-title">
                 {{ report.title }}
@@ -29,7 +29,7 @@
             {% if report.booking %}
                 <dl class="pro-facts">
                     <dt class="pro-facts__label">
-                        Réservation
+                        {{ translate('Réservation') }}
                     </dt>
                     <dd class="pro-facts__value">
                         {{ report.booking.reference }} · {{ report.booking.label }} · {{ report.booking.price }}
@@ -45,14 +45,14 @@
             {% if report.resolution %}
                 <div class="pro-note">
                     <b>
-                        Décision :
+                        {{ translate('Décision :') }}
                     </b>
                     {{ report.resolution }}
                 </div>
             {% endif %}
 
             <h2 class="settings-subtitle">
-                Échanges
+                {{ translate('Échanges') }}
             </h2>
             {% for message in report.messages %}
                 <div class="report-message">
@@ -72,7 +72,7 @@
                 </div>
             {% else %}
                 <p class="pro-subtitle">
-                    Pas encore d'échange.
+                    {{ translate('Pas encore d\'échange.') }}
                 </p>
             {% endfor %}
         </section>
@@ -80,23 +80,23 @@
         <aside class="pro-card pro-columns__aside">
             {% if received and report.canAnswer %}
                 <h2 class="pro-card__title">
-                    Votre réponse
+                    {{ translate('Votre réponse') }}
                 </h2>
                 {% if report.replyRemaining %}
                     <p class="pro-subtitle">
-                        Réponse attendue sous {{ report.replyRemaining }}. Sans réponse, l'équipe Kréno décide sur la base du signalement.
+                        {{ translate('Réponse attendue sous {replyRemaining}. Sans réponse, l\'équipe Kréno décide sur la base du signalement.', {replyRemaining: report.replyRemaining}) }}
                     </p>
                 {% endif %}
             {% elseif report.open %}
                 <h2 class="pro-card__title">
-                    Ajouter une précision
+                    {{ translate('Ajouter une précision') }}
                 </h2>
             {% else %}
                 <h2 class="pro-card__title">
-                    Signalement clos
+                    {{ translate('Signalement clos') }}
                 </h2>
                 <p class="pro-subtitle">
-                    Ce signalement est traité. Contactez l'équipe Kréno pour toute question.
+                    {{ translate('Ce signalement est traité. Contactez l\'équipe Kréno pour toute question.') }}
                 </p>
             {% endif %}
 
@@ -104,12 +104,12 @@
                 <form method="post" action="{{ path('pro_report_message', { id: report.id }) }}" class="pro-form">
                     {{ csrf_field('pro')|raw }}
                     <label class="pro-field">
-                        Message à l'équipe Kréno
+                        {{ translate('Message à l\'équipe Kréno') }}
                         <textarea name="body" rows="5" required minlength="2" maxlength="2000" class="pro-input pro-input--area"></textarea>
                     </label>
                     <div>
                         <button type="submit" class="pro-button pro-button--primary">
-                            Envoyer
+                            {{ translate('Envoyer') }}
                         </button>
                     </div>
                 </form>

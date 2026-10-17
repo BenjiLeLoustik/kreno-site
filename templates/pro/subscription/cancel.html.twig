@@ -2,19 +2,19 @@
 
 {% set pro_section = 'billing' %}
 
-{% block title %}Résilier · Espace pro{% endblock %}
+{% block title %}{{ translate('Résilier · Espace pro') }}{% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
             <a href="{{ path('pro_subscription') }}" class="pro-back">
-                ← Formules
+                ← {{ translate('Formules') }}
             </a>
             <h1 class="pro-title">
-                Résilier « {{ cancellation.plan }} »
+                {{ translate('Résilier « {plan} »', { plan: cancellation.plan }) }}
             </h1>
             <span class="pro-subtitle">
-                {{ cancellation.company }} · votre formule reste active jusqu'au {{ cancellation.activeUntil }}.
+                {{ translate('{company} · votre formule reste active jusqu\'au {date}.', { company: cancellation.company, date: cancellation.activeUntil }) }}
             </span>
         </div>
     </div>
@@ -43,23 +43,23 @@
     <div class="pro-columns">
         <section class="pro-card pro-columns__main">
             <h2 class="pro-card__title">
-                Ce qui change
+                {{ translate('Ce qui change') }}
             </h2>
             <dl class="pro-facts">
                 <dt class="pro-facts__label">
-                    Fin de la formule
+                    {{ translate('Fin de la formule') }}
                 </dt>
                 <dd class="pro-facts__value">
                     {{ cancellation.activeUntil }}
                 </dd>
                 <dt class="pro-facts__label">
-                    À partir du
+                    {{ translate('À partir du') }}
                 </dt>
                 <dd class="pro-facts__value">
                     {{ cancellation.switchDate }} · {{ cancellation.nextPlan }}
                 </dd>
                 <dt class="pro-facts__label">
-                    Remboursement
+                    {{ translate('Remboursement') }}
                 </dt>
                 <dd class="pro-facts__value">
                     {{ cancellation.refund }}
@@ -68,7 +68,7 @@
             <div class="cancel-lists">
                 <div class="cancel-list">
                     <b>
-                        Vous gardez
+                        {{ translate('Vous gardez') }}
                     </b>
                     <ul class="cancel-list__items">
                         {% for item in cancellation.keep %}
@@ -80,7 +80,7 @@
                 </div>
                 <div class="cancel-list">
                     <b>
-                        Vous perdez
+                        {{ translate('Vous perdez') }}
                     </b>
                     <ul class="cancel-list__items">
                         {% for item in cancellation.lose %}
@@ -95,13 +95,13 @@
 
         <section class="pro-card pro-columns__aside">
             <h2 class="pro-card__title">
-                Confirmer la résiliation
+                {{ translate('Confirmer la résiliation') }}
             </h2>
             <form method="post" action="{{ path('pro_subscription_cancel') }}" class="pro-form">
                 {{ csrf_field('pro')|raw }}
                 <fieldset class="report-reasons">
                     <legend class="pro-field">
-                        Pourquoi partez-vous ?
+                        {{ translate('Pourquoi partez-vous ?') }}
                     </legend>
                     {% for reason in cancellation.reasons %}
                         <label class="settings-check">
@@ -111,7 +111,7 @@
                     {% endfor %}
                 </fieldset>
                 <label class="pro-field">
-                    Un commentaire (facultatif)
+                    {{ translate('Un commentaire (facultatif)') }}
                     <textarea name="comment" rows="3" maxlength="1000" class="pro-input pro-input--area"></textarea>
                 </label>
                 <label class="settings-check">
@@ -120,10 +120,10 @@
                     {{ cancellation.acknowledgement }}
                 </label>
                 <button type="submit" class="pro-button pro-button--danger pro-button--block">
-                    Résilier ma formule
+                    {{ translate('Résilier ma formule') }}
                 </button>
                 <a href="{{ path('pro_subscription') }}" class="pro-button pro-button--block">
-                    Garder ma formule
+                    {{ translate('Garder ma formule') }}
                 </a>
             </form>
         </section>

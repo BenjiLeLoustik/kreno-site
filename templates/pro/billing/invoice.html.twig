@@ -10,20 +10,20 @@
 } %}
 
 {% block title %}
-    Facture {{ invoice.number }} · Espace pro
+    {{ translate('Facture {number} · Espace pro', {number: invoice.number}) }}
 {% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
             <a href="{{ path('pro_billing') }}#factures" class="pro-back">
-                ← Facturation
+                {{ translate('← Facturation') }}
             </a>
             <h1 class="pro-title">
                 {% if invoice.type == 'credit_note' %}
-                    Avoir
+                    {{ translate('Avoir') }}
                 {% else %}
-                    Facture
+                    {{ translate('Facture') }}
                 {% endif %}
                 {{ invoice.number }}
             </h1>
@@ -34,7 +34,7 @@
         {% if route_exists('pro_billing_invoice_pdf') %}
             <a href="{{ path('pro_billing_invoice_pdf', { number: invoice.number }) }}" class="pro-button">
                 <i data-lucide="download" class="pro-nav__icon"></i>
-                Télécharger le PDF
+                {{ translate('Télécharger le PDF') }}
             </a>
         {% endif %}
     </div>
@@ -44,7 +44,7 @@
             <div class="invoice__top">
                 <span class="invoice__party">
                     <span class="pro-stat__label">
-                        Émetteur
+                        {{ translate('Émetteur') }}
                     </span>
                     {% if invoice.issuer.name is defined %}
                         <b>
@@ -58,18 +58,18 @@
                     {% endif %}
                     {% if invoice.issuer.siren is defined %}
                         <span class="pro-row__meta">
-                            SIREN {{ invoice.issuer.siren }}
+                            {{ translate('SIREN {siren}', {siren: invoice.issuer.siren}) }}
                         </span>
                     {% endif %}
                     {% if invoice.issuer.vatNumber is defined %}
                         <span class="pro-row__meta">
-                            TVA {{ invoice.issuer.vatNumber }}
+                            {{ translate('TVA {vat}', {vat: invoice.issuer.vatNumber}) }}
                         </span>
                     {% endif %}
                 </span>
                 <span class="invoice__party">
                     <span class="pro-stat__label">
-                        Facturé à
+                        {{ translate('Facturé à') }}
                     </span>
                     <b>
                         {{ invoice.billedTo.name }}
@@ -81,7 +81,7 @@
                     {% endif %}
                     {% if invoice.billedTo.vatNumber %}
                         <span class="pro-row__meta">
-                            TVA {{ invoice.billedTo.vatNumber }}
+                            {{ translate('TVA {vat}', {vat: invoice.billedTo.vatNumber}) }}
                         </span>
                     {% endif %}
                     {% if invoice.billedTo.email %}
@@ -97,28 +97,28 @@
 
             <dl class="pro-facts">
                 <dt class="pro-facts__label">
-                    Date
+                    {{ translate('Date') }}
                 </dt>
                 <dd class="pro-facts__value">
                     {{ invoice.date }}
                 </dd>
                 {% if invoice.period %}
                     <dt class="pro-facts__label">
-                        Période
+                        {{ translate('Période') }}
                     </dt>
                     <dd class="pro-facts__value">
                         {{ invoice.period }}
                     </dd>
                 {% endif %}
                 <dt class="pro-facts__label">
-                    Échéance
+                    {{ translate('Échéance') }}
                 </dt>
                 <dd class="pro-facts__value">
                     {{ invoice.due }}
                 </dd>
                 {% if invoice.creditedInvoice %}
                     <dt class="pro-facts__label">
-                        Facture d'origine
+                        {{ translate('Facture d\'origine') }}
                     </dt>
                     <dd class="pro-facts__value">
                         <a href="{{ path('pro_billing_invoice', { number: invoice.creditedInvoice }) }}">
@@ -133,16 +133,16 @@
                     <thead>
                     <tr>
                         <th scope="col" class="pro-table__th">
-                            Désignation
+                            {{ translate('Désignation') }}
                         </th>
                         <th scope="col" class="pro-table__th">
-                            Qté
+                            {{ translate('Qté') }}
                         </th>
                         <th scope="col" class="pro-table__th">
-                            PU HT
+                            {{ translate('PU HT') }}
                         </th>
                         <th scope="col" class="pro-table__th">
-                            Total HT
+                            {{ translate('Total HT') }}
                         </th>
                     </tr>
                     </thead>
@@ -169,7 +169,7 @@
 
             <dl class="invoice__totals">
                 <dt class="invoice__total-label">
-                    Total HT
+                    {{ translate('Total HT') }}
                 </dt>
                 <dd class="invoice__total-value">
                     {{ invoice.ht }}
@@ -181,7 +181,7 @@
                     {{ invoice.vat }}
                 </dd>
                 <dt class="invoice__total-label invoice__total-label--main">
-                    Total TTC
+                    {{ translate('Total TTC') }}
                 </dt>
                 <dd class="invoice__total-value invoice__total-value--main">
                     {{ invoice.ttc }}
@@ -202,7 +202,7 @@
             <section class="pro-card">
                 <div class="pro-card__head">
                     <h2 class="pro-card__title">
-                        Règlement
+                        {{ translate('Règlement') }}
                     </h2>
                     <span class="pro-badge pro-badge--{{ tones[invoice.kind] ?? 'default' }}">
                         {{ invoice.status }}
@@ -211,17 +211,17 @@
                 {% if invoice.canPay %}
                     {% if paymentMethods is empty %}
                         <p class="pro-subtitle">
-                            Ajoutez un moyen de paiement pour régler cette facture.
+                            {{ translate('Ajoutez un moyen de paiement pour régler cette facture.') }}
                         </p>
                         <a href="{{ path('pro_billing') }}#moyens" class="pro-button pro-button--primary">
-                            Ajouter un moyen de paiement
+                            {{ translate('Ajouter un moyen de paiement') }}
                         </a>
                     {% else %}
                         <form method="post" action="{{ path('pro_billing_invoice_pay', { number: invoice.number }) }}" class="pro-form">
                             {{ csrf_field('pro')|raw }}
                             <fieldset class="report-reasons">
                                 <legend class="pro-field">
-                                    Payer avec
+                                    {{ translate('Payer avec') }}
                                 </legend>
                                 {% for method in paymentMethods %}
                                     <label class="settings-check">
@@ -238,16 +238,16 @@
                             <label class="settings-check">
                                 <input type="hidden" name="makeDefault" value="0">
                                 <input type="checkbox" name="makeDefault" value="1" class="settings-check__input">
-                                Utiliser ce moyen par défaut
+                                {{ translate('Utiliser ce moyen par défaut') }}
                             </label>
                             <button type="submit" class="pro-button pro-button--primary pro-button--block">
-                                Payer {{ invoice.amount }}
+                                {{ translate('Payer {amount}', {amount: invoice.amount}) }}
                             </button>
                         </form>
                     {% endif %}
                 {% else %}
                     <p class="pro-subtitle">
-                        Rien à régler sur ce document.
+                        {{ translate('Rien à régler sur ce document.') }}
                     </p>
                 {% endif %}
             </section>

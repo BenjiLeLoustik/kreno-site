@@ -3,27 +3,27 @@
 {% set pro_section = 'slots' %}
 
 {% block title %}
-    Mes créneaux · Espace pro
+    {{ translate('Mes créneaux · Espace pro') }}
 {% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
             <h1 class="pro-title">
-                Mes créneaux
+                {{ translate('Mes créneaux') }}
             </h1>
             <span class="pro-subtitle">
-                Créneaux à venir et ceux des {{ historyDays }} derniers jours.
+                {{ translate('{count, plural, one {Créneaux à venir et ceux du dernier jour.} other {Créneaux à venir et ceux des # derniers jours.}}', { count: historyDays }) }}
             </span>
         </div>
         {% if canPublish %}
             <a href="{{ path('pro_slot_new') }}" class="pro-button pro-button--primary">
-                Publier un créneau
+                {{ translate('Publier un créneau') }}
             </a>
         {% endif %}
     </div>
 
-    <nav class="pro-tabs" aria-label="Filtrer par statut">
+    <nav class="pro-tabs" aria-label="{{ translate('Filtrer par statut') }}">
         {% for tab in tabs %}
             <a href="{{ path('pro_slots', tab.key != 'all' ? { filter: tab.key } : {}) }}" class="pro-tabs__link{{ tab.key == filter ? ' pro-tabs__link--active' : '' }}"{{ tab.key == filter ? ' aria-current="page"' : '' }}>
                 {{ tab.label }}
@@ -39,23 +39,23 @@
             <thead>
             <tr>
                 <th scope="col" class="pro-table__th">
-                    Créneau
+                    {{ translate('Créneau') }}
                 </th>
                 <th scope="col" class="pro-table__th">
-                    Prestation
+                    {{ translate('Prestation') }}
                 </th>
                 <th scope="col" class="pro-table__th">
-                    Prix Kréno
+                    {{ translate('Prix Kréno') }}
                 </th>
                 <th scope="col" class="pro-table__th">
-                    Statut
+                    {{ translate('Statut') }}
                 </th>
                 <th scope="col" class="pro-table__th">
-                    Client
+                    {{ translate('Client') }}
                 </th>
                 <th scope="col" class="pro-table__th">
                     <span class="sr-only">
-                        Actions
+                        {{ translate('Actions') }}
                     </span>
                 </th>
             </tr>
@@ -76,7 +76,7 @@
                         {% if row.staff %}
                             <br>
                             <span class="pro-table__td--muted">
-                                avec {{ row.staff }}
+                                {{ translate('avec {name}', { name: row.staff }) }}
                             </span>
                         {% endif %}
                     </td>
@@ -113,13 +113,13 @@
                             <form method="post" action="{{ path('pro_slot_withdraw', { id: row.id }) }}">
                                 {{ csrf_field('pro')|raw }}
                                 <input type="hidden" name="filter" value="{{ filter }}">
-                                <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="Retirer le créneau de {{ row.time }} ? Il ne sera plus visible des clients.">
-                                    Retirer
+                                <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="{{ translate('Retirer le créneau de {time} ? Il ne sera plus visible des clients.', { time: row.time }) }}">
+                                    {{ translate('Retirer') }}
                                 </button>
                             </form>
                         {% elseif canPublish and row.canRepublish %}
                             <a href="{{ path('pro_slot_new', { from: row.id }) }}" class="pro-button pro-button--small">
-                                Republier
+                                {{ translate('Republier') }}
                             </a>
                         {% endif %}
                     </td>
@@ -127,7 +127,7 @@
             {% else %}
                 <tr>
                     <td colspan="6" class="pro-table__empty">
-                        Aucun créneau dans cette catégorie.
+                        {{ translate('Aucun créneau dans cette catégorie.') }}
                     </td>
                 </tr>
             {% endfor %}

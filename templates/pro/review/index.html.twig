@@ -3,17 +3,17 @@
 {% set pro_section = 'reviews' %}
 
 {% block title %}
-    Avis clients · Espace pro
+    {{ translate('Avis clients · Espace pro') }}
 {% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
             <h1 class="pro-title">
-                Avis clients
+                {{ translate('Avis clients') }}
             </h1>
             <span class="pro-subtitle">
-                Seuls les clients venus à leur rendez-vous peuvent laisser un avis. Une réponse courtoise rassure vos futurs clients.
+                {{ translate('Seuls les clients venus à leur rendez-vous peuvent laisser un avis. Une réponse courtoise rassure vos futurs clients.') }}
             </span>
         </div>
     </div>
@@ -23,7 +23,7 @@
             {% include 'front/review/_summary.html.twig' with { summary: summary } only %}
         {% else %}
             <p class="pro-subtitle">
-                Vous n'avez pas encore reçu d'avis.
+                {{ translate('Vous n\'avez pas encore reçu d\'avis.') }}
             </p>
         {% endif %}
     </section>
@@ -41,7 +41,7 @@
             <div class="review-pro">
                 <div class="review-pro__head">
                     <span class="pro-row__meta">
-                        Réservation {{ review.reference }}
+                        {{ translate('Réservation {reference}', {reference: review.reference}) }}
                     </span>
                     {% if review.status != 'published' %}
                         <span class="pro-badge">
@@ -54,28 +54,35 @@
 
                 {% if review.status == 'reported' and review.reportReason %}
                     <p class="pro-note">
-                        Votre signalement : {{ review.reportReason }}
+                        {{ translate('Votre signalement : {reportReason}', {reportReason: review.reportReason}) }}
                     </p>
                 {% endif %}
                 {% if review.status == 'hidden' and review.moderationNote %}
                     <p class="pro-note">
                         Masqué par l'équipe : {{ review.moderationNote }}
+                        {{ translate('Masqué par l\'équipe : {moderationNote}', {moderationNote: review.moderationNote}) }}
                     </p>
                 {% endif %}
 
                 {% if canManage and review.visible %}
                     <div class="review-pro__actions">
                         <details class="review-pro__panel">
-                            <summary class="pro-button pro-button--small">{{ review.reply ? 'Modifier ma réponse' : 'Répondre' }}</summary>
+                            <summary class="pro-button pro-button--small">
+                                {% if review.reply %}
+                                    {{ translate('Modifier ma réponse') }}
+                                {% else %}
+                                    {{ translate('Répondre') }}
+                                {% endif %}
+                            </summary>
                             <form method="post" action="{{ path('pro_review_reply', { id: review.id }) }}" class="pro-form review-pro__form">
                                 {{ csrf_field('pro')|raw }}
                                 <input type="hidden" name="tab" value="{{ tab }}">
                                 <label class="pro-field">
-                                    Votre réponse publique
+                                    {{ translate('Votre réponse publique') }}
                                     <textarea name="body" rows="4" required minlength="2" maxlength="1000" class="pro-input pro-input--area">{{ review.reply }}</textarea>
                                 </label>
                                 <button type="submit" class="pro-button pro-button--primary">
-                                    Publier la réponse
+                                    {{ translate('Publier la réponse') }}
                                 </button>
                             </form>
                         </details>
@@ -83,20 +90,20 @@
                         {% if review.status == 'published' %}
                             <details class="review-pro__panel">
                                 <summary class="pro-button pro-button--small">
-                                    Signaler
+                                    {{ translate('Signaler') }}
                                 </summary>
                                 <form method="post" action="{{ path('pro_review_report', { id: review.id }) }}" class="pro-form review-pro__form">
                                     {{ csrf_field('pro')|raw }}
                                     <input type="hidden" name="tab" value="{{ tab }}">
                                     <label class="pro-field">
-                                        Pourquoi cet avis pose-t-il problème ?
-                                        <textarea name="reason" rows="3" required minlength="10" maxlength="500" class="pro-input pro-input--area" placeholder="Propos injurieux, avis sans rapport avec la prestation…"></textarea>
+                                        {{ translate('Pourquoi cet avis pose-t-il problème ?') }}
+                                        <textarea name="reason" rows="3" required minlength="10" maxlength="500" class="pro-input pro-input--area" placeholder="{{ translate('Propos injurieux, avis sans rapport avec la prestation…') }}"></textarea>
                                         <span class="pro-field__hint">
-                                            Notre équipe examine votre signalement. L'avis reste visible en attendant.
+                                            {{ translate('Notre équipe examine votre signalement. L\'avis reste visible en attendant.') }}
                                         </span>
                                     </label>
                                     <button type="submit" class="pro-button pro-button--danger">
-                                        Envoyer le signalement
+                                        {{ translate('Envoyer le signalement') }}
                                     </button>
                                 </form>
                             </details>
@@ -106,7 +113,7 @@
             </div>
         {% else %}
             <p class="pro-subtitle">
-                Aucun avis dans cette liste.
+                {{ translate('Aucun avis dans cette liste.') }}
             </p>
         {% endfor %}
     </section>

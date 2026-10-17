@@ -1,39 +1,37 @@
 {% extends 'layouts/pro-signup.html.twig' %}
 
 {% block title %}
-    Vérification · Inscription pro
+    {{ translate('Vérification · Inscription pro') }}
 {% endblock %}
 
 {% block heading %}
-    Vérifiez votre e-mail
+    {{ translate('Vérifiez votre e-mail') }}
 {% endblock %}
 
 {% block lead %}
-    Nous avons envoyé un code à 6 chiffres à
-    <b>
-        {{ email }}
-    </b>.
+    {% set emailTag = '<b>' ~ email|e ~ '</b>' %}
+    {{ translate('Nous avons envoyé un code à 6 chiffres à {email}.', { email: emailTag })|raw }}
 {% endblock %}
 
 {% block content %}
     <form method="post" action="{{ path('pro_signup_verify') }}" class="signup-form">
         {{ csrf_field('pro')|raw }}
         <label class="pro-field">
-            Code de vérification
+            {{ translate('Code de vérification') }}
             <input type="text" name="code" required inputmode="numeric" autocomplete="one-time-code" pattern="[0-9 ]{6,7}" maxlength="7" class="pro-input signup-code" placeholder="000000" autofocus>
         </label>
         {% include 'pro/signup/_actions.html.twig' with {
-            label: 'Vérifier et continuer'
+            label: translate('Vérifier et continuer')
         } %}
     </form>
 
     <form method="post" action="{{ path('pro_signup_verify_resend') }}" class="signup-resend">
         {{ csrf_field('pro')|raw }}
         <span class="signup-resend__text">
-            Rien reçu ? Regardez dans les indésirables.
+            {{ translate('Rien reçu ? Regardez dans les indésirables.') }}
         </span>
         <button type="submit" class="signup-resend__button">
-            Renvoyer un code
+            {{ translate('Renvoyer un code') }}
         </button>
     </form>
 {% endblock %}
