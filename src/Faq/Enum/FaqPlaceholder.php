@@ -2,6 +2,8 @@
 
 namespace App\Faq\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum FaqPlaceholder: string
 {
     case MIN_DISCOUNT = 'minDiscount';
@@ -27,7 +29,10 @@ enum FaqPlaceholder: string
         $choices = [];
 
         foreach (self::cases() as $placeholder) {
-            $choices[] = ['token' => $placeholder->token(), 'label' => $placeholder->label()];
+            $choices[] = [
+                'token' => $placeholder->token(),
+                'label' => $placeholder->label()
+            ];
         }
 
         return $choices;
@@ -41,12 +46,12 @@ enum FaqPlaceholder: string
     public function label(): string
     {
         return match ($this) {
-            self::MIN_DISCOUNT => 'Remise minimale (%)',
-            self::MAX_DISCOUNT => 'Remise maximale (%)',
-            self::CANCELLATION_DELAY => 'Délai d\'annulation gratuite',
-            self::TOLERATED_NO_SHOWS => 'Absences tolérées',
-            self::SUSPENSION_DAYS => 'Jours de suspension',
-            self::REPORT_WINDOW_HOURS => 'Délai de signalement (h)',
+            self::MIN_DISCOUNT => Translation::translate('Remise minimale (%)'),
+            self::MAX_DISCOUNT => Translation::translate('Remise maximale (%)'),
+            self::CANCELLATION_DELAY => Translation::translate('Délai d\'annulation gratuite'),
+            self::TOLERATED_NO_SHOWS => Translation::translate('Absences tolérées'),
+            self::SUSPENSION_DAYS => Translation::translate('Jours de suspension'),
+            self::REPORT_WINDOW_HOURS => Translation::translate('Délai de signalement (h)'),
         };
     }
 }

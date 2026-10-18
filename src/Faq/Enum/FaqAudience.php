@@ -2,6 +2,8 @@
 
 namespace App\Faq\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum FaqAudience: string
 {
     case CLIENT = 'client';
@@ -26,16 +28,16 @@ enum FaqAudience: string
     public function label(): string
     {
         return match ($this) {
-            self::CLIENT => 'Clients',
-            self::PRO => 'Professionnels',
+            self::CLIENT => Translation::translate('Clients'),
+            self::PRO => Translation::translate('Professionnels'),
         };
     }
 
     public function page(): string
     {
         return match ($this) {
-            self::CLIENT => 'Page Aide',
-            self::PRO => 'Page Pour les pros',
+            self::CLIENT => Translation::translate('Page Aide'),
+            self::PRO => Translation::translate('Page Pour les pros'),
         };
     }
 }

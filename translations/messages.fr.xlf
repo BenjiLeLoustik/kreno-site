@@ -5946,6 +5946,98 @@
         <source>à moins de %d km</source>
         <target>à moins de %d km</target>
       </trans-unit>
+      <trans-unit id="df49cc190d0118e2" resname="Absences tolérées">
+        <source>Absences tolérées</source>
+        <target>Absences tolérées</target>
+      </trans-unit>
+      <trans-unit id="65a7256542c30138" resname="Clients">
+        <source>Clients</source>
+        <target>Clients</target>
+      </trans-unit>
+      <trans-unit id="81f1aa9fff791bc1" resname="Délai d&apos;annulation gratuite">
+        <source>Délai d&apos;annulation gratuite</source>
+        <target>Délai d&apos;annulation gratuite</target>
+      </trans-unit>
+      <trans-unit id="8598c56db0e1d1e3" resname="Délai de signalement (h)">
+        <source>Délai de signalement (h)</source>
+        <target>Délai de signalement (h)</target>
+      </trans-unit>
+      <trans-unit id="ce0bb12d9ef5418c" resname="Jours de suspension">
+        <source>Jours de suspension</source>
+        <target>Jours de suspension</target>
+      </trans-unit>
+      <trans-unit id="2bbdfde9cf9e6bc2" resname="La question {id} n&apos;existe pas.">
+        <source>La question {id} n&apos;existe pas.</source>
+        <target>La question {id} n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="17e0ee2206d5b872" resname="La rubrique {slug} n&apos;existe pas.">
+        <source>La rubrique {slug} n&apos;existe pas.</source>
+        <target>La rubrique {slug} n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="a04ff5b8912121aa" resname="Ordre des questions enregistré.">
+        <source>Ordre des questions enregistré.</source>
+        <target>Ordre des questions enregistré.</target>
+      </trans-unit>
+      <trans-unit id="fd084774e685bf2f" resname="Ordre des rubriques enregistré.">
+        <source>Ordre des rubriques enregistré.</source>
+        <target>Ordre des rubriques enregistré.</target>
+      </trans-unit>
+      <trans-unit id="33e40b6c8e077201" resname="Page Aide">
+        <source>Page Aide</source>
+        <target>Page Aide</target>
+      </trans-unit>
+      <trans-unit id="15c3284b50a088ff" resname="Page Pour les pros">
+        <source>Page Pour les pros</source>
+        <target>Page Pour les pros</target>
+      </trans-unit>
+      <trans-unit id="c987b2b291217290" resname="Question ajoutée à « %s ».">
+        <source>Question ajoutée à « %s ».</source>
+        <target>Question ajoutée à « %s ».</target>
+      </trans-unit>
+      <trans-unit id="4b50f7de6d15d073" resname="Question masquée.">
+        <source>Question masquée.</source>
+        <target>Question masquée.</target>
+      </trans-unit>
+      <trans-unit id="95634e609c90a8ee" resname="Question modifiée.">
+        <source>Question modifiée.</source>
+        <target>Question modifiée.</target>
+      </trans-unit>
+      <trans-unit id="9e270693d8ea750d" resname="Question supprimée.">
+        <source>Question supprimée.</source>
+        <target>Question supprimée.</target>
+      </trans-unit>
+      <trans-unit id="a2f242f15821fab6" resname="Question visible.">
+        <source>Question visible.</source>
+        <target>Question visible.</target>
+      </trans-unit>
+      <trans-unit id="3f66ef09783c32bf" resname="Remise maximale (%)">
+        <source>Remise maximale (%)</source>
+        <target>Remise maximale (%)</target>
+      </trans-unit>
+      <trans-unit id="53752542ca8f97ff" resname="Remise minimale (%)">
+        <source>Remise minimale (%)</source>
+        <target>Remise minimale (%)</target>
+      </trans-unit>
+      <trans-unit id="7a4757dd93065cc6" resname="Rubrique « %s » ajoutée.">
+        <source>Rubrique « %s » ajoutée.</source>
+        <target>Rubrique « %s » ajoutée.</target>
+      </trans-unit>
+      <trans-unit id="20dccae9d2b64a46" resname="Rubrique « %s » masquée.">
+        <source>Rubrique « %s » masquée.</source>
+        <target>Rubrique « %s » masquée.</target>
+      </trans-unit>
+      <trans-unit id="e8af6e2d2db8d4b3" resname="Rubrique « %s » modifiée.">
+        <source>Rubrique « %s » modifiée.</source>
+        <target>Rubrique « %s » modifiée.</target>
+      </trans-unit>
+      <trans-unit id="d2b0a5d265ddb204" resname="Rubrique « %s » supprimée avec ses questions.">
+        <source>Rubrique « %s » supprimée avec ses questions.</source>
+        <target>Rubrique « %s » supprimée avec ses questions.</target>
+      </trans-unit>
+      <trans-unit id="5ed7ec1902489efa" resname="Rubrique « %s » visible.">
+        <source>Rubrique « %s » visible.</source>
+        <target>Rubrique « %s » visible.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

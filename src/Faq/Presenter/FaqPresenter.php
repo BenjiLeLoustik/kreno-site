@@ -35,7 +35,11 @@ class FaqPresenter
             return null;
         }
 
-        return ['key' => $category->getSlug(), 'label' => $category->getName(), 'items' => $items];
+        return [
+            'key' => $category->getSlug(),
+            'label' => $category->getName(),
+            'items' => $items
+        ];
     }
 
     public function publicItems(FaqCategory $category, array $rules): array

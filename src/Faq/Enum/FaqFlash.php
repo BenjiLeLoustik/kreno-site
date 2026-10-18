@@ -2,6 +2,8 @@
 
 namespace App\Faq\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum FaqFlash
 {
     case CATEGORY_CREATED;
@@ -43,18 +45,18 @@ enum FaqFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::CATEGORY_CREATED => 'Rubrique « %s » ajoutée.',
-            self::CATEGORIES_REORDERED => 'Ordre des rubriques enregistré.',
-            self::CATEGORY_UPDATED => 'Rubrique « %s » modifiée.',
-            self::CATEGORY_SHOWN => 'Rubrique « %s » visible.',
-            self::CATEGORY_HIDDEN => 'Rubrique « %s » masquée.',
-            self::CATEGORY_DELETED => 'Rubrique « %s » supprimée avec ses questions.',
-            self::QUESTION_CREATED => 'Question ajoutée à « %s ».',
-            self::QUESTIONS_REORDERED => 'Ordre des questions enregistré.',
-            self::QUESTION_UPDATED => 'Question modifiée.',
-            self::QUESTION_SHOWN => 'Question visible.',
-            self::QUESTION_HIDDEN => 'Question masquée.',
-            self::QUESTION_DELETED => 'Question supprimée.',
+            self::CATEGORY_CREATED => Translation::translate('Rubrique « %s » ajoutée.'),
+            self::CATEGORIES_REORDERED => Translation::translate('Ordre des rubriques enregistré.'),
+            self::CATEGORY_UPDATED => Translation::translate('Rubrique « %s » modifiée.'),
+            self::CATEGORY_SHOWN => Translation::translate('Rubrique « %s » visible.'),
+            self::CATEGORY_HIDDEN => Translation::translate('Rubrique « %s » masquée.'),
+            self::CATEGORY_DELETED => Translation::translate('Rubrique « %s » supprimée avec ses questions.'),
+            self::QUESTION_CREATED => Translation::translate('Question ajoutée à « %s ».'),
+            self::QUESTIONS_REORDERED => Translation::translate('Ordre des questions enregistré.'),
+            self::QUESTION_UPDATED => Translation::translate('Question modifiée.'),
+            self::QUESTION_SHOWN => Translation::translate('Question visible.'),
+            self::QUESTION_HIDDEN => Translation::translate('Question masquée.'),
+            self::QUESTION_DELETED => Translation::translate('Question supprimée.'),
         };
     }
 }
