@@ -13,6 +13,7 @@ use App\Establishment\Service\AlertMatchService;
 use App\Repository\BookingRepository;
 use App\Repository\User\UserNotificationRepository;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\User\Presenter\NotificationPresenter;
 use App\Website\Provider\WebsiteProvider;
 use DateTimeImmutable;
@@ -45,7 +46,7 @@ class CustomerDashboardProvider
 
         return [
             'date' => CalendarHelper::longDate($now),
-            'greeting' => sprintf('Bonjour %s', $user->getFirstName()),
+            'greeting' => sprintf(Translation::translate('Bonjour %s'), $user->getFirstName()),
             'since' => $this->since($user),
             'savedTotal' => MoneyHelper::format($savings['saved']),
             'next' => $this->next($upcoming, $now),
@@ -69,7 +70,9 @@ class CustomerDashboardProvider
             return null;
         }
 
-        return 'depuis ' . CalendarHelper::monthYear($createdAt);
+        return Translation::translate('depuis {year}', [
+            'year' => CalendarHelper::monthYear($createdAt)
+        ]);
     }
 
     private function next(array $upcoming, DateTimeImmutable $now): ?array
@@ -87,23 +90,23 @@ class CustomerDashboardProvider
 
         return $this->stat(
             'bookings',
-            'Réservations',
+            Translation::translate('Réservations'),
             $count,
-            sprintf('dont %d à venir', $upcoming)
+            sprintf(Translation::translate('dont %d à venir'), $upcoming)
         );
     }
 
     private function savedStat(array $savings): array
     {
-        $note = 'Pas encore de réservation';
+        $note = Translation::translate('Pas encore de réservation');
 
         if ($savings['discount'] !== null) {
-            $note = sprintf('-%d %% en moyenne', $savings['discount']);
+            $note = sprintf(Translation::translate('-%d %% en moyenne'), $savings['discount']);
         }
 
         return $this->stat(
             'saved',
-            'Économisé',
+            Translation::translate('Économisé'),
             MoneyHelper::format($savings['saved']),
             $note
         );
@@ -115,14 +118,14 @@ class CustomerDashboardProvider
         $windowDays = $rule->getNoShowWindowDays();
         $count = $this->bookings->countNoShowsSince($user, $now->modify(sprintf('-%d days', $windowDays)));
         $note = sprintf(
-            '/ %d tolérées sur les %d derniers jours',
+            Translation::translate('/ %d tolérées sur les %d derniers jours'),
             $rule->getToleratedNoShows(),
             $windowDays
         );
 
         return $this->stat(
             'noShows',
-            'Absences',
+            Translation::translate('Absences'),
             (string) $count,
             $note
         );

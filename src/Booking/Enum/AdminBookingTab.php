@@ -2,6 +2,8 @@
 
 namespace App\Booking\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AdminBookingTab: string
 {
     case ALL = 'all';
@@ -20,7 +22,10 @@ enum AdminBookingTab: string
         $choices = [];
 
         foreach (self::cases() as $tab) {
-            $choices[] = ['key' => $tab->value, 'label' => $tab->label()];
+            $choices[] = [
+                'key' => $tab->value,
+                'label' => $tab->label()
+            ];
         }
 
         return $choices;
@@ -29,11 +34,11 @@ enum AdminBookingTab: string
     public function label(): string
     {
         return match ($this) {
-            self::ALL => 'Toutes',
-            self::COMING => 'À venir',
-            self::DONE => 'Honorées',
-            self::CANCELLED => 'Annulées',
-            self::NO_SHOW => 'Absences',
+            self::ALL => Translation::translate('Toutes'),
+            self::COMING => Translation::translate('À venir'),
+            self::DONE => Translation::translate('Honorées'),
+            self::CANCELLED => Translation::translate('Annulées'),
+            self::NO_SHOW => Translation::translate('Absences'),
         };
     }
 

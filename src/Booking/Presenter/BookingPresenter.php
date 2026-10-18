@@ -17,6 +17,7 @@ use App\Shared\Enum\Weekday;
 use App\Shared\Helper\DateHelper;
 use App\Shared\Helper\DurationHelper;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\User\Helper\UserNameHelper;
 use DateTimeImmutable;
 
@@ -78,7 +79,7 @@ class BookingPresenter
                 'freeCancellationUntil' => DateHelper::time($this->bookingService->freeCancellationUntil($booking)),
                 'cancellationReason' => $booking->getCancellationReason(),
                 'note' => $booking->getNote(),
-                'canReview' => $this->reviewService->canReview($bookin, $now),
+                'canReview' => $this->reviewService->canReview($booking, $now),
             ];
     }
 
@@ -173,11 +174,11 @@ class BookingPresenter
     public function confirmation(Booking $booking, ?DateTimeImmutable $now = null): array
     {
         $data = $this->forCustomer($booking, $now);
-        $establishment = $data['establishment']['name'] ?? 'L\'établissement';
-        $message = '%s est prévenu. Un e-mail de confirmation vient de partir, avec le ticket et l\'adresse. Présente-toi 5 minutes avant.';
+        $establishment = $data['establishment']['name'] ?? Translation::translate('L\'établissement');
+        $message = Translation::translate('%s est prévenu. Un e-mail de confirmation vient de partir, avec le ticket et l\'adresse. Présente-toi 5 minutes avant.');
 
         return $data + [
-                'title' => 'C\'est réservé.',
+                'title' => Translation::translate('C\'est réservé.'),
                 'message' => sprintf($message, $establishment),
                 'cancellationNotice' => $this->cancellationNotice($data['freeCancellationUntil']),
             ];
@@ -192,16 +193,18 @@ class BookingPresenter
         $minutes = intdiv($startsAt->getTimestamp() - $now->getTimestamp(), 60);
 
         if ($minutes < 1440) {
-            return 'dans ' . DurationHelper::format(max(1, $minutes));
+            return Translation::translate('dans {duration}', [
+                'duration' => DurationHelper::format(max(1, $minutes))
+            ]);
         }
 
         $days = intdiv($minutes, 1440);
 
         if ($days > 1) {
-            return sprintf('dans %d jours', $days);
+            return sprintf(Translation::translate('dans %d jours'), $days);
         }
 
-        return sprintf('dans %d jour', $days);
+        return sprintf(Translation::translate('dans %d jour'), $days);
     }
 
     private function discountLabel(Booking $booking): ?string
@@ -308,7 +311,7 @@ class BookingPresenter
     private function clientName(?User $customer): string
     {
         if ($customer === null) {
-            return '—';
+            return '-';
         }
 
         return UserNameHelper::shortName($customer);
@@ -358,23 +361,23 @@ class BookingPresenter
     private function bookingRank(int $count): string
     {
         if ($count <= 1) {
-            return '1re réservation';
+            return Translation::translate('1re réservation');
         }
 
-        return sprintf('%de réservation', $count);
+        return sprintf(Translation::translate('%de réservation'), $count);
     }
 
     private function noShows(int $count): string
     {
         if ($count === 0) {
-            return 'aucune absence';
+            return Translation::translate('aucune absence');
         }
 
         if ($count > 1) {
-            return sprintf('%d absences', $count);
+            return sprintf(Translation::translate('%d absences'), $count);
         }
 
-        return sprintf('%d absence', $count);
+        return sprintf(Translation::translate('%d absence'), $count);
     }
 
     private function adminCustomer(?User $customer): ?array
@@ -398,17 +401,17 @@ class BookingPresenter
             return null;
         }
 
-        return sprintf('Empêché ? Annulation gratuite jusqu\'à %s depuis ton compte.', $freeCancellationUntil);
+        return sprintf(Translation::translate('Empêché ? Annulation gratuite jusqu\'à %s depuis ton compte.'), $freeCancellationUntil);
     }
 
     private function customerTimeline(Booking $booking, DateTimeImmutable $now): array
     {
         $slot = $booking->getSlot();
-        $name = $slot?->getEstablishment()?->getName() ?? 'L\'établissement';
+        $name = $slot?->getEstablishment()?->getName() ?? Translation::translate('L\'établissement');
         $createdAt = $booking->getCreatedAt();
         $timeline = [
-            $this->step($createdAt, sprintf('Réservation confirmée, %s prévenu', $name), true),
-            $this->step($createdAt, 'E-mail de confirmation envoyé', true),
+            $this->step($createdAt, sprintf(Translation::translate('Réservation confirmée, %s prévenu'), $name), true),
+            $this->step($createdAt, Translation::translate('E-mail de confirmation envoyé'), true),
         ];
 
         if ($booking->getCancelledAt() !== null) {
@@ -431,15 +434,15 @@ class BookingPresenter
                 $timeline[] = $this->reminderStep($reminder, $now);
             }
 
-            $timeline[] = $this->step($startsAt, 'Rendez-vous', $startsAt <= $now);
+            $timeline[] = $this->step($startsAt, Translation::translate('Rendez-vous'), $startsAt <= $now);
         }
 
         if ($booking->getHonoredAt() !== null) {
-            $timeline[] = $this->step($booking->getHonoredAt(), 'Rendez-vous honoré', true);
+            $timeline[] = $this->step($booking->getHonoredAt(), Translation::translate('Rendez-vous honoré'), true);
         }
 
         if ($booking->getNoShowAt() !== null) {
-            $label = 'Absence signalée par l\'établissement';
+            $label = Translation::translate('Absence signalée par l\'établissement');
             $timeline[] = $this->step($booking->getNoShowAt(), $label, true, 'danger');
         }
 
@@ -449,19 +452,19 @@ class BookingPresenter
     private function cancellationLabel(Booking $booking): string
     {
         if ($booking->getStatus() === BookingStatus::CANCELLED_BY_ESTABLISHMENT) {
-            return 'Réservation annulée par l\'établissement';
+            return Translation::translate('Réservation annulée par l\'établissement');
         }
 
-        return 'Réservation annulée par vous, sans frais';
+        return Translation::translate('Réservation annulée par vous, sans frais');
     }
 
     private function reminderStep(DateTimeImmutable $reminder, DateTimeImmutable $now): array
     {
         if ($reminder <= $now) {
-            return $this->step($reminder, 'Rappel par e-mail', true);
+            return $this->step($reminder, Translation::translate('Rappel par e-mail'), true);
         }
 
-        return $this->step($reminder, 'Rappel par e-mail (à venir)', false);
+        return $this->step($reminder, Translation::translate('Rappel par e-mail (à venir)'), false);
     }
 
     private function step(?DateTimeImmutable $at, string $label, bool $done, string $tone = 'success'): array

@@ -58,7 +58,11 @@ class CustomerBookingsProvider
         $tabs = [];
 
         foreach (BookingTab::cases() as $tab) {
-            $tabs[] = ['key' => $tab->value, 'label' => $tab->label(), 'selected' => $tab === $selected];
+            $tabs[] = [
+                'key' => $tab->value,
+                'label' => $tab->label(),
+                'selected' => $tab === $selected
+            ];
         }
 
         return $tabs;

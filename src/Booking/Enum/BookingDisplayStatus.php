@@ -2,6 +2,8 @@
 
 namespace App\Booking\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum BookingDisplayStatus: string
 {
     case COMING = 'coming';
@@ -14,35 +16,36 @@ enum BookingDisplayStatus: string
     public function customerLabel(): string
     {
         return match ($this) {
-            self::COMING => 'Confirmée',
-            self::DONE => 'Honorée',
-            self::CANCELLED => 'Annulée',
-            self::CANCELLED_BY_ESTABLISHMENT => 'Annulée par l\'établissement',
-            self::NO_SHOW => 'Absence',
-            self::PENDING => 'En attente de clôture',
+            self::COMING => Translation::translate('Confirmée'),
+            self::DONE => Translation::translate('Honorée'),
+            self::CANCELLED => Translation::translate('Annulée'),
+            self::CANCELLED_BY_ESTABLISHMENT => Translation::translate('Annulée par l\'établissement'),
+            self::NO_SHOW => Translation::translate('Absence'),
+            self::PENDING => Translation::translate('En attente de clôture'),
         };
     }
 
     public function proLabel(): string
     {
         return match ($this) {
-            self::COMING => 'À venir',
-            self::DONE => 'Honorée',
-            self::CANCELLED => 'Annulée par le client',
-            self::CANCELLED_BY_ESTABLISHMENT => 'Annulée par vous',
-            self::NO_SHOW => 'Absent',
-            self::PENDING => 'À clôturer',
+            self::COMING => Translation::translate('À venir'),
+            self::DONE => Translation::translate('Honorée'),
+            self::CANCELLED => Translation::translate('Annulée par le client'),
+            self::CANCELLED_BY_ESTABLISHMENT => Translation::translate('Annulée par vous'),
+            self::NO_SHOW => Translation::translate('Absent'),
+            self::PENDING => Translation::translate('À clôturer'),
         };
     }
 
     public function adminLabel(): string
     {
         return match ($this) {
-            self::COMING => 'À venir',
-            self::DONE => 'Honorée',
-            self::CANCELLED, self::CANCELLED_BY_ESTABLISHMENT => 'Annulée',
-            self::NO_SHOW => 'Absent',
-            self::PENDING => 'À clôturer',
+            self::COMING => Translation::translate('À venir'),
+            self::DONE => Translation::translate('Honorée'),
+            self::CANCELLED,
+            self::CANCELLED_BY_ESTABLISHMENT => Translation::translate('Annulée'),
+            self::NO_SHOW => Translation::translate('Absent'),
+            self::PENDING => Translation::translate('À clôturer'),
         };
     }
 }

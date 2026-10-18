@@ -2,6 +2,8 @@
 
 namespace App\Booking\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum BookingCalendarText
 {
     case SUMMARY;
@@ -15,8 +17,8 @@ enum BookingCalendarText
     private function pattern(): string
     {
         return match ($this) {
-            self::SUMMARY => '%s chez %s',
-            self::DESCRIPTION => 'Réservation %s · paiement sur place',
+            self::SUMMARY => Translation::translate('%s chez %s'),
+            self::DESCRIPTION => Translation::translate('Réservation %s · paiement sur place'),
         };
     }
 }

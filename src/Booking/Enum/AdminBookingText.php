@@ -2,6 +2,8 @@
 
 namespace App\Booking\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AdminBookingText
 {
     case TODAY;
@@ -23,19 +25,40 @@ enum AdminBookingText
         return sprintf($this->pattern(), ...$values);
     }
 
-    private static function plural(int $count): string
-    {
-        if ($count > 1) {
-            return 's';
-        }
-
-        return '';
-    }
-
     private function pattern(): string
     {
         return match ($this) {
-            self::TODAY => 'Aujourd\'hui : %d réservation%s · %d annulation%s · %d absence%s',
+            self::TODAY => Translation::translate('Aujourd\'hui : %s · %s · %s'),
         };
+    }
+
+    private static function bookings(int $count): string
+    {
+        return Translation::translate(
+            '{count, plural, one {# réservation} other {# réservations}}',
+            [
+                'count' => $count
+            ],
+        );
+    }
+
+    private static function cancellations(int $count): string
+    {
+        return Translation::translate(
+            '{count, plural, one {# annulation} other {# annulations}}',
+            [
+                'count' => $count
+            ],
+        );
+    }
+
+    private static function absences(int $count): string
+    {
+        return Translation::translate(
+            '{count, plural, one {# absence} other {# absences}}',
+            [
+                'count' => $count
+            ],
+        );
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Booking\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum BookingTab: string
 {
     case UPCOMING = 'upcoming';
@@ -16,9 +18,9 @@ enum BookingTab: string
     public function label(): string
     {
         return match ($this) {
-            self::UPCOMING => 'À venir',
-            self::PAST => 'Passées',
-            self::CANCELLED => 'Annulées',
+            self::UPCOMING => Translation::translate('À venir'),
+            self::PAST => Translation::translate('Passées'),
+            self::CANCELLED => Translation::translate('Annulées'),
         };
     }
 }

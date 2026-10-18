@@ -2,6 +2,8 @@
 
 namespace App\Booking\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ProBookingFlash
 {
     case HONORED;
@@ -11,9 +13,9 @@ enum ProBookingFlash
     public function text(): string
     {
         return match ($this) {
-            self::HONORED => 'Rendez-vous marqué comme honoré.',
-            self::NO_SHOW => 'Absence enregistrée et signalée à Kréno.',
-            self::CANCELLED => 'Rendez-vous annulé. Le client est prévenu par e-mail.',
+            self::HONORED => Translation::translate('Rendez-vous marqué comme honoré.'),
+            self::NO_SHOW => Translation::translate('Absence enregistrée et signalée à Kréno.'),
+            self::CANCELLED => Translation::translate('Rendez-vous annulé. Le client est prévenu par e-mail.'),
         };
     }
 }

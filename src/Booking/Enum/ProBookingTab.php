@@ -2,6 +2,7 @@
 
 namespace App\Booking\Enum;
 
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 enum ProBookingTab: string
@@ -18,9 +19,9 @@ enum ProBookingTab: string
     public function label(): string
     {
         return match ($this) {
-            self::UPCOMING => 'À venir',
-            self::PAST => 'Passées',
-            self::NO_SHOW => 'Absences',
+            self::UPCOMING => Translation::translate('À venir'),
+            self::PAST => Translation::translate('Passées'),
+            self::NO_SHOW => Translation::translate('Absences'),
         };
     }
 
