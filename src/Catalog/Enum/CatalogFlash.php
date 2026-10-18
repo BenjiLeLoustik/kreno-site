@@ -2,6 +2,8 @@
 
 namespace App\Catalog\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum CatalogFlash
 {
     case CATEGORY_CREATED;
@@ -41,20 +43,20 @@ enum CatalogFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::CATEGORY_CREATED => 'Catégorie « %s » ajoutée.',
-            self::CATEGORIES_REORDERED => 'Ordre des catégories enregistré.',
-            self::CATEGORY_UPDATED => 'Catégorie « %s » modifiée.',
-            self::CATEGORY_SHOWN => 'Catégorie « %s » visible.',
-            self::CATEGORY_HIDDEN => 'Catégorie « %s » masquée.',
-            self::CATEGORY_DELETED => 'Catégorie « %s » supprimée.',
-            self::SUGGESTION_CREATED => 'Suggestion « %s » ajoutée.',
-            self::SUGGESTION_UPDATED => 'Suggestion « %s » modifiée.',
-            self::SUGGESTION_DELETED => 'Suggestion « %s » supprimée.',
-            self::CITY_CREATED => 'Ville « %s » ajoutée.',
-            self::CITIES_REORDERED => 'Ordre des villes enregistré.',
-            self::CITY_UPDATED => 'Ville « %s » modifiée.',
-            self::CITY_STATUS => '%s : %s.',
-            self::CITY_DELETED => 'Ville « %s » supprimée.',
+            self::CATEGORY_CREATED => Translation::translate('Catégorie « %s » ajoutée.'),
+            self::CATEGORIES_REORDERED => Translation::translate('Ordre des catégories enregistré.'),
+            self::CATEGORY_UPDATED => Translation::translate('Catégorie « %s » modifiée.'),
+            self::CATEGORY_SHOWN => Translation::translate('Catégorie « %s » visible.'),
+            self::CATEGORY_HIDDEN => Translation::translate('Catégorie « %s » masquée.'),
+            self::CATEGORY_DELETED => Translation::translate('Catégorie « %s » supprimée.'),
+            self::SUGGESTION_CREATED => Translation::translate('Suggestion « %s » ajoutée.'),
+            self::SUGGESTION_UPDATED => Translation::translate('Suggestion « %s » modifiée.'),
+            self::SUGGESTION_DELETED => Translation::translate('Suggestion « %s » supprimée.'),
+            self::CITY_CREATED => Translation::translate('Ville « %s » ajoutée.'),
+            self::CITIES_REORDERED => Translation::translate('Ordre des villes enregistré.'),
+            self::CITY_UPDATED => Translation::translate('Ville « %s » modifiée.'),
+            self::CITY_STATUS => Translation::translate('%s : %s.'),
+            self::CITY_DELETED => Translation::translate('Ville « %s » supprimée.'),
         };
     }
 }

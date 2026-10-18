@@ -31,18 +31,35 @@ class CatalogPageProvider
         $category = $this->categories->findOneVisibleBySlug($categorySlug);
 
         if ($city !== null && $category !== null) {
-            return ['city_category_show', ['city' => $city->getSlug(), 'category' => $category->getSlug()]];
+            return [
+                'city_category_show', [
+                    'city' => $city->getSlug(),
+                    'category' => $category->getSlug()
+                ]
+            ];
         }
 
         if ($city !== null) {
-            return ['city_show', ['slug' => $city->getSlug()]];
+            return [
+                'city_show',
+                [
+                    'slug' => $city->getSlug()
+                ]
+            ];
         }
 
         if ($category !== null) {
-            return ['category_show', ['slug' => $category->getSlug()]];
+            return [
+                'category_show',
+                [
+                    'slug' => $category->getSlug()
+                ]
+            ];
         }
 
-        return ['home_index', []];
+        return [
+            'home_index', []
+        ];
     }
 
     public function city(string $slug, string $district): array
@@ -120,7 +137,11 @@ class CatalogPageProvider
 
     private function crumb(?string $label, ?string $route = null, array $parameters = []): array
     {
-        return ['label' => $label, 'route' => $route, 'parameters' => $parameters];
+        return [
+            'label' => $label,
+            'route' => $route,
+            'parameters' => $parameters
+        ];
     }
 
     private function district(string $district): ?string

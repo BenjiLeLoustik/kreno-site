@@ -4782,6 +4782,114 @@
         <source>Économisé</source>
         <target>Économisé</target>
       </trans-unit>
+      <trans-unit id="53ed10d7cf63cc70" resname="%s : %s.">
+        <source>%s : %s.</source>
+        <target>%s : %s.</target>
+      </trans-unit>
+      <trans-unit id="28567be833c3a7c5" resname="Catégorie « %s » ajoutée.">
+        <source>Catégorie « %s » ajoutée.</source>
+        <target>Catégorie « %s » ajoutée.</target>
+      </trans-unit>
+      <trans-unit id="f3023ec39b22b35b" resname="Catégorie « %s » masquée.">
+        <source>Catégorie « %s » masquée.</source>
+        <target>Catégorie « %s » masquée.</target>
+      </trans-unit>
+      <trans-unit id="2654e7c56a06c3ac" resname="Catégorie « %s » modifiée.">
+        <source>Catégorie « %s » modifiée.</source>
+        <target>Catégorie « %s » modifiée.</target>
+      </trans-unit>
+      <trans-unit id="b9b4ddd79a06df87" resname="Catégorie « %s » supprimée.">
+        <source>Catégorie « %s » supprimée.</source>
+        <target>Catégorie « %s » supprimée.</target>
+      </trans-unit>
+      <trans-unit id="9cab02efb91b7816" resname="Catégorie « %s » visible.">
+        <source>Catégorie « %s » visible.</source>
+        <target>Catégorie « %s » visible.</target>
+      </trans-unit>
+      <trans-unit id="db4387de4e814515" resname="Fermée">
+        <source>Fermée</source>
+        <target>Fermée</target>
+      </trans-unit>
+      <trans-unit id="feaa512037430d42" resname="La catégorie {slug} n&apos;existe pas.">
+        <source>La catégorie {slug} n&apos;existe pas.</source>
+        <target>La catégorie {slug} n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="ac67075011aaaccb" resname="La suggestion {id} n&apos;existe pas.">
+        <source>La suggestion {id} n&apos;existe pas.</source>
+        <target>La suggestion {id} n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="86ed2e476e06fbc0" resname="La ville {slug} n&apos;est pas disponible.">
+        <source>La ville {slug} n&apos;est pas disponible.</source>
+        <target>La ville {slug} n&apos;est pas disponible.</target>
+      </trans-unit>
+      <trans-unit id="e6785445d37a13ce" resname="La ville {slug} n&apos;existe pas.">
+        <source>La ville {slug} n&apos;existe pas.</source>
+        <target>La ville {slug} n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="99cdce17b0e9b8be" resname="Le nom de la catégorie est obligatoire.">
+        <source>Le nom de la catégorie est obligatoire.</source>
+        <target>Le nom de la catégorie est obligatoire.</target>
+      </trans-unit>
+      <trans-unit id="1e55f12f1c530e97" resname="Le nom de la ville est obligatoire.">
+        <source>Le nom de la ville est obligatoire.</source>
+        <target>Le nom de la ville est obligatoire.</target>
+      </trans-unit>
+      <trans-unit id="f67987ea16092cb4" resname="Liste d&apos;attente">
+        <source>Liste d&apos;attente</source>
+        <target>Liste d&apos;attente</target>
+      </trans-unit>
+      <trans-unit id="063a2bf03125f0c0" resname="Ordre des catégories enregistré.">
+        <source>Ordre des catégories enregistré.</source>
+        <target>Ordre des catégories enregistré.</target>
+      </trans-unit>
+      <trans-unit id="51573dfbdb110f14" resname="Ordre des villes enregistré.">
+        <source>Ordre des villes enregistré.</source>
+        <target>Ordre des villes enregistré.</target>
+      </trans-unit>
+      <trans-unit id="242574c318b21c31" resname="Ouverte">
+        <source>Ouverte</source>
+        <target>Ouverte</target>
+      </trans-unit>
+      <trans-unit id="b61e52e8280e3e5b" resname="Statut {status} inconnu.">
+        <source>Statut {status} inconnu.</source>
+        <target>Statut {status} inconnu.</target>
+      </trans-unit>
+      <trans-unit id="c2947a92f2083006" resname="Suggestion « %s » ajoutée.">
+        <source>Suggestion « %s » ajoutée.</source>
+        <target>Suggestion « %s » ajoutée.</target>
+      </trans-unit>
+      <trans-unit id="e333565f44ab45b3" resname="Suggestion « %s » modifiée.">
+        <source>Suggestion « %s » modifiée.</source>
+        <target>Suggestion « %s » modifiée.</target>
+      </trans-unit>
+      <trans-unit id="f0e699aa9733b3db" resname="Suggestion « %s » supprimée.">
+        <source>Suggestion « %s » supprimée.</source>
+        <target>Suggestion « %s » supprimée.</target>
+      </trans-unit>
+      <trans-unit id="7159a93a0958ab2d" resname="Ville introuvable.">
+        <source>Ville introuvable.</source>
+        <target>Ville introuvable.</target>
+      </trans-unit>
+      <trans-unit id="c184d1325dab8088" resname="Ville « %s » ajoutée.">
+        <source>Ville « %s » ajoutée.</source>
+        <target>Ville « %s » ajoutée.</target>
+      </trans-unit>
+      <trans-unit id="ef78830d56018dc9" resname="Ville « %s » modifiée.">
+        <source>Ville « %s » modifiée.</source>
+        <target>Ville « %s » modifiée.</target>
+      </trans-unit>
+      <trans-unit id="4b2b1f6478e58504" resname="Ville « %s » supprimée.">
+        <source>Ville « %s » supprimée.</source>
+        <target>Ville « %s » supprimée.</target>
+      </trans-unit>
+      <trans-unit id="6a1e6cbbe68f9760" resname="{category} contient des établissements : masquez-la plutôt que de la supprimer.">
+        <source>{category} contient des établissements : masquez-la plutôt que de la supprimer.</source>
+        <target>{category} contient des établissements : masquez-la plutôt que de la supprimer.</target>
+      </trans-unit>
+      <trans-unit id="caaabbb139d60f6b" resname="{city} a des établissements : fermez-la plutôt que de la supprimer.">
+        <source>{city} a des établissements : fermez-la plutôt que de la supprimer.</source>
+        <target>{city} a des établissements : fermez-la plutôt que de la supprimer.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

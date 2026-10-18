@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Catalog\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum CityStatus: string
 {
     case OPEN = 'open';
@@ -13,9 +15,9 @@ enum CityStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::OPEN => 'Ouverte',
-            self::WAITLIST => 'Liste d\'attente',
-            self::CLOSED => 'Fermée',
+            self::OPEN => Translation::translate('Ouverte'),
+            self::WAITLIST => Translation::translate('Liste d\'attente'),
+            self::CLOSED => Translation::translate('Fermée'),
         };
     }
 }

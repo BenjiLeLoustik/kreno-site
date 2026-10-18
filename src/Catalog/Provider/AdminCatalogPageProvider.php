@@ -115,7 +115,10 @@ class AdminCatalogPageProvider
         $statuses = [];
 
         foreach (CityStatus::cases() as $status) {
-            $statuses[] = ['value' => $status->value, 'label' => $status->label()];
+            $statuses[] = [
+                'value' => $status->value,
+                'label' => $status->label()
+            ];
         }
 
         return $statuses;

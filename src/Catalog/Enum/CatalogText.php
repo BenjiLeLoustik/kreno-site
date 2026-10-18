@@ -2,6 +2,8 @@
 
 namespace App\Catalog\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum CatalogText
 {
     case HOME;
@@ -9,7 +11,7 @@ enum CatalogText
     public function text(): string
     {
         return match ($this) {
-            self::HOME => 'Accueil',
+            self::HOME => Translation::translate('Accueil'),
         };
     }
 }
