@@ -2,6 +2,8 @@
 
 namespace App\Log\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AppLogLevel: string
 {
     case WARNING = 'warning';
@@ -11,9 +13,9 @@ enum AppLogLevel: string
     public function label(): string
     {
         return match ($this) {
-            self::WARNING => 'Avertissement',
-            self::ERROR => 'Erreur',
-            self::CRITICAL => 'Critique',
+            self::WARNING => Translation::translate('Avertissement'),
+            self::ERROR => Translation::translate('Erreur'),
+            self::CRITICAL => Translation::translate('Critique'),
         };
     }
 }

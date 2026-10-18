@@ -2,6 +2,8 @@
 
 namespace App\Mail\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum MailText
 {
     case DEFAULT_INVITER;
@@ -22,15 +24,15 @@ enum MailText
     private function pattern(): string
     {
         return match ($this) {
-            self::DEFAULT_INVITER => 'L’équipe Kréno',
-            self::SEVEN_DAYS => '7 jours',
-            self::ONE_HOUR => '1 heure',
-            self::THIRTY_MINUTES => '30 minutes',
-            self::TWO_BUSINESS_DAYS => '48 h ouvrées',
-            self::DATE_AT_TIME => '%s à %s',
+            self::DEFAULT_INVITER => Translation::translate('L’équipe Kréno'),
+            self::SEVEN_DAYS => Translation::translate('7 jours'),
+            self::ONE_HOUR => Translation::translate('1 heure'),
+            self::THIRTY_MINUTES => Translation::translate('30 minutes'),
+            self::TWO_BUSINESS_DAYS => Translation::translate('48 h ouvrées'),
+            self::DATE_AT_TIME => Translation::translate('%s à %s'),
             self::HOURS => '%d h',
-            self::SLOT_ALERT_TITLE => '%s · %s à %s, %s',
-            self::SLOT_ALERT_BODY => '%s · %s au lieu de %s',
+            self::SLOT_ALERT_TITLE => Translation::translate('%s · %s à %s, %s'),
+            self::SLOT_ALERT_BODY => Translation::translate('%s · %s au lieu de %s'),
         };
     }
 }

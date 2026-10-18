@@ -2,6 +2,8 @@
 
 namespace App\Log\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ActivityGroup: string
 {
     case MODERATION = 'moderation';
@@ -22,10 +24,10 @@ enum ActivityGroup: string
     public function badge(): string
     {
         return match ($this) {
-            self::MODERATION => 'Modération',
-            self::SANCTION => 'Sanction',
-            self::SETTINGS => 'Réglage',
-            self::BILLING => 'Facturation',
+            self::MODERATION => Translation::translate('Modération'),
+            self::SANCTION => Translation::translate('Sanction'),
+            self::SETTINGS => Translation::translate('Réglage'),
+            self::BILLING => Translation::translate('Facturation'),
         };
     }
 }

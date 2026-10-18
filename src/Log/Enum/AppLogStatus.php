@@ -2,6 +2,8 @@
 
 namespace App\Log\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AppLogStatus: string
 {
     case NEW = 'new';
@@ -12,10 +14,10 @@ enum AppLogStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::NEW => 'Nouvelle',
-            self::ACKNOWLEDGED => 'Vue',
-            self::RESOLVED => 'Corrigée',
-            self::IGNORED => 'Ignorée',
+            self::NEW => Translation::translate('Nouvelle'),
+            self::ACKNOWLEDGED => Translation::translate('Vue'),
+            self::RESOLVED => Translation::translate('Corrigée'),
+            self::IGNORED => Translation::translate('Ignorée'),
         };
     }
 

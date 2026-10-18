@@ -2,6 +2,8 @@
 
 namespace App\Log\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ActivityFilter: string
 {
     case ALL = 'all';
@@ -12,10 +14,10 @@ enum ActivityFilter: string
     public function label(): string
     {
         return match ($this) {
-            self::ALL => 'Tout',
-            self::MODERATION => 'Modération',
-            self::SANCTION => 'Sanctions',
-            self::SETTINGS => 'Réglages',
+            self::ALL => Translation::translate('Tout'),
+            self::MODERATION => Translation::translate('Modération'),
+            self::SANCTION => Translation::translate('Sanctions'),
+            self::SETTINGS => Translation::translate('Réglages'),
         };
     }
 

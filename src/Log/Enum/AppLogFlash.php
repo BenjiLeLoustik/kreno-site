@@ -2,6 +2,8 @@
 
 namespace App\Log\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AppLogFlash
 {
     case UNKNOWN_STATUS;
@@ -33,12 +35,12 @@ enum AppLogFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::UNKNOWN_STATUS => 'Statut inconnu.',
-            self::STATUS_CHANGED => 'Erreur marquée « %s ».',
-            self::DELETED => 'Erreur supprimée.',
-            self::PURGED => 'Purge terminée.',
-            self::PURGED_ONE => '%d erreur supprimée.',
-            self::PURGED_MANY => '%d erreurs supprimées.',
+            self::UNKNOWN_STATUS => Translation::translate('Statut inconnu.'),
+            self::STATUS_CHANGED => Translation::translate('Erreur marquée « %s ».'),
+            self::DELETED => Translation::translate('Erreur supprimée.'),
+            self::PURGED => Translation::translate('Purge terminée.'),
+            self::PURGED_ONE => Translation::translate('%d erreur supprimée.'),
+            self::PURGED_MANY => Translation::translate('%d erreurs supprimées.'),
         };
     }
 }

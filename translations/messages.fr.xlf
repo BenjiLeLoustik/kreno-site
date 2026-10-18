@@ -6038,6 +6038,342 @@
         <source>Rubrique « %s » visible.</source>
         <target>Rubrique « %s » visible.</target>
       </trans-unit>
+      <trans-unit id="e95fe673c5b6e90c" resname="%d erreur supprimée.">
+        <source>%d erreur supprimée.</source>
+        <target>%d erreur supprimée.</target>
+      </trans-unit>
+      <trans-unit id="df1d376b260d3f56" resname="%d erreurs supprimées.">
+        <source>%d erreurs supprimées.</source>
+        <target>%d erreurs supprimées.</target>
+      </trans-unit>
+      <trans-unit id="f3bf7f3e9c66489f" resname="Avertissement">
+        <source>Avertissement</source>
+        <target>Avertissement</target>
+      </trans-unit>
+      <trans-unit id="103451395067d389" resname="Catalogue">
+        <source>Catalogue</source>
+        <target>Catalogue</target>
+      </trans-unit>
+      <trans-unit id="fe50647d9b8d1dfd" resname="Corrigée">
+        <source>Corrigée</source>
+        <target>Corrigée</target>
+      </trans-unit>
+      <trans-unit id="0197946cc322f58a" resname="Critique">
+        <source>Critique</source>
+        <target>Critique</target>
+      </trans-unit>
+      <trans-unit id="46148e250e722d25" resname="Erreur">
+        <source>Erreur</source>
+        <target>Erreur</target>
+      </trans-unit>
+      <trans-unit id="9636b2f32760369b" resname="Erreur introuvable.">
+        <source>Erreur introuvable.</source>
+        <target>Erreur introuvable.</target>
+      </trans-unit>
+      <trans-unit id="b2979ebf3a7e1213" resname="Erreur marquée « %s ».">
+        <source>Erreur marquée « %s ».</source>
+        <target>Erreur marquée « %s ».</target>
+      </trans-unit>
+      <trans-unit id="a34d31968a71f601" resname="Erreur supprimée.">
+        <source>Erreur supprimée.</source>
+        <target>Erreur supprimée.</target>
+      </trans-unit>
+      <trans-unit id="3711bc6ff06c69a7" resname="Identité">
+        <source>Identité</source>
+        <target>Identité</target>
+      </trans-unit>
+      <trans-unit id="bb3ee313f9aecb79" resname="Ignorée">
+        <source>Ignorée</source>
+        <target>Ignorée</target>
+      </trans-unit>
+      <trans-unit id="ff89f897dd886bfb" resname="Impossible d&apos;enregistrer l&apos;erreur.">
+        <source>Impossible d&apos;enregistrer l&apos;erreur.</source>
+        <target>Impossible d&apos;enregistrer l&apos;erreur.</target>
+      </trans-unit>
+      <trans-unit id="e96d986596a4986a" resname="Modération">
+        <source>Modération</source>
+        <target>Modération</target>
+      </trans-unit>
+      <trans-unit id="85aea9c936e8b68a" resname="Nouvelle">
+        <source>Nouvelle</source>
+        <target>Nouvelle</target>
+      </trans-unit>
+      <trans-unit id="61ecaa6cd1f1090b" resname="Purge terminée.">
+        <source>Purge terminée.</source>
+        <target>Purge terminée.</target>
+      </trans-unit>
+      <trans-unit id="3a0814f304ea6e6c" resname="Règles">
+        <source>Règles</source>
+        <target>Règles</target>
+      </trans-unit>
+      <trans-unit id="4bc7431e1ea87d2c" resname="Réglage">
+        <source>Réglage</source>
+        <target>Réglage</target>
+      </trans-unit>
+      <trans-unit id="cc029bf96714e13a" resname="Sanction">
+        <source>Sanction</source>
+        <target>Sanction</target>
+      </trans-unit>
+      <trans-unit id="a26661faa8b38160" resname="Sanctions">
+        <source>Sanctions</source>
+        <target>Sanctions</target>
+      </trans-unit>
+      <trans-unit id="62df1d69e50eeebe" resname="Statut inconnu.">
+        <source>Statut inconnu.</source>
+        <target>Statut inconnu.</target>
+      </trans-unit>
+      <trans-unit id="dd167905de0defca" resname="Version">
+        <source>Version</source>
+        <target>Version</target>
+      </trans-unit>
+      <trans-unit id="b111a2a2185caed7" resname="Vue">
+        <source>Vue</source>
+        <target>Vue</target>
+      </trans-unit>
+      <trans-unit id="6c84c1eb47722192" resname="%s : créneau %s à %s (%s)">
+        <source>%s : créneau %s à %s (%s)</source>
+        <target>%s : créneau %s à %s (%s)</target>
+      </trans-unit>
+      <trans-unit id="bcb47cc10f024b89" resname="%s : inscription reçue, vérification en cours">
+        <source>%s : inscription reçue, vérification en cours</source>
+        <target>%s : inscription reçue, vérification en cours</target>
+      </trans-unit>
+      <trans-unit id="d3cf98187f2a83c3" resname="%s : un justificatif est nécessaire">
+        <source>%s : un justificatif est nécessaire</source>
+        <target>%s : un justificatif est nécessaire</target>
+      </trans-unit>
+      <trans-unit id="920f0f28a84b09aa" resname="%s : votre inscription n’a pas pu être validée">
+        <source>%s : votre inscription n’a pas pu être validée</source>
+        <target>%s : votre inscription n’a pas pu être validée</target>
+      </trans-unit>
+      <trans-unit id="9332465ced1c6b73" resname="%s a dû annuler ton rendez-vous">
+        <source>%s a dû annuler ton rendez-vous</source>
+        <target>%s a dû annuler ton rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="8f0eab32429f0b83" resname="%s a rejoint %s sur Kréno Pro">
+        <source>%s a rejoint %s sur Kréno Pro</source>
+        <target>%s a rejoint %s sur Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="f086da2c1b9d5ac2" resname="%s a répondu à ton signalement">
+        <source>%s a répondu à ton signalement</source>
+        <target>%s a répondu à ton signalement</target>
+      </trans-unit>
+      <trans-unit id="01dcf4e26af56a23" resname="%s est de nouveau en ligne sur Kréno">
+        <source>%s est de nouveau en ligne sur Kréno</source>
+        <target>%s est de nouveau en ligne sur Kréno</target>
+      </trans-unit>
+      <trans-unit id="628523e3f8e43cdf" resname="%s est en ligne sur Kréno">
+        <source>%s est en ligne sur Kréno</source>
+        <target>%s est en ligne sur Kréno</target>
+      </trans-unit>
+      <trans-unit id="896fb9aeec3bc14e" resname="%s est en ligne, votre abonnement est actif">
+        <source>%s est en ligne, votre abonnement est actif</source>
+        <target>%s est en ligne, votre abonnement est actif</target>
+      </trans-unit>
+      <trans-unit id="a6855be590377dd2" resname="%s est suspendu sur Kréno">
+        <source>%s est suspendu sur Kréno</source>
+        <target>%s est suspendu sur Kréno</target>
+      </trans-unit>
+      <trans-unit id="e6851e0a084b528c" resname="%s vous invite dans l’équipe Kréno">
+        <source>%s vous invite dans l’équipe Kréno</source>
+        <target>%s vous invite dans l’équipe Kréno</target>
+      </trans-unit>
+      <trans-unit id="bb42bb213b5b912e" resname="%s vous invite à rejoindre %s sur Kréno Pro">
+        <source>%s vous invite à rejoindre %s sur Kréno Pro</source>
+        <target>%s vous invite à rejoindre %s sur Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="f774e98ea69a4fca" resname="%s · %s au lieu de %s">
+        <source>%s · %s au lieu de %s</source>
+        <target>%s · %s au lieu de %s</target>
+      </trans-unit>
+      <trans-unit id="5f0f7d002fccb15d" resname="%s · %s à %s, %s">
+        <source>%s · %s à %s, %s</source>
+        <target>%s · %s à %s, %s</target>
+      </trans-unit>
+      <trans-unit id="2e0f78b8db4d82c7" resname="%s à %s">
+        <source>%s à %s</source>
+        <target>%s à %s</target>
+      </trans-unit>
+      <trans-unit id="9fbd78bd19793fbb" resname="1 heure">
+        <source>1 heure</source>
+        <target>1 heure</target>
+      </trans-unit>
+      <trans-unit id="f01a042bbfb3dad3" resname="30 minutes">
+        <source>30 minutes</source>
+        <target>30 minutes</target>
+      </trans-unit>
+      <trans-unit id="1c2305fb858f1c19" resname="48 h ouvrées">
+        <source>48 h ouvrées</source>
+        <target>48 h ouvrées</target>
+      </trans-unit>
+      <trans-unit id="23a940eb26318719" resname="Action requise : confirmez votre paiement Kréno Pro">
+        <source>Action requise : confirmez votre paiement Kréno Pro</source>
+        <target>Action requise : confirmez votre paiement Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="1aace3c07c76167e" resname="Action requise : votre paiement Kréno Pro a échoué">
+        <source>Action requise : votre paiement Kréno Pro a échoué</source>
+        <target>Action requise : votre paiement Kréno Pro a échoué</target>
+      </trans-unit>
+      <trans-unit id="f9e657629c55f9ca" resname="Annulation : le prix de votre abonnement Kréno Pro ne change pas">
+        <source>Annulation : le prix de votre abonnement Kréno Pro ne change pas</source>
+        <target>Annulation : le prix de votre abonnement Kréno Pro ne change pas</target>
+      </trans-unit>
+      <trans-unit id="fc77ea3fb4a7eeba" resname="Annulation : le rendez-vous de %s, %s, est libéré">
+        <source>Annulation : le rendez-vous de %s, %s, est libéré</source>
+        <target>Annulation : le rendez-vous de %s, %s, est libéré</target>
+      </trans-unit>
+      <trans-unit id="796c48b678fce360" resname="Avoir %s sur votre compte Kréno Pro">
+        <source>Avoir %s sur votre compte Kréno Pro</source>
+        <target>Avoir %s sur votre compte Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="f84ebe3b41e05227" resname="Bienvenue sur Kréno, %s">
+        <source>Bienvenue sur Kréno, %s</source>
+        <target>Bienvenue sur Kréno, %s</target>
+      </trans-unit>
+      <trans-unit id="d5a302d3f8b005c6" resname="Bonne nouvelle : votre abonnement baisse le %s">
+        <source>Bonne nouvelle : votre abonnement baisse le %s</source>
+        <target>Bonne nouvelle : votre abonnement baisse le %s</target>
+      </trans-unit>
+      <trans-unit id="1a824331f87934dd" resname="Contact · %s · %s">
+        <source>Contact · %s · %s</source>
+        <target>Contact · %s · %s</target>
+      </trans-unit>
+      <trans-unit id="eb453b936bf7cd8b" resname="C’est réservé : %s, %s à %s">
+        <source>C’est réservé : %s, %s à %s</source>
+        <target>C’est réservé : %s, %s à %s</target>
+      </trans-unit>
+      <trans-unit id="cce629006984c417" resname="Dans 1 h : %s à %s">
+        <source>Dans 1 h : %s à %s</source>
+        <target>Dans 1 h : %s à %s</target>
+      </trans-unit>
+      <trans-unit id="e45388e50023e3f3" resname="L’équipe Kréno">
+        <source>L’équipe Kréno</source>
+        <target>L’équipe Kréno</target>
+      </trans-unit>
+      <trans-unit id="e7bf381453a8ecd3" resname="Mise à jour : nouveau prix de votre abonnement Kréno Pro au %s">
+        <source>Mise à jour : nouveau prix de votre abonnement Kréno Pro au %s</source>
+        <target>Mise à jour : nouveau prix de votre abonnement Kréno Pro au %s</target>
+      </trans-unit>
+      <trans-unit id="680109373ab95bf4" resname="Nous avons bien reçu ton signalement">
+        <source>Nous avons bien reçu ton signalement</source>
+        <target>Nous avons bien reçu ton signalement</target>
+      </trans-unit>
+      <trans-unit id="6ebebb29220e9eab" resname="Nouveau message sur le signalement %s">
+        <source>Nouveau message sur le signalement %s</source>
+        <target>Nouveau message sur le signalement %s</target>
+      </trans-unit>
+      <trans-unit id="fd49d2cd10607f09" resname="Nouveau moyen de paiement enregistré sur Kréno Pro">
+        <source>Nouveau moyen de paiement enregistré sur Kréno Pro</source>
+        <target>Nouveau moyen de paiement enregistré sur Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="d391dc7c9057f107" resname="Nouvel établissement à valider : %s">
+        <source>Nouvel établissement à valider : %s</source>
+        <target>Nouvel établissement à valider : %s</target>
+      </trans-unit>
+      <trans-unit id="738930a5c4df77e2" resname="Paiement reçu : facture %s réglée">
+        <source>Paiement reçu : facture %s réglée</source>
+        <target>Paiement reçu : facture %s réglée</target>
+      </trans-unit>
+      <trans-unit id="7eeda11d172d3353" resname="Réinitialisation de votre mot de passe Kréno Pro">
+        <source>Réinitialisation de votre mot de passe Kréno Pro</source>
+        <target>Réinitialisation de votre mot de passe Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="8c96719f78f74a18" resname="Réinitialise ton mot de passe Kréno">
+        <source>Réinitialise ton mot de passe Kréno</source>
+        <target>Réinitialise ton mot de passe Kréno</target>
+      </trans-unit>
+      <trans-unit id="f16be4fd1cdb1502" resname="Réponse client · %s · %s">
+        <source>Réponse client · %s · %s</source>
+        <target>Réponse client · %s · %s</target>
+      </trans-unit>
+      <trans-unit id="504557e62f95a88e" resname="Réponse à votre demande · %s">
+        <source>Réponse à votre demande · %s</source>
+        <target>Réponse à votre demande · %s</target>
+      </trans-unit>
+      <trans-unit id="fef1a5a3c17c3fba" resname="Signalement %s : décision de Kréno">
+        <source>Signalement %s : décision de Kréno</source>
+        <target>Signalement %s : décision de Kréno</target>
+      </trans-unit>
+      <trans-unit id="b9c1fc2d8abf6931" resname="Signalement %s transmis à Kréno">
+        <source>Signalement %s transmis à Kréno</source>
+        <target>Signalement %s transmis à Kréno</target>
+      </trans-unit>
+      <trans-unit id="3d36753438c9bdb9" resname="Ta réservation chez %s est annulée">
+        <source>Ta réservation chez %s est annulée</source>
+        <target>Ta réservation chez %s est annulée</target>
+      </trans-unit>
+      <trans-unit id="065cb4065d6d78f9" resname="Ton absence à un rendez-vous a été signalée">
+        <source>Ton absence à un rendez-vous a été signalée</source>
+        <target>Ton absence à un rendez-vous a été signalée</target>
+      </trans-unit>
+      <trans-unit id="1f181ca1e4e97dcb" resname="Ton compte Kréno est supprimé">
+        <source>Ton compte Kréno est supprimé</source>
+        <target>Ton compte Kréno est supprimé</target>
+      </trans-unit>
+      <trans-unit id="c0c463cdd500d70f" resname="Ton compte Kréno est suspendu">
+        <source>Ton compte Kréno est suspendu</source>
+        <target>Ton compte Kréno est suspendu</target>
+      </trans-unit>
+      <trans-unit id="f52a610bbfb5ba0b" resname="Ton mot de passe Kréno a été modifié">
+        <source>Ton mot de passe Kréno a été modifié</source>
+        <target>Ton mot de passe Kréno a été modifié</target>
+      </trans-unit>
+      <trans-unit id="91b448dcee6b8657" resname="Ton signalement %s est traité">
+        <source>Ton signalement %s est traité</source>
+        <target>Ton signalement %s est traité</target>
+      </trans-unit>
+      <trans-unit id="e307bad94f8faf91" resname="Un client a signalé un problème : %d h pour répondre">
+        <source>Un client a signalé un problème : %d h pour répondre</source>
+        <target>Un client a signalé un problème : %d h pour répondre</target>
+      </trans-unit>
+      <trans-unit id="3cb9c58e62601261" resname="Vos créneaux Kréno ne sont plus publiés : paiement en attente">
+        <source>Vos créneaux Kréno ne sont plus publiés : paiement en attente</source>
+        <target>Vos créneaux Kréno ne sont plus publiés : paiement en attente</target>
+      </trans-unit>
+      <trans-unit id="604c8ba242ce8e51" resname="Votre abonnement Kréno Pro continue">
+        <source>Votre abonnement Kréno Pro continue</source>
+        <target>Votre abonnement Kréno Pro continue</target>
+      </trans-unit>
+      <trans-unit id="3a6470ecb41b5ba9" resname="Votre abonnement Kréno Pro est en pause jusqu’au %s">
+        <source>Votre abonnement Kréno Pro est en pause jusqu’au %s</source>
+        <target>Votre abonnement Kréno Pro est en pause jusqu’au %s</target>
+      </trans-unit>
+      <trans-unit id="10d58e5f793e0ee5" resname="Votre accès à %s sur Kréno Pro a été retiré">
+        <source>Votre accès à %s sur Kréno Pro a été retiré</source>
+        <target>Votre accès à %s sur Kréno Pro a été retiré</target>
+      </trans-unit>
+      <trans-unit id="b38722dd779da5e2" resname="Votre code de vérification Kréno Pro : %s">
+        <source>Votre code de vérification Kréno Pro : %s</source>
+        <target>Votre code de vérification Kréno Pro : %s</target>
+      </trans-unit>
+      <trans-unit id="60adc4cddb16466b" resname="Votre créneau de %s a trouvé preneur">
+        <source>Votre créneau de %s a trouvé preneur</source>
+        <target>Votre créneau de %s a trouvé preneur</target>
+      </trans-unit>
+      <trans-unit id="8c7d53737eacc1ce" resname="Votre facture Kréno Pro de %s">
+        <source>Votre facture Kréno Pro de %s</source>
+        <target>Votre facture Kréno Pro de %s</target>
+      </trans-unit>
+      <trans-unit id="04f17e3a859ae3ab" resname="Votre formule %s est active">
+        <source>Votre formule %s est active</source>
+        <target>Votre formule %s est active</target>
+      </trans-unit>
+      <trans-unit id="81235286edd1bd51" resname="Votre mot de passe Kréno Pro a été modifié">
+        <source>Votre mot de passe Kréno Pro a été modifié</source>
+        <target>Votre mot de passe Kréno Pro a été modifié</target>
+      </trans-unit>
+      <trans-unit id="9c0a167e1de80c82" resname="Votre résiliation Kréno Pro est enregistrée">
+        <source>Votre résiliation Kréno Pro est enregistrée</source>
+        <target>Votre résiliation Kréno Pro est enregistrée</target>
+      </trans-unit>
+      <trans-unit id="a1511bce771e572b" resname="Votre rôle a changé sur Kréno Pro">
+        <source>Votre rôle a changé sur Kréno Pro</source>
+        <target>Votre rôle a changé sur Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="e58712beb10cfeba" resname="Évolution du prix de votre abonnement Kréno Pro au %s">
+        <source>Évolution du prix de votre abonnement Kréno Pro au %s</source>
+        <target>Évolution du prix de votre abonnement Kréno Pro au %s</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
