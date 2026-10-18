@@ -2,6 +2,8 @@
 
 namespace App\User\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class BookingBuilder extends AbstractAccountNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class BookingBuilder extends AbstractAccountNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Mes réservations';
+        return Translation::translate('Mes réservations');
     }
 
     public function getRoute(): string

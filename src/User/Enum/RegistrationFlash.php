@@ -2,6 +2,8 @@
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum RegistrationFlash
 {
     case WELCOME;
@@ -16,9 +18,9 @@ enum RegistrationFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::WELCOME => 'Bienvenue %s ! Un e-mail de confirmation vient d\'être envoyé à %s.',
-            self::EMAIL_VERIFIED => 'Ton adresse e-mail est confirmée. Merci !',
-            self::VERIFICATION_SENT => 'Un nouveau lien de confirmation a été envoyé à %s.',
+            self::WELCOME => Translation::translate('Bienvenue %s ! Un e-mail de confirmation vient d\'être envoyé à %s.'),
+            self::EMAIL_VERIFIED => Translation::translate('Ton adresse e-mail est confirmée. Merci !'),
+            self::VERIFICATION_SENT => Translation::translate('Un nouveau lien de confirmation a été envoyé à %s.'),
         };
     }
 }

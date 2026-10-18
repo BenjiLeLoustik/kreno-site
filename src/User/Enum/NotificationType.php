@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum NotificationType: string
 {
     case SLOT_ALERT = 'slot_alert';
@@ -17,13 +19,13 @@ enum NotificationType: string
     public function label(): string
     {
         return match ($this) {
-            self::SLOT_ALERT => 'Alerte créneau',
-            self::BOOKING => 'Réservation',
-            self::REMINDER => 'Rappel',
-            self::REPORT => 'Signalement',
-            self::BILLING => 'Facturation',
-            self::INFO => 'Information',
-            self::REVIEW => 'Avis',
+            self::SLOT_ALERT => Translation::translate('Alerte créneau'),
+            self::BOOKING => Translation::translate('Réservation'),
+            self::REMINDER => Translation::translate('Rappel'),
+            self::REPORT => Translation::translate('Signalement'),
+            self::BILLING => Translation::translate('Facturation'),
+            self::INFO => Translation::translate('Information'),
+            self::REVIEW => Translation::translate('Avis'),
         };
     }
 }

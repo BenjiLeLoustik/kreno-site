@@ -2,6 +2,8 @@
 
 namespace App\User\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class FollowBuilder extends AbstractAccountNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class FollowBuilder extends AbstractAccountNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Établissements suivis';
+        return Translation::translate('Établissements suivis');
     }
 
     public function getRoute(): string

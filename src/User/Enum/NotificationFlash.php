@@ -2,6 +2,8 @@
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum NotificationFlash
 {
     case ALL_READ;
@@ -19,8 +21,8 @@ enum NotificationFlash
     public function text(): string
     {
         return match ($this) {
-            self::ALL_READ => 'Toutes les notifications sont marquées comme lues.',
-            self::NOTHING_UNREAD => 'Aucune notification non lue.',
+            self::ALL_READ => Translation::translate('Toutes les notifications sont marquées comme lues.'),
+            self::NOTHING_UNREAD => Translation::translate('Aucune notification non lue.'),
         };
     }
 }

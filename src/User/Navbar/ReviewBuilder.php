@@ -4,6 +4,7 @@ namespace App\User\Navbar;
 
 use App\Entity\User\User;
 use App\Review\Provider\CustomerReviewPageProvider;
+use App\Shared\Helper\Translation;
 
 class ReviewBuilder extends AbstractAccountNavbarBuilder
 {
@@ -19,7 +20,7 @@ class ReviewBuilder extends AbstractAccountNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Mes avis';
+        return Translation::translate('Mes avis');
     }
 
     public function getRoute(): string

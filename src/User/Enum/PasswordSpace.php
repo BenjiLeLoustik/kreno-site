@@ -2,6 +2,8 @@
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum PasswordSpace: string
 {
     case CLIENT = 'client';
@@ -39,8 +41,8 @@ enum PasswordSpace: string
     public function resetFlash(): string
     {
         return match ($this) {
-            self::CLIENT => 'Ton mot de passe a été modifié. Tu peux te connecter.',
-            self::PRO => 'Votre mot de passe a été modifié. Vous pouvez vous connecter.',
+            self::CLIENT => Translation::translate('Ton mot de passe a été modifié. Tu peux te connecter.'),
+            self::PRO => Translation::translate('Votre mot de passe a été modifié. Vous pouvez vous connecter.'),
         };
     }
 }

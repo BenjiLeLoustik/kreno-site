@@ -7606,6 +7606,350 @@
         <source>À la réservation</source>
         <target>À la réservation</target>
       </trans-unit>
+      <trans-unit id="f5d15c268bcbd44b" resname="%d absences non prévenues en %d jours">
+        <source>%d absences non prévenues en %d jours</source>
+        <target>%d absences non prévenues en %d jours</target>
+      </trans-unit>
+      <trans-unit id="23b0e537a7edbe0c" resname="Accès retiré.">
+        <source>Accès retiré.</source>
+        <target>Accès retiré.</target>
+      </trans-unit>
+      <trans-unit id="670090806dded46f" resname="Adresse e-mail ou mot de passe incorrect.">
+        <source>Adresse e-mail ou mot de passe incorrect.</source>
+        <target>Adresse e-mail ou mot de passe incorrect.</target>
+      </trans-unit>
+      <trans-unit id="665896743d554f61" resname="Alerte créneau">
+        <source>Alerte créneau</source>
+        <target>Alerte créneau</target>
+      </trans-unit>
+      <trans-unit id="6b647a3d8550a7de" resname="Alerte créée : nous vous prévenons dès qu&apos;un créneau correspond.">
+        <source>Alerte créée : nous vous prévenons dès qu&apos;un créneau correspond.</source>
+        <target>Alerte créée : nous vous prévenons dès qu&apos;un créneau correspond.</target>
+      </trans-unit>
+      <trans-unit id="b2a490d243a98b2a" resname="Alerte enregistrée.">
+        <source>Alerte enregistrée.</source>
+        <target>Alerte enregistrée.</target>
+      </trans-unit>
+      <trans-unit id="1d4945a09f48c137" resname="Alerte introuvable.">
+        <source>Alerte introuvable.</source>
+        <target>Alerte introuvable.</target>
+      </trans-unit>
+      <trans-unit id="c2f232bbd8aab2f5" resname="Alerte supprimée.">
+        <source>Alerte supprimée.</source>
+        <target>Alerte supprimée.</target>
+      </trans-unit>
+      <trans-unit id="c71ae5e7df29810b" resname="Annulée le">
+        <source>Annulée le</source>
+        <target>Annulée le</target>
+      </trans-unit>
+      <trans-unit id="61e5933620f5a1fd" resname="Aucune notification non lue.">
+        <source>Aucune notification non lue.</source>
+        <target>Aucune notification non lue.</target>
+      </trans-unit>
+      <trans-unit id="5880e59e0c06c86d" resname="Auteur">
+        <source>Auteur</source>
+        <target>Auteur</target>
+      </trans-unit>
+      <trans-unit id="4cf28e7682f0ca0b" resname="Banni">
+        <source>Banni</source>
+        <target>Banni</target>
+      </trans-unit>
+      <trans-unit id="4571a910f42ba850" resname="Bienvenue %s ! Un e-mail de confirmation vient d&apos;être envoyé à %s.">
+        <source>Bienvenue %s ! Un e-mail de confirmation vient d&apos;être envoyé à %s.</source>
+        <target>Bienvenue %s ! Un e-mail de confirmation vient d&apos;être envoyé à %s.</target>
+      </trans-unit>
+      <trans-unit id="b82b6cfbfafd9f2f" resname="Ce code ne correspond pas ou a expiré. Vérifiez le dernier e-mail reçu, ou demandez-en un nouveau.">
+        <source>Ce code ne correspond pas ou a expiré. Vérifiez le dernier e-mail reçu, ou demandez-en un nouveau.</source>
+        <target>Ce code ne correspond pas ou a expiré. Vérifiez le dernier e-mail reçu, ou demandez-en un nouveau.</target>
+      </trans-unit>
+      <trans-unit id="96790d2920ff8e4d" resname="Ce compte a été supprimé.">
+        <source>Ce compte a été supprimé.</source>
+        <target>Ce compte a été supprimé.</target>
+      </trans-unit>
+      <trans-unit id="d17573dd11eac528" resname="Ce compte ne peut pas être suspendu.">
+        <source>Ce compte ne peut pas être suspendu.</source>
+        <target>Ce compte ne peut pas être suspendu.</target>
+      </trans-unit>
+      <trans-unit id="87bac07271546560" resname="Ce lien n&apos;est plus valide. Il a peut-être expiré ou déjà été utilisé : demandez-en un nouveau.">
+        <source>Ce lien n&apos;est plus valide. Il a peut-être expiré ou déjà été utilisé : demandez-en un nouveau.</source>
+        <target>Ce lien n&apos;est plus valide. Il a peut-être expiré ou déjà été utilisé : demandez-en un nouveau.</target>
+      </trans-unit>
+      <trans-unit id="29045ff42eec3997" resname="Ce rôle n&apos;existe pas pour l&apos;équipe Kréno.">
+        <source>Ce rôle n&apos;existe pas pour l&apos;équipe Kréno.</source>
+        <target>Ce rôle n&apos;existe pas pour l&apos;équipe Kréno.</target>
+      </trans-unit>
+      <trans-unit id="dd87e54a75563c41" resname="Cette adresse e-mail est déjà utilisée par un autre compte.">
+        <source>Cette adresse e-mail est déjà utilisée par un autre compte.</source>
+        <target>Cette adresse e-mail est déjà utilisée par un autre compte.</target>
+      </trans-unit>
+      <trans-unit id="547e8c837a16ca9c" resname="Cette personne ne fait pas partie de l&apos;équipe Kréno.">
+        <source>Cette personne ne fait pas partie de l&apos;équipe Kréno.</source>
+        <target>Cette personne ne fait pas partie de l&apos;équipe Kréno.</target>
+      </trans-unit>
+      <trans-unit id="42f5d4a4e40ac74b" resname="Cette ville n&apos;est pas encore ouverte sur Kréno.">
+        <source>Cette ville n&apos;est pas encore ouverte sur Kréno.</source>
+        <target>Cette ville n&apos;est pas encore ouverte sur Kréno.</target>
+      </trans-unit>
+      <trans-unit id="c724b5adcddaca41" resname="Changement d&apos;e-mail">
+        <source>Changement d&apos;e-mail</source>
+        <target>Changement d&apos;e-mail</target>
+      </trans-unit>
+      <trans-unit id="9623f1e65dadc838" resname="Compte banni.">
+        <source>Compte banni.</source>
+        <target>Compte banni.</target>
+      </trans-unit>
+      <trans-unit id="7902a53905c46a07" resname="Compte réactivé.">
+        <source>Compte réactivé.</source>
+        <target>Compte réactivé.</target>
+      </trans-unit>
+      <trans-unit id="8435ac4fada8d050" resname="Compte supprimé">
+        <source>Compte supprimé</source>
+        <target>Compte supprimé</target>
+      </trans-unit>
+      <trans-unit id="66678984d7bd06f1" resname="Compte suspendu %d jours. L&apos;utilisateur a été prévenu par e-mail.">
+        <source>Compte suspendu %d jours. L&apos;utilisateur a été prévenu par e-mail.</source>
+        <target>Compte suspendu %d jours. L&apos;utilisateur a été prévenu par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="d787bdcc5889082b" resname="Compte suspendu jusqu&apos;au %s">
+        <source>Compte suspendu jusqu&apos;au %s</source>
+        <target>Compte suspendu jusqu&apos;au %s</target>
+      </trans-unit>
+      <trans-unit id="ab3ac54e4b283471" resname="Création du mot de passe">
+        <source>Création du mot de passe</source>
+        <target>Création du mot de passe</target>
+      </trans-unit>
+      <trans-unit id="3e403102f64caee3" resname="Créé le">
+        <source>Créé le</source>
+        <target>Créé le</target>
+      </trans-unit>
+      <trans-unit id="7eab4b5173791f3d" resname="Créée le">
+        <source>Créée le</source>
+        <target>Créée le</target>
+      </trans-unit>
+      <trans-unit id="e2eca64bd73ce867" resname="De">
+        <source>De</source>
+        <target>De</target>
+      </trans-unit>
+      <trans-unit id="77792595ec29ead3" resname="Dernière connexion">
+        <source>Dernière connexion</source>
+        <target>Dernière connexion</target>
+      </trans-unit>
+      <trans-unit id="d2dc9dcff2a0c2a6" resname="Décision">
+        <source>Décision</source>
+        <target>Décision</target>
+      </trans-unit>
+      <trans-unit id="ba9765cf75b25516" resname="E-mail vérifié le">
+        <source>E-mail vérifié le</source>
+        <target>E-mail vérifié le</target>
+      </trans-unit>
+      <trans-unit id="14180951adafa6b3" resname="Envoyé le">
+        <source>Envoyé le</source>
+        <target>Envoyé le</target>
+      </trans-unit>
+      <trans-unit id="84d2c8d8d2ca902a" resname="Identifiants invalides.">
+        <source>Identifiants invalides.</source>
+        <target>Identifiants invalides.</target>
+      </trans-unit>
+      <trans-unit id="e4b8b93a20001873" resname="Indiquez le quartier ou l&apos;adresse de l&apos;alerte.">
+        <source>Indiquez le quartier ou l&apos;adresse de l&apos;alerte.</source>
+        <target>Indiquez le quartier ou l&apos;adresse de l&apos;alerte.</target>
+      </trans-unit>
+      <trans-unit id="1cb0ba125f84c982" resname="Information">
+        <source>Information</source>
+        <target>Information</target>
+      </trans-unit>
+      <trans-unit id="cb30d003d2b35355" resname="Kréno (automatique)">
+        <source>Kréno (automatique)</source>
+        <target>Kréno (automatique)</target>
+      </trans-unit>
+      <trans-unit id="9e718323466f292d" resname="L&apos;export n&apos;a pas pu être préparé.">
+        <source>L&apos;export n&apos;a pas pu être préparé.</source>
+        <target>L&apos;export n&apos;a pas pu être préparé.</target>
+      </trans-unit>
+      <trans-unit id="e1e1ac94d3f0868d" resname="L&apos;heure de fin doit être après l&apos;heure de début.">
+        <source>L&apos;heure de fin doit être après l&apos;heure de début.</source>
+        <target>L&apos;heure de fin doit être après l&apos;heure de début.</target>
+      </trans-unit>
+      <trans-unit id="29d660ad626b73da" resname="L&apos;équipe doit garder au moins un administrateur.">
+        <source>L&apos;équipe doit garder au moins un administrateur.</source>
+        <target>L&apos;équipe doit garder au moins un administrateur.</target>
+      </trans-unit>
+      <trans-unit id="90e97992dc1a73ac" resname="La page a expiré. Recharge-la et réessaie.">
+        <source>La page a expiré. Recharge-la et réessaie.</source>
+        <target>La page a expiré. Recharge-la et réessaie.</target>
+      </trans-unit>
+      <trans-unit id="ed5f1e0475e56e57" resname="Le compte {email} n&apos;est pas actif : il ne peut pas rejoindre l&apos;équipe.">
+        <source>Le compte {email} n&apos;est pas actif : il ne peut pas rejoindre l&apos;équipe.</source>
+        <target>Le compte {email} n&apos;est pas actif : il ne peut pas rejoindre l&apos;équipe.</target>
+      </trans-unit>
+      <trans-unit id="6622930f396e32c0" resname="Le mot de passe actuel est incorrect.">
+        <source>Le mot de passe actuel est incorrect.</source>
+        <target>Le mot de passe actuel est incorrect.</target>
+      </trans-unit>
+      <trans-unit id="4ad2480bbaa85ee7" resname="Le nouveau mot de passe doit être différent de l&apos;actuel.">
+        <source>Le nouveau mot de passe doit être différent de l&apos;actuel.</source>
+        <target>Le nouveau mot de passe doit être différent de l&apos;actuel.</target>
+      </trans-unit>
+      <trans-unit id="ddda7cab4373fddb" resname="Les deux mots de passe ne sont pas identiques.">
+        <source>Les deux mots de passe ne sont pas identiques.</source>
+        <target>Les deux mots de passe ne sont pas identiques.</target>
+      </trans-unit>
+      <trans-unit id="58ac5bd8e15c56f0" resname="Lien">
+        <source>Lien</source>
+        <target>Lien</target>
+      </trans-unit>
+      <trans-unit id="670f460a8e680ee0" resname="Lue le">
+        <source>Lue le</source>
+        <target>Lue le</target>
+      </trans-unit>
+      <trans-unit id="a32799c816cc8b94" resname="Moi">
+        <source>Moi</source>
+        <target>Moi</target>
+      </trans-unit>
+      <trans-unit id="2bc0c9c36a985e71" resname="Mot de passe modifié.">
+        <source>Mot de passe modifié.</source>
+        <target>Mot de passe modifié.</target>
+      </trans-unit>
+      <trans-unit id="631c95c599d511b4" resname="Notification introuvable.">
+        <source>Notification introuvable.</source>
+        <target>Notification introuvable.</target>
+      </trans-unit>
+      <trans-unit id="bce30e78c027ea17" resname="Notifications par e-mail">
+        <source>Notifications par e-mail</source>
+        <target>Notifications par e-mail</target>
+      </trans-unit>
+      <trans-unit id="c515dd188d5c5f32" resname="Prix maximum">
+        <source>Prix maximum</source>
+        <target>Prix maximum</target>
+      </trans-unit>
+      <trans-unit id="98552e95751d0010" resname="Préférences enregistrées.">
+        <source>Préférences enregistrées.</source>
+        <target>Préférences enregistrées.</target>
+      </trans-unit>
+      <trans-unit id="12bc572ef7423637" resname="Rappel">
+        <source>Rappel</source>
+        <target>Rappel</target>
+      </trans-unit>
+      <trans-unit id="167acbee11f53d09" resname="Rayon (km)">
+        <source>Rayon (km)</source>
+        <target>Rayon (km)</target>
+      </trans-unit>
+      <trans-unit id="6d73f57801f45eab" resname="Reçue le">
+        <source>Reçue le</source>
+        <target>Reçue le</target>
+      </trans-unit>
+      <trans-unit id="aa3909abedabef45" resname="Réservée le">
+        <source>Réservée le</source>
+        <target>Réservée le</target>
+      </trans-unit>
+      <trans-unit id="090b8535ae853536" resname="Signalement">
+        <source>Signalement</source>
+        <target>Signalement</target>
+      </trans-unit>
+      <trans-unit id="6df26b5b85baf711" resname="Suivi depuis le">
+        <source>Suivi depuis le</source>
+        <target>Suivi depuis le</target>
+      </trans-unit>
+      <trans-unit id="be91940b79f46910" resname="Support">
+        <source>Support</source>
+        <target>Support</target>
+      </trans-unit>
+      <trans-unit id="ede5c64a963c0cfb" resname="Supprimé">
+        <source>Supprimé</source>
+        <target>Supprimé</target>
+      </trans-unit>
+      <trans-unit id="ff129984f4a1c755" resname="Suspendu">
+        <source>Suspendu</source>
+        <target>Suspendu</target>
+      </trans-unit>
+      <trans-unit id="78e7920010aa1ff0" resname="Titre">
+        <source>Titre</source>
+        <target>Titre</target>
+      </trans-unit>
+      <trans-unit id="4c015adf660fd55b" resname="Ton adresse e-mail est confirmée. Merci !">
+        <source>Ton adresse e-mail est confirmée. Merci !</source>
+        <target>Ton adresse e-mail est confirmée. Merci !</target>
+      </trans-unit>
+      <trans-unit id="2b1b5c1132a7b794" resname="Ton mot de passe a été modifié. Tu peux te connecter.">
+        <source>Ton mot de passe a été modifié. Tu peux te connecter.</source>
+        <target>Ton mot de passe a été modifié. Tu peux te connecter.</target>
+      </trans-unit>
+      <trans-unit id="7934c7e9595032ba" resname="Toutes les notifications sont marquées comme lues.">
+        <source>Toutes les notifications sont marquées comme lues.</source>
+        <target>Toutes les notifications sont marquées comme lues.</target>
+      </trans-unit>
+      <trans-unit id="51d806f42e7fb27c" resname="Trop de tentatives. Réessaie dans une minute.">
+        <source>Trop de tentatives. Réessaie dans une minute.</source>
+        <target>Trop de tentatives. Réessaie dans une minute.</target>
+      </trans-unit>
+      <trans-unit id="baaddf70fb5d432b" resname="Type">
+        <source>Type</source>
+        <target>Type</target>
+      </trans-unit>
+      <trans-unit id="8fde580643268d04" resname="Un compte existe déjà avec cette adresse e-mail : connecte-toi pour réserver.">
+        <source>Un compte existe déjà avec cette adresse e-mail : connecte-toi pour réserver.</source>
+        <target>Un compte existe déjà avec cette adresse e-mail : connecte-toi pour réserver.</target>
+      </trans-unit>
+      <trans-unit id="5457769bd3fd2423" resname="Un compte existe déjà avec cette adresse e-mail. Connectez-vous ou réinitialisez votre mot de passe.">
+        <source>Un compte existe déjà avec cette adresse e-mail. Connectez-vous ou réinitialisez votre mot de passe.</source>
+        <target>Un compte existe déjà avec cette adresse e-mail. Connectez-vous ou réinitialisez votre mot de passe.</target>
+      </trans-unit>
+      <trans-unit id="41da26515377da51" resname="Un nouveau lien de confirmation a été envoyé à %s.">
+        <source>Un nouveau lien de confirmation a été envoyé à %s.</source>
+        <target>Un nouveau lien de confirmation a été envoyé à %s.</target>
+      </trans-unit>
+      <trans-unit id="429e6c8cc982bec1" resname="Utilisateur introuvable.">
+        <source>Utilisateur introuvable.</source>
+        <target>Utilisateur introuvable.</target>
+      </trans-unit>
+      <trans-unit id="ad2fc4dd49626d64" resname="Votre adresse e-mail est déjà vérifiée.">
+        <source>Votre adresse e-mail est déjà vérifiée.</source>
+        <target>Votre adresse e-mail est déjà vérifiée.</target>
+      </trans-unit>
+      <trans-unit id="f9d27ec3c20e3b24" resname="Votre compte a été fermé. Contactez aide@kreno.fr pour en savoir plus.">
+        <source>Votre compte a été fermé. Contactez aide@kreno.fr pour en savoir plus.</source>
+        <target>Votre compte a été fermé. Contactez aide@kreno.fr pour en savoir plus.</target>
+      </trans-unit>
+      <trans-unit id="c22657aa3ab4f3cb" resname="Votre mot de passe a été modifié. Vous pouvez vous connecter.">
+        <source>Votre mot de passe a été modifié. Vous pouvez vous connecter.</source>
+        <target>Votre mot de passe a été modifié. Vous pouvez vous connecter.</target>
+      </trans-unit>
+      <trans-unit id="d86bb9f437429d20" resname="Vous avez déjà {max} alertes : supprimez-en une pour en créer une nouvelle.">
+        <source>Vous avez déjà {max} alertes : supprimez-en une pour en créer une nouvelle.</source>
+        <target>Vous avez déjà {max} alertes : supprimez-en une pour en créer une nouvelle.</target>
+      </trans-unit>
+      <trans-unit id="ba5b11f0ba004471" resname="Vous ne pouvez pas modifier votre propre accès.">
+        <source>Vous ne pouvez pas modifier votre propre accès.</source>
+        <target>Vous ne pouvez pas modifier votre propre accès.</target>
+      </trans-unit>
+      <trans-unit id="9639f89d9eb64da8" resname="Vous ne pouvez pas vous sanctionner vous-même.">
+        <source>Vous ne pouvez pas vous sanctionner vous-même.</source>
+        <target>Vous ne pouvez pas vous sanctionner vous-même.</target>
+      </trans-unit>
+      <trans-unit id="91b0a7bff1abcade" resname="Vérification de l&apos;e-mail">
+        <source>Vérification de l&apos;e-mail</source>
+        <target>Vérification de l&apos;e-mail</target>
+      </trans-unit>
+      <trans-unit id="bcee72e6df5d5631" resname="non">
+        <source>non</source>
+        <target>non</target>
+      </trans-unit>
+      <trans-unit id="3a3468fa89b2ab7c" resname="oui">
+        <source>oui</source>
+        <target>oui</target>
+      </trans-unit>
+      <trans-unit id="6752f0e7635043a8" resname="{email} fait déjà partie de l&apos;équipe Kréno.">
+        <source>{email} fait déjà partie de l&apos;équipe Kréno.</source>
+        <target>{email} fait déjà partie de l&apos;équipe Kréno.</target>
+      </trans-unit>
+      <trans-unit id="3de5b2cd8e26c355" resname="À">
+        <source>À</source>
+        <target>À</target>
+      </trans-unit>
+      <trans-unit id="907c0caa440accb8" resname="Établissement ou équipe Kréno">
+        <source>Établissement ou équipe Kréno</source>
+        <target>Établissement ou équipe Kréno</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

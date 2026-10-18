@@ -4,6 +4,7 @@ namespace App\User\Service;
 
 use App\Entity\User\User;
 use App\Repository\User\UserRepository;
+use App\Shared\Helper\Translation;
 use App\User\Dto\ProfileInput;
 use App\User\Dto\SettingsInput;
 use App\User\Enum\UserStatus;
@@ -16,8 +17,6 @@ use NeoPHP\Package\Orm\OrmManagerInterface;
 class AccountService
 {
     public const DELETED_EMAIL = 'supprime-%d@kreno.invalid';
-
-    public const DELETED_FIRST_NAME = 'Compte supprimé';
 
     public function __construct(
         private OrmManagerInterface $orm,
@@ -79,6 +78,11 @@ class AccountService
         $this->orm->flush();
     }
 
+    public static function deleteFirstName(): string
+    {
+        return Translation::translate('Compte supprimé');
+    }
+
     private function changeEmail(User $user, string $email): void
     {
         $email = mb_strtolower(trim($email));
@@ -99,7 +103,7 @@ class AccountService
         $user
             ->setStatus(UserStatus::DELETED)
             ->setEmail(sprintf(self::DELETED_EMAIL, $user->getId()))
-            ->setFirstName(self::DELETED_FIRST_NAME)
+            ->setFirstName(self::deleteFirstName())
             ->setLastName(null)
             ->setPhone(null)
             ->setPassword(bin2hex(random_bytes(32)))

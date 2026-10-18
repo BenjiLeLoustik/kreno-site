@@ -2,6 +2,8 @@
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AdminTeamFlash
 {
     case INVITED;
@@ -16,9 +18,9 @@ enum AdminTeamFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::INVITED => 'Invitation envoyée à %s.',
-            self::ROLE_CHANGED => 'Rôle modifié.',
-            self::REVOKED => 'Accès retiré.',
+            self::INVITED => Translation::translate('Invitation envoyée à %s.'),
+            self::ROLE_CHANGED => Translation::translate('Rôle modifié.'),
+            self::REVOKED => Translation::translate('Accès retiré.'),
         };
     }
 }

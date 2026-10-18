@@ -2,6 +2,8 @@
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ExportText
 {
     case YES;
@@ -22,11 +24,11 @@ enum ExportText
     public function label(): string
     {
         return match ($this) {
-            self::YES => 'oui',
-            self::NO => 'non',
-            self::ME => 'Moi',
+            self::YES => Translation::translate('oui'),
+            self::NO => Translation::translate('non'),
+            self::ME => Translation::translate('Moi'),
             self::KRENO => 'Kréno',
-            self::OTHER_AUTHOR => 'Établissement ou équipe Kréno',
+            self::OTHER_AUTHOR => Translation::translate('Établissement ou équipe Kréno'),
         };
     }
 }

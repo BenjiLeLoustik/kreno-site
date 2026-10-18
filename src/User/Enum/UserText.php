@@ -2,6 +2,8 @@
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum UserText
 {
     case AUTOMATIC;
@@ -16,9 +18,9 @@ enum UserText
     private function pattern(): string
     {
         return match ($this) {
-            self::AUTOMATIC => 'Kréno (automatique)',
+            self::AUTOMATIC => Translation::translate('Kréno (automatique)'),
             self::NAME_WITH_ROLE => '%s (%s)',
-            self::SUSPENDED_UNTIL => 'Compte suspendu jusqu\'au %s',
+            self::SUSPENDED_UNTIL => Translation::translate('Compte suspendu jusqu\'au %s'),
         };
     }
 }

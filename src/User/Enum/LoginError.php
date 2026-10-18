@@ -2,6 +2,8 @@
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum LoginError: string
 {
     case INVALID_CREDENTIALS = 'Invalid credentials.';
@@ -24,9 +26,9 @@ enum LoginError: string
     public function label(): string
     {
         return match ($this) {
-            self::INVALID_CREDENTIALS => 'Adresse e-mail ou mot de passe incorrect.',
-            self::INVALID_CSRF => 'La page a expiré. Recharge-la et réessaie.',
-            self::TOO_MANY_ATTEMPTS => 'Trop de tentatives. Réessaie dans une minute.',
+            self::INVALID_CREDENTIALS => Translation::translate('Adresse e-mail ou mot de passe incorrect.'),
+            self::INVALID_CSRF => Translation::translate('La page a expiré. Recharge-la et réessaie.'),
+            self::TOO_MANY_ATTEMPTS => Translation::translate('Trop de tentatives. Réessaie dans une minute.'),
         };
     }
 }

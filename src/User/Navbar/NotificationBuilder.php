@@ -4,6 +4,7 @@ namespace App\User\Navbar;
 
 use App\Entity\User\User;
 use App\Repository\User\UserNotificationRepository;
+use App\Shared\Helper\Translation;
 
 class NotificationBuilder extends AbstractAccountNavbarBuilder
 {
@@ -19,7 +20,7 @@ class NotificationBuilder extends AbstractAccountNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Notifications';
+        return Translation::translate('Notifications');
     }
 
     public function getRoute(): string

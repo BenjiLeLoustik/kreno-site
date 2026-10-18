@@ -2,6 +2,8 @@
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum UserRole: string
 {
     case USER = 'ROLE_USER';
@@ -30,7 +32,10 @@ enum UserRole: string
         $choices = [];
 
         foreach (self::staff() as $role) {
-            $choices[] = ['value' => $role->value, 'label' => $role->label()];
+            $choices[] = [
+                'value' => $role->value,
+                'label' => $role->label()
+            ];
         }
 
         return $choices;
@@ -44,10 +49,10 @@ enum UserRole: string
     public function label(): string
     {
         return match ($this) {
-            self::USER => 'Client',
-            self::SUPPORT => 'Support',
-            self::MODERATOR => 'Modération',
-            self::ADMIN => 'Administrateur',
+            self::USER => Translation::translate('Client'),
+            self::SUPPORT => Translation::translate('Support'),
+            self::MODERATOR => Translation::translate('Modération'),
+            self::ADMIN => Translation::translate('Administrateur'),
         };
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum UserStatus: string
 {
     case ACTIVE = 'active';
@@ -14,10 +16,10 @@ enum UserStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::ACTIVE => 'Actif',
-            self::SUSPENDED => 'Suspendu',
-            self::BANNED => 'Banni',
-            self::DELETED => 'Supprimé',
+            self::ACTIVE => Translation::translate('Actif'),
+            self::SUSPENDED => Translation::translate('Suspendu'),
+            self::BANNED => Translation::translate('Banni'),
+            self::DELETED => Translation::translate('Supprimé'),
         };
     }
 }

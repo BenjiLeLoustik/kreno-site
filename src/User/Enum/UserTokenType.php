@@ -2,6 +2,8 @@
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum UserTokenType: string
 {
     case EMAIL_VERIFICATION = 'email_verification';
@@ -14,10 +16,10 @@ enum UserTokenType: string
     public function label(): string
     {
         return match ($this) {
-            self::EMAIL_VERIFICATION => 'Vérification de l\'e-mail',
-            self::PASSWORD_RESET => 'Mot de passe oublié',
-            self::EMAIL_CHANGE => 'Changement d\'e-mail',
-            self::ACCOUNT_SETUP => 'Création du mot de passe',
+            self::EMAIL_VERIFICATION => Translation::translate('Vérification de l\'e-mail'),
+            self::PASSWORD_RESET => Translation::translate('Mot de passe oublié'),
+            self::EMAIL_CHANGE => Translation::translate('Changement d\'e-mail'),
+            self::ACCOUNT_SETUP => Translation::translate('Création du mot de passe'),
         };
     }
 

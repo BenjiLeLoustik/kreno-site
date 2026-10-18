@@ -2,6 +2,8 @@
 
 namespace App\User\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class AlertBuilder extends AbstractAccountNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class AlertBuilder extends AbstractAccountNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Mes alertes';
+        return Translation::translate('Mes alertes');
     }
 
     public function getRoute(): string

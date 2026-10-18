@@ -36,7 +36,11 @@ class AdminUserPageProvider
         $visible = array_slice($users, 0, self::PER_PAGE);
 
         return [
-            'filters' => ['q' => $search, 'status' => $status?->value, 'page' => $page],
+            'filters' => [
+                'q' => $search,
+                'status' => $status?->value,
+                'page' => $page
+            ],
             'hasNext' => count($users) > self::PER_PAGE,
             'statuses' => $this->statuses(),
             'users' => $this->rows($visible),
@@ -61,7 +65,10 @@ class AdminUserPageProvider
         $statuses = [];
 
         foreach (UserStatus::cases() as $status) {
-            $statuses[] = ['value' => $status->value, 'label' => $status->label()];
+            $statuses[] = [
+                'value' => $status->value,
+                'label' => $status->label()
+            ];
         }
 
         return $statuses;

@@ -2,6 +2,8 @@
 
 namespace App\User\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AdminUserFlash
 {
     case SUSPENDED;
@@ -16,9 +18,9 @@ enum AdminUserFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::SUSPENDED => 'Compte suspendu %d jours. L\'utilisateur a été prévenu par e-mail.',
-            self::LIFTED => 'Compte réactivé.',
-            self::BANNED => 'Compte banni.',
+            self::SUSPENDED => Translation::translate('Compte suspendu %d jours. L\'utilisateur a été prévenu par e-mail.'),
+            self::LIFTED => Translation::translate('Compte réactivé.'),
+            self::BANNED => Translation::translate('Compte banni.'),
         };
     }
 }

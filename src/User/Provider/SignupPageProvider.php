@@ -16,7 +16,12 @@ class SignupPageProvider
     public function form(): array
     {
         return [
-            'form' => $this->pullOld() + ['firstName' => null, 'lastName' => null, 'email' => null, 'phone' => null],
+            'form' => $this->pullOld() + [
+                    'firstName' => null,
+                    'lastName' => null,
+                    'email' => null,
+                    'phone' => null
+                ],
         ];
     }
 

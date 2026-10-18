@@ -7,6 +7,7 @@ use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Repository\BookingRepository;
 use App\Repository\User\UserRepository;
+use App\Shared\Helper\Translation;
 use App\User\Enum\NotificationType;
 use App\User\Enum\UserStatus;
 use App\User\Enum\UserText;
@@ -21,8 +22,6 @@ use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class SanctionService
 {
-    public const NO_SHOW_REASON = '%d absences non prévenues en %d jours';
-
     public function __construct(
         private OrmManagerInterface $orm,
         private BookingRepository $bookings,
@@ -48,7 +47,7 @@ class SanctionService
             return false;
         }
 
-        $reason = sprintf(self::NO_SHOW_REASON, $noShows, $rule->getNoShowWindowDays());
+        $reason = sprintf(Translation::translate('%d absences non prévenues en %d jours'), $noShows, $rule->getNoShowWindowDays());
         $this->suspend($customer, $rule->getSuspensionDays(), $reason, null, true);
 
         return true;
