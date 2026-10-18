@@ -9,18 +9,27 @@
 %}
 
 {% block title %}
-    {{ shop.name }}
     {% if shop.location.locality %}
-        , {{ shop.location.locality }}
+        {{ translate('{name}, {locality} : créneaux libérés à prix réduit · {site}', {
+            name: shop.name,
+            locality: shop.location.locality,
+            site: website().siteName
+        }) }}
+    {% else %}
+        {{ translate('{name} : créneaux libérés à prix réduit · {site}', {
+            name: shop.name,
+            site: website().siteName
+        }) }}
     {% endif %}
-    : créneaux libérés à prix réduit · Kréno
 {% endblock %}
 
 {% block meta_description %}
     {%- if shop.description -%}
         {{ shop.description|slice(0, 150) }}
     {%- else -%}
-        {{ shop.name }} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.
+        {{ translate('{name} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.', {
+            name: shop.name
+        }) }}
     {%- endif -%}
 {% endblock %}
 
@@ -34,7 +43,9 @@
     {% import 'front/review/_stars.html.twig' as stars %}
 
     <div class="shop">
-        {% include 'components/breadcrumb.html.twig' with { items: breadcrumb } %}
+        {% include 'components/breadcrumb.html.twig' with {
+            items: breadcrumb
+        } %}
 
         <div class="shop-gallery{{ thumbnails is empty ? ' shop-gallery--single' : '' }}">
             {% if cover %}
@@ -86,7 +97,7 @@
 
                 <section class="shop-section">
                     <h2 class="shop-section__title">
-                        Prochains créneaux libres
+                        {{ translate('Prochains créneaux libres') }}
                     </h2>
                     {% if shop.slots is not empty %}
                         <div class="shop-slots">
@@ -127,10 +138,10 @@
                     {% else %}
                         <div class="shop-empty">
                             <b>
-                                Aucun créneau libre pour le moment
+                                {{ translate('Aucun créneau libre pour le moment') }}
                             </b>
                             <span class="shop-empty__text">
-                                Suis {{ shop.name }} pour être prévenu dès qu'un créneau se libère.
+                                {{ translate('Suis {shopName} pour être prévenu dès qu\'un créneau se libère.', {shopName: shop.name}) }}
                             </span>
                         </div>
                     {% endif %}
@@ -139,7 +150,7 @@
                 {% if shop.services is not empty %}
                     <section class="shop-section">
                         <h2 class="shop-section__title">
-                            Prestations
+                            {{ translate('Prestations') }}
                         </h2>
                         <ul class="shop-services">
                             {% for service in shop.services %}
@@ -164,7 +175,7 @@
                             {% endfor %}
                         </ul>
                         <span class="shop-section__note">
-                            Prix habituels. Les créneaux Kréno sont proposés avec une remise choisie par le salon.
+                            {{ translate('Prix habituels. Les créneaux Kréno sont proposés avec une remise choisie par le salon.') }}
                         </span>
                     </section>
                 {% endif %}
@@ -177,7 +188,7 @@
             <aside class="shop-aside">
                 <div class="shop-aside__block">
                     <b class="shop-aside__title">
-                        Adresse
+                        {{ translate('Adresse') }}
                     </b>
                     <span class="shop-aside__text">
                         {{ shop.location.addressLine1 }}
@@ -189,13 +200,13 @@
                     </span>
                     {% if shop.location.distance %}
                         <span class="shop-aside__muted">
-                            À {{ shop.location.distance }}
+                            {{ translate('À {distance}', {distance: shop.location.distance}) }}
                         </span>
                     {% endif %}
                     {% if shop.location.latitude is not null and shop.location.longitude is not null %}
                         <a href="https://www.google.com/maps/dir/?api=1&amp;destination={{ shop.location.latitude }},{{ shop.location.longitude }}" class="shop-aside__link" target="_blank" rel="noopener">
                             <i data-lucide="navigation" class="shop-aside__icon"></i>
-                            Itinéraire
+                            {{ translate('Itinéraire') }}
                         </a>
                     {% endif %}
                 </div>
@@ -203,7 +214,7 @@
                 {% if shop.hours is not empty %}
                     <div class="shop-aside__block">
                         <b class="shop-aside__title">
-                            Horaires
+                            {{ translate('Horaires') }}
                         </b>
                         <ul class="shop-hours">
                             {% for hour in shop.hours %}
@@ -223,7 +234,7 @@
                 {% if shop.closures is not empty %}
                     <div class="shop-aside__block">
                         <b class="shop-aside__title">
-                            Fermetures exceptionnelles
+                            {{ translate('Fermetures exceptionnelles') }}
                         </b>
                         <ul class="shop-hours">
                             {% for closure in shop.closures %}
@@ -245,7 +256,7 @@
                 {% if shop.contact.phone or shop.contact.website %}
                     <div class="shop-aside__block">
                         <b class="shop-aside__title">
-                            Contact
+                            {{ translate('Contact') }}
                         </b>
                         {% if shop.contact.phone %}
                             <a href="tel:{{ shop.contact.phone|replace({ ' ': '', '.': '' }) }}" class="shop-aside__link">
@@ -267,22 +278,23 @@
                         <button type="button" class="shop-follow__button{{ shop.following ? ' shop-follow__button--active' : '' }}" aria-pressed="{{ shop.following ? 'true' : 'false' }}" data-shop-follow data-url="{{ path('shop_follow', { city: shop.city.slug, slug: shop.slug }) }}">
                             <span data-shop-follow-label>
                                 {% if show.following %}
-                                    Salon suivi ✓
+                                    {{ translate('Salon suivi ✓') }}
                                 {% else %}
-                                    Suivre ce salon
+                                    {{ translate('Suivre ce salon') }}
                                 {% endif %}
                             </span>
                         </button>
                     {% else %}
                         <a href="{{ path('app_login') }}" class="shop-follow__button">
-                            Suivre ce salon
+                            {{ translate('Suivre ce salon') }}
                         </a>
                     {% endif %}
                     <span class="shop-follow__text">
-                        <span data-shop-followers>
-                            {{ shop.followersCount }} abonné{{ shop.followersCount > 1 ? 's' : '' }}
-                        </span>
-                        . Suis le salon pour être prévenu dès qu'un créneau se libère.
+                        {{ translate("{followers}. Suis le salon pour être prévenu dès qu'un créneau se libère.", {
+                            followers: '<span data-shop-followers>'
+                            ~ translate('{count, plural, one {# abonné} other {# abonnés}}', {count: shop.followersCount})|e
+                            ~ '</span>'
+                        })|raw }}
                     </span>
                 </div>
             </aside>
@@ -291,10 +303,10 @@
         <div class="shop-footer">
             <span class="shop-footer__verified">
                 <i data-lucide="badge-check" class="shop-aside__icon"></i>
-                Établissement vérifié par Kréno
+                {{ translate('Établissement vérifié par Kréno') }}
             </span>
             <a href="{{ path('page_help') }}" class="shop-footer__link">
-                Signaler un problème
+                {{ translate('Signaler un problème') }}
             </a>
         </div>
     </div>

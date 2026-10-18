@@ -1,7 +1,7 @@
 {% extends 'layouts/pro-auth.html.twig' %}
 
 {% block title %}
-    Invitation · {{ website().siteName }} Pro
+    {{ translate('Invitiation · {site} Pro', {site: website().siteName}) }}
 {% endblock %}
 
 {% block javascripts %}
@@ -12,20 +12,19 @@
 
 {% block heading %}
     {% if invitation %}
-        Rejoindre {{ invitation.company }}
+        {{ translate('Rejoindre {companyName}', {companyName: invitation.company}) }}
     {% else %}
-        Invitation expirée
+        {{ translate('Invitation expirée') }}
     {% endif %}
 {% endblock %}
 
 {% block lead %}
     {% if invitation %}
         {% if invitation.invitedBy %}
-            {{ invitation.invitedBy }} vous invite
+            {{ translate('{invitedBy} vous invite à rejoindre l\'espace pro', {invitedBy: invitation.invitedBy}) }}
         {% else %}
-            Vous êtes invité
+            {{ translate('Vous êtes invité à rejoindre l\'espace pro') }}
         {% endif %}
-        à rejoindre l'espace pro
         {% if invitation.establishment %}
             de {{ invitation.establishment }}
         {% endif %}.
@@ -37,35 +36,35 @@
 {% block content %}
     {% if not invitation %}
         <p class="invitation-note">
-            Demandez au responsable de l'établissement de vous renvoyer une invitation depuis son espace Équipe.
+            {{ translate('Demandez au responsable de l\'établissement de vous renvoyer une invitation depuis son espace Équipe.') }}
         </p>
         <a href="{{ path('home_index') }}" class="btn btn--outline form-submit">
-            Retour à l'accueil
+            {{ translate('Retour à l\'accueil') }}
         </a>
     {% else %}
         <dl class="invitation-facts">
             <dt class="invitation-facts__label">
-                Entreprise
+                {{ translate('Entreprise') }}
             </dt>
             <dd class="invitation-facts__value">
                 {{ invitation.company }}
             </dd>
             {% if invitation.establishment %}
                 <dt class="invitation-facts__label">
-                    Établissement
+                    {{ translate('Établissement') }}
                 </dt>
                 <dd class="invitation-facts__value">
                     {{ invitation.establishment }}
                 </dd>
             {% endif %}
             <dt class="invitation-facts__label">
-                Rôle
+                {{ translate('Rôle') }}
             </dt>
             <dd class="invitation-facts__value">
                 {{ invitation.roleLabel }}
             </dd>
             <dt class="invitation-facts__label">
-                Adresse
+                {{ translate('Adresse') }}
             </dt>
             <dd class="invitation-facts__value">
                 {{ invitation.email }}
@@ -76,21 +75,26 @@
             <form method="post" action="{{ path('pro_invitation_accept', { token: token }) }}" class="form">
                 {{ csrf_field('invitation')|raw }}
                 <button type="submit" class="btn btn--primary form-submit">
-                    Rejoindre l'équipe
+                    {{ translate('Rejoindre l\'équipe') }}
                 </button>
             </form>
         {% elseif state == 'other' %}
             <div class="form-alert form-alert--error" role="alert">
-                Vous êtes connecté avec {{ loggedInAs }}. Cette invitation est destinée à {{ invitation.email }} : déconnectez-vous puis revenez sur ce lien.
+                {{ translate('Vous êtes connecté avec {logged}. Cette invitation est destinée à {email} : déconnectez-vous puis revenez sur ce lien.', {
+                    logged: loggedInAs,
+                    email: invitation.email
+                }) }}
             </div>
             <form method="post" action="{{ logout_path() }}" class="form">
                 <button type="submit" class="btn btn--outline form-submit">
-                    Me déconnecter
+                    {{ translate('Me déconnecter') }}
                 </button>
             </form>
         {% elseif state == 'login' %}
             <p class="invitation-note">
-                Un compte existe déjà avec {{ invitation.email }}. Connectez-vous pour accepter l'invitation.
+                {{ translate('Un compte existe déjà avec {email}. Connectez-vous pour accepter l\'invitation.', {
+                    email: invitation.email
+                }) }}
             </p>
             <form method="post" action="{{ path('app_login') }}" class="form">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -98,15 +102,15 @@
                 <input type="hidden" name="email" value="{{ invitation.email }}">
                 <label for="invitation-password" class="form-field">
                     <span class="form-field__head">
-                        Mot de passe
+                        {{ translate('Mot de passe') }}
                         <a href="{{ path('pro_forgot_password') }}" class="form-field__aside">
-                            Mot de passe oublié ?
+                            {{ translate('Mot de passe oublié ?') }}
                         </a>
                     </span>
                     <input id="invitation-password" type="password" name="password" required autocomplete="current-password" class="form-input">
                 </label>
                 <button type="submit" class="btn btn--primary form-submit">
-                    Me connecter
+                    {{ translate('Me connecter') }}
                 </button>
             </form>
         {% else %}
@@ -114,21 +118,21 @@
                 {{ csrf_field('invitation')|raw }}
                 <div class="invitation-names">
                     <label for="invitation-first" class="form-field">
-                        Prénom
+                        {{ translate('Prénom') }}
                         <input id="invitation-first" type="text" name="firstName" required maxlength="80" autocomplete="given-name" class="form-input">
                     </label>
                     <label for="invitation-last" class="form-field">
-                        Nom
+                        {{ translate('Nom') }}
                         <input id="invitation-last" type="text" name="lastName" maxlength="80" autocomplete="family-name" class="form-input">
                     </label>
                 </div>
                 {% include 'front/security/_password_field.html.twig' with {
                     id: 'invitation-password',
                     name: 'password',
-                    label: 'Mot de passe'
+                    label: translate('Mot de passe')
                 } %}
                 <button type="submit" class="btn btn--primary form-submit">
-                    Créer mon accès et rejoindre l'équipe
+                    {{ translate('Créer mon accès et rejoindre l\'équipe') }}
                 </button>
             </form>
         {% endif %}

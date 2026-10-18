@@ -1,7 +1,7 @@
 {% extends 'layouts/front.html.twig' %}
 
 {% block title %}
-    Réservation confirmée · {{ website().siteName }}
+    {{ translate('Réservation confirmé · {site}', {site: website().siteName}) }}
 {% endblock %}
 
 {% block header_class %}site-header--compact{% endblock %}
@@ -9,7 +9,9 @@
 {% block content %}
     <div class="booking-done">
         <div class="booking-done__text">
-            <span class="booking-done__icon" aria-hidden="true"><i data-lucide="check" class="booking-done__check"></i></span>
+            <span class="booking-done__icon" aria-hidden="true">
+                <i data-lucide="check" class="booking-done__check"></i>
+            </span>
             <h1 class="booking-done__title">
                 {{ booking.title }}
             </h1>
@@ -18,15 +20,15 @@
             </p>
             <div class="booking-done__actions">
                 <a href="{{ path('account_booking_calendar', { reference: booking.reference }) }}" class="btn btn--primary">
-                    Ajouter à mon agenda
+                    {{ translate('Ajouter à mon agenda') }}
                 </a>
                 {% if booking.establishment and booking.establishment.directions %}
                     <a href="{{ booking.establishment.directions }}" class="btn btn--outline" target="_blank" rel="noopener">
-                        Itinéraire
+                        {{ translate('Itinéraire') }}
                     </a>
                 {% endif %}
                 <a href="{{ path('account_bookings') }}" class="btn btn--outline">
-                    Voir mes réservations
+                    {{ translate('Voir mes réservations') }}
                 </a>
             </div>
             {% if booking.cancellationNotice %}
@@ -50,7 +52,7 @@
                 <span class="ticket__what">
                     {{ booking.what }}
                     {% if booking.staff %}
-                        · avec {{ booking.staff }}
+                        · {{ translate('avec {staff}', {staff: booking.staff}) }}
                     {% endif %}
                 </span>
                 {% if booking.establishment %}
@@ -66,7 +68,7 @@
                         {{ booking.price }}
                     </b>
                     <span class="ticket__pay">
-                        à régler sur place
+                        {{ translate('à régler sur place') }}
                     </span>
                 </span>
                 <span class="ticket__reference">

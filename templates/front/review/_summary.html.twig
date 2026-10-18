@@ -17,7 +17,7 @@
                     {{ bar.rating }}
                     <i data-lucide="star" class="review-bars__icon"></i>
                 </span>
-                <progress class="review-bars__track" max="100" value="{{ bar.percent }}" aria-label="{{ bar.rating }} étoiles : {{ bar.count }}">
+                <progress class="review-bars__track" max="100" value="{{ bar.percent }}" aria-label="{{ translate('{barRating} étoiles : {count}', {barRating: bar.rating, count: bar.count}) }}">
                     {{ bar.percent }} %
                 </progress>
                 <span class="review-bars__count">

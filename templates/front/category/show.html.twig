@@ -1,12 +1,12 @@
 {% extends 'layouts/front.html.twig' %}
 
 {% block title %}
-    {{ category.name }} : les créneaux libérés près de chez toi · Kréno
+    {{ translate('{categoryName} : les créneaux libérés près de chez toi · Kréno', {categoryName: category.name}) }}
 {% endblock %}
 
 {% block meta_description %}
     {% if category.description %}
-        {{ category.name }} : les rendez-vous annulés remis en ligne à prix réduit près de chez toi.Réservation en deux clics, paiement sur place.
+        {{ translate('{categoryName} : les rendez-vous annulés remis en ligne à prix réduit près de chez toi. Réservation en deux clics, paiement sur place.', {categoryName: category.name}) }}
     {% endif %}
 {% endblock %}
 
@@ -16,18 +16,18 @@
     <section class="category-hero">
         {% include 'components/breadcrumb.html.twig' with { items: breadcrumb } %}
         <h1 class="category-hero__title">
-            {{ category.name }} : les créneaux libérés près de chez toi
+            {{ translate('{categoryName} : les créneaux libérés près de chez toi', {categoryName: category.name}) }}
         </h1>
         <p class="category-hero__lead">
             {% if category.description %}
-                Des rendez-vous annulés, remis en ligne à prix réduit par les professionnels de ton quartier. Réservation en deux clics, paiement sur place.
+                {{ translate('Des rendez-vous annulés, remis en ligne à prix réduit par les professionnels de ton quartier. Réservation en deux clics, paiement sur place.') }}
             {% endif %}
         </p>
     </section>
 
     <section class="category-cities">
         <h2 class="category-section-title">
-            Choisis ta ville
+            {{ translate('Choisis ta ville') }}
         </h2>
         {% if cities is not empty %}
             <div class="category-cities__grid">
@@ -38,9 +38,9 @@
                         </b>
                         <span class="category-city__count{{ city.establishmentsCount > 0 ? ' category-city__count--open' : '' }}">
                             {% if city.establishmentsCount > 0 %}
-                                {{ city.establishmentsCount }} partenaire{{ city.establishmentsCount > 1 ? 's' : '' }}
+                                {{ translate('{count, plural, one {# partenaire} other {# partenaires}}', {count: city.establishmentsCount}) }}
                             {% else %}
-                                Pas encore de partenaire
+                                {{ translate('Pas encore de partenaire') }}
                             {% endif %}
                         </span>
                         <i data-lucide="arrow-right" class="category-city__arrow" aria-hidden="true"></i>
@@ -49,7 +49,7 @@
             </div>
         {% else %}
             <div class="category-cities__empty">
-                Kréno arrive bientôt près de chez toi.
+                {{ translate('Kréno arrive bientôt près de chez toi.') }}
             </div>
         {% endif %}
     </section>
@@ -57,7 +57,7 @@
     {% if otherCategories is not empty %}
         <section class="category-more">
             <h2 class="category-section-title">
-                Autres catégories
+                {{ translate('Autres catégories') }}
             </h2>
             <div class="chip-list">
                 {% for other in otherCategories %}

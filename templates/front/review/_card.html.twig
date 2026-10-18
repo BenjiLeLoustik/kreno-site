@@ -21,7 +21,7 @@
     {% if review.reply %}
         <div class="review-card__reply">
             <span class="review-card__reply-title">
-                Réponse de l'établissement
+                {{ translate('Réponse de l\'établissement') }}
             </span>
             <p class="review-card__reply-text">
                 {{ review.reply|nl2br }}

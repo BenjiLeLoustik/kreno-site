@@ -2822,6 +2822,678 @@
         <source>← Mes avis</source>
         <target>← Mes avis</target>
       </trans-unit>
+      <trans-unit id="8f9a920a57efeddf" resname="Adresse e-mail">
+        <source>Adresse e-mail</source>
+        <target>Adresse e-mail</target>
+      </trans-unit>
+      <trans-unit id="f134a76d8407d0f2" resname="Aide et contact · {site}">
+        <source>Aide et contact · {site}</source>
+        <target>Aide et contact · {site}</target>
+      </trans-unit>
+      <trans-unit id="2cc39f6e2baa84f8" resname="Annuler, absence, paiement…">
+        <source>Annuler, absence, paiement…</source>
+        <target>Annuler, absence, paiement…</target>
+      </trans-unit>
+      <trans-unit id="d74d6056d0bb13cb" resname="Appliquer les filtres">
+        <source>Appliquer les filtres</source>
+        <target>Appliquer les filtres</target>
+      </trans-unit>
+      <trans-unit id="11edae8086e127c7" resname="Au moins 12 caractères, avec des lettres et des chiffres.">
+        <source>Au moins 12 caractères, avec des lettres et des chiffres.</source>
+        <target>Au moins 12 caractères, avec des lettres et des chiffres.</target>
+      </trans-unit>
+      <trans-unit id="a599ae9a376cdde7" resname="Aucun créneau avec ces filtres">
+        <source>Aucun créneau avec ces filtres</source>
+        <target>Aucun créneau avec ces filtres</target>
+      </trans-unit>
+      <trans-unit id="336ceda89f01ecdb" resname="Aucun créneau libre pour le moment">
+        <source>Aucun créneau libre pour le moment</source>
+        <target>Aucun créneau libre pour le moment</target>
+      </trans-unit>
+      <trans-unit id="3029fa606f45c182" resname="Aucun créneau libre pour le moment. Crée une alerte : on te prévient dès qu&apos;un pro en libère un près de chez toi.">
+        <source>Aucun créneau libre pour le moment. Crée une alerte : on te prévient dès qu&apos;un pro en libère un près de chez toi.</source>
+        <target>Aucun créneau libre pour le moment. Crée une alerte : on te prévient dès qu&apos;un pro en libère un près de chez toi.</target>
+      </trans-unit>
+      <trans-unit id="6075ea29aadffd26" resname="Aucune réponse ne correspond. Écrivez-nous, nous vous répondons par e-mail.">
+        <source>Aucune réponse ne correspond. Écrivez-nous, nous vous répondons par e-mail.</source>
+        <target>Aucune réponse ne correspond. Écrivez-nous, nous vous répondons par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="0b5c04971aa7c323" resname="Autour de moi">
+        <source>Autour de moi</source>
+        <target>Autour de moi</target>
+      </trans-unit>
+      <trans-unit id="392e199a3ffd6f70" resname="Autres catégories">
+        <source>Autres catégories</source>
+        <target>Autres catégories</target>
+      </trans-unit>
+      <trans-unit id="be5ffc74be822c2e" resname="Autres créneaux chez {pro} {day}">
+        <source>Autres créneaux chez {pro} {day}</source>
+        <target>Autres créneaux chez {pro} {day}</target>
+      </trans-unit>
+      <trans-unit id="d1084d10efcdc046" resname="Autres villes">
+        <source>Autres villes</source>
+        <target>Autres villes</target>
+      </trans-unit>
+      <trans-unit id="07d6531146696be1" resname="Ce créneau n&apos;est plus réservable.">
+        <source>Ce créneau n&apos;est plus réservable.</source>
+        <target>Ce créneau n&apos;est plus réservable.</target>
+      </trans-unit>
+      <trans-unit id="3007f02af0664427" resname="Ce lien n&apos;est plus valable : il a expiré ou a déjà servi.">
+        <source>Ce lien n&apos;est plus valable : il a expiré ou a déjà servi.</source>
+        <target>Ce lien n&apos;est plus valable : il a expiré ou a déjà servi.</target>
+      </trans-unit>
+      <trans-unit id="373119bb87b91948" resname="Ce lien n&apos;est plus valable : il a expiré ou a déjà été utilisé.">
+        <source>Ce lien n&apos;est plus valable : il a expiré ou a déjà été utilisé.</source>
+        <target>Ce lien n&apos;est plus valable : il a expiré ou a déjà été utilisé.</target>
+      </trans-unit>
+      <trans-unit id="b3bd9c09843c1911" resname="Cette demande est fermée. Pour une nouvelle question, écrivez-nous depuis la page d&apos;aide.">
+        <source>Cette demande est fermée. Pour une nouvelle question, écrivez-nous depuis la page d&apos;aide.</source>
+        <target>Cette demande est fermée. Pour une nouvelle question, écrivez-nous depuis la page d&apos;aide.</target>
+      </trans-unit>
+      <trans-unit id="b3d5c41817d67797" resname="Choisis ta ville">
+        <source>Choisis ta ville</source>
+        <target>Choisis ta ville</target>
+      </trans-unit>
+      <trans-unit id="dec298f0a9d8b9e3" resname="Choisis un nouveau mot de passe pour {email}.">
+        <source>Choisis un nouveau mot de passe pour {email}.</source>
+        <target>Choisis un nouveau mot de passe pour {email}.</target>
+      </trans-unit>
+      <trans-unit id="878693291a26a2b9" resname="Choisissez un nouveau mot de passe pour {email}.">
+        <source>Choisissez un nouveau mot de passe pour {email}.</source>
+        <target>Choisissez un nouveau mot de passe pour {email}.</target>
+      </trans-unit>
+      <trans-unit id="ea74ce8d01ff1002" resname="Coiffeurs, esthéticiennes, ostéos, garages : les rendez-vous annulés à {city}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.">
+        <source>Coiffeurs, esthéticiennes, ostéos, garages : les rendez-vous annulés à {city}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.</source>
+        <target>Coiffeurs, esthéticiennes, ostéos, garages : les rendez-vous annulés à {city}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.</target>
+      </trans-unit>
+      <trans-unit id="49e7342005b3d9a8" resname="Coiffeurs, esthéticiennes, ostéos, garages : quand un rendez-vous s&apos;annule, il arrive sur {site} à prix réduit. Tu réserves en deux clics, tu paies sur place.">
+        <source>Coiffeurs, esthéticiennes, ostéos, garages : quand un rendez-vous s&apos;annule, il arrive sur {site} à prix réduit. Tu réserves en deux clics, tu paies sur place.</source>
+        <target>Coiffeurs, esthéticiennes, ostéos, garages : quand un rendez-vous s&apos;annule, il arrive sur {site} à prix réduit. Tu réserves en deux clics, tu paies sur place.</target>
+      </trans-unit>
+      <trans-unit id="21525a29052975cd" resname="Coiffeurs, esthéticiennes, ostéos, garages… à {cityName} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.">
+        <source>Coiffeurs, esthéticiennes, ostéos, garages… à {cityName} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.</source>
+        <target>Coiffeurs, esthéticiennes, ostéos, garages… à {cityName} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.</target>
+      </trans-unit>
+      <trans-unit id="e8b478091f9f930c" resname="Comment pouvons-nous aider ?">
+        <source>Comment pouvons-nous aider ?</source>
+        <target>Comment pouvons-nous aider ?</target>
+      </trans-unit>
+      <trans-unit id="7a4f2cc5cce1c8ba" resname="Comment ça marche · {site}">
+        <source>Comment ça marche · {site}</source>
+        <target>Comment ça marche · {site}</target>
+      </trans-unit>
+      <trans-unit id="d743070540a1268e" resname="Confirmation">
+        <source>Confirmation</source>
+        <target>Confirmation</target>
+      </trans-unit>
+      <trans-unit id="6354b46fc825f70c" resname="Confirmer la réservation">
+        <source>Confirmer la réservation</source>
+        <target>Confirmer la réservation</target>
+      </trans-unit>
+      <trans-unit id="2b5c3d26721ae9c3" resname="Contact">
+        <source>Contact</source>
+        <target>Contact</target>
+      </trans-unit>
+      <trans-unit id="a736c2a354534edd" resname="Content de te revoir. Connecte-toi pour réserver et suivre tes créneaux.">
+        <source>Content de te revoir. Connecte-toi pour réserver et suivre tes créneaux.</source>
+        <target>Content de te revoir. Connecte-toi pour réserver et suivre tes créneaux.</target>
+      </trans-unit>
+      <trans-unit id="e2dadbc156daed3b" resname="Crée une alerte">
+        <source>Crée une alerte</source>
+        <target>Crée une alerte</target>
+      </trans-unit>
+      <trans-unit id="f822e55a574b7a2d" resname="Créer mon accès et rejoindre l&apos;équipe">
+        <source>Créer mon accès et rejoindre l&apos;équipe</source>
+        <target>Créer mon accès et rejoindre l&apos;équipe</target>
+      </trans-unit>
+      <trans-unit id="9ea84ee2c8f59f6a" resname="Créer mon compte">
+        <source>Créer mon compte</source>
+        <target>Créer mon compte</target>
+      </trans-unit>
+      <trans-unit id="df96052803e8dd61" resname="Créer un compte · {site}">
+        <source>Créer un compte · {site}</source>
+        <target>Créer un compte · {site}</target>
+      </trans-unit>
+      <trans-unit id="2e4045ba3cb07ce2" resname="Créer une alerte">
+        <source>Créer une alerte</source>
+        <target>Créer une alerte</target>
+      </trans-unit>
+      <trans-unit id="f8c28dbba3e535c0" resname="Créneaux libérés à {city}">
+        <source>Créneaux libérés à {city}</source>
+        <target>Créneaux libérés à {city}</target>
+      </trans-unit>
+      <trans-unit id="bc4330cd57cf3eac" resname="D&apos;autres questions ? Consultez l&apos;aide">
+        <source>D&apos;autres questions ? Consultez l&apos;aide</source>
+        <target>D&apos;autres questions ? Consultez l&apos;aide</target>
+      </trans-unit>
+      <trans-unit id="7d7ec65f1da7f440" resname="Demande un nouveau lien : il sera valable 1 heure.">
+        <source>Demande un nouveau lien : il sera valable 1 heure.</source>
+        <target>Demande un nouveau lien : il sera valable 1 heure.</target>
+      </trans-unit>
+      <trans-unit id="df990bc77eb622f6" resname="Demandez au responsable de l&apos;établissement de vous renvoyer une invitation depuis son espace Équipe.">
+        <source>Demandez au responsable de l&apos;établissement de vous renvoyer une invitation depuis son espace Équipe.</source>
+        <target>Demandez au responsable de l&apos;établissement de vous renvoyer une invitation depuis son espace Équipe.</target>
+      </trans-unit>
+      <trans-unit id="a6f003b4b101de7a" resname="Demandez un nouveau lien : il sera valable 1 heure.">
+        <source>Demandez un nouveau lien : il sera valable 1 heure.</source>
+        <target>Demandez un nouveau lien : il sera valable 1 heure.</target>
+      </trans-unit>
+      <trans-unit id="5227629d00b2793f" resname="Dernière mise à jour : {updatedAt}">
+        <source>Dernière mise à jour : {updatedAt}</source>
+        <target>Dernière mise à jour : {updatedAt}</target>
+      </trans-unit>
+      <trans-unit id="aa62ef9a29752eae" resname="Des rendez-vous annulés en {category} à {city}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.">
+        <source>Des rendez-vous annulés en {category} à {city}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.</source>
+        <target>Des rendez-vous annulés en {category} à {city}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.</target>
+      </trans-unit>
+      <trans-unit id="a2f3dc1068fb29a9" resname="Des rendez-vous annulés, remis en ligne à prix réduit par les professionnels de ton quartier. Réservation en deux clics, paiement sur place.">
+        <source>Des rendez-vous annulés, remis en ligne à prix réduit par les professionnels de ton quartier. Réservation en deux clics, paiement sur place.</source>
+        <target>Des rendez-vous annulés, remis en ligne à prix réduit par les professionnels de ton quartier. Réservation en deux clics, paiement sur place.</target>
+      </trans-unit>
+      <trans-unit id="b7bdf7a2d6e73e58" resname="Distance">
+        <source>Distance</source>
+        <target>Distance</target>
+      </trans-unit>
+      <trans-unit id="885401fdedb86d79" resname="Documents légaux">
+        <source>Documents légaux</source>
+        <target>Documents légaux</target>
+      </trans-unit>
+      <trans-unit id="7a6be98b92e1b6a8" resname="Découvrir l&apos;espace pro">
+        <source>Découvrir l&apos;espace pro</source>
+        <target>Découvrir l&apos;espace pro</target>
+      </trans-unit>
+      <trans-unit id="c8e5f54e368b33c9" resname="Déjà inscrit ? {open}Connecte-toi{close} pour réserver plus vite. Sinon, un compte est créé avec ton e-mail.">
+        <source>Déjà inscrit ? {open}Connecte-toi{close} pour réserver plus vite. Sinon, un compte est créé avec ton e-mail.</source>
+        <target>Déjà inscrit ? {open}Connecte-toi{close} pour réserver plus vite. Sinon, un compte est créé avec ton e-mail.</target>
+      </trans-unit>
+      <trans-unit id="86bd22106097802a" resname="Déjà un compte ?">
+        <source>Déjà un compte ?</source>
+        <target>Déjà un compte ?</target>
+      </trans-unit>
+      <trans-unit id="c0cae7487f3917f4" resname="Enregistrer le mot de passe">
+        <source>Enregistrer le mot de passe</source>
+        <target>Enregistrer le mot de passe</target>
+      </trans-unit>
+      <trans-unit id="6e2287796c72d40f" resname="Filtres">
+        <source>Filtres</source>
+        <target>Filtres</target>
+      </trans-unit>
+      <trans-unit id="5b6d91af18428232" resname="Gratuit, en moins d&apos;une minute. Tu pourras réserver et suivre les salons qui t&apos;intéressent.">
+        <source>Gratuit, en moins d&apos;une minute. Tu pourras réserver et suivre les salons qui t&apos;intéressent.</source>
+        <target>Gratuit, en moins d&apos;une minute. Tu pourras réserver et suivre les salons qui t&apos;intéressent.</target>
+      </trans-unit>
+      <trans-unit id="590bcfd2a9e16818" resname="Il a déjà trouvé preneur ou il est trop proche de l&apos;heure du rendez-vous.">
+        <source>Il a déjà trouvé preneur ou il est trop proche de l&apos;heure du rendez-vous.</source>
+        <target>Il a déjà trouvé preneur ou il est trop proche de l&apos;heure du rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="e8d7a6e5ca37df01" resname="Il est valable 1 heure, pense à vérifier tes indésirables.">
+        <source>Il est valable 1 heure, pense à vérifier tes indésirables.</source>
+        <target>Il est valable 1 heure, pense à vérifier tes indésirables.</target>
+      </trans-unit>
+      <trans-unit id="95cb49eea4ecb674" resname="Il est valable 1 heure.">
+        <source>Il est valable 1 heure.</source>
+        <target>Il est valable 1 heure.</target>
+      </trans-unit>
+      <trans-unit id="972743508c9a7c54" resname="Indique ton adresse e-mail : on t&apos;envoie un lien pour en choisir un nouveau.">
+        <source>Indique ton adresse e-mail : on t&apos;envoie un lien pour en choisir un nouveau.</source>
+        <target>Indique ton adresse e-mail : on t&apos;envoie un lien pour en choisir un nouveau.</target>
+      </trans-unit>
+      <trans-unit id="6276a1072022ee15" resname="Indiquez votre adresse e-mail : nous vous envoyons un lien pour en choisir un nouveau.">
+        <source>Indiquez votre adresse e-mail : nous vous envoyons un lien pour en choisir un nouveau.</source>
+        <target>Indiquez votre adresse e-mail : nous vous envoyons un lien pour en choisir un nouveau.</target>
+      </trans-unit>
+      <trans-unit id="d26923a3b6dd4a9d" resname="Invitation expirée">
+        <source>Invitation expirée</source>
+        <target>Invitation expirée</target>
+      </trans-unit>
+      <trans-unit id="27f63c751efbc723" resname="Invitiation · {site} Pro">
+        <source>Invitiation · {site} Pro</source>
+        <target>Invitiation · {site} Pro</target>
+      </trans-unit>
+      <trans-unit id="600d6f1603233bae" resname="J&apos;accepte les conditions d&apos;utilisation.">
+        <source>J&apos;accepte les conditions d&apos;utilisation.</source>
+        <target>J&apos;accepte les conditions d&apos;utilisation.</target>
+      </trans-unit>
+      <trans-unit id="91d2d730990a3237" resname="J&apos;accepte les {termsOpen}conditions d&apos;utilisation{termsClose} et la {privacyOpen}politique de confidentialité{privacyClose}.">
+        <source>J&apos;accepte les {termsOpen}conditions d&apos;utilisation{termsClose} et la {privacyOpen}politique de confidentialité{privacyClose}.</source>
+        <target>J&apos;accepte les {termsOpen}conditions d&apos;utilisation{termsClose} et la {privacyOpen}politique de confidentialité{privacyClose}.</target>
+      </trans-unit>
+      <trans-unit id="2bf3678e17e0518c" resname="Kréno arrive bientôt près de chez toi.">
+        <source>Kréno arrive bientôt près de chez toi.</source>
+        <target>Kréno arrive bientôt près de chez toi.</target>
+      </trans-unit>
+      <trans-unit id="76627d0e4c365950" resname="Kréno, accueil">
+        <source>Kréno, accueil</source>
+        <target>Kréno, accueil</target>
+      </trans-unit>
+      <trans-unit id="b3765c6b38e080bc" resname="Les règles du jeu">
+        <source>Les règles du jeu</source>
+        <target>Les règles du jeu</target>
+      </trans-unit>
+      <trans-unit id="a05487f49d27f597" resname="Libres maintenant">
+        <source>Libres maintenant</source>
+        <target>Libres maintenant</target>
+      </trans-unit>
+      <trans-unit id="a7e866f61c784e84" resname="Lien expiré">
+        <source>Lien expiré</source>
+        <target>Lien expiré</target>
+      </trans-unit>
+      <trans-unit id="271309fb30607eda" resname="Me connecter">
+        <source>Me connecter</source>
+        <target>Me connecter</target>
+      </trans-unit>
+      <trans-unit id="19aa1d2434d0856d" resname="Me déconnecter">
+        <source>Me déconnecter</source>
+        <target>Me déconnecter</target>
+      </trans-unit>
+      <trans-unit id="6d1368d273258434" resname="Me localiser">
+        <source>Me localiser</source>
+        <target>Me localiser</target>
+      </trans-unit>
+      <trans-unit id="2f77668a9dfbf8d5" resname="Message">
+        <source>Message</source>
+        <target>Message</target>
+      </trans-unit>
+      <trans-unit id="053191e09e580021" resname="Message envoyé">
+        <source>Message envoyé</source>
+        <target>Message envoyé</target>
+      </trans-unit>
+      <trans-unit id="ee8e4ecf6ddea44d" resname="Moins de {km} km">
+        <source>Moins de {km} km</source>
+        <target>Moins de {km} km</target>
+      </trans-unit>
+      <trans-unit id="ffd71d0fc38a3c82" resname="Moins de {meters} m">
+        <source>Moins de {meters} m</source>
+        <target>Moins de {meters} m</target>
+      </trans-unit>
+      <trans-unit id="4542d61f5f6a365d" resname="Mot de passe oublié">
+        <source>Mot de passe oublié</source>
+        <target>Mot de passe oublié</target>
+      </trans-unit>
+      <trans-unit id="0392982814e08a75" resname="Mot de passe oublié · {site}">
+        <source>Mot de passe oublié · {site}</source>
+        <target>Mot de passe oublié · {site}</target>
+      </trans-unit>
+      <trans-unit id="d547bb68c74be38f" resname="Nous vous répondons par e-mail. Vous pouvez aussi suivre la conversation et nous répondre en ligne.">
+        <source>Nous vous répondons par e-mail. Vous pouvez aussi suivre la conversation et nous répondre en ligne.</source>
+        <target>Nous vous répondons par e-mail. Vous pouvez aussi suivre la conversation et nous répondre en ligne.</target>
+      </trans-unit>
+      <trans-unit id="0ea04c35f439942d" resname="Nouveau mot de passe · {site}">
+        <source>Nouveau mot de passe · {site}</source>
+        <target>Nouveau mot de passe · {site}</target>
+      </trans-unit>
+      <trans-unit id="7623c5d22c43a906" resname="Numéro de réservation ">
+        <source>Numéro de réservation </source>
+        <target>Numéro de réservation </target>
+      </trans-unit>
+      <trans-unit id="bf924784e21506ef" resname="Offre visible {remaining}">
+        <source>Offre visible {remaining}</source>
+        <target>Offre visible {remaining}</target>
+      </trans-unit>
+      <trans-unit id="1f13ba3cfe35ffc4" resname="Où ?">
+        <source>Où ?</source>
+        <target>Où ?</target>
+      </trans-unit>
+      <trans-unit id="80b1f11307c4cc84" resname="Paiement sur place">
+        <source>Paiement sur place</source>
+        <target>Paiement sur place</target>
+      </trans-unit>
+      <trans-unit id="e8b5a43ad1389ae5" resname="Paiement sur place · annulation gratuite jusqu&apos;à {until}">
+        <source>Paiement sur place · annulation gratuite jusqu&apos;à {until}</source>
+        <target>Paiement sur place · annulation gratuite jusqu&apos;à {until}</target>
+      </trans-unit>
+      <trans-unit id="3e94254860a81756" resname="Partenaires {category} à {city}">
+        <source>Partenaires {category} à {city}</source>
+        <target>Partenaires {category} à {city}</target>
+      </trans-unit>
+      <trans-unit id="41b5cee58fbcd2fc" resname="Partenaires à {city}">
+        <source>Partenaires à {city}</source>
+        <target>Partenaires à {city}</target>
+      </trans-unit>
+      <trans-unit id="14629feb9f1d6445" resname="Pas encore d&apos;avis. Seuls les clients venus à leur rendez-vous peuvent en laisser un.">
+        <source>Pas encore d&apos;avis. Seuls les clients venus à leur rendez-vous peuvent en laisser un.</source>
+        <target>Pas encore d&apos;avis. Seuls les clients venus à leur rendez-vous peuvent en laisser un.</target>
+      </trans-unit>
+      <trans-unit id="510dccf7a6f8be37" resname="Pas encore de compte ?">
+        <source>Pas encore de compte ?</source>
+        <target>Pas encore de compte ?</target>
+      </trans-unit>
+      <trans-unit id="e382459161b60819" resname="Pas encore de partenaire">
+        <source>Pas encore de partenaire</source>
+        <target>Pas encore de partenaire</target>
+      </trans-unit>
+      <trans-unit id="9ef4da58e03ff3d0" resname="Pourquoi des créneaux moins chers ?">
+        <source>Pourquoi des créneaux moins chers ?</source>
+        <target>Pourquoi des créneaux moins chers ?</target>
+      </trans-unit>
+      <trans-unit id="8ab5d8120d64b1ab" resname="Prix habituels. Les créneaux Kréno sont proposés avec une remise choisie par le salon.">
+        <source>Prix habituels. Les créneaux Kréno sont proposés avec une remise choisie par le salon.</source>
+        <target>Prix habituels. Les créneaux Kréno sont proposés avec une remise choisie par le salon.</target>
+      </trans-unit>
+      <trans-unit id="1c892af6ff51859d" resname="Prochains créneaux libres">
+        <source>Prochains créneaux libres</source>
+        <target>Prochains créneaux libres</target>
+      </trans-unit>
+      <trans-unit id="e791a34a0ea281a3" resname="Près de chez toi">
+        <source>Près de chez toi</source>
+        <target>Près de chez toi</target>
+      </trans-unit>
+      <trans-unit id="525f8c4e256f2957" resname="Près de chez toi, à {city}">
+        <source>Près de chez toi, à {city}</source>
+        <target>Près de chez toi, à {city}</target>
+      </trans-unit>
+      <trans-unit id="885a595931a5cb3e" resname="Publiez le créneau libéré en trente secondes, choisissez la remise, et {site} prévient les clients du quartier. Vous ne payez que lorsqu&apos;il est réservé.">
+        <source>Publiez le créneau libéré en trente secondes, choisissez la remise, et {site} prévient les clients du quartier. Vous ne payez que lorsqu&apos;il est réservé.</source>
+        <target>Publiez le créneau libéré en trente secondes, choisissez la remise, et {site} prévient les clients du quartier. Vous ne payez que lorsqu&apos;il est réservé.</target>
+      </trans-unit>
+      <trans-unit id="2a0f1760ba586060" resname="Quand ?">
+        <source>Quand ?</source>
+        <target>Quand ?</target>
+      </trans-unit>
+      <trans-unit id="50443a8cb05c8f1e" resname="Quand un client annule, le professionnel préfère accueillir quelqu&apos;un à prix réduit plutôt que de perdre l&apos;heure. Tu profites du même service, au même endroit, moins cher.">
+        <source>Quand un client annule, le professionnel préfère accueillir quelqu&apos;un à prix réduit plutôt que de perdre l&apos;heure. Tu profites du même service, au même endroit, moins cher.</source>
+        <target>Quand un client annule, le professionnel préfère accueillir quelqu&apos;un à prix réduit plutôt que de perdre l&apos;heure. Tu profites du même service, au même endroit, moins cher.</target>
+      </trans-unit>
+      <trans-unit id="bb193b862dd37830" resname="Quoi ?">
+        <source>Quoi ?</source>
+        <target>Quoi ?</target>
+      </trans-unit>
+      <trans-unit id="db513c1e92837b07" resname="Recevoir le lien">
+        <source>Recevoir le lien</source>
+        <target>Recevoir le lien</target>
+      </trans-unit>
+      <trans-unit id="f9b9179e256452f5" resname="Recevoir un nouveau lien">
+        <source>Recevoir un nouveau lien</source>
+        <target>Recevoir un nouveau lien</target>
+      </trans-unit>
+      <trans-unit id="8d8055be44f8eb79" resname="Rechercher dans l&apos;aide">
+        <source>Rechercher dans l&apos;aide</source>
+        <target>Rechercher dans l&apos;aide</target>
+      </trans-unit>
+      <trans-unit id="669b23dd5797fdc0" resname="Regarde ta boîte e-mail">
+        <source>Regarde ta boîte e-mail</source>
+        <target>Regarde ta boîte e-mail</target>
+      </trans-unit>
+      <trans-unit id="709a46e7c89e633f" resname="Rejoindre l&apos;équipe">
+        <source>Rejoindre l&apos;équipe</source>
+        <target>Rejoindre l&apos;équipe</target>
+      </trans-unit>
+      <trans-unit id="74edb85cc6a3de05" resname="Rejoindre {companyName}">
+        <source>Rejoindre {companyName}</source>
+        <target>Rejoindre {companyName}</target>
+      </trans-unit>
+      <trans-unit id="01db5003d36abeac" resname="Renvoyer le lien">
+        <source>Renvoyer le lien</source>
+        <target>Renvoyer le lien</target>
+      </trans-unit>
+      <trans-unit id="68ae270858ef97ba" resname="Réponse de l&apos;établissement">
+        <source>Réponse de l&apos;établissement</source>
+        <target>Réponse de l&apos;établissement</target>
+      </trans-unit>
+      <trans-unit id="ec8d76405dca6d5c" resname="Réponse par e-mail, du lundi au vendredi. Vous pouvez aussi écrire à {email}.">
+        <source>Réponse par e-mail, du lundi au vendredi. Vous pouvez aussi écrire à {email}.</source>
+        <target>Réponse par e-mail, du lundi au vendredi. Vous pouvez aussi écrire à {email}.</target>
+      </trans-unit>
+      <trans-unit id="dae0a2194dd8a3e9" resname="Réservation au nom de {name} · {email}">
+        <source>Réservation au nom de {name} · {email}</source>
+        <target>Réservation au nom de {name} · {email}</target>
+      </trans-unit>
+      <trans-unit id="9c2a3cf6a4801a68" resname="Réservation confirmé · {site}">
+        <source>Réservation confirmé · {site}</source>
+        <target>Réservation confirmé · {site}</target>
+      </trans-unit>
+      <trans-unit id="8eefbd6b66747dea" resname="Salon suivi ✓">
+        <source>Salon suivi ✓</source>
+        <target>Salon suivi ✓</target>
+      </trans-unit>
+      <trans-unit id="b8258e7774cdaa5f" resname="Se connecter · Kréno">
+        <source>Se connecter · Kréno</source>
+        <target>Se connecter · Kréno</target>
+      </trans-unit>
+      <trans-unit id="ee5f8d10e7a2ef7f" resname="Seuls les clients venus à leur rendez-vous peuvent laisser un avis.">
+        <source>Seuls les clients venus à leur rendez-vous peuvent laisser un avis.</source>
+        <target>Seuls les clients venus à leur rendez-vous peuvent laisser un avis.</target>
+      </trans-unit>
+      <trans-unit id="8073737025967653" resname="Si un compte existe pour {email}, un lien de réinitialisation vient d&apos;être envoyé.">
+        <source>Si un compte existe pour {email}, un lien de réinitialisation vient d&apos;être envoyé.</source>
+        <target>Si un compte existe pour {email}, un lien de réinitialisation vient d&apos;être envoyé.</target>
+      </trans-unit>
+      <trans-unit id="31bd901f38c43c9a" resname="Suis {shopName} pour être prévenu dès qu&apos;un créneau se libère.">
+        <source>Suis {shopName} pour être prévenu dès qu&apos;un créneau se libère.</source>
+        <target>Suis {shopName} pour être prévenu dès qu&apos;un créneau se libère.</target>
+      </trans-unit>
+      <trans-unit id="54cfb7cebcd248b0" resname="Suivre ce salon">
+        <source>Suivre ce salon</source>
+        <target>Suivre ce salon</target>
+      </trans-unit>
+      <trans-unit id="4c51b733dfe76ef7" resname="Suivre ma demande →">
+        <source>Suivre ma demande →</source>
+        <target>Suivre ma demande →</target>
+      </trans-unit>
+      <trans-unit id="db59ebb272182ba8" resname="Sujet">
+        <source>Sujet</source>
+        <target>Sujet</target>
+      </trans-unit>
+      <trans-unit id="19f60660ff63ad70" resname="Thèmes">
+        <source>Thèmes</source>
+        <target>Thèmes</target>
+      </trans-unit>
+      <trans-unit id="bcda4a955df7a539" resname="Tout">
+        <source>Tout</source>
+        <target>Tout</target>
+      </trans-unit>
+      <trans-unit id="b3b2b5e9229c4aaf" resname="Toute la ville">
+        <source>Toute la ville</source>
+        <target>Toute la ville</target>
+      </trans-unit>
+      <trans-unit id="cdcede56427e5757" resname="Trier par">
+        <source>Trier par</source>
+        <target>Trier par</target>
+      </trans-unit>
+      <trans-unit id="959cac6aca8ede0e" resname="Trois étapes, zéro compte à créer pour regarder">
+        <source>Trois étapes, zéro compte à créer pour regarder</source>
+        <target>Trois étapes, zéro compte à créer pour regarder</target>
+      </trans-unit>
+      <trans-unit id="e09dee94ec45632e" resname="Un compte existe déjà avec {email}. Connectez-vous pour accepter l&apos;invitation.">
+        <source>Un compte existe déjà avec {email}. Connectez-vous pour accepter l&apos;invitation.</source>
+        <target>Un compte existe déjà avec {email}. Connectez-vous pour accepter l&apos;invitation.</target>
+      </trans-unit>
+      <trans-unit id="fec3a5f265416953" resname="Un mot pour {pro}">
+        <source>Un mot pour {pro}</source>
+        <target>Un mot pour {pro}</target>
+      </trans-unit>
+      <trans-unit id="6ddcec1fe51171bc" resname="Un rendez-vous annulé ? Remplissez-le avant qu&apos;il ne soit perdu.">
+        <source>Un rendez-vous annulé ? Remplissez-le avant qu&apos;il ne soit perdu.</source>
+        <target>Un rendez-vous annulé ? Remplissez-le avant qu&apos;il ne soit perdu.</target>
+      </trans-unit>
+      <trans-unit id="8ac7c392e0b0706d" resname="Un rendez-vous annulé ne doit plus être une heure perdue.">
+        <source>Un rendez-vous annulé ne doit plus être une heure perdue.</source>
+        <target>Un rendez-vous annulé ne doit plus être une heure perdue.</target>
+      </trans-unit>
+      <trans-unit id="1cb530e670ad0774" resname="Voir les autres créneaux de {pro}">
+        <source>Voir les autres créneaux de {pro}</source>
+        <target>Voir les autres créneaux de {pro}</target>
+      </trans-unit>
+      <trans-unit id="61603fad0a44b679" resname="Voir les créneaux">
+        <source>Voir les créneaux</source>
+        <target>Voir les créneaux</target>
+      </trans-unit>
+      <trans-unit id="a9d42cc1150542dc" resname="Voir les tarifs">
+        <source>Voir les tarifs</source>
+        <target>Voir les tarifs</target>
+      </trans-unit>
+      <trans-unit id="e44666f2883b5f34" resname="Voir les {count} créneaux">
+        <source>Voir les {count} créneaux</source>
+        <target>Voir les {count} créneaux</target>
+      </trans-unit>
+      <trans-unit id="226d62f357423e8c" resname="Voir mes réservations">
+        <source>Voir mes réservations</source>
+        <target>Voir mes réservations</target>
+      </trans-unit>
+      <trans-unit id="663ff314a59546bf" resname="Voir tous les créneaux">
+        <source>Voir tous les créneaux</source>
+        <target>Voir tous les créneaux</target>
+      </trans-unit>
+      <trans-unit id="68da3751a2cee838" resname="Votre demande · {site}">
+        <source>Votre demande · {site}</source>
+        <target>Votre demande · {site}</target>
+      </trans-unit>
+      <trans-unit id="17b391dde69c0515" resname="Votre e-mail">
+        <source>Votre e-mail</source>
+        <target>Votre e-mail</target>
+      </trans-unit>
+      <trans-unit id="9233b77f8c1102a2" resname="Vous êtes connecté avec {logged}. Cette invitation est destinée à {email} : déconnectez-vous puis revenez sur ce lien.">
+        <source>Vous êtes connecté avec {logged}. Cette invitation est destinée à {email} : déconnectez-vous puis revenez sur ce lien.</source>
+        <target>Vous êtes connecté avec {logged}. Cette invitation est destinée à {email} : déconnectez-vous puis revenez sur ce lien.</target>
+      </trans-unit>
+      <trans-unit id="1f08c37ad04bfca1" resname="Vous êtes invité à rejoindre l&apos;espace pro">
+        <source>Vous êtes invité à rejoindre l&apos;espace pro</source>
+        <target>Vous êtes invité à rejoindre l&apos;espace pro</target>
+      </trans-unit>
+      <trans-unit id="816e6b186ea5c5a1" resname="Vérifiez votre boîte e-mail">
+        <source>Vérifiez votre boîte e-mail</source>
+        <target>Vérifiez votre boîte e-mail</target>
+      </trans-unit>
+      <trans-unit id="cd849d018ade33a6" resname="avec {staff}">
+        <source>avec {staff}</source>
+        <target>avec {staff}</target>
+      </trans-unit>
+      <trans-unit id="ffc83cb0f7c9202e" resname="facultatif">
+        <source>facultatif</source>
+        <target>facultatif</target>
+      </trans-unit>
+      <trans-unit id="68954106b95ba717" resname="facultatif, ex. KR-482100">
+        <source>facultatif, ex. KR-482100</source>
+        <target>facultatif, ex. KR-482100</target>
+      </trans-unit>
+      <trans-unit id="5f991d2544953837" resname="pour être prévenu dès qu&apos;un pro en libère un.">
+        <source>pour être prévenu dès qu&apos;un pro en libère un.</source>
+        <target>pour être prévenu dès qu&apos;un pro en libère un.</target>
+      </trans-unit>
+      <trans-unit id="682a64325be7ca2f" resname="toi@exemple.fr">
+        <source>toi@exemple.fr</source>
+        <target>toi@exemple.fr</target>
+      </trans-unit>
+      <trans-unit id="8724bdcc83f8ae23" resname="transmis au salon quand tu réserves">
+        <source>transmis au salon quand tu réserves</source>
+        <target>transmis au salon quand tu réserves</target>
+      </trans-unit>
+      <trans-unit id="bbea32e8685252ec" resname="{barRating} étoiles : {count}">
+        <source>{barRating} étoiles : {count}</source>
+        <target>{barRating} étoiles : {count}</target>
+      </trans-unit>
+      <trans-unit id="0c12acdb96f42cb3" resname="{categoryName} : les créneaux libérés près de chez toi">
+        <source>{categoryName} : les créneaux libérés près de chez toi</source>
+        <target>{categoryName} : les créneaux libérés près de chez toi</target>
+      </trans-unit>
+      <trans-unit id="3456dc0a989b108d" resname="{categoryName} : les créneaux libérés près de chez toi · Kréno">
+        <source>{categoryName} : les créneaux libérés près de chez toi · Kréno</source>
+        <target>{categoryName} : les créneaux libérés près de chez toi · Kréno</target>
+      </trans-unit>
+      <trans-unit id="775217aa026ccdb3" resname="{categoryName} : les rendez-vous annulés remis en ligne à prix réduit près de chez toi. Réservation en deux clics, paiement sur place.">
+        <source>{categoryName} : les rendez-vous annulés remis en ligne à prix réduit près de chez toi. Réservation en deux clics, paiement sur place.</source>
+        <target>{categoryName} : les rendez-vous annulés remis en ligne à prix réduit près de chez toi. Réservation en deux clics, paiement sur place.</target>
+      </trans-unit>
+      <trans-unit id="6ae569db5d8416ca" resname="{categoryName} à {cityName} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.">
+        <source>{categoryName} à {cityName} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.</source>
+        <target>{categoryName} à {cityName} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.</target>
+      </trans-unit>
+      <trans-unit id="b0de1896214221f5" resname="{category} à {city}">
+        <source>{category} à {city}</source>
+        <target>{category} à {city}</target>
+      </trans-unit>
+      <trans-unit id="dd1f88e5582e7de9" resname="{count, plural, one {# créneau libre en ce moment} other {# créneaux libres en ce moment}}">
+        <source>{count, plural, one {# créneau libre en ce moment} other {# créneaux libres en ce moment}}</source>
+        <target>{count, plural, one {# créneau libre en ce moment} other {# créneaux libres en ce moment}}</target>
+      </trans-unit>
+      <trans-unit id="e1cd50a205269109" resname="{count, plural, one {# partenaire} other {# partenaires}}">
+        <source>{count, plural, one {# partenaire} other {# partenaires}}</source>
+        <target>{count, plural, one {# partenaire} other {# partenaires}}</target>
+      </trans-unit>
+      <trans-unit id="d3de9cfe9d53b3c4" resname="{day} à {time} : {what} chez {pro}, {locality}. {price} au lieu de {old}, paiement sur place.">
+        <source>{day} à {time} : {what} chez {pro}, {locality}. {price} au lieu de {old}, paiement sur place.</source>
+        <target>{day} à {time} : {what} chez {pro}, {locality}. {price} au lieu de {old}, paiement sur place.</target>
+      </trans-unit>
+      <trans-unit id="dff5aec170dcacdc" resname="{followers}. Suis le salon pour être prévenu dès qu&apos;un créneau se libère.">
+        <source>{followers}. Suis le salon pour être prévenu dès qu&apos;un créneau se libère.</source>
+        <target>{followers}. Suis le salon pour être prévenu dès qu&apos;un créneau se libère.</target>
+      </trans-unit>
+      <trans-unit id="007ceb744f87cfd9" resname="{invitedBy} vous invite à rejoindre l&apos;espace pro">
+        <source>{invitedBy} vous invite à rejoindre l&apos;espace pro</source>
+        <target>{invitedBy} vous invite à rejoindre l&apos;espace pro</target>
+      </trans-unit>
+      <trans-unit id="308bafafb6adf3df" resname="{label} : les créneaux libérés du jour">
+        <source>{label} : les créneaux libérés du jour</source>
+        <target>{label} : les créneaux libérés du jour</target>
+      </trans-unit>
+      <trans-unit id="b06134bfa36361c9" resname="{label} : les créneaux libérés du jour · Kréno">
+        <source>{label} : les créneaux libérés du jour · Kréno</source>
+        <target>{label} : les créneaux libérés du jour · Kréno</target>
+      </trans-unit>
+      <trans-unit id="f610baa07c9cac1d" resname="{name} : créneaux libérés à prix réduit · {site}">
+        <source>{name} : créneaux libérés à prix réduit · {site}</source>
+        <target>{name} : créneaux libérés à prix réduit · {site}</target>
+      </trans-unit>
+      <trans-unit id="d1ece2b387a0079b" resname="{name} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.">
+        <source>{name} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.</source>
+        <target>{name} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.</target>
+      </trans-unit>
+      <trans-unit id="59fb1ffac211dd2b" resname="{name}, {locality} : créneaux libérés à prix réduit · {site}">
+        <source>{name}, {locality} : créneaux libérés à prix réduit · {site}</source>
+        <target>{name}, {locality} : créneaux libérés à prix réduit · {site}</target>
+      </trans-unit>
+      <trans-unit id="144f5dd6725b4c45" resname="{rating} sur 5">
+        <source>{rating} sur 5</source>
+        <target>{rating} sur 5</target>
+      </trans-unit>
+      <trans-unit id="3bf5e176bed898ca" resname="{site Pro}">
+        <source>{site Pro}</source>
+        <target>{site Pro}</target>
+      </trans-unit>
+      <trans-unit id="39764dcebc397975" resname="{site} remet en ligne, à prix réduit, les créneaux qui se libèrent chez les pros de votre quartier. Tout le monde y gagne.">
+        <source>{site} remet en ligne, à prix réduit, les créneaux qui se libèrent chez les pros de votre quartier. Tout le monde y gagne.</source>
+        <target>{site} remet en ligne, à prix réduit, les créneaux qui se libèrent chez les pros de votre quartier. Tout le monde y gagne.</target>
+      </trans-unit>
+      <trans-unit id="158c54f5d9a7d26c" resname="{title} · Kréno">
+        <source>{title} · Kréno</source>
+        <target>{title} · Kréno</target>
+      </trans-unit>
+      <trans-unit id="4788223f1b5abbb6" resname="{what} chez {pro}">
+        <source>{what} chez {pro}</source>
+        <target>{what} chez {pro}</target>
+      </trans-unit>
+      <trans-unit id="6277442ed92f8d02" resname="{what} à {time} chez {pro} : {price} au lieu de {old} · {site}">
+        <source>{what} à {time} chez {pro} : {price} au lieu de {old} · {site}</source>
+        <target>{what} à {time} chez {pro} : {price} au lieu de {old} · {site}</target>
+      </trans-unit>
+      <trans-unit id="7abeccf77a209ef0" resname="· réservation {reference}">
+        <source>· réservation {reference}</source>
+        <target>· réservation {reference}</target>
+      </trans-unit>
+      <trans-unit id="7accf122de740fb4" resname="À {distance}">
+        <source>À {distance}</source>
+        <target>À {distance}</target>
+      </trans-unit>
+      <trans-unit id="b2402883faa7879a" resname="Élargis la distance ou {open}crée une alerte{close} pour être prévenu dès qu&apos;un créneau se libère.">
+        <source>Élargis la distance ou {open}crée une alerte{close} pour être prévenu dès qu&apos;un créneau se libère.</source>
+        <target>Élargis la distance ou {open}crée une alerte{close} pour être prévenu dès qu&apos;un créneau se libère.</target>
+      </trans-unit>
+      <trans-unit id="7bbecb73f4c59825" resname="Établissement vérifié par Kréno">
+        <source>Établissement vérifié par Kréno</source>
+        <target>Établissement vérifié par Kréno</target>
+      </trans-unit>
+      <trans-unit id="29b1c225ec5e7907" resname="← Aide et contact">
+        <source>← Aide et contact</source>
+        <target>← Aide et contact</target>
+      </trans-unit>
+      <trans-unit id="0c6c5b7009fdfd5c" resname="← Mes messages">
+        <source>← Mes messages</source>
+        <target>← Mes messages</target>
+      </trans-unit>
+      <trans-unit id="9f2f6a1c128d6249" resname="← Retour à la connexion">
+        <source>← Retour à la connexion</source>
+        <target>← Retour à la connexion</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

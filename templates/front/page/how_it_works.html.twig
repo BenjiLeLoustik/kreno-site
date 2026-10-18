@@ -1,36 +1,38 @@
 {% extends 'layouts/front.html.twig' %}
 
 {% block title %}
-    Comment ça marche · {{ website().siteName }}
+    {{ translate('Comment ça marche · {site}', {site: website().siteName}) }}
 {% endblock %}
 
 {% block content %}
     <section class="how-hero">
         <span class="how-hero__eyebrow">
-            Comment ça marche
+            {{ translate('Comment ça marche') }}
         </span>
         <h1 class="how-hero__title">
-            Un rendez-vous annulé ne doit plus être une heure perdue.
+            {{ translate('Un rendez-vous annulé ne doit plus être une heure perdue.') }}
         </h1>
         <p class="how-hero__text">
-            {{ website().siteName }} remet en ligne, à prix réduit, les créneaux qui se libèrent chez les pros de votre quartier. Tout le monde y gagne.
+            {{ translate('{site} remet en ligne, à prix réduit, les créneaux qui se libèrent chez les pros de votre quartier. Tout le monde y gagne.', {
+                site: website().siteName
+            }) }}
         </p>
     </section>
 
     <section class="how-columns">
         {% for column in [
             {
-                title: 'Pour vous',
+                title: translate('Pour vous'),
                 steps: client,
                 route: 'search_index',
-                cta: 'Voir les créneaux libres',
+                cta: translate('Voir les créneaux libres'),
                 modifier: 'client'
             },
             {
-                title: 'Pour les pros',
+                title: translate('Pour les pros'),
                 steps: pro,
                 route: 'pro_landing',
-                cta: 'Découvrir l\'espace pro',
+                cta: translate('Découvrir l\'espace pro'),
                 modifier: 'pro'
             },
         ] %}
@@ -65,7 +67,7 @@
     <section class="how-rules">
         <div class="how-rules__inner">
             <h2 class="how-rules__title">
-                Les règles du jeu
+                {{ translate('Les règles du jeu') }}
             </h2>
             <div class="how-rules__grid">
                 {% for rule in rules %}
@@ -80,7 +82,7 @@
                 {% endfor %}
             </div>
             <a href="{{ path('page_help') }}" class="how-rules__link">
-                D'autres questions ? Consultez l'aide
+                {{ translate('D\'autres questions ? Consultez l\'aide') }}
             </a>
         </div>
     </section>

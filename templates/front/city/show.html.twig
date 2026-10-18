@@ -1,21 +1,28 @@
 {% extends 'layouts/front.html.twig' %}
 
 {% if category %}
-    {% set label = category.name ~ ' à ' ~ city.name %}
+    {% set label = translate('{category} à {city}', {category: category.name, city: city.name}) %}
 {% else %}
-    {% set label = 'Créneaux libérés à ' ~ city.name %}
+    {% set label = translate('Créneaux libérés à {city}', {city: city.name}) %}
 {% endif %}
 
 {% set route = category ? 'city_category_show' : 'city_show' %}
 {% set parameters = category ? { city: city.slug, category: category.slug } : { slug: city.slug } %}
 
 {% block title %}
-    {{ label }} : les créneaux libérés du jour · Kréno
+    {{ translate('{label} : les créneaux libérés du jour · Kréno', {label: label}) }}
 {% endblock %}
 
 {% block meta_description %}
     {% if category %}
-        {{ category.name }} à {{ city.name }} : Coiffeurs, esthéticiennes, ostéos, garages... à {{ city.name }} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.
+        {% set description = translate('{categoryName} à {cityName} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.', {
+            categoryName: category.name,
+            cityName: city.name
+        }) %}
+    {% else %}
+        {% set description = translate('Coiffeurs, esthéticiennes, ostéos, garages… à {cityName} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.', {
+            cityName: city.name
+        }) %}
     {% endif %}
 {% endblock %}
 
@@ -23,15 +30,22 @@
 
 {% block content %}
     <section class="city-hero">
-        {% include 'components/breadcrumb.html.twig' with { items: breadcrumb } %}
+        {% include 'components/breadcrumb.html.twig' with {
+            items: breadcrumb
+        } %}
         <h1 class="city-hero__title">
-            {{ label }} : les créneaux libérés du jour
+            {{ translate('{label} : les créneaux libérés du jour', {label: label}) }}
         </h1>
         <p class="city-hero__lead">
             {% if category %}
-                Des rendez-vous annulés en {{ category.name|lower }} à {{ city.name }}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.
+                {{ translate('Des rendez-vous annulés en {category} à {city}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.', {
+                    category: category.name|lower,
+                    city: city.name
+                }) }}
             {% else %}
-                Coiffeurs, esthéticiennes, ostéos, garages : les rendez-vous annulés à {{ city.name }}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.
+                {{ translate('Coiffeurs, esthéticiennes, ostéos, garages : les rendez-vous annulés à {city}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.', {
+                    city: city.name
+                }) }}
             {% endif %}
         </p>
 
@@ -51,7 +65,7 @@
 
     <section class="city-slots">
         <h2 class="city-section-title">
-            {{ page.count }} créneau{{ page.count > 1 ? 'x' : '' }} libre{{ page.count > 1 ? 's' : '' }} en ce moment
+            {{ translate('{count, plural, one {# créneau libre en ce moment} other {# créneaux libres en ce moment}}', {count: page.count}) }}
         </h2>
         {% if page.slots is not empty %}
             <div class="city-slots__grid">
@@ -61,20 +75,20 @@
             </div>
             {% if page.count > page.slots|length %}
                 <a href="{{ path('search_index', { where: city.slug, what: category ? category.slug : null }|filter(value => value is not null)) }}" class="btn btn--outline city-slots__more">
-                    Voir les {{ page.count }} créneaux
+                    {{ translate('Voir les {count} créneaux', {count: page.count}) }}
                 </a>
             {% endif %}
         {% else %}
             <div class="city-slots__empty">
                 <b>
-                    Aucun créneau libre pour le moment
+                    {{ translate('Aucun créneau libre pour le moment') }}
                 </b>
                 <span class="city-slots__empty-text">
                     Les créneaux partent vite.
                     <a href="{{ path('account_alerts') }}">
-                        Crée une alerte
+                        {{ translate('Crée une alerte') }}
                     </a>
-                    pour être prévenu dès qu'un pro en libère un.
+                    {{ translate('pour être prévenu dès qu\'un pro en libère un.') }}
                 </span>
             </div>
         {% endif %}
@@ -84,11 +98,21 @@
         <section class="city-shops">
             <div class="city-shops__inner">
                 <h2 class="city-section-title">
-                    Partenaires{{ category ? ' ' ~ category.name|lower : '' }} à {{ city.name }}
+                    {% if category %}
+                        {{ translate('Partenaires {category} à {city}', {
+                            category: category.name|lower,
+                            city: city.name
+                        }) }}
+                    {% else %}
+                        {{ translate('Partenaires à {city}', {city: city.name}) }}
+                    {% endif %}
                 </h2>
                 <div class="city-shops__grid">
                     {% for shop in page.shops %}
-                        {% include 'components/shop_tile.html.twig' with { shop: shop, showCategory: category is null } %}
+                        {% include 'components/shop_tile.html.twig' with {
+                            shop: shop,
+                            showCategory: category is null
+                        } %}
                     {% endfor %}
                 </div>
             </div>
@@ -98,18 +122,18 @@
     <section class="city-more">
         <div class="city-more__block">
             <h2 class="city-section-title">
-                Pourquoi des créneaux moins chers ?
+                {{ translate('Pourquoi des créneaux moins chers ?') }}
             </h2>
             <p class="city-more__text">
-                Quand un client annule, le professionnel préfère accueillir quelqu'un à prix réduit plutôt que de perdre l'heure. Tu profites du même service, au même endroit, moins cher.
+                {{ translate('Quand un client annule, le professionnel préfère accueillir quelqu\'un à prix réduit plutôt que de perdre l\'heure. Tu profites du même service, au même endroit, moins cher.') }}
             </p>
         </div>
         <div class="city-more__block">
             <h2 class="city-section-title">
                 {% if category %}
-                    Autres catégories
+                    {{ translate('Autres catégories') }}
                 {% else %}
-                    Catégories
+                    {{ translate('Catégories') }}
                 {% endif %}
                 à {{ city.name }}
             </h2>
@@ -122,7 +146,7 @@
             </div>
             {% if otherCities is not empty %}
                 <h2 class="city-section-title city-more__subtitle">
-                    Autres villes
+                    {{ translate('Autres villes') }}
                 </h2>
                 <div class="chip-list">
                     {% for other in otherCities %}

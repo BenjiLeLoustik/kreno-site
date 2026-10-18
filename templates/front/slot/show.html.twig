@@ -7,11 +7,26 @@
 }) %}
 
 {% block title %}
-    {{ slot.what }} à {{ slot.time }} chez {{ slot.pro }} : {{ slot.price }} au lieu de {{ slot.old }} · {{ website().siteName }}
+    {{ translate('{what} à {time} chez {pro} : {price} au lieu de {old} · {site}', {
+        what: slot.what,
+        time: slot.time,
+        pro: slot.pro,
+        price: slot.price,
+        old: slot.old,
+        site: website().siteName
+    }) }}
 {% endblock %}
 
 {% block meta_description %}
-    {{ slot.day }} à {{ slot.time }} : {{ slot.what }} chez {{ slot.pro }}, {{ slot.establishment.locality }}. {{ slot.price }} au lieu de {{ slot.old }}, paiement sur place.
+    {{ translate('{day} à {time} : {what} chez {pro}, {locality}. {price} au lieu de {old}, paiement sur place.', {
+        day: slot.day,
+        time: slot.time,
+        what: slot.what,
+        pro: slot.pro,
+        locality: slot.establishment.locality,
+        price: slot.price,
+        old: slot.old
+    }) }}
 {% endblock %}
 
 {% block header_class %}site-header--compact{% endblock %}
@@ -33,12 +48,12 @@
                         {{ [slot.category, slot.distance]|filter(value => value)|join(' · ') }}
                     </span>
                     <h1 class="slot-intro__title">
-                        {{ slot.what }} chez {{ slot.pro }}
+                        {{ translate('{what} chez {pro}', {what: slot.what, pro: slot.pro}) }}
                     </h1>
                     <span class="slot-intro__address">
                         {{ slot.address }} ·
                         <a href="{{ shopUrl }}" class="slot-intro__link">
-                            Voir l'établissement
+                            {{ translate('Voir l\'établissement') }}
                         </a>
                     </span>
                 </div>
@@ -59,7 +74,10 @@
                 {% if others is not empty %}
                     <section class="slot-others">
                         <h2 class="slot-others__title">
-                            Autres créneaux chez {{ slot.pro }} {{ slot.day|lower }}
+                            {{ translate('Autres créneaux chez {pro} {day}', {
+                                pro: slot.pro,
+                                day: slot.day|lower
+                            }) }}
                         </h2>
                         <div class="slot-others__list">
                             {% for other in others %}
@@ -104,7 +122,7 @@
                     <div class="slot-book__remaining">
                         <span class="slot-book__gauge" aria-hidden="true"><span class="slot-book__gauge-fill" style="--value: {{ slot.visibility }}%"></span></span>
                         <span>
-                            Offre visible {{ slot.remaining|lower }}
+                            {{ translate('Offre visible {remaining}', {remaining: slot.remaining|lower}) }}
                         </span>
                     </div>
 
@@ -112,70 +130,70 @@
                         {{ csrf_field('booking')|raw }}
                         {% if user %}
                             <p class="slot-book__identity">
-                                Réservation au nom de
-                                <b>
-                                    {{ user.firstName }}
-                                </b>
-                                · {{ user.email }}
+                                {{ translate('Réservation au nom de {name} · {email}', {
+                                    name: '<b>' ~ user.firstName|e ~ '</b>',
+                                    email: user.email|e
+                                })|raw }}
                             </p>
                             <label for="book-phone" class="form-field">
-                                Téléphone
-                                <input id="book-phone" type="tel" name="phone" value="{{ form.phone }}" autocomplete="tel" placeholder="06 00 00 00 00" class="form-input">
+                                {{ translate('Téléphone') }}
+                                <input id="book-phone" type="tel" name="phone" value="{{ form.phone }}" autocomplete="tel" placeholder="{{ translate('06 00 00 00 00') }}" class="form-input">
                             </label>
                         {% else %}
                             <div class="slot-book__row">
                                 <label for="book-first" class="form-field">
-                                    Prénom
+                                    {{ translate('Prénom') }}
                                     <input id="book-first" type="text" name="firstName" value="{{ form.firstName }}" required maxlength="80" autocomplete="given-name" class="form-input">
                                 </label>
                                 <label for="book-phone" class="form-field">
-                                    Téléphone
-                                    <input id="book-phone" type="tel" name="phone" value="{{ form.phone }}" required autocomplete="tel" placeholder="06 00 00 00 00" class="form-input">
+                                    {{ translate('Téléphone') }}
+                                    <input id="book-phone" type="tel" name="phone" value="{{ form.phone }}" required autocomplete="tel" placeholder="{{ translate('06 00 00 00 00') }}" class="form-input">
                                 </label>
                             </div>
                             <label for="book-email" class="form-field">
-                                Adresse e-mail
-                                <input id="book-email" type="email" name="email" value="{{ form.email }}" required maxlength="180" autocomplete="email" placeholder="toi@exemple.fr" class="form-input">
+                                {{ translate('Adresse e-mail') }}
+                                <input id="book-email" type="email" name="email" value="{{ form.email }}" required maxlength="180" autocomplete="email" placeholder="{{ translate('toi@exemple.fr') }}" class="form-input">
                             </label>
                         {% endif %}
                         <label for="book-note" class="form-field">
                             <span class="form-field__head">
-                                Un mot pour {{ slot.pro }}
+                                {{ translate('Un mot pour {pro}', {pro: slot.pro}) }}
                                 <span class="slot-book__optional">
-                                    facultatif
+                                    {{ translate('facultatif') }}
                                 </span>
                             </span>
                             <textarea id="book-note" name="note" rows="2" maxlength="500" class="form-input slot-book__note">{{ form.note }}</textarea>
                         </label>
                         {% if not user %}
                             <span class="slot-book__hint">
-                                Déjà inscrit ?
-                                <a href="{{ path('app_login') }}">
-                                    Connecte-toi
-                                </a>
-                                pour réserver plus vite. Sinon, un compte est créé avec ton e-mail.
+                                {{ translate('Déjà inscrit ? {open}Connecte-toi{close} pour réserver plus vite. Sinon, un compte est créé avec ton e-mail.', {
+                                    open: '<a href="' ~ path('app_login')|e('html_attr') ~ '">',
+                                    close: '</a>'
+                                })|raw }}
                             </span>
                         {% endif %}
                         <button type="submit" class="btn btn--primary form-submit">
-                            Confirmer la réservation
+                            {{ translate('Confirmer la réservation') }}
                         </button>
                         <span class="slot-book__footnote">
-                            Paiement sur place
                             {% if slot.freeCancellation %}
-                                · annulation gratuite jusqu'à {{ slot.freeCancellationUntil }}
+                                {{ translate("Paiement sur place · annulation gratuite jusqu'à {until}", {until: slot.freeCancellationUntil}) }}
+                            {% else %}
+                                {{ translate('Paiement sur place') }}
                             {% endif %}
                         </span>
                     </form>
                 {% else %}
                     <div class="slot-book__closed">
                         <b>
-                            Ce créneau n'est plus réservable.
+                            {{ translate('Ce créneau n\'est plus réservable.') }}
                         </b>
                         <span>
-                            Il a déjà trouvé preneur ou il est trop proche de l'heure du rendez-vous.
+                            {{ translate('Il a déjà trouvé preneur ou il est trop proche de l\'heure du rendez-vous.') }}
                         </span>
                         <a href="{{ shopUrl }}" class="btn btn--ink">
                             Voir les autres créneaux de {{ slot.pro }}
+                            {{ translate('Voir les autres créneaux de {pro}', {pro: slot.pro}) }}
                         </a>
                     </div>
                 {% endif %}

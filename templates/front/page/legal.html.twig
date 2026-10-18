@@ -8,7 +8,7 @@
 
 {% block content %}
     <div class="legal">
-        <nav class="legal-nav" aria-label="Documents légaux">
+        <nav class="legal-nav" aria-label="{{ translate('Documents légaux') }}">
             {% for item in documents %}
                 <a href="{{ path('page_legal', { document: item.key }) }}" class="legal-nav__link{{ item.selected ? ' legal-nav__link--active' : '' }}"{{ item.selected ? ' aria-current="page"' : '' }}>
                     {{ item.label }}
@@ -22,7 +22,7 @@
                     {{ title }}
                 </h1>
                 <span class="legal-document__date">
-                    Dernière mise à jour : {{ updatedAt }}
+                    {{ translate('Dernière mise à jour : {updatedAt}', {updatedAt: updatedAt}) }}
                 </span>
             </header>
 

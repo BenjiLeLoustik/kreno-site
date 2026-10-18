@@ -1,5 +1,5 @@
 {% macro show(rating) %}
-    <span class="review-stars" role="img" aria-label="{{ rating|number_format(1, ',') }} sur 5">
+    <span class="review-stars" role="img" aria-label="{{ translate('{rating} sur 5', {rating: rating|number_format(1, ',')}) }}">
         {% for star in 1..5 %}
             <i data-lucide="star" class="review-stars__star{{ star <= rating|round ? ' review-stars__star--on' : '' }}"></i>
         {% endfor %}

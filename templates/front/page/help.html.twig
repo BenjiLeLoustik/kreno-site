@@ -1,7 +1,7 @@
 {% extends 'layouts/front.html.twig' %}
 
 {% block title %}
-    Aide et contact · {{ website().siteName }}
+    {{ translate('Aide et contact · {site}', {site: website().siteName}) }}
 {% endblock %}
 
 {% block javascripts %}
@@ -12,18 +12,18 @@
     <section class="help-hero">
         <div class="help-hero__inner">
             <h1 class="help-hero__title">
-                Comment pouvons-nous aider ?
+                {{ translate('Comment pouvons-nous aider ?') }}
             </h1>
             <label for="help-search" class="help-search">
                 <i data-lucide="search" class="help-search__icon"></i>
-                <input id="help-search" type="search" placeholder="Annuler, absence, paiement…" aria-label="Rechercher dans l'aide" class="help-search__input" data-help-search>
+                <input id="help-search" type="search" placeholder="{{ translate('Annuler, absence, paiement…') }}" aria-label="{{ translate('Rechercher dans l\'aide') }}" class="help-search__input" data-help-search>
             </label>
         </div>
     </section>
 
     <div class="help">
-        <section class="help-faq" aria-label="Questions fréquentes">
-            <nav class="help-topics" aria-label="Thèmes">
+        <section class="help-faq" aria-label="{{ translate('Questions fréquentes') }}">
+            <nav class="help-topics" aria-label="{{ translate('Thèmes') }}">
                 {% for group in faq %}
                     <a href="#aide-{{ group.key }}" class="help-topics__link">
                         {{ group.label }}
@@ -55,39 +55,37 @@
             {% endfor %}
 
             <p class="help-faq__empty" data-help-empty hidden>
-                Aucune réponse ne correspond. Écrivez-nous, nous vous répondons par e-mail.
+                {{ translate('Aucune réponse ne correspond. Écrivez-nous, nous vous répondons par e-mail.') }}
             </p>
         </section>
 
         <section id="contact" class="help-contact">
             <h2 class="help-contact__title">
-                Nous écrire
+                {{ translate('Nous écrire') }}
             </h2>
             <p class="help-contact__text">
-                Réponse par e-mail, du lundi au vendredi. Vous pouvez aussi écrire à
-                <a href="mailto:{{ supportEmail }}">
-                    {{ supportEmail }}
-                </a>
-                .
+                {{ translate('Réponse par e-mail, du lundi au vendredi. Vous pouvez aussi écrire à {email}.', {
+                    email: '<a href="mailto:' ~ supportEmail|e('html_attr') ~ '">' ~ supportEmail|e ~ '</a>'
+                })|raw }}
             </p>
 
             {% if sent %}
                 <div class="help-contact__sent" role="status">
                     <b>
-                        Message envoyé
+                        {{ translate('Message envoyé') }}
                     </b>
                     <span>
-                        Nous vous répondons par e-mail. Vous pouvez aussi suivre la conversation et nous répondre en ligne.
+                        {{ translate('Nous vous répondons par e-mail. Vous pouvez aussi suivre la conversation et nous répondre en ligne.') }}
                     </span>
                     <a href="{{ path('page_contact_show', { token: sent }) }}" class="help-contact__follow">
-                        Suivre ma demande →
+                        {{ translate('Suivre ma demande →') }}
                     </a>
                 </div>
             {% else %}
                 <form method="post" action="{{ path('page_help_submit') }}" class="help-form">
                     {{ csrf_field('help')|raw }}
                     <label for="contact-topic" class="form-field">
-                        Sujet
+                        {{ translate('Sujet') }}
                         <select id="contact-topic" name="topic" required class="form-input">
                             {% for topic in topics %}
                                 <option value="{{ topic.value }}"{{ topic.value == form.topic ? ' selected' : '' }}>
@@ -97,22 +95,24 @@
                         </select>
                     </label>
                     <label for="contact-reference" class="form-field">
-                        <span>Numéro de réservation <span class="help-form__muted">
-                                facultatif, ex. KR-482100
+                        <span>
+                            {{ translate('Numéro de réservation ') }}
+                            <span class="help-form__muted">
+                                {{ translate('facultatif, ex. KR-482100') }}
                             </span>
                         </span>
                         <input id="contact-reference" type="text" name="reference" value="{{ form.reference }}" pattern="[Kk][Rr]-[0-9]{6}" maxlength="9" autocomplete="off" class="form-input">
                     </label>
                     <label for="contact-email" class="form-field">
-                        Votre e-mail
+                        {{ translate('Votre e-mail') }}
                         <input id="contact-email" type="email" name="email" value="{{ form.email }}" required maxlength="180" autocomplete="email" class="form-input">
                     </label>
                     <label for="contact-message" class="form-field">
-                        Message
+                        {{ translate('Message') }}
                         <textarea id="contact-message" name="message" rows="5" required minlength="10" maxlength="3000" class="form-input help-form__area">{{ form.message }}</textarea>
                     </label>
                     <button type="submit" class="btn btn--primary form-submit">
-                        Envoyer
+                        {{ translate('Envoyer') }}
                     </button>
                 </form>
             {% endif %}
