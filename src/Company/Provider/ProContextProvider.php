@@ -52,7 +52,11 @@ class ProContextProvider
         $user = $member->getUser();
 
         if ($user === null) {
-            return ['name' => null, 'initials' => null, 'roleLabel' => $this->roleLabel($member, $current)];
+            return [
+                'name' => null,
+                'initials' => null,
+                'roleLabel' => $this->roleLabel($member, $current)
+            ];
         }
 
         return [

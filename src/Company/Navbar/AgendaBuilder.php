@@ -3,6 +3,7 @@
 namespace App\Company\Navbar;
 
 use App\Company\Security\Permission;
+use App\Shared\Helper\Translation;
 
 class AgendaBuilder extends AbstractProNavbarBuilder
 {
@@ -13,7 +14,7 @@ class AgendaBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Agenda';
+        return Translation::translate('Agenda');
     }
 
     public function getRoute(): string

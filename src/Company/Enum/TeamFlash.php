@@ -2,6 +2,8 @@
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum TeamFlash
 {
     case INVITED;
@@ -18,11 +20,11 @@ enum TeamFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::INVITED => 'Invitation envoyée à %s.',
-            self::INVITATION_REVOKED => 'Invitation annulée.',
-            self::ROLE_CHANGED => 'Rôle modifié.',
-            self::ESTABLISHMENT_ACCESS_REMOVED => 'Accès à %s retiré.',
-            self::MEMBER_REMOVED => 'Membre retiré de l\'entreprise.',
+            self::INVITED => Translation::translate('Invitation envoyée à %s.'),
+            self::INVITATION_REVOKED => Translation::translate('Invitation annulée.'),
+            self::ROLE_CHANGED => Translation::translate('Rôle modifié.'),
+            self::ESTABLISHMENT_ACCESS_REMOVED => Translation::translate('Accès à %s retiré.'),
+            self::MEMBER_REMOVED => Translation::translate('Membre retiré de l\'entreprise.'),
         };
     }
 }

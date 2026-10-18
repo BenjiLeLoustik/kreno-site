@@ -73,7 +73,10 @@ class ProSignupRequestMapper
 
     public static function paymentOld(Request $request, SignupPaymentInput $input): array
     {
-        return ['billing' => self::billing($request), 'promoCode' => $input->promoCode];
+        return [
+            'billing' => self::billing($request),
+            'promoCode' => $input->promoCode
+        ];
     }
 
     private static function billing(Request $request): array

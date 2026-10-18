@@ -3,6 +3,7 @@
 namespace App\Company\Navbar;
 
 use App\Company\Security\Permission;
+use App\Shared\Helper\Translation;
 
 class EstablishmentBuilder extends AbstractProNavbarBuilder
 {
@@ -13,7 +14,7 @@ class EstablishmentBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Mon établissement';
+        return Translation::translate('Mon établissement');
     }
 
     public function getRoute(): string

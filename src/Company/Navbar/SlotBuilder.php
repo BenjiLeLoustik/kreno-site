@@ -3,6 +3,7 @@
 namespace App\Company\Navbar;
 
 use App\Company\Security\Permission;
+use App\Shared\Helper\Translation;
 
 class SlotBuilder extends AbstractProNavbarBuilder
 {
@@ -13,7 +14,7 @@ class SlotBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Mes créneaux';
+        return Translation::translate('Mes créneaux');
     }
 
     public function getRoute(): string

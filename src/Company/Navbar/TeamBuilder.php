@@ -3,6 +3,7 @@
 namespace App\Company\Navbar;
 
 use App\Company\Security\Permission;
+use App\Shared\Helper\Translation;
 
 class TeamBuilder extends AbstractProNavbarBuilder
 {
@@ -13,7 +14,7 @@ class TeamBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Équipe';
+        return Translation::translate('Équipe');
     }
 
     public function getRoute(): string

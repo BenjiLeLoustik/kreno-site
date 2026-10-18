@@ -73,7 +73,10 @@ class ProSignupPlanProvider
             return null;
         }
 
-        return ['code' => $promo->getCode(), 'label' => $this->promos->describe($promo)];
+        return [
+            'code' => $promo->getCode(),
+            'label' => $this->promos->describe($promo)
+        ];
     }
 
     private function billing(Company $company, ?User $user): array

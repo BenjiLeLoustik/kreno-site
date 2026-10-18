@@ -3,6 +3,7 @@
 namespace App\Company\Enum;
 
 use App\Company\Security\Permission;
+use App\Shared\Helper\Translation;
 
 enum TeamMatrixAction: string
 {
@@ -17,13 +18,13 @@ enum TeamMatrixAction: string
     public function label(): string
     {
         return match ($this) {
-            self::COMPANY_EDIT => 'Modifier l\'entreprise',
-            self::ESTABLISHMENT_CREATE => 'Créer un établissement',
-            self::MEMBERS_MANAGE => 'Gérer les membres',
-            self::SERVICES_MANAGE => 'Gérer les prestations',
-            self::SLOTS_MANAGE => 'Gérer les créneaux',
-            self::BOOKINGS_MANAGE => 'Gérer les réservations',
-            self::PLANNING_VIEW => 'Consulter le planning',
+            self::COMPANY_EDIT => Translation::translate('Modifier l\'entreprise'),
+            self::ESTABLISHMENT_CREATE => Translation::translate('Créer un établissement'),
+            self::MEMBERS_MANAGE => Translation::translate('Gérer les membres'),
+            self::SERVICES_MANAGE => Translation::translate('Gérer les prestations'),
+            self::SLOTS_MANAGE => Translation::translate('Gérer les créneaux'),
+            self::BOOKINGS_MANAGE => Translation::translate('Gérer les réservations'),
+            self::PLANNING_VIEW => Translation::translate('Consulter le planning'),
         };
     }
 }

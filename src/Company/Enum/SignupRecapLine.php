@@ -2,6 +2,8 @@
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum SignupRecapLine
 {
     case ACCOUNT;
@@ -25,17 +27,21 @@ enum SignupRecapLine
     public function label(): string
     {
         return match ($this) {
-            self::ACCOUNT => 'Compte',
-            self::ESTABLISHMENT => 'Établissement',
-            self::SIRET => 'SIRET',
-            self::SERVICES => 'Prestations',
-            self::PAGE => 'Page publique',
-            self::PLAN => 'Formule',
+            self::ACCOUNT => Translation::translate('Compte'),
+            self::ESTABLISHMENT => Translation::translate('Établissement'),
+            self::SIRET => Translation::translate('SIRET'),
+            self::SERVICES => Translation::translate('Prestations'),
+            self::PAGE => Translation::translate('Page publique'),
+            self::PLAN => Translation::translate('Formule'),
         };
     }
 
     public function row(?string $value): array
     {
-        return ['key' => $this->key(), 'label' => $this->label(), 'value' => $value];
+        return [
+            'key' => $this->key(),
+            'label' => $this->label(),
+            'value' => $value
+        ];
     }
 }

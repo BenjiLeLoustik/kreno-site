@@ -3,6 +3,7 @@
 namespace App\Company\Navbar;
 
 use App\Company\Security\Permission;
+use App\Shared\Helper\Translation;
 
 class BookingBuilder extends AbstractProNavbarBuilder
 {
@@ -13,7 +14,7 @@ class BookingBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Réservations';
+        return Translation::translate('Réservations');
     }
 
     public function getRoute(): string

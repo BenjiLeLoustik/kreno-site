@@ -84,7 +84,10 @@ class CompanyPageProvider
         $managers = [];
 
         foreach ($company->getMembers() as $member) {
-            $managers[] = ['id' => $member->getId(), 'name' => $this->teamPresenter->member($member)['name']];
+            $managers[] = [
+                'id' => $member->getId(),
+                'name' => $this->teamPresenter->member($member)['name']
+            ];
         }
 
         return $managers;

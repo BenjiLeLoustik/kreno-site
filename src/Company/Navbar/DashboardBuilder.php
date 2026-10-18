@@ -3,6 +3,7 @@
 namespace App\Company\Navbar;
 
 use App\Company\Security\Permission;
+use App\Shared\Helper\Translation;
 
 class DashboardBuilder extends AbstractProNavbarBuilder
 {
@@ -13,7 +14,7 @@ class DashboardBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Tableau de bord';
+        return Translation::translate('Tableau de bord');
     }
 
     public function getRoute(): string

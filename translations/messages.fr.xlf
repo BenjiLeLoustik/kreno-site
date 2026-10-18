@@ -4890,6 +4890,446 @@
         <source>{city} a des établissements : fermez-la plutôt que de la supprimer.</source>
         <target>{city} a des établissements : fermez-la plutôt que de la supprimer.</target>
       </trans-unit>
+      <trans-unit id="6de2650030d4b611" resname="%s est créé en brouillon. Complétez-le puis envoyez-le en vérification.">
+        <source>%s est créé en brouillon. Complétez-le puis envoyez-le en vérification.</source>
+        <target>%s est créé en brouillon. Complétez-le puis envoyez-le en vérification.</target>
+      </trans-unit>
+      <trans-unit id="f0cd871712c7cf14" resname="%s est envoyé à l&apos;équipe Kréno pour vérification.">
+        <source>%s est envoyé à l&apos;équipe Kréno pour vérification.</source>
+        <target>%s est envoyé à l&apos;équipe Kréno pour vérification.</target>
+      </trans-unit>
+      <trans-unit id="bd710bbfd4d914c6" resname="%s est refusé. Le pro a été prévenu par e-mail.">
+        <source>%s est refusé. Le pro a été prévenu par e-mail.</source>
+        <target>%s est refusé. Le pro a été prévenu par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="39a29cb59e92f7e1" resname="%s est validé et en ligne. Le pro a été prévenu par e-mail.">
+        <source>%s est validé et en ligne. Le pro a été prévenu par e-mail.</source>
+        <target>%s est validé et en ligne. Le pro a été prévenu par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="8190fee3d52ff24b" resname="Accès à %s retiré.">
+        <source>Accès à %s retiré.</source>
+        <target>Accès à %s retiré.</target>
+      </trans-unit>
+      <trans-unit id="ad26287ab66ba05c" resname="Actif">
+        <source>Actif</source>
+        <target>Actif</target>
+      </trans-unit>
+      <trans-unit id="17fdc94224da2481" resname="Activité non éligible">
+        <source>Activité non éligible</source>
+        <target>Activité non éligible</target>
+      </trans-unit>
+      <trans-unit id="e77033f983beb112" resname="Administrateur">
+        <source>Administrateur</source>
+        <target>Administrateur</target>
+      </trans-unit>
+      <trans-unit id="095520e7344b383a" resname="Adresse e-mail vérifiée.">
+        <source>Adresse e-mail vérifiée.</source>
+        <target>Adresse e-mail vérifiée.</target>
+      </trans-unit>
+      <trans-unit id="c4445b6478b6f619" resname="Adresse ne correspondant pas">
+        <source>Adresse ne correspondant pas</source>
+        <target>Adresse ne correspondant pas</target>
+      </trans-unit>
+      <trans-unit id="a0a712770267a02f" resname="Aucun utilisateur.">
+        <source>Aucun utilisateur.</source>
+        <target>Aucun utilisateur.</target>
+      </trans-unit>
+      <trans-unit id="a307a3fe9b7227a7" resname="Aucun établissement accessible.">
+        <source>Aucun établissement accessible.</source>
+        <target>Aucun établissement accessible.</target>
+      </trans-unit>
+      <trans-unit id="8f797d4f5e6d7551" resname="Aucune entreprise.">
+        <source>Aucune entreprise.</source>
+        <target>Aucune entreprise.</target>
+      </trans-unit>
+      <trans-unit id="eb72e1683b81c924" resname="Autre">
+        <source>Autre</source>
+        <target>Autre</target>
+      </trans-unit>
+      <trans-unit id="2ec7466067c6ff7f" resname="Avec une équipe">
+        <source>Avec une équipe</source>
+        <target>Avec une équipe</target>
+      </trans-unit>
+      <trans-unit id="ad6443c32b4e08b0" resname="Bienvenue dans l&apos;équipe !">
+        <source>Bienvenue dans l&apos;équipe !</source>
+        <target>Bienvenue dans l&apos;équipe !</target>
+      </trans-unit>
+      <trans-unit id="68d2f4468a1b3c69" resname="Carte ou prélèvement">
+        <source>Carte ou prélèvement</source>
+        <target>Carte ou prélèvement</target>
+      </trans-unit>
+      <trans-unit id="1317b0e52834d885" resname="Catégorie inconnue.">
+        <source>Catégorie inconnue.</source>
+        <target>Catégorie inconnue.</target>
+      </trans-unit>
+      <trans-unit id="5f78e7916dbf9219" resname="Ce SIRET correspond à un établissement fermé.">
+        <source>Ce SIRET correspond à un établissement fermé.</source>
+        <target>Ce SIRET correspond à un établissement fermé.</target>
+      </trans-unit>
+      <trans-unit id="9e2b833f9ede1d51" resname="Ce membre ne fait pas partie de l&apos;entreprise.">
+        <source>Ce membre ne fait pas partie de l&apos;entreprise.</source>
+        <target>Ce membre ne fait pas partie de l&apos;entreprise.</target>
+      </trans-unit>
+      <trans-unit id="75ad56df67d2c3d8" resname="Ce membre ne fait pas partie de votre entreprise.">
+        <source>Ce membre ne fait pas partie de votre entreprise.</source>
+        <target>Ce membre ne fait pas partie de votre entreprise.</target>
+      </trans-unit>
+      <trans-unit id="d092235aec3dffe5" resname="Ce membre travaille aussi dans un établissement que vous ne gérez pas.">
+        <source>Ce membre travaille aussi dans un établissement que vous ne gérez pas.</source>
+        <target>Ce membre travaille aussi dans un établissement que vous ne gérez pas.</target>
+      </trans-unit>
+      <trans-unit id="a8f7a9892972e5ea" resname="Ce numéro SIREN n&apos;est pas valide.">
+        <source>Ce numéro SIREN n&apos;est pas valide.</source>
+        <target>Ce numéro SIREN n&apos;est pas valide.</target>
+      </trans-unit>
+      <trans-unit id="fdd13e38cb66e04b" resname="Ce numéro SIRET n&apos;est pas valide. Il contient 14 chiffres, il figure sur votre Kbis ou votre avis de situation INSEE.">
+        <source>Ce numéro SIRET n&apos;est pas valide. Il contient 14 chiffres, il figure sur votre Kbis ou votre avis de situation INSEE.</source>
+        <target>Ce numéro SIRET n&apos;est pas valide. Il contient 14 chiffres, il figure sur votre Kbis ou votre avis de situation INSEE.</target>
+      </trans-unit>
+      <trans-unit id="5940046a8b4666e7" resname="Cet établissement est déjà inscrit sur Kréno. Contactez pro@kreno.fr si vous pensez qu&apos;il s&apos;agit d&apos;une erreur.">
+        <source>Cet établissement est déjà inscrit sur Kréno. Contactez pro@kreno.fr si vous pensez qu&apos;il s&apos;agit d&apos;une erreur.</source>
+        <target>Cet établissement est déjà inscrit sur Kréno. Contactez pro@kreno.fr si vous pensez qu&apos;il s&apos;agit d&apos;une erreur.</target>
+      </trans-unit>
+      <trans-unit id="ed4108ac89e8176b" resname="Cet établissement n&apos;appartient pas à l&apos;entreprise.">
+        <source>Cet établissement n&apos;appartient pas à l&apos;entreprise.</source>
+        <target>Cet établissement n&apos;appartient pas à l&apos;entreprise.</target>
+      </trans-unit>
+      <trans-unit id="2e1fb0f346638252" resname="Cette invitation a été envoyée à {email}. Connectez-vous avec cette adresse pour l&apos;accepter.">
+        <source>Cette invitation a été envoyée à {email}. Connectez-vous avec cette adresse pour l&apos;accepter.</source>
+        <target>Cette invitation a été envoyée à {email}. Connectez-vous avec cette adresse pour l&apos;accepter.</target>
+      </trans-unit>
+      <trans-unit id="48e094133c9d9127" resname="Choisissez l&apos;établissement de ce membre.">
+        <source>Choisissez l&apos;établissement de ce membre.</source>
+        <target>Choisissez l&apos;établissement de ce membre.</target>
+      </trans-unit>
+      <trans-unit id="8d314910e3f2af17" resname="Choisissez la catégorie de votre établissement.">
+        <source>Choisissez la catégorie de votre établissement.</source>
+        <target>Choisissez la catégorie de votre établissement.</target>
+      </trans-unit>
+      <trans-unit id="575c3000dd61c060" resname="Choisissez la ville de l&apos;établissement.">
+        <source>Choisissez la ville de l&apos;établissement.</source>
+        <target>Choisissez la ville de l&apos;établissement.</target>
+      </trans-unit>
+      <trans-unit id="6b1434b9ca1e1dd7" resname="Choix de l&apos;abonnement">
+        <source>Choix de l&apos;abonnement</source>
+        <target>Choix de l&apos;abonnement</target>
+      </trans-unit>
+      <trans-unit id="519b085f8f111046" resname="Code reçu par e-mail">
+        <source>Code reçu par e-mail</source>
+        <target>Code reçu par e-mail</target>
+      </trans-unit>
+      <trans-unit id="dacd47619a726cd9" resname="Compte">
+        <source>Compte</source>
+        <target>Compte</target>
+      </trans-unit>
+      <trans-unit id="915e93798b6b0d1b" resname="Consulter le planning">
+        <source>Consulter le planning</source>
+        <target>Consulter le planning</target>
+      </trans-unit>
+      <trans-unit id="3ca56670930d50be" resname="Créer un établissement">
+        <source>Créer un établissement</source>
+        <target>Créer un établissement</target>
+      </trans-unit>
+      <trans-unit id="da60ff35b212a8aa" resname="Désactivé">
+        <source>Désactivé</source>
+        <target>Désactivé</target>
+      </trans-unit>
+      <trans-unit id="dd286ba6d49f594d" resname="En vérification">
+        <source>En vérification</source>
+        <target>En vérification</target>
+      </trans-unit>
+      <trans-unit id="9f688c4ddeeb2c6f" resname="Entreprise introuvable.">
+        <source>Entreprise introuvable.</source>
+        <target>Entreprise introuvable.</target>
+      </trans-unit>
+      <trans-unit id="78342a0905a72ce4" resname="Forbidden">
+        <source>Forbidden</source>
+        <target>Forbidden</target>
+      </trans-unit>
+      <trans-unit id="8a0fd4e28da69064" resname="Gérer les créneaux">
+        <source>Gérer les créneaux</source>
+        <target>Gérer les créneaux</target>
+      </trans-unit>
+      <trans-unit id="339359c892a595e6" resname="Gérer les membres">
+        <source>Gérer les membres</source>
+        <target>Gérer les membres</target>
+      </trans-unit>
+      <trans-unit id="3179acdb98fd0220" resname="Gérer les prestations">
+        <source>Gérer les prestations</source>
+        <target>Gérer les prestations</target>
+      </trans-unit>
+      <trans-unit id="837a99bd4d03867c" resname="Gérer les réservations">
+        <source>Gérer les réservations</source>
+        <target>Gérer les réservations</target>
+      </trans-unit>
+      <trans-unit id="82b6ec8717ab2565" resname="Identité et connexion">
+        <source>Identité et connexion</source>
+        <target>Identité et connexion</target>
+      </trans-unit>
+      <trans-unit id="774bf5abfbae5187" resname="Il manque {field} de l&apos;établissement.">
+        <source>Il manque {field} de l&apos;établissement.</source>
+        <target>Il manque {field} de l&apos;établissement.</target>
+      </trans-unit>
+      <trans-unit id="a170321fd6421f64" resname="Il ne peut y avoir qu&apos;un seul propriétaire.">
+        <source>Il ne peut y avoir qu&apos;un seul propriétaire.</source>
+        <target>Il ne peut y avoir qu&apos;un seul propriétaire.</target>
+      </trans-unit>
+      <trans-unit id="28908bfde7a0174d" resname="Indiquez votre prénom et choisissez un mot de passe.">
+        <source>Indiquez votre prénom et choisissez un mot de passe.</source>
+        <target>Indiquez votre prénom et choisissez un mot de passe.</target>
+      </trans-unit>
+      <trans-unit id="497e35c8b1487dde" resname="Indépendant">
+        <source>Indépendant</source>
+        <target>Indépendant</target>
+      </trans-unit>
+      <trans-unit id="d51c0d81e9bdcd38" resname="Indépendant, auto-entrepreneur">
+        <source>Indépendant, auto-entrepreneur</source>
+        <target>Indépendant, auto-entrepreneur</target>
+      </trans-unit>
+      <trans-unit id="e2071df1f6a32539" resname="Informations de l&apos;entreprise enregistrées.">
+        <source>Informations de l&apos;entreprise enregistrées.</source>
+        <target>Informations de l&apos;entreprise enregistrées.</target>
+      </trans-unit>
+      <trans-unit id="2b0fa3dd6d494c4a" resname="Inscription en cours">
+        <source>Inscription en cours</source>
+        <target>Inscription en cours</target>
+      </trans-unit>
+      <trans-unit id="a002816197594515" resname="Invitation annulée.">
+        <source>Invitation annulée.</source>
+        <target>Invitation annulée.</target>
+      </trans-unit>
+      <trans-unit id="8c6fe8440d888717" resname="Invitation envoyée">
+        <source>Invitation envoyée</source>
+        <target>Invitation envoyée</target>
+      </trans-unit>
+      <trans-unit id="e25eb23adc629479" resname="Invitation envoyée à %s.">
+        <source>Invitation envoyée à %s.</source>
+        <target>Invitation envoyée à %s.</target>
+      </trans-unit>
+      <trans-unit id="d40d5b2d2d44a9f1" resname="Invitation introuvable.">
+        <source>Invitation introuvable.</source>
+        <target>Invitation introuvable.</target>
+      </trans-unit>
+      <trans-unit id="9814705847759534" resname="Je travaille seul·e">
+        <source>Je travaille seul·e</source>
+        <target>Je travaille seul·e</target>
+      </trans-unit>
+      <trans-unit id="ace0cae0048d4972" resname="Justificatif demandé à %s par e-mail.">
+        <source>Justificatif demandé à %s par e-mail.</source>
+        <target>Justificatif demandé à %s par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="dda2990cce85ec21" resname="J’ai une équipe">
+        <source>J’ai une équipe</source>
+        <target>J’ai une équipe</target>
+      </trans-unit>
+      <trans-unit id="4419c6ff0f0b585f" resname="Kréno n&apos;est pas encore disponible dans cette ville.">
+        <source>Kréno n&apos;est pas encore disponible dans cette ville.</source>
+        <target>Kréno n&apos;est pas encore disponible dans cette ville.</target>
+      </trans-unit>
+      <trans-unit id="503cbc55caea6ab3" resname="La remise doit être comprise entre {min} et {max} %.">
+        <source>La remise doit être comprise entre {min} et {max} %.</source>
+        <target>La remise doit être comprise entre {min} et {max} %.</target>
+      </trans-unit>
+      <trans-unit id="3ba3f9ef1b00160d" resname="La remise par défaut doit être comprise entre {min} et {max} %.">
+        <source>La remise par défaut doit être comprise entre {min} et {max} %.</source>
+        <target>La remise par défaut doit être comprise entre {min} et {max} %.</target>
+      </trans-unit>
+      <trans-unit id="f2d9435463ec9b54" resname="Le SIRET d&apos;un établissement en ligne ne peut pas être modifié. Contactez pro@kreno.fr.">
+        <source>Le SIRET d&apos;un établissement en ligne ne peut pas être modifié. Contactez pro@kreno.fr.</source>
+        <target>Le SIRET d&apos;un établissement en ligne ne peut pas être modifié. Contactez pro@kreno.fr.</target>
+      </trans-unit>
+      <trans-unit id="2de62e97d3f62c06" resname="Le SIRET est obligatoire.">
+        <source>Le SIRET est obligatoire.</source>
+        <target>Le SIRET est obligatoire.</target>
+      </trans-unit>
+      <trans-unit id="5b88fc0e361d2b9b" resname="Le nom de l&apos;établissement est obligatoire.">
+        <source>Le nom de l&apos;établissement est obligatoire.</source>
+        <target>Le nom de l&apos;établissement est obligatoire.</target>
+      </trans-unit>
+      <trans-unit id="0c48b363789259f2" resname="Le propriétaire ne peut pas être retiré de l&apos;entreprise.">
+        <source>Le propriétaire ne peut pas être retiré de l&apos;entreprise.</source>
+        <target>Le propriétaire ne peut pas être retiré de l&apos;entreprise.</target>
+      </trans-unit>
+      <trans-unit id="979f93de6e6aa2d7" resname="Le rôle du propriétaire ne peut pas être modifié.">
+        <source>Le rôle du propriétaire ne peut pas être modifié.</source>
+        <target>Le rôle du propriétaire ne peut pas être modifié.</target>
+      </trans-unit>
+      <trans-unit id="b9032caafafd407d" resname="Membre introuvable.">
+        <source>Membre introuvable.</source>
+        <target>Membre introuvable.</target>
+      </trans-unit>
+      <trans-unit id="5dd8de103610b1bb" resname="Membre retiré de l&apos;entreprise.">
+        <source>Membre retiré de l&apos;entreprise.</source>
+        <target>Membre retiré de l&apos;entreprise.</target>
+      </trans-unit>
+      <trans-unit id="3a0bd36a1bcf9881" resname="Merci de nous transmettre un extrait Kbis ou un avis de situation INSEE de moins de 3 mois.">
+        <source>Merci de nous transmettre un extrait Kbis ou un avis de situation INSEE de moins de 3 mois.</source>
+        <target>Merci de nous transmettre un extrait Kbis ou un avis de situation INSEE de moins de 3 mois.</target>
+      </trans-unit>
+      <trans-unit id="5de03de68d6592af" resname="Modifier l&apos;entreprise">
+        <source>Modifier l&apos;entreprise</source>
+        <target>Modifier l&apos;entreprise</target>
+      </trans-unit>
+      <trans-unit id="2c3b838d6261c766" resname="Nous n&apos;avons pas trouvé ce SIRET dans le registre public des entreprises.">
+        <source>Nous n&apos;avons pas trouvé ce SIRET dans le registre public des entreprises.</source>
+        <target>Nous n&apos;avons pas trouvé ce SIRET dans le registre public des entreprises.</target>
+      </trans-unit>
+      <trans-unit id="4df59610231df293" resname="Page publique">
+        <source>Page publique</source>
+        <target>Page publique</target>
+      </trans-unit>
+      <trans-unit id="5d9e9e44e18ab3e0" resname="Paiement">
+        <source>Paiement</source>
+        <target>Paiement</target>
+      </trans-unit>
+      <trans-unit id="e0a0fd5f37bae43a" resname="Photos, description, horaires">
+        <source>Photos, description, horaires</source>
+        <target>Photos, description, horaires</target>
+      </trans-unit>
+      <trans-unit id="b406881e070bf1d5" resname="Propriétaire">
+        <source>Propriétaire</source>
+        <target>Propriétaire</target>
+      </trans-unit>
+      <trans-unit id="b3573f3374d6fb82" resname="Refusée">
+        <source>Refusée</source>
+        <target>Refusée</target>
+      </trans-unit>
+      <trans-unit id="07e4c5edbd67d8ec" resname="Rôle modifié.">
+        <source>Rôle modifié.</source>
+        <target>Rôle modifié.</target>
+      </trans-unit>
+      <trans-unit id="2ebf965f864c6570" resname="SIRET et adresse">
+        <source>SIRET et adresse</source>
+        <target>SIRET et adresse</target>
+      </trans-unit>
+      <trans-unit id="606553796886e6aa" resname="SIRET inactif ou introuvable">
+        <source>SIRET inactif ou introuvable</source>
+        <target>SIRET inactif ou introuvable</target>
+      </trans-unit>
+      <trans-unit id="426cc144b6c1a612" resname="Salon, cabinet, atelier avec employés">
+        <source>Salon, cabinet, atelier avec employés</source>
+        <target>Salon, cabinet, atelier avec employés</target>
+      </trans-unit>
+      <trans-unit id="352863ca76c865e3" resname="Seuls le propriétaire et les administrateurs peuvent nommer un administrateur.">
+        <source>Seuls le propriétaire et les administrateurs peuvent nommer un administrateur.</source>
+        <target>Seuls le propriétaire et les administrateurs peuvent nommer un administrateur.</target>
+      </trans-unit>
+      <trans-unit id="b5f4d353a2b519c7" resname="Seuls le propriétaire et les administrateurs peuvent nommer un gérant.">
+        <source>Seuls le propriétaire et les administrateurs peuvent nommer un gérant.</source>
+        <target>Seuls le propriétaire et les administrateurs peuvent nommer un gérant.</target>
+      </trans-unit>
+      <trans-unit id="753427575c887b0f" resname="Seuls le propriétaire et les administrateurs peuvent retirer un administrateur.">
+        <source>Seuls le propriétaire et les administrateurs peuvent retirer un administrateur.</source>
+        <target>Seuls le propriétaire et les administrateurs peuvent retirer un administrateur.</target>
+      </trans-unit>
+      <trans-unit id="c0e87514c8c912d0" resname="Suspendue">
+        <source>Suspendue</source>
+        <target>Suspendue</target>
+      </trans-unit>
+      <trans-unit id="ac0e5fc936ade441" resname="Tableau de bord">
+        <source>Tableau de bord</source>
+        <target>Tableau de bord</target>
+      </trans-unit>
+      <trans-unit id="f0f2869e303459ed" resname="Un code de vérification a été envoyé à %s.">
+        <source>Un code de vérification a été envoyé à %s.</source>
+        <target>Un code de vérification a été envoyé à %s.</target>
+      </trans-unit>
+      <trans-unit id="41952a29ee1db2bd" resname="Un compte existe déjà avec cette adresse : connectez-vous pour créer votre espace pro.">
+        <source>Un compte existe déjà avec cette adresse : connectez-vous pour créer votre espace pro.</source>
+        <target>Un compte existe déjà avec cette adresse : connectez-vous pour créer votre espace pro.</target>
+      </trans-unit>
+      <trans-unit id="c6b0a44bc2c5fb5f" resname="Un compte existe déjà avec {email} : connectez-vous pour accepter l&apos;invitation.">
+        <source>Un compte existe déjà avec {email} : connectez-vous pour accepter l&apos;invitation.</source>
+        <target>Un compte existe déjà avec {email} : connectez-vous pour accepter l&apos;invitation.</target>
+      </trans-unit>
+      <trans-unit id="59cc5e6c91c32507" resname="Un nouveau code vient de vous être envoyé.">
+        <source>Un nouveau code vient de vous être envoyé.</source>
+        <target>Un nouveau code vient de vous être envoyé.</target>
+      </trans-unit>
+      <trans-unit id="e84fdb2896398fef" resname="Un établissement en ligne ne peut pas changer de ville.">
+        <source>Un établissement en ligne ne peut pas changer de ville.</source>
+        <target>Un établissement en ligne ne peut pas changer de ville.</target>
+      </trans-unit>
+      <trans-unit id="3cdeef0e81cf7fd4" resname="Une autre entreprise utilise déjà ce SIREN.">
+        <source>Une autre entreprise utilise déjà ce SIREN.</source>
+        <target>Une autre entreprise utilise déjà ce SIREN.</target>
+      </trans-unit>
+      <trans-unit id="3eb6222a0265d381" resname="Votre compte">
+        <source>Votre compte</source>
+        <target>Votre compte</target>
+      </trans-unit>
+      <trans-unit id="1233f182701246a2" resname="Votre compte est déjà rattaché à une entreprise.">
+        <source>Votre compte est déjà rattaché à une entreprise.</source>
+        <target>Votre compte est déjà rattaché à une entreprise.</target>
+      </trans-unit>
+      <trans-unit id="9705cbfb79c7fb46" resname="Votre compte n&apos;est rattaché à aucune entreprise.">
+        <source>Votre compte n&apos;est rattaché à aucune entreprise.</source>
+        <target>Votre compte n&apos;est rattaché à aucune entreprise.</target>
+      </trans-unit>
+      <trans-unit id="131c29b4991e4744" resname="Votre formule {plan} est limitée à {max} établissement(s). Passez à une formule supérieure pour en ajouter.">
+        <source>Votre formule {plan} est limitée à {max} établissement(s). Passez à une formule supérieure pour en ajouter.</source>
+        <target>Votre formule {plan} est limitée à {max} établissement(s). Passez à une formule supérieure pour en ajouter.</target>
+      </trans-unit>
+      <trans-unit id="78b7ca592ff200fa" resname="Votre rôle ne permet pas cette action.">
+        <source>Votre rôle ne permet pas cette action.</source>
+        <target>Votre rôle ne permet pas cette action.</target>
+      </trans-unit>
+      <trans-unit id="4715bf27a21ae8c8" resname="Votre rôle ne permet pas de gérer l&apos;équipe.">
+        <source>Votre rôle ne permet pas de gérer l&apos;équipe.</source>
+        <target>Votre rôle ne permet pas de gérer l&apos;équipe.</target>
+      </trans-unit>
+      <trans-unit id="107689f53e6fb2b0" resname="Vous faites déjà partie de {company}.">
+        <source>Vous faites déjà partie de {company}.</source>
+        <target>Vous faites déjà partie de {company}.</target>
+      </trans-unit>
+      <trans-unit id="e8b4cdd1a36ffc75" resname="Vous gérez maintenant %s.">
+        <source>Vous gérez maintenant %s.</source>
+        <target>Vous gérez maintenant %s.</target>
+      </trans-unit>
+      <trans-unit id="846cc23bcdc85c22" resname="Vous ne pouvez pas gérer l&apos;équipe de cet établissement.">
+        <source>Vous ne pouvez pas gérer l&apos;équipe de cet établissement.</source>
+        <target>Vous ne pouvez pas gérer l&apos;équipe de cet établissement.</target>
+      </trans-unit>
+      <trans-unit id="f49c3ce7805fe900" resname="Vous ne pouvez pas modifier votre propre rôle.">
+        <source>Vous ne pouvez pas modifier votre propre rôle.</source>
+        <target>Vous ne pouvez pas modifier votre propre rôle.</target>
+      </trans-unit>
+      <trans-unit id="6f0bf18122fe144e" resname="Vous ne pouvez pas vous retirer vous-même.">
+        <source>Vous ne pouvez pas vous retirer vous-même.</source>
+        <target>Vous ne pouvez pas vous retirer vous-même.</target>
+      </trans-unit>
+      <trans-unit id="97a4b5570c168163" resname="Vérification">
+        <source>Vérification</source>
+        <target>Vérification</target>
+      </trans-unit>
+      <trans-unit id="a75f3f3805b38924" resname="l&apos;adresse">
+        <source>l&apos;adresse</source>
+        <target>l&apos;adresse</target>
+      </trans-unit>
+      <trans-unit id="66f1ec3e4d6b6b7e" resname="la catégorie">
+        <source>la catégorie</source>
+        <target>la catégorie</target>
+      </trans-unit>
+      <trans-unit id="a40f9391a16e5583" resname="la ville">
+        <source>la ville</source>
+        <target>la ville</target>
+      </trans-unit>
+      <trans-unit id="c11a41faa26ba3ee" resname="le SIRET">
+        <source>le SIRET</source>
+        <target>le SIRET</target>
+      </trans-unit>
+      <trans-unit id="952ce002008074d1" resname="{email} fait déjà partie de l&apos;équipe.">
+        <source>{email} fait déjà partie de l&apos;équipe.</source>
+        <target>{email} fait déjà partie de l&apos;équipe.</target>
+      </trans-unit>
+      <trans-unit id="5a53509ee107053d" resname="{name} n&apos;est plus en attente de vérification.">
+        <source>{name} n&apos;est plus en attente de vérification.</source>
+        <target>{name} n&apos;est plus en attente de vérification.</target>
+      </trans-unit>
+      <trans-unit id="2f421456f2e4fbef" resname="Établissement inaccessible.">
+        <source>Établissement inaccessible.</source>
+        <target>Établissement inaccessible.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

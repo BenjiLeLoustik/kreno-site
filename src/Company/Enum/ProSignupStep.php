@@ -2,6 +2,8 @@
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ProSignupStep: string
 {
     case ACCOUNT = 'account';
@@ -44,28 +46,30 @@ enum ProSignupStep: string
     public function label(): string
     {
         return match ($this) {
-            self::ACCOUNT => 'Votre compte',
-            self::VERIFY => 'Vérification',
-            self::ESTABLISHMENT => 'Établissement',
-            self::SERVICES => 'Prestations',
-            self::PAGE => 'Page publique',
-            self::PLAN => 'Formule',
-            self::PAYMENT => 'Paiement',
-            self::PENDING, self::DONE => '',
+            self::ACCOUNT => Translation::translate('Votre compte'),
+            self::VERIFY => Translation::translate('Vérification'),
+            self::ESTABLISHMENT => Translation::translate('Établissement'),
+            self::SERVICES => Translation::translate('Prestations'),
+            self::PAGE => Translation::translate('Page publique'),
+            self::PLAN => Translation::translate('Formule'),
+            self::PAYMENT => Translation::translate('Paiement'),
+            self::PENDING,
+            self::DONE => '',
         };
     }
 
     public function sub(): string
     {
         return match ($this) {
-            self::ACCOUNT => 'Identité et connexion',
-            self::VERIFY => 'Code reçu par e-mail',
-            self::ESTABLISHMENT => 'SIRET et adresse',
-            self::SERVICES => 'Ce que vous proposez',
-            self::PAGE => 'Photos, description, horaires',
-            self::PLAN => 'Choix de l\'abonnement',
-            self::PAYMENT => 'Carte ou prélèvement',
-            self::PENDING, self::DONE => '',
+            self::ACCOUNT => Translation::translate('Identité et connexion'),
+            self::VERIFY => Translation::translate('Code reçu par e-mail'),
+            self::ESTABLISHMENT => Translation::translate('SIRET et adresse'),
+            self::SERVICES => Translation::translate('Ce que vous proposez'),
+            self::PAGE => Translation::translate('Photos, description, horaires'),
+            self::PLAN => Translation::translate('Choix de l\'abonnement'),
+            self::PAYMENT => Translation::translate('Carte ou prélèvement'),
+            self::PENDING,
+            self::DONE => '',
         };
     }
 }

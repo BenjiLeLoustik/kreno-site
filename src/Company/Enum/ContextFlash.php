@@ -2,6 +2,8 @@
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ContextFlash
 {
     case SWITCHED;
@@ -14,7 +16,7 @@ enum ContextFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::SWITCHED => 'Vous gérez maintenant %s.',
+            self::SWITCHED => Translation::translate('Vous gérez maintenant %s.'),
         };
     }
 }

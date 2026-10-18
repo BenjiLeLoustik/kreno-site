@@ -14,14 +14,13 @@ use App\Entity\User\User;
 use App\Establishment\Enum\EstablishmentStatus;
 use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class ModerationService
 {
-    public const DEFAULT_DOCUMENT_REQUEST = 'Merci de nous transmettre un extrait Kbis ou un avis de situation INSEE de moins de 3 mois.';
-
     public function __construct(
         private OrmManagerInterface $orm,
         private ActivityLogger $logger,
@@ -107,6 +106,11 @@ class ModerationService
         $this->events->dispatch(new DocumentRequestedEvent($establishment, $message));
 
         return $establishment;
+    }
+
+    public static function defaultDocumentRequest(): string
+    {
+        return Translation::translate('Merci de nous transmettre un extrait Kbis ou un avis de situation INSEE de moins de 3 mois.');
     }
 
     private function reason(?string $reason): RejectionReason

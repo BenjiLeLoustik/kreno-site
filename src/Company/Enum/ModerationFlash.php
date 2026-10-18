@@ -2,6 +2,8 @@
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ModerationFlash
 {
     case APPROVED;
@@ -16,9 +18,9 @@ enum ModerationFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::APPROVED => '%s est validé et en ligne. Le pro a été prévenu par e-mail.',
-            self::REJECTED => '%s est refusé. Le pro a été prévenu par e-mail.',
-            self::DOCUMENT_REQUESTED => 'Justificatif demandé à %s par e-mail.',
+            self::APPROVED => Translation::translate('%s est validé et en ligne. Le pro a été prévenu par e-mail.'),
+            self::REJECTED => Translation::translate('%s est refusé. Le pro a été prévenu par e-mail.'),
+            self::DOCUMENT_REQUESTED => Translation::translate('Justificatif demandé à %s par e-mail.'),
         };
     }
 }

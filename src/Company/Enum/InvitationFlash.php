@@ -2,6 +2,8 @@
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum InvitationFlash
 {
     case WELCOME;
@@ -9,7 +11,7 @@ enum InvitationFlash
     public function text(): string
     {
         return match ($this) {
-            self::WELCOME => 'Bienvenue dans l\'équipe !',
+            self::WELCOME => Translation::translate('Bienvenue dans l\'équipe !'),
         };
     }
 }

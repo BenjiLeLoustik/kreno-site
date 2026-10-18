@@ -2,6 +2,8 @@
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum SignupFlash
 {
     case CODE_SENT;
@@ -16,9 +18,9 @@ enum SignupFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::CODE_SENT => 'Un code de vérification a été envoyé à %s.',
-            self::EMAIL_VERIFIED => 'Adresse e-mail vérifiée.',
-            self::CODE_RESENT => 'Un nouveau code vient de vous être envoyé.',
+            self::CODE_SENT => Translation::translate('Un code de vérification a été envoyé à %s.'),
+            self::EMAIL_VERIFIED => Translation::translate('Adresse e-mail vérifiée.'),
+            self::CODE_RESENT => Translation::translate('Un nouveau code vient de vous être envoyé.'),
         };
     }
 }

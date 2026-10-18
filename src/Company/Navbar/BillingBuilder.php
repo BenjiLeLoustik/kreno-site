@@ -3,6 +3,7 @@
 namespace App\Company\Navbar;
 
 use App\Company\Security\Permission;
+use App\Shared\Helper\Translation;
 
 class BillingBuilder extends AbstractProNavbarBuilder
 {
@@ -13,7 +14,7 @@ class BillingBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Facturation';
+        return Translation::translate('Facturation');
     }
 
     public function getRoute(): string

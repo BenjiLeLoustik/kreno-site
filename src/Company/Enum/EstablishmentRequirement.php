@@ -3,6 +3,7 @@
 namespace App\Company\Enum;
 
 use App\Entity\Company\CompanyEstablishment;
+use App\Shared\Helper\Translation;
 
 enum EstablishmentRequirement: string
 {
@@ -14,10 +15,10 @@ enum EstablishmentRequirement: string
     public function label(): string
     {
         return match ($this) {
-            self::SIRET => 'le SIRET',
-            self::CITY => 'la ville',
-            self::CATEGORY => 'la catégorie',
-            self::ADDRESS => 'l\'adresse',
+            self::SIRET => Translation::translate('le SIRET'),
+            self::CITY => Translation::translate('la ville'),
+            self::CATEGORY => Translation::translate('la catégorie'),
+            self::ADDRESS => Translation::translate('l\'adresse'),
         };
     }
 

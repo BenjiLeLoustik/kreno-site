@@ -75,7 +75,9 @@ class ProSignupPageProvider
     {
         $old = $this->pullOld($step);
 
-        return ['signup' => $this->progress($step, $current, $user)] + $this->data($step, $user, $old, $period);
+        return [
+            'signup' => $this->progress($step, $current, $user)
+            ] + $this->data($step, $user, $old, $period);
     }
 
     public function remember(ProSignupStep $step, array $values): void
@@ -90,9 +92,15 @@ class ProSignupPageProvider
     public function siret(string $siret): array
     {
         try {
-            return ['found' => true, 'establishment' => $this->signup->lookupSiret($siret)->toArray()];
+            return [
+                'found' => true,
+                'establishment' => $this->signup->lookupSiret($siret)->toArray()
+            ];
         } catch (BusinessRuleException $exception) {
-            return ['found' => false, 'error' => $exception->getMessage()];
+            return [
+                'found' => false,
+                'error' => $exception->getMessage()
+            ];
         }
     }
 
@@ -239,7 +247,9 @@ class ProSignupPageProvider
     {
         $company = $this->flow->company($this->flow->member($user));
 
-        return ['plan' => $this->plans->plan($company, $user, $period)];
+        return [
+            'plan' => $this->plans->plan($company, $user, $period)
+        ];
     }
 
     private function payment(?User $user, array $old): array

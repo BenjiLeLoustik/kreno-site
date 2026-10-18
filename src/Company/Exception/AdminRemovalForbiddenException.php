@@ -3,11 +3,14 @@
 namespace App\Company\Exception;
 
 use App\Shared\Exception\BusinessRuleException;
+use App\Shared\Helper\Translation;
 
 class AdminRemovalForbiddenException extends BusinessRuleException
 {
     public function __construct()
     {
-        parent::__construct('Seuls le propriétaire et les administrateurs peuvent retirer un administrateur.');
+        parent::__construct(
+            Translation::translate('Seuls le propriétaire et les administrateurs peuvent retirer un administrateur.')
+        );
     }
 }

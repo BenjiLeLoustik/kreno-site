@@ -2,6 +2,8 @@
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum CompanyFlash
 {
     case UPDATED;
@@ -16,9 +18,9 @@ enum CompanyFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::UPDATED => 'Informations de l\'entreprise enregistrées.',
-            self::ESTABLISHMENT_CREATED => '%s est créé en brouillon. Complétez-le puis envoyez-le en vérification.',
-            self::ESTABLISHMENT_SUBMITTED => '%s est envoyé à l\'équipe Kréno pour vérification.',
+            self::UPDATED => Translation::translate('Informations de l\'entreprise enregistrées.'),
+            self::ESTABLISHMENT_CREATED => Translation::translate('%s est créé en brouillon. Complétez-le puis envoyez-le en vérification.'),
+            self::ESTABLISHMENT_SUBMITTED => Translation::translate('%s est envoyé à l\'équipe Kréno pour vérification.'),
         };
     }
 }

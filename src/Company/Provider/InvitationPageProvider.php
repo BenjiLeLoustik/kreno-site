@@ -2,11 +2,11 @@
 
 namespace App\Company\Provider;
 
-use App\Company\Enum\EstablishmentRole;
 use App\Company\Helper\RoleHelper;
 use App\Company\Service\TeamService;
 use App\Entity\Company\CompanyInvitation;
 use App\Entity\User\User;
+use App\Establishment\Enum\EstablishmentRole;
 use App\Repository\User\UserRepository;
 use App\User\Exception\InvalidTokenException;
 

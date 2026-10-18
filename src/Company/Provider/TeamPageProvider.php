@@ -140,7 +140,10 @@ class TeamPageProvider
         $options = [];
 
         foreach ($establishments as $establishment) {
-            $options[] = ['id' => $establishment->getId(), 'name' => $establishment->getName()];
+            $options[] = [
+                'id' => $establishment->getId(),
+                'name' => $establishment->getName()
+            ];
         }
 
         return $options;

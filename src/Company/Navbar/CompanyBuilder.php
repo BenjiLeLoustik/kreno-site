@@ -2,6 +2,8 @@
 
 namespace App\Company\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class CompanyBuilder extends AbstractProNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class CompanyBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Mon compte';
+        return Translation::translate('Mon compte');
     }
 
     public function getRoute(): string

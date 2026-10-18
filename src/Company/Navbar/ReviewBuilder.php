@@ -5,6 +5,7 @@ namespace App\Company\Navbar;
 use App\Company\Security\Permission;
 use App\Entity\Company\CompanyEstablishment;
 use App\Repository\Establishment\EstablishmentReviewRepository;
+use App\Shared\Helper\Translation;
 
 class ReviewBuilder extends AbstractProNavbarBuilder
 {
@@ -20,7 +21,7 @@ class ReviewBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Avis clients';
+        return Translation::translate('Avis clients');
     }
 
     public function getRoute(): string

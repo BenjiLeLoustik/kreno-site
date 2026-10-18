@@ -3,6 +3,7 @@
 namespace App\Company\Navbar;
 
 use App\Company\Security\Permission;
+use App\Shared\Helper\Translation;
 
 class PublishBuilder extends AbstractProNavbarBuilder
 {
@@ -13,7 +14,7 @@ class PublishBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Publier un créneau';
+        return Translation::translate('Publier un créneau');
     }
 
     public function getRoute(): string

@@ -3,6 +3,7 @@
 namespace App\Company\Navbar;
 
 use App\Company\Security\Permission;
+use App\Shared\Helper\Translation;
 
 class StatsBuilder extends AbstractProNavbarBuilder
 {
@@ -13,7 +14,7 @@ class StatsBuilder extends AbstractProNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Statistiques';
+        return Translation::translate('Statistiques');
     }
 
     public function getRoute(): string

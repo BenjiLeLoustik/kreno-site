@@ -2,6 +2,8 @@
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum SignupKind: string
 {
     case SOLO = 'solo';
@@ -12,7 +14,11 @@ enum SignupKind: string
         $choices = [];
 
         foreach (self::cases() as $kind) {
-            $choices[] = ['value' => $kind->value, 'title' => $kind->title(), 'text' => $kind->text()];
+            $choices[] = [
+                'value' => $kind->value,
+                'title' => $kind->title(),
+                'text' => $kind->text()
+            ];
         }
 
         return $choices;
@@ -21,16 +27,16 @@ enum SignupKind: string
     public function title(): string
     {
         return match ($this) {
-            self::SOLO => 'Je travaille seul·e',
-            self::TEAM => 'J’ai une équipe',
+            self::SOLO => Translation::translate('Je travaille seul·e'),
+            self::TEAM => Translation::translate('J’ai une équipe'),
         };
     }
 
     public function text(): string
     {
         return match ($this) {
-            self::SOLO => 'Indépendant, auto-entrepreneur',
-            self::TEAM => 'Salon, cabinet, atelier avec employés',
+            self::SOLO => Translation::translate('Indépendant, auto-entrepreneur'),
+            self::TEAM => Translation::translate('Salon, cabinet, atelier avec employés'),
         };
     }
 }

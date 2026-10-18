@@ -55,7 +55,10 @@ class AdminModerationPageProvider
         $reasons = [];
 
         foreach (RejectionReason::cases() as $reason) {
-            $reasons[] = ['value' => $reason->value, 'label' => $reason->label()];
+            $reasons[] = [
+                'value' => $reason->value,
+                'label' => $reason->label()
+            ];
         }
 
         return $reasons;
