@@ -4490,6 +4490,298 @@
         <source>à la prochaine échéance</source>
         <target>à la prochaine échéance</target>
       </trans-unit>
+      <trans-unit id="7f19da820da77e3c" resname="%d absence">
+        <source>%d absence</source>
+        <target>%d absence</target>
+      </trans-unit>
+      <trans-unit id="0dce7bea10dfd674" resname="%d absences">
+        <source>%d absences</source>
+        <target>%d absences</target>
+      </trans-unit>
+      <trans-unit id="72f79b215823ed81" resname="%de réservation">
+        <source>%de réservation</source>
+        <target>%de réservation</target>
+      </trans-unit>
+      <trans-unit id="e86b60c17caf8ee0" resname="%s chez %s">
+        <source>%s chez %s</source>
+        <target>%s chez %s</target>
+      </trans-unit>
+      <trans-unit id="5d359af35b3aea4f" resname="%s est prévenu. Un e-mail de confirmation vient de partir, avec le ticket et l&apos;adresse. Présente-toi 5 minutes avant.">
+        <source>%s est prévenu. Un e-mail de confirmation vient de partir, avec le ticket et l&apos;adresse. Présente-toi 5 minutes avant.</source>
+        <target>%s est prévenu. Un e-mail de confirmation vient de partir, avec le ticket et l&apos;adresse. Présente-toi 5 minutes avant.</target>
+      </trans-unit>
+      <trans-unit id="a652b4466a2958ad" resname="-%d %% en moyenne">
+        <source>-%d %% en moyenne</source>
+        <target>-%d %% en moyenne</target>
+      </trans-unit>
+      <trans-unit id="6f7a22418ff102c1" resname="/ %d tolérées sur les %d derniers jours">
+        <source>/ %d tolérées sur les %d derniers jours</source>
+        <target>/ %d tolérées sur les %d derniers jours</target>
+      </trans-unit>
+      <trans-unit id="b7f1b890a41e592d" resname="1re réservation">
+        <source>1re réservation</source>
+        <target>1re réservation</target>
+      </trans-unit>
+      <trans-unit id="8a43b9ea9c817849" resname="Absence">
+        <source>Absence</source>
+        <target>Absence</target>
+      </trans-unit>
+      <trans-unit id="7a8261da92837126" resname="Absence enregistrée et signalée à Kréno.">
+        <source>Absence enregistrée et signalée à Kréno.</source>
+        <target>Absence enregistrée et signalée à Kréno.</target>
+      </trans-unit>
+      <trans-unit id="4281e3309eccea5b" resname="Absence signalée par l&apos;établissement">
+        <source>Absence signalée par l&apos;établissement</source>
+        <target>Absence signalée par l&apos;établissement</target>
+      </trans-unit>
+      <trans-unit id="fe669f4a551b36e4" resname="Absences">
+        <source>Absences</source>
+        <target>Absences</target>
+      </trans-unit>
+      <trans-unit id="84fd36f7cbff12b9" resname="Absent">
+        <source>Absent</source>
+        <target>Absent</target>
+      </trans-unit>
+      <trans-unit id="e39109b601877477" resname="Annulée par l&apos;établissement">
+        <source>Annulée par l&apos;établissement</source>
+        <target>Annulée par l&apos;établissement</target>
+      </trans-unit>
+      <trans-unit id="81225f5675f09b3c" resname="Annulée par le client">
+        <source>Annulée par le client</source>
+        <target>Annulée par le client</target>
+      </trans-unit>
+      <trans-unit id="f417a298b895d5ea" resname="Annulée par vous">
+        <source>Annulée par vous</source>
+        <target>Annulée par vous</target>
+      </trans-unit>
+      <trans-unit id="97657ba3e4a0805a" resname="Annulées">
+        <source>Annulées</source>
+        <target>Annulées</target>
+      </trans-unit>
+      <trans-unit id="fc49cf5dc0d938ad" resname="Aujourd&apos;hui : %s · %s · %s">
+        <source>Aujourd&apos;hui : %s · %s · %s</source>
+        <target>Aujourd&apos;hui : %s · %s · %s</target>
+      </trans-unit>
+      <trans-unit id="74b23b1ddeed09db" resname="Bonjour %s">
+        <source>Bonjour %s</source>
+        <target>Bonjour %s</target>
+      </trans-unit>
+      <trans-unit id="cd40ea71088a144d" resname="C&apos;est réservé.">
+        <source>C&apos;est réservé.</source>
+        <target>C&apos;est réservé.</target>
+      </trans-unit>
+      <trans-unit id="6ecc8c81f7f4a5ee" resname="Ce créneau commence dans moins de {minutes} min : il ne peut plus être réservé.">
+        <source>Ce créneau commence dans moins de {minutes} min : il ne peut plus être réservé.</source>
+        <target>Ce créneau commence dans moins de {minutes} min : il ne peut plus être réservé.</target>
+      </trans-unit>
+      <trans-unit id="cba48f1b817270c4" resname="Ce créneau n&apos;est plus proposé.">
+        <source>Ce créneau n&apos;est plus proposé.</source>
+        <target>Ce créneau n&apos;est plus proposé.</target>
+      </trans-unit>
+      <trans-unit id="88f13d46524338e2" resname="Ce rendez-vous est déjà clôturé.">
+        <source>Ce rendez-vous est déjà clôturé.</source>
+        <target>Ce rendez-vous est déjà clôturé.</target>
+      </trans-unit>
+      <trans-unit id="8c4dcaa6f2a00762" resname="Cette réservation n&apos;est plus active.">
+        <source>Cette réservation n&apos;est plus active.</source>
+        <target>Cette réservation n&apos;est plus active.</target>
+      </trans-unit>
+      <trans-unit id="67c4b2f22978eb9e" resname="Cette réservation ne peut plus être annulée.">
+        <source>Cette réservation ne peut plus être annulée.</source>
+        <target>Cette réservation ne peut plus être annulée.</target>
+      </trans-unit>
+      <trans-unit id="7cbdc728e5542d3e" resname="Cette réservation ne vous appartient pas.">
+        <source>Cette réservation ne vous appartient pas.</source>
+        <target>Cette réservation ne vous appartient pas.</target>
+      </trans-unit>
+      <trans-unit id="b7cd8101ac247e2e" resname="Client absent">
+        <source>Client absent</source>
+        <target>Client absent</target>
+      </trans-unit>
+      <trans-unit id="5898e80212b300c0" resname="Confirmée">
+        <source>Confirmée</source>
+        <target>Confirmée</target>
+      </trans-unit>
+      <trans-unit id="ff03edd96b5f37d9" resname="E-mail de confirmation envoyé">
+        <source>E-mail de confirmation envoyé</source>
+        <target>E-mail de confirmation envoyé</target>
+      </trans-unit>
+      <trans-unit id="8beed0d98908e59d" resname="Empêché ? Annulation gratuite jusqu&apos;à %s depuis ton compte.">
+        <source>Empêché ? Annulation gratuite jusqu&apos;à %s depuis ton compte.</source>
+        <target>Empêché ? Annulation gratuite jusqu&apos;à %s depuis ton compte.</target>
+      </trans-unit>
+      <trans-unit id="0c3b274b1ed38fd4" resname="En attente de clôture">
+        <source>En attente de clôture</source>
+        <target>En attente de clôture</target>
+      </trans-unit>
+      <trans-unit id="d24899264c3dd31a" resname="Honorée">
+        <source>Honorée</source>
+        <target>Honorée</target>
+      </trans-unit>
+      <trans-unit id="b59c4e0cf61c4301" resname="Honorées">
+        <source>Honorées</source>
+        <target>Honorées</target>
+      </trans-unit>
+      <trans-unit id="d8d9117600a09a2b" resname="Indique ton prénom, ton téléphone et ton adresse e-mail, ou connecte-toi.">
+        <source>Indique ton prénom, ton téléphone et ton adresse e-mail, ou connecte-toi.</source>
+        <target>Indique ton prénom, ton téléphone et ton adresse e-mail, ou connecte-toi.</target>
+      </trans-unit>
+      <trans-unit id="10fc953bf84bee99" resname="Indique un numéro de téléphone pour que l&apos;établissement puisse te joindre.">
+        <source>Indique un numéro de téléphone pour que l&apos;établissement puisse te joindre.</source>
+        <target>Indique un numéro de téléphone pour que l&apos;établissement puisse te joindre.</target>
+      </trans-unit>
+      <trans-unit id="49a25bf89a9319a1" resname="L&apos;établissement">
+        <source>L&apos;établissement</source>
+        <target>L&apos;établissement</target>
+      </trans-unit>
+      <trans-unit id="f9de99205e2dbdac" resname="Le client a annulé ce rendez-vous.">
+        <source>Le client a annulé ce rendez-vous.</source>
+        <target>Le client a annulé ce rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="7abd49c8ad3fefd1" resname="Le délai d&apos;annulation gratuite est dépassé : préviens directement l&apos;établissement.">
+        <source>Le délai d&apos;annulation gratuite est dépassé : préviens directement l&apos;établissement.</source>
+        <target>Le délai d&apos;annulation gratuite est dépassé : préviens directement l&apos;établissement.</target>
+      </trans-unit>
+      <trans-unit id="2a0cf9d05be2d3c4" resname="Le rendez-vous n&apos;a pas encore commencé.">
+        <source>Le rendez-vous n&apos;a pas encore commencé.</source>
+        <target>Le rendez-vous n&apos;a pas encore commencé.</target>
+      </trans-unit>
+      <trans-unit id="6c9d05ab25b0b1a1" resname="Pas encore de réservation">
+        <source>Pas encore de réservation</source>
+        <target>Pas encore de réservation</target>
+      </trans-unit>
+      <trans-unit id="995c341da1c896e3" resname="Passées">
+        <source>Passées</source>
+        <target>Passées</target>
+      </trans-unit>
+      <trans-unit id="733682567ed69aac" resname="Rappel par e-mail">
+        <source>Rappel par e-mail</source>
+        <target>Rappel par e-mail</target>
+      </trans-unit>
+      <trans-unit id="1c49c89061059605" resname="Rappel par e-mail (à venir)">
+        <source>Rappel par e-mail (à venir)</source>
+        <target>Rappel par e-mail (à venir)</target>
+      </trans-unit>
+      <trans-unit id="649ad2fb60aef9b4" resname="Rendez-vous">
+        <source>Rendez-vous</source>
+        <target>Rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="34f3a1f5f3c78931" resname="Rendez-vous annulé. %s est prévenu(e) par e-mail et d’autres créneaux lui sont proposés.">
+        <source>Rendez-vous annulé. %s est prévenu(e) par e-mail et d’autres créneaux lui sont proposés.</source>
+        <target>Rendez-vous annulé. %s est prévenu(e) par e-mail et d’autres créneaux lui sont proposés.</target>
+      </trans-unit>
+      <trans-unit id="b23fe420e9a6c84e" resname="Rendez-vous annulé. Le client est prévenu par e-mail.">
+        <source>Rendez-vous annulé. Le client est prévenu par e-mail.</source>
+        <target>Rendez-vous annulé. Le client est prévenu par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="0916cdafb7ceec71" resname="Rendez-vous honoré">
+        <source>Rendez-vous honoré</source>
+        <target>Rendez-vous honoré</target>
+      </trans-unit>
+      <trans-unit id="5503b6515832ef70" resname="Rendez-vous marqué comme honoré.">
+        <source>Rendez-vous marqué comme honoré.</source>
+        <target>Rendez-vous marqué comme honoré.</target>
+      </trans-unit>
+      <trans-unit id="8a06bdf77dcdb866" resname="Réservation %s · paiement sur place">
+        <source>Réservation %s · paiement sur place</source>
+        <target>Réservation %s · paiement sur place</target>
+      </trans-unit>
+      <trans-unit id="415e7243e43e274b" resname="Réservation annulée par l&apos;établissement">
+        <source>Réservation annulée par l&apos;établissement</source>
+        <target>Réservation annulée par l&apos;établissement</target>
+      </trans-unit>
+      <trans-unit id="64c3d039fa8d3ba0" resname="Réservation annulée par vous, sans frais">
+        <source>Réservation annulée par vous, sans frais</source>
+        <target>Réservation annulée par vous, sans frais</target>
+      </trans-unit>
+      <trans-unit id="705d0f0b5aebefc4" resname="Réservation annulée, sans frais.">
+        <source>Réservation annulée, sans frais.</source>
+        <target>Réservation annulée, sans frais.</target>
+      </trans-unit>
+      <trans-unit id="e8213d381667adbd" resname="Réservation confirmée, %s prévenu">
+        <source>Réservation confirmée, %s prévenu</source>
+        <target>Réservation confirmée, %s prévenu</target>
+      </trans-unit>
+      <trans-unit id="b008b57f76f3fe88" resname="Réservation introuvable.">
+        <source>Réservation introuvable.</source>
+        <target>Réservation introuvable.</target>
+      </trans-unit>
+      <trans-unit id="66757c89f699fc81" resname="Seul un rendez-vous à venir peut être annulé.">
+        <source>Seul un rendez-vous à venir peut être annulé.</source>
+        <target>Seul un rendez-vous à venir peut être annulé.</target>
+      </trans-unit>
+      <trans-unit id="28eebb8feda924ff" resname="Ton compte Kréno est créé : un e-mail t&apos;attend à %s pour choisir ton mot de passe.">
+        <source>Ton compte Kréno est créé : un e-mail t&apos;attend à %s pour choisir ton mot de passe.</source>
+        <target>Ton compte Kréno est créé : un e-mail t&apos;attend à %s pour choisir ton mot de passe.</target>
+      </trans-unit>
+      <trans-unit id="6cc3aa74ab286c34" resname="Ton compte est suspendu jusqu&apos;au {date} : tu ne peux pas réserver d&apos;ici là.">
+        <source>Ton compte est suspendu jusqu&apos;au {date} : tu ne peux pas réserver d&apos;ici là.</source>
+        <target>Ton compte est suspendu jusqu&apos;au {date} : tu ne peux pas réserver d&apos;ici là.</target>
+      </trans-unit>
+      <trans-unit id="02625d7529be8d50" resname="Ton compte ne permet pas de réserver.">
+        <source>Ton compte ne permet pas de réserver.</source>
+        <target>Ton compte ne permet pas de réserver.</target>
+      </trans-unit>
+      <trans-unit id="42623b97b4815a8a" resname="Toutes">
+        <source>Toutes</source>
+        <target>Toutes</target>
+      </trans-unit>
+      <trans-unit id="b0b9e0ce3a3dbc0c" resname="Trop tard, ce créneau vient d&apos;être réservé ou retiré.">
+        <source>Trop tard, ce créneau vient d&apos;être réservé ou retiré.</source>
+        <target>Trop tard, ce créneau vient d&apos;être réservé ou retiré.</target>
+      </trans-unit>
+      <trans-unit id="a7ffd0e4083a2f86" resname="Tu as déjà {max} réservation(s) à venir : c&apos;est le maximum autorisé.">
+        <source>Tu as déjà {max} réservation(s) à venir : c&apos;est le maximum autorisé.</source>
+        <target>Tu as déjà {max} réservation(s) à venir : c&apos;est le maximum autorisé.</target>
+      </trans-unit>
+      <trans-unit id="8e1b861e357b327f" resname="Tu ne peux pas réserver un créneau de ton propre établissement.">
+        <source>Tu ne peux pas réserver un créneau de ton propre établissement.</source>
+        <target>Tu ne peux pas réserver un créneau de ton propre établissement.</target>
+      </trans-unit>
+      <trans-unit id="f8ce36db72f7379c" resname="aucune absence">
+        <source>aucune absence</source>
+        <target>aucune absence</target>
+      </trans-unit>
+      <trans-unit id="882465ae709f1eaf" resname="dans %d jour">
+        <source>dans %d jour</source>
+        <target>dans %d jour</target>
+      </trans-unit>
+      <trans-unit id="969bec9f11d114f5" resname="dans %d jours">
+        <source>dans %d jours</source>
+        <target>dans %d jours</target>
+      </trans-unit>
+      <trans-unit id="deab452b1ced36a7" resname="dans {duration}">
+        <source>dans {duration}</source>
+        <target>dans {duration}</target>
+      </trans-unit>
+      <trans-unit id="82f8b49760589bd9" resname="depuis {year}">
+        <source>depuis {year}</source>
+        <target>depuis {year}</target>
+      </trans-unit>
+      <trans-unit id="10b6cde078b7e945" resname="dont %d à venir">
+        <source>dont %d à venir</source>
+        <target>dont %d à venir</target>
+      </trans-unit>
+      <trans-unit id="a254ee3dd77e715e" resname="{count, plural, one {# absence} other {# absences}}">
+        <source>{count, plural, one {# absence} other {# absences}}</source>
+        <target>{count, plural, one {# absence} other {# absences}}</target>
+      </trans-unit>
+      <trans-unit id="9baf5d461ba3e323" resname="{count, plural, one {# réservation} other {# réservations}}">
+        <source>{count, plural, one {# réservation} other {# réservations}}</source>
+        <target>{count, plural, one {# réservation} other {# réservations}}</target>
+      </trans-unit>
+      <trans-unit id="6cf1fc089f4fbcc7" resname="À clôturer">
+        <source>À clôturer</source>
+        <target>À clôturer</target>
+      </trans-unit>
+      <trans-unit id="4b563878b404e10e" resname="À venir">
+        <source>À venir</source>
+        <target>À venir</target>
+      </trans-unit>
+      <trans-unit id="8d0a5db8842bb441" resname="Économisé">
+        <source>Économisé</source>
+        <target>Économisé</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
