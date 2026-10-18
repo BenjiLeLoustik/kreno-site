@@ -44,6 +44,8 @@ class ContactPageProvider
             $contacts[] = $this->presenter->row($contact);
         }
 
-        return ['contacts' => $contacts];
+        return [
+            'contacts' => $contacts
+        ];
     }
 }

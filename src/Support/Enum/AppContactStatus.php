@@ -2,6 +2,8 @@
 
 namespace App\Support\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AppContactStatus: string
 {
     case NEW = 'new';
@@ -11,18 +13,18 @@ enum AppContactStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::NEW => 'Nouvelle',
-            self::ANSWERED => 'Répondue',
-            self::CLOSED => 'Fermée',
+            self::NEW => Translation::translate('Nouvelle'),
+            self::ANSWERED => Translation::translate('Répondue'),
+            self::CLOSED => Translation::translate('Fermée'),
         };
     }
 
     public function customerLabel(): string
     {
         return match ($this) {
-            self::NEW => 'En attente de réponse',
-            self::ANSWERED => 'Réponse reçue',
-            self::CLOSED => 'Fermée',
+            self::NEW => Translation::translate('En attente de réponse'),
+            self::ANSWERED => Translation::translate('Réponse reçue'),
+            self::CLOSED => Translation::translate('Fermée'),
         };
     }
 

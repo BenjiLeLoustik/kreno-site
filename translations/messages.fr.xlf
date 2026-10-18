@@ -7090,6 +7090,66 @@
         <source>septembre</source>
         <target>septembre</target>
       </trans-unit>
+      <trans-unit id="5e0d6ea8b726b809" resname="%s · équipe">
+        <source>%s · équipe</source>
+        <target>%s · équipe</target>
+      </trans-unit>
+      <trans-unit id="ce1ba25605ab1e8e" resname="Cette conversation n&apos;existe pas.">
+        <source>Cette conversation n&apos;existe pas.</source>
+        <target>Cette conversation n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="febad30d506eb24d" resname="Cette demande est fermée : rouvrez-la pour répondre.">
+        <source>Cette demande est fermée : rouvrez-la pour répondre.</source>
+        <target>Cette demande est fermée : rouvrez-la pour répondre.</target>
+      </trans-unit>
+      <trans-unit id="c482461b1964815d" resname="Cette demande est fermée. Écrivez-nous depuis la page d&apos;aide pour en ouvrir une nouvelle.">
+        <source>Cette demande est fermée. Écrivez-nous depuis la page d&apos;aide pour en ouvrir une nouvelle.</source>
+        <target>Cette demande est fermée. Écrivez-nous depuis la page d&apos;aide pour en ouvrir une nouvelle.</target>
+      </trans-unit>
+      <trans-unit id="af5b80bb0cf48d16" resname="Demande fermée.">
+        <source>Demande fermée.</source>
+        <target>Demande fermée.</target>
+      </trans-unit>
+      <trans-unit id="e1c3a554e98719cb" resname="Demande introuvable.">
+        <source>Demande introuvable.</source>
+        <target>Demande introuvable.</target>
+      </trans-unit>
+      <trans-unit id="e96cf95e39e41d6d" resname="Demande rouverte.">
+        <source>Demande rouverte.</source>
+        <target>Demande rouverte.</target>
+      </trans-unit>
+      <trans-unit id="b6249eb470fc0fbe" resname="En attente de réponse">
+        <source>En attente de réponse</source>
+        <target>En attente de réponse</target>
+      </trans-unit>
+      <trans-unit id="6bca086414c2c256" resname="Message envoyé. Nous vous répondons par e-mail.">
+        <source>Message envoyé. Nous vous répondons par e-mail.</source>
+        <target>Message envoyé. Nous vous répondons par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="e18d89de0b82241e" resname="Répondue">
+        <source>Répondue</source>
+        <target>Répondue</target>
+      </trans-unit>
+      <trans-unit id="ec570967cce34737" resname="Réponse envoyée à %s.">
+        <source>Réponse envoyée à %s.</source>
+        <target>Réponse envoyée à %s.</target>
+      </trans-unit>
+      <trans-unit id="a269b6a5ad1f4c0c" resname="Réponse reçue">
+        <source>Réponse reçue</source>
+        <target>Réponse reçue</target>
+      </trans-unit>
+      <trans-unit id="db30ef71367be7c9" resname="Signaler un établissement">
+        <source>Signaler un établissement</source>
+        <target>Signaler un établissement</target>
+      </trans-unit>
+      <trans-unit id="8d711466efcbfc91" resname="Une réservation">
+        <source>Une réservation</source>
+        <target>Une réservation</target>
+      </trans-unit>
+      <trans-unit id="e4ed7cf73fe405aa" resname="Vous">
+        <source>Vous</source>
+        <target>Vous</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

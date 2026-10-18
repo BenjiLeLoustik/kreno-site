@@ -2,6 +2,8 @@
 
 namespace App\Support\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AdminContactFlash
 {
     case REPLIED;
@@ -16,9 +18,9 @@ enum AdminContactFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::REPLIED => 'Réponse envoyée à %s.',
-            self::CLOSED => 'Demande fermée.',
-            self::REOPENED => 'Demande rouverte.',
+            self::REPLIED => Translation::translate('Réponse envoyée à %s.'),
+            self::CLOSED => Translation::translate('Demande fermée.'),
+            self::REOPENED => Translation::translate('Demande rouverte.'),
         };
     }
 }

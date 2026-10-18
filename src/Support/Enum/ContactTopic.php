@@ -2,6 +2,8 @@
 
 namespace App\Support\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ContactTopic: string
 {
     case BOOKING = 'booking';
@@ -30,7 +32,10 @@ enum ContactTopic: string
         $choices = [];
 
         foreach (self::cases() as $topic) {
-            $choices[] = ['value' => $topic->value, 'label' => $topic->label()];
+            $choices[] = [
+                'value' => $topic->value,
+                'label' => $topic->label()
+            ];
         }
 
         return $choices;
@@ -39,10 +44,10 @@ enum ContactTopic: string
     public function label(): string
     {
         return match ($this) {
-            self::BOOKING => 'Une réservation',
-            self::ACCOUNT => 'Mon compte',
-            self::REPORT => 'Signaler un établissement',
-            self::OTHER => 'Autre',
+            self::BOOKING => Translation::translate('Une réservation'),
+            self::ACCOUNT => Translation::translate('Mon compte'),
+            self::REPORT => Translation::translate('Signaler un établissement'),
+            self::OTHER => Translation::translate('Autre'),
         };
     }
 }

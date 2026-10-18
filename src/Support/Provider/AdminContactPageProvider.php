@@ -32,7 +32,11 @@ class AdminContactPageProvider
         $visible = array_slice($contacts, 0, self::PER_PAGE);
 
         return [
-            'filters' => ['q' => $search, 'status' => $status?->value ?? self::ALL_STATUSES, 'page' => $page],
+            'filters' => [
+                'q' => $search,
+                'status' => $status?->value ?? self::ALL_STATUSES,
+                'page' => $page
+            ],
             'hasNext' => count($contacts) > self::PER_PAGE,
             'statuses' => $this->statuses(),
             'contacts' => $this->rows($visible),

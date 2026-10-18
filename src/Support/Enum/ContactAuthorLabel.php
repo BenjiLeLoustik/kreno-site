@@ -2,6 +2,8 @@
 
 namespace App\Support\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ContactAuthorLabel
 {
     case TEAM_MEMBER;
@@ -17,10 +19,10 @@ enum ContactAuthorLabel
     private function pattern(): string
     {
         return match ($this) {
-            self::TEAM_MEMBER => '%s · équipe',
-            self::TEAM => 'Équipe Kréno',
-            self::CUSTOMER => 'Client',
-            self::YOU => 'Vous',
+            self::TEAM_MEMBER => Translation::translate('%s · équipe'),
+            self::TEAM => Translation::translate('Équipe Kréno'),
+            self::CUSTOMER => Translation::translate('Client'),
+            self::YOU => Translation::translate('Vous'),
         };
     }
 }
