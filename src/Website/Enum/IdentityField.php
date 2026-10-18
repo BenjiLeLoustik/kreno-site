@@ -2,6 +2,8 @@
 
 namespace App\Website\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum IdentityField: string
 {
     case NAME = 'name';
@@ -16,14 +18,14 @@ enum IdentityField: string
     public function label(): string
     {
         return match ($this) {
-            self::NAME => 'Nom de la version',
-            self::DESCRIPTION => 'Note',
-            self::SITE_NAME => 'Nom du site',
-            self::DOMAIN => 'Domaine',
-            self::TAGLINE => 'Accroche',
-            self::SITE_DESCRIPTION => 'Description',
-            self::SEO_TITLE => 'Titre SEO',
-            self::CONTACT_EMAIL => 'E-mail de contact',
+            self::NAME => Translation::translate('Nom de la version'),
+            self::DESCRIPTION => Translation::translate('Note'),
+            self::SITE_NAME => Translation::translate('Nom du site'),
+            self::DOMAIN => Translation::translate('Domaine'),
+            self::TAGLINE => Translation::translate('Accroche'),
+            self::SITE_DESCRIPTION => Translation::translate('Description'),
+            self::SEO_TITLE => Translation::translate('Titre SEO'),
+            self::CONTACT_EMAIL => Translation::translate('E-mail de contact'),
         };
     }
 

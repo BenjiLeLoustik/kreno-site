@@ -2,6 +2,8 @@
 
 namespace App\Website\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum RuleGroup: string
 {
     case BOOKING = 'booking';
@@ -12,10 +14,10 @@ enum RuleGroup: string
     public function label(): string
     {
         return match ($this) {
-            self::BOOKING => 'Réservations',
-            self::ABSENCE => 'Absences',
-            self::DISCOUNT => 'Remises',
-            self::SLOT => 'Créneaux',
+            self::BOOKING => Translation::translate('Réservations'),
+            self::ABSENCE => Translation::translate('Absences'),
+            self::DISCOUNT => Translation::translate('Remises'),
+            self::SLOT => Translation::translate('Créneaux'),
         };
     }
 

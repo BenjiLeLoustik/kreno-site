@@ -80,7 +80,10 @@ class AdminPricingPageProvider
         $billings = [];
 
         foreach (PlanBilling::cases() as $billing) {
-            $billings[] = ['value' => $billing->value, 'label' => $billing->label()];
+            $billings[] = [
+                'value' => $billing->value,
+                'label' => $billing->label()
+            ];
         }
 
         return $billings;
@@ -91,7 +94,10 @@ class AdminPricingPageProvider
         $policies = [];
 
         foreach (PriceChangePolicy::cases() as $policy) {
-            $policies[] = ['value' => $policy->value, 'label' => $policy->label()];
+            $policies[] = [
+                'value' => $policy->value,
+                'label' => $policy->label()
+            ];
         }
 
         return $policies;

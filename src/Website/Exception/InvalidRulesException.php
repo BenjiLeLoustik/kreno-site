@@ -3,22 +3,29 @@
 namespace App\Website\Exception;
 
 use App\Shared\Exception\BusinessRuleException;
+use App\Shared\Helper\Translation;
+use App\Website\Enum\RuleError;
 
 class InvalidRulesException extends BusinessRuleException
 {
-    public const MIN_ABOVE_MAX = 'la remise minimale doit être inférieure à la maximale';
-
-    public const DEFAULT_OUT_OF_RANGE = 'la remise par défaut doit être comprise entre la minimale et la maximale';
-
-    public const AUTO_REMOVAL_TOO_LATE = 'le retrait automatique doit arriver avant la fin de l\'annulation gratuite';
-
     public function __construct(array $errors)
     {
         parent::__construct(
-            'Règles invalides : {errors}.',
-            [
-                'errors' => implode(' ; ', $errors)
-            ]
+            Translation::translate('Règles invalides : {errors}.', ['errors' => $this->join($errors)])
+        );
+    }
+
+    private function join(array $errors): string
+    {
+        $messages = array_map(static fn (RuleError $error): string => $error->message(), $errors);
+
+        return array_reduce(
+            array_slice($messages, 1),
+            static fn (string $previous, string $next): string => Translation::translate(
+                '{previous} ; {next}',
+                ['previous' => $previous, 'next' => $next],
+            ),
+            $messages[0] ?? '',
         );
     }
 }

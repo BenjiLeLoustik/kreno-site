@@ -2,6 +2,8 @@
 
 namespace App\Website\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum LegalDocument: string
 {
     case CGU = 'cgu';
@@ -31,10 +33,10 @@ enum LegalDocument: string
     public function label(): string
     {
         return match ($this) {
-            self::CGU => 'Conditions d’utilisation',
-            self::PRIVACY => 'Confidentialité',
-            self::MENTIONS => 'Mentions légales',
-            self::CGV => 'Conditions pros',
+            self::CGU => Translation::translate('Conditions d’utilisation'),
+            self::PRIVACY => Translation::translate('Confidentialité'),
+            self::MENTIONS => Translation::translate('Mentions légales'),
+            self::CGV => Translation::translate('Conditions pros'),
         };
     }
 }

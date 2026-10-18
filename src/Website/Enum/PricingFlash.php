@@ -2,6 +2,8 @@
 
 namespace App\Website\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum PricingFlash
 {
     case PLAN_CREATED;
@@ -18,11 +20,11 @@ enum PricingFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::PLAN_CREATED => 'Formule « %s » ajoutée.',
-            self::PLAN_UPDATED => 'Formule « %s » modifiée.',
-            self::PROMO_CREATED => 'Code %s créé.',
-            self::PROMO_UPDATED => 'Code %s modifié.',
-            self::POLICY_SAVED => 'Politique de changement de prix enregistrée.',
+            self::PLAN_CREATED => Translation::translate('Formule « %s » ajoutée.'),
+            self::PLAN_UPDATED => Translation::translate('Formule « %s » modifiée.'),
+            self::PROMO_CREATED => Translation::translate('Code %s créé.'),
+            self::PROMO_UPDATED => Translation::translate('Code %s modifié.'),
+            self::POLICY_SAVED => Translation::translate('Politique de changement de prix enregistrée.'),
         };
     }
 }

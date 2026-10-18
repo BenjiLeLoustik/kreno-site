@@ -79,7 +79,12 @@ class InstallRequestMapper
     {
         unset($admin['password']);
 
-        return ['identity' => $identity, 'rules' => $rules, 'plans' => $plans, 'admin' => $admin];
+        return [
+            'identity' => $identity,
+            'rules' => $rules,
+            'plans' => $plans,
+            'admin' => $admin
+        ];
     }
 
     private static function plan(array $values): WebsitePlanInput

@@ -20,14 +20,21 @@ class SitePageProvider
 
     public const CONTACT_SENT = 'page.help.sent';
 
-    public const ISSUER_DEFAULTS = ['name' => null, 'address' => null, 'siren' => null, 'vatNumber' => null];
+    public const ISSUER_DEFAULTS = [
+        'name' => null,
+        'address' => null,
+        'siren' => null,
+        'vatNumber' => null
+    ];
 
     public function __construct(
         private SiteRulesProvider $rules,
         private FaqProvider $faq,
         private SessionManagerInterface $session,
-        #[Autowire(config: 'packages.billing.issuer')] private array $issuer = [],
-        #[Autowire(config: 'packages.mail.supportAddress')] private string $supportAddress = 'aide@kreno.fr',
+        #[Autowire(config: 'packages.billing.issuer')]
+        private array $issuer = [],
+        #[Autowire(config: 'packages.mail.supportAddress')]
+        private string $supportAddress = 'aide@kreno.fr',
     ) {
     }
 

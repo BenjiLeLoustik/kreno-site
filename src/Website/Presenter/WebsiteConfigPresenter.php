@@ -66,7 +66,11 @@ class WebsiteConfigPresenter
         $value = $website->{$getter}();
 
         if ($live === null) {
-            return ['value' => $value, 'liveValue' => null, 'changed' => false];
+            return [
+                'value' => $value,
+                'liveValue' => null,
+                'changed' => false
+            ];
         }
 
         $liveValue = $live->{$getter}();

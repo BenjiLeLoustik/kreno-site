@@ -2,6 +2,8 @@
 
 namespace App\Website\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ProLandingStep
 {
     case CANCELLATION;
@@ -13,7 +15,10 @@ enum ProLandingStep
         $steps = [];
 
         foreach (self::cases() as $step) {
-            $steps[] = ['title' => $step->title(), 'text' => $step->text($rules)];
+            $steps[] = [
+                'title' => $step->title(),
+                'text' => $step->text($rules)
+            ];
         }
 
         return $steps;
@@ -22,9 +27,9 @@ enum ProLandingStep
     public function title(): string
     {
         return match ($this) {
-            self::CANCELLATION => 'Un rendez-vous s’annule',
-            self::DISCOUNT => 'Choisissez la remise',
-            self::WELCOME => 'Recevez le client',
+            self::CANCELLATION => Translation::translate('Un rendez-vous s’annule'),
+            self::DISCOUNT => Translation::translate('Choisissez la remise'),
+            self::WELCOME => Translation::translate('Recevez le client'),
         };
     }
 
@@ -36,9 +41,9 @@ enum ProLandingStep
     private function pattern(): string
     {
         return match ($this) {
-            self::CANCELLATION => 'Ouvrez votre espace pro et choisissez l’horaire libéré dans votre journée.',
-            self::DISCOUNT => 'De %d à %d %%. Le créneau part en ligne avec une heure d’expiration.',
-            self::WELCOME => 'Vous êtes prévenu dès la réservation. Le client paie sur place.',
+            self::CANCELLATION => Translation::translate('Ouvrez votre espace pro et choisissez l’horaire libéré dans votre journée.'),
+            self::DISCOUNT => Translation::translate('De %d à %d %%. Le créneau part en ligne avec une heure d’expiration.'),
+            self::WELCOME => Translation::translate('Vous êtes prévenu dès la réservation. Le client paie sur place.'),
         };
     }
 }

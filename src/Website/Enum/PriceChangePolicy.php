@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Website\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum PriceChangePolicy: string
 {
     case KEEP_UNTIL_RENEWAL = 'keep_until_renewal';
@@ -13,9 +15,9 @@ enum PriceChangePolicy: string
     public function label(): string
     {
         return match ($this) {
-            self::KEEP_UNTIL_RENEWAL => 'Prix conservé jusqu\'à la prochaine échéance',
-            self::KEEP_TWELVE_MONTHS => 'Prix conservé pendant 12 mois',
-            self::APPLY_IMMEDIATELY => 'Nouveau prix immédiat',
+            self::KEEP_UNTIL_RENEWAL => Translation::translate('Prix conservé jusqu\'à la prochaine échéance'),
+            self::KEEP_TWELVE_MONTHS => Translation::translate('Prix conservé pendant 12 mois'),
+            self::APPLY_IMMEDIATELY => Translation::translate('Nouveau prix immédiat'),
         };
     }
 }

@@ -8,6 +8,7 @@ use App\Entity\Website\WebsiteRule;
 use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Website\Dto\WebsiteRuleInput;
+use App\Website\Enum\RuleError;
 use App\Website\Enum\RuleField;
 use App\Website\Exception\InvalidRulesException;
 use NeoPHP\Package\Orm\OrmManagerInterface;
@@ -83,17 +84,17 @@ class WebsiteRuleService
         $errors = [];
 
         if ($values['minDiscount'] >= $values['maxDiscount']) {
-            $errors[] = InvalidRulesException::MIN_ABOVE_MAX;
+            $errors[] = RuleError::MIN_ABOVE_MAX;
         }
 
         $default = $values['defaultDiscount'];
 
         if ($default < $values['minDiscount'] || $default > $values['maxDiscount']) {
-            $errors[] = InvalidRulesException::DEFAULT_OUT_OF_RANGE;
+            $errors[] = RuleError::DEFAULT_OUT_OF_RANGE;
         }
 
         if ($values['autoRemovalMinutes'] >= $values['freeCancellationMinutes']) {
-            $errors[] = InvalidRulesException::AUTO_REMOVAL_TOO_LATE;
+            $errors[] = RuleError::AUTO_REMOVAL_TOO_LATE;
         }
 
         if ($errors !== []) {

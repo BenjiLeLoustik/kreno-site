@@ -2,14 +2,18 @@
 
 namespace App\Website\Exception;
 
+use App\Shared\Helper\Translation;
 use NeoPHP\Component\Http\Exception\NotFoundHttpException;
 
 class WebsiteVersionNotFoundException extends NotFoundHttpException
 {
-    public const ONLINE = 'en ligne';
-
     public function __construct(?string $code)
     {
-        parent::__construct('La version {code} n\'existe pas.', ['code' => $code ?? self::ONLINE]);
+        parent::__construct(
+            Translation::translate('La version {code} n\'existe pas.'),
+            [
+                'code' => $code ?? Translation::translate('en ligne')
+            ]
+        );
     }
 }

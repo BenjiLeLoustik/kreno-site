@@ -2,6 +2,7 @@
 
 namespace App\Website\Enum;
 
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 enum AdminWebsiteFlash
@@ -29,13 +30,13 @@ enum AdminWebsiteFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::DUPLICATED => 'Version %s dupliquée en brouillon.',
-            self::IDENTITY_SAVED => 'Identité de la version enregistrée.',
-            self::SCHEDULED => 'Mise en ligne planifiée le %s.',
-            self::UNSCHEDULED => 'Planification annulée. La version repasse en brouillon.',
-            self::PUBLISHED => 'Version %s mise en ligne.',
-            self::RESTORED => 'Retour à la version %s : sa copie est en ligne.',
-            self::DELETED => 'Version %s supprimée.',
+            self::DUPLICATED => Translation::translate('Version %s dupliquée en brouillon.'),
+            self::IDENTITY_SAVED => Translation::translate('Identité de la version enregistrée.'),
+            self::SCHEDULED => Translation::translate('Mise en ligne planifiée le %s.'),
+            self::UNSCHEDULED => Translation::translate('Planification annulée. La version repasse en brouillon.'),
+            self::PUBLISHED => Translation::translate('Version %s mise en ligne.'),
+            self::RESTORED => Translation::translate('Retour à la version %s : sa copie est en ligne.'),
+            self::DELETED => Translation::translate('Version %s supprimée.'),
         };
     }
 }

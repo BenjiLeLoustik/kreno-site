@@ -7150,6 +7150,462 @@
         <source>Vous</source>
         <target>Vous</target>
       </trans-unit>
+      <trans-unit id="7013eaa1c28c9cd3" resname="Abonnement">
+        <source>Abonnement</source>
+        <target>Abonnement</target>
+      </trans-unit>
+      <trans-unit id="96bb06e58777077f" resname="Accroche">
+        <source>Accroche</source>
+        <target>Accroche</target>
+      </trans-unit>
+      <trans-unit id="c73db59154898b1f" resname="Activez au moins une formule pour les professionnels.">
+        <source>Activez au moins une formule pour les professionnels.</source>
+        <target>Activez au moins une formule pour les professionnels.</target>
+      </trans-unit>
+      <trans-unit id="0ffccd25d1635479" resname="Annulation gratuite jusqu&apos;à %s avant le rendez-vous. Après %d absences non prévenues en %d jours, ton compte est suspendu %d jours.">
+        <source>Annulation gratuite jusqu&apos;à %s avant le rendez-vous. Après %d absences non prévenues en %d jours, ton compte est suspendu %d jours.</source>
+        <target>Annulation gratuite jusqu&apos;à %s avant le rendez-vous. Après %d absences non prévenues en %d jours, ton compte est suspendu %d jours.</target>
+      </trans-unit>
+      <trans-unit id="d180896c586708cb" resname="Archivée">
+        <source>Archivée</source>
+        <target>Archivée</target>
+      </trans-unit>
+      <trans-unit id="d7f4d0ccb92bbb97" resname="Au prix réduit affiché, comme un rendez-vous normal.">
+        <source>Au prix réduit affiché, comme un rendez-vous normal.</source>
+        <target>Au prix réduit affiché, comme un rendez-vous normal.</target>
+      </trans-unit>
+      <trans-unit id="7f583004017741ba" resname="Au-delà de %d, les réservations sont suspendues %d jours.">
+        <source>Au-delà de %d, les réservations sont suspendues %d jours.</source>
+        <target>Au-delà de %d, les réservations sont suspendues %d jours.</target>
+      </trans-unit>
+      <trans-unit id="a25f0d97d461f6b7" resname="Aucun paiement en ligne pour les clients.">
+        <source>Aucun paiement en ligne pour les clients.</source>
+        <target>Aucun paiement en ligne pour les clients.</target>
+      </trans-unit>
+      <trans-unit id="c16d70e40b68725a" resname="Aucune version du site n&apos;est en ligne.">
+        <source>Aucune version du site n&apos;est en ligne.</source>
+        <target>Aucune version du site n&apos;est en ligne.</target>
+      </trans-unit>
+      <trans-unit id="fd9ccd66d6a5a47f" resname="Cet élément n&apos;appartient pas à la {version}.">
+        <source>Cet élément n&apos;appartient pas à la {version}.</source>
+        <target>Cet élément n&apos;appartient pas à la {version}.</target>
+      </trans-unit>
+      <trans-unit id="66728e165df60f8a" resname="Chaque formule active doit avoir un code et un nom.">
+        <source>Chaque formule active doit avoir un code et un nom.</source>
+        <target>Chaque formule active doit avoir un code et un nom.</target>
+      </trans-unit>
+      <trans-unit id="5ad29b51881c7295" resname="Chaque établissement est contrôlé avant sa mise en ligne.">
+        <source>Chaque établissement est contrôlé avant sa mise en ligne.</source>
+        <target>Chaque établissement est contrôlé avant sa mise en ligne.</target>
+      </trans-unit>
+      <trans-unit id="b882dbecb4c09a3c" resname="Choisissez la remise">
+        <source>Choisissez la remise</source>
+        <target>Choisissez la remise</target>
+      </trans-unit>
+      <trans-unit id="57917c5464f09804" resname="Choisissez vos catégories">
+        <source>Choisissez vos catégories</source>
+        <target>Choisissez vos catégories</target>
+      </trans-unit>
+      <trans-unit id="138928dd71c26f65" resname="Code %s créé.">
+        <source>Code %s créé.</source>
+        <target>Code %s créé.</target>
+      </trans-unit>
+      <trans-unit id="7858550171e62810" resname="Code %s modifié.">
+        <source>Code %s modifié.</source>
+        <target>Code %s modifié.</target>
+      </trans-unit>
+      <trans-unit id="71a48d1205a979ad" resname="Coiffure, esthétique, ostéo, garage… et votre quartier.">
+        <source>Coiffure, esthétique, ostéo, garage… et votre quartier.</source>
+        <target>Coiffure, esthétique, ostéo, garage… et votre quartier.</target>
+      </trans-unit>
+      <trans-unit id="66c38efa774f4c74" resname="Conditions d’utilisation">
+        <source>Conditions d’utilisation</source>
+        <target>Conditions d’utilisation</target>
+      </trans-unit>
+      <trans-unit id="789897d8c06910fa" resname="Créneaux">
+        <source>Créneaux</source>
+        <target>Créneaux</target>
+      </trans-unit>
+      <trans-unit id="c34c7ac31a963810" resname="De %d à %d %%, et l’heure à laquelle l’offre disparaît.">
+        <source>De %d à %d %%, et l’heure à laquelle l’offre disparaît.</source>
+        <target>De %d à %d %%, et l’heure à laquelle l’offre disparaît.</target>
+      </trans-unit>
+      <trans-unit id="3385332a7d80ae14" resname="De %d à %d %%. Le créneau part en ligne avec une heure d’expiration.">
+        <source>De %d à %d %%. Le créneau part en ligne avec une heure d’expiration.</source>
+        <target>De %d à %d %%. Le créneau part en ligne avec une heure d’expiration.</target>
+      </trans-unit>
+      <trans-unit id="9b0107ee09d45b66" resname="Domaine">
+        <source>Domaine</source>
+        <target>Domaine</target>
+      </trans-unit>
+      <trans-unit id="994ed48e42ade785" resname="Durée de suspension">
+        <source>Durée de suspension</source>
+        <target>Durée de suspension</target>
+      </trans-unit>
+      <trans-unit id="34ac8eda4bd2b273" resname="Dès qu’un pro proche libère un créneau qui vous correspond.">
+        <source>Dès qu’un pro proche libère un créneau qui vous correspond.</source>
+        <target>Dès qu’un pro proche libère un créneau qui vous correspond.</target>
+      </trans-unit>
+      <trans-unit id="661099f04c8723fe" resname="Délai minimal de réservation">
+        <source>Délai minimal de réservation</source>
+        <target>Délai minimal de réservation</target>
+      </trans-unit>
+      <trans-unit id="71dc2b2a6f8d132a" resname="E-mail de contact">
+        <source>E-mail de contact</source>
+        <target>E-mail de contact</target>
+      </trans-unit>
+      <trans-unit id="d4ff6d338d4d789e" resname="Formule « %s » ajoutée.">
+        <source>Formule « %s » ajoutée.</source>
+        <target>Formule « %s » ajoutée.</target>
+      </trans-unit>
+      <trans-unit id="24a801dc32d4c5e1" resname="Formule « %s » modifiée.">
+        <source>Formule « %s » modifiée.</source>
+        <target>Formule « %s » modifiée.</target>
+      </trans-unit>
+      <trans-unit id="f0194d49c428aa8c" resname="HT / créneau réservé">
+        <source>HT / créneau réservé</source>
+        <target>HT / créneau réservé</target>
+      </trans-unit>
+      <trans-unit id="5587519accc54965" resname="HT / mois">
+        <source>HT / mois</source>
+        <target>HT / mois</target>
+      </trans-unit>
+      <trans-unit id="5404a6dfb9bc9745" resname="Identité de la version enregistrée.">
+        <source>Identité de la version enregistrée.</source>
+        <target>Identité de la version enregistrée.</target>
+      </trans-unit>
+      <trans-unit id="870d0215e315c04c" resname="Indique le prénom et une adresse e-mail valide pour le compte administrateur.">
+        <source>Indique le prénom et une adresse e-mail valide pour le compte administrateur.</source>
+        <target>Indique le prénom et une adresse e-mail valide pour le compte administrateur.</target>
+      </trans-unit>
+      <trans-unit id="ae4af5d1be0a3f2c" resname="La date de mise en ligne doit être dans le futur.">
+        <source>La date de mise en ligne doit être dans le futur.</source>
+        <target>La date de mise en ligne doit être dans le futur.</target>
+      </trans-unit>
+      <trans-unit id="d479e34313de983e" resname="La date de mise en ligne est invalide.">
+        <source>La date de mise en ligne est invalide.</source>
+        <target>La date de mise en ligne est invalide.</target>
+      </trans-unit>
+      <trans-unit id="9023da910f7e9c37" resname="La fin de validité du code doit être après son début.">
+        <source>La fin de validité du code doit être après son début.</source>
+        <target>La fin de validité du code doit être après son début.</target>
+      </trans-unit>
+      <trans-unit id="24babb352f508238" resname="La formule {plan} n&apos;existe pas.">
+        <source>La formule {plan} n&apos;existe pas.</source>
+        <target>La formule {plan} n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="b2fd2d67eea5f127" resname="La formule « {code} » existe déjà dans la {version}.">
+        <source>La formule « {code} » existe déjà dans la {version}.</source>
+        <target>La formule « {code} » existe déjà dans la {version}.</target>
+      </trans-unit>
+      <trans-unit id="a3f2d21c02fa68a5" resname="La remise minimale doit être inférieure à la remise maximale.">
+        <source>La remise minimale doit être inférieure à la remise maximale.</source>
+        <target>La remise minimale doit être inférieure à la remise maximale.</target>
+      </trans-unit>
+      <trans-unit id="4cc723297c5e1c46" resname="La remise par défaut doit être comprise entre la minimale et la maximale.">
+        <source>La remise par défaut doit être comprise entre la minimale et la maximale.</source>
+        <target>La remise par défaut doit être comprise entre la minimale et la maximale.</target>
+      </trans-unit>
+      <trans-unit id="fdb52f1e8961de0e" resname="La version {code} est {status} : elle ne peut plus être modifiée. Créez une nouvelle version à partir d&apos;elle.">
+        <source>La version {code} est {status} : elle ne peut plus être modifiée. Créez une nouvelle version à partir d&apos;elle.</source>
+        <target>La version {code} est {status} : elle ne peut plus être modifiée. Créez une nouvelle version à partir d&apos;elle.</target>
+      </trans-unit>
+      <trans-unit id="b1ca9f2ad0f7799f" resname="La version {code} n&apos;existe pas.">
+        <source>La version {code} n&apos;existe pas.</source>
+        <target>La version {code} n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="49a3bde6e18f8068" resname="La {code} est déjà planifiée. Annulez sa planification avant d&apos;en planifier une autre.">
+        <source>La {code} est déjà planifiée. Annulez sa planification avant d&apos;en planifier une autre.</source>
+        <target>La {code} est déjà planifiée. Annulez sa planification avant d&apos;en planifier une autre.</target>
+      </trans-unit>
+      <trans-unit id="9ab76d13d3842870" resname="La {code} est planifiée et ses changements de prix ont déjà été annoncés aux abonnés. Annulez la planification pour modifier les formules, puis replanifiez-la : seules les différences seront envoyées.">
+        <source>La {code} est planifiée et ses changements de prix ont déjà été annoncés aux abonnés. Annulez la planification pour modifier les formules, puis replanifiez-la : seules les différences seront envoyées.</source>
+        <target>La {code} est planifiée et ses changements de prix ont déjà été annoncés aux abonnés. Annulez la planification pour modifier les formules, puis replanifiez-la : seules les différences seront envoyées.</target>
+      </trans-unit>
+      <trans-unit id="8e2806180ee4410d" resname="La {code} est planifiée. Annulez sa planification avant de restaurer une ancienne version.">
+        <source>La {code} est planifiée. Annulez sa planification avant de restaurer une ancienne version.</source>
+        <target>La {code} est planifiée. Annulez sa planification avant de restaurer une ancienne version.</target>
+      </trans-unit>
+      <trans-unit id="d156d4e73554af35" resname="La {code} est {status} : elle ne peut pas être supprimée.">
+        <source>La {code} est {status} : elle ne peut pas être supprimée.</source>
+        <target>La {code} est {status} : elle ne peut pas être supprimée.</target>
+      </trans-unit>
+      <trans-unit id="ae249401626097b6" resname="La {code} n&apos;a aucune formule active : elle ne peut pas être mise en ligne.">
+        <source>La {code} n&apos;a aucune formule active : elle ne peut pas être mise en ligne.</source>
+        <target>La {code} n&apos;a aucune formule active : elle ne peut pas être mise en ligne.</target>
+      </trans-unit>
+      <trans-unit id="96484378c12f9216" resname="La {code} n&apos;a pas de règles : elle ne peut pas être mise en ligne.">
+        <source>La {code} n&apos;a pas de règles : elle ne peut pas être mise en ligne.</source>
+        <target>La {code} n&apos;a pas de règles : elle ne peut pas être mise en ligne.</target>
+      </trans-unit>
+      <trans-unit id="9604ef5aa4dab10a" resname="La {code} n&apos;est pas planifiée.">
+        <source>La {code} n&apos;est pas planifiée.</source>
+        <target>La {code} n&apos;est pas planifiée.</target>
+      </trans-unit>
+      <trans-unit id="bbda5815d0a6c17c" resname="La {code} ne peut pas être supprimée : des abonnements utilisent encore sa formule « {plan} ».">
+        <source>La {code} ne peut pas être supprimée : des abonnements utilisent encore sa formule « {plan} ».</source>
+        <target>La {code} ne peut pas être supprimée : des abonnements utilisent encore sa formule « {plan} ».</target>
+      </trans-unit>
+      <trans-unit id="5c6cf54f907463e0" resname="Le code et le nom de la formule sont obligatoires.">
+        <source>Le code et le nom de la formule sont obligatoires.</source>
+        <target>Le code et le nom de la formule sont obligatoires.</target>
+      </trans-unit>
+      <trans-unit id="dd6ddd9c30cfe75b" resname="Le code promo est obligatoire.">
+        <source>Le code promo est obligatoire.</source>
+        <target>Le code promo est obligatoire.</target>
+      </trans-unit>
+      <trans-unit id="5dc91c1f66a0323e" resname="Le code {code} existe déjà dans la {version}.">
+        <source>Le code {code} existe déjà dans la {version}.</source>
+        <target>Le code {code} existe déjà dans la {version}.</target>
+      </trans-unit>
+      <trans-unit id="9bce8c4f9a37c5c7" resname="Le code {promo} n&apos;existe pas.">
+        <source>Le code {promo} n&apos;existe pas.</source>
+        <target>Le code {promo} n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="029195609f20736c" resname="Le créneau est bloqué à votre nom immédiatement.">
+        <source>Le créneau est bloqué à votre nom immédiatement.</source>
+        <target>Le créneau est bloqué à votre nom immédiatement.</target>
+      </trans-unit>
+      <trans-unit id="09496c66ba1dd6a8" resname="Le créneau vide est publié depuis l’espace pro en quelques secondes.">
+        <source>Le créneau vide est publié depuis l’espace pro en quelques secondes.</source>
+        <target>Le créneau vide est publié depuis l’espace pro en quelques secondes.</target>
+      </trans-unit>
+      <trans-unit id="05abbe7b6b26825b" resname="Le mot de passe administrateur doit faire au moins 12 caractères, avec des lettres et des chiffres.">
+        <source>Le mot de passe administrateur doit faire au moins 12 caractères, avec des lettres et des chiffres.</source>
+        <target>Le mot de passe administrateur doit faire au moins 12 caractères, avec des lettres et des chiffres.</target>
+      </trans-unit>
+      <trans-unit id="a7a54bb0ef662cef" resname="Le quartier est prévenu">
+        <source>Le quartier est prévenu</source>
+        <target>Le quartier est prévenu</target>
+      </trans-unit>
+      <trans-unit id="13e4da7efea4644c" resname="Le retrait automatique doit arriver avant la fin de l&apos;annulation gratuite.">
+        <source>Le retrait automatique doit arriver avant la fin de l&apos;annulation gratuite.</source>
+        <target>Le retrait automatique doit arriver avant la fin de l&apos;annulation gratuite.</target>
+      </trans-unit>
+      <trans-unit id="9f92b6eac6af4d9e" resname="Le site est déjà installé : une version est en ligne.">
+        <source>Le site est déjà installé : une version est en ligne.</source>
+        <target>Le site est déjà installé : une version est en ligne.</target>
+      </trans-unit>
+      <trans-unit id="0231f8707df2e029" resname="Les clients qui suivent votre catégorie reçoivent une alerte.">
+        <source>Les clients qui suivent votre catégorie reçoivent une alerte.</source>
+        <target>Les clients qui suivent votre catégorie reçoivent une alerte.</target>
+      </trans-unit>
+      <trans-unit id="2ed3d6cb00cd3b68" resname="Les créneaux libérés de ton quartier, à prix réduit. Tu réserves en deux clics, tu paies sur place.">
+        <source>Les créneaux libérés de ton quartier, à prix réduit. Tu réserves en deux clics, tu paies sur place.</source>
+        <target>Les créneaux libérés de ton quartier, à prix réduit. Tu réserves en deux clics, tu paies sur place.</target>
+      </trans-unit>
+      <trans-unit id="3e39416fce12c75f" resname="Mise en ligne planifiée le %s.">
+        <source>Mise en ligne planifiée le %s.</source>
+        <target>Mise en ligne planifiée le %s.</target>
+      </trans-unit>
+      <trans-unit id="2715646f54fd2368" resname="Nom de la version">
+        <source>Nom de la version</source>
+        <target>Nom de la version</target>
+      </trans-unit>
+      <trans-unit id="9e7056564d3d35eb" resname="Nom du site">
+        <source>Nom du site</source>
+        <target>Nom du site</target>
+      </trans-unit>
+      <trans-unit id="d8da2c49df39d91d" resname="Note">
+        <source>Note</source>
+        <target>Note</target>
+      </trans-unit>
+      <trans-unit id="4819e0b40a055fe6" resname="Nouveau prix immédiat">
+        <source>Nouveau prix immédiat</source>
+        <target>Nouveau prix immédiat</target>
+      </trans-unit>
+      <trans-unit id="8c7cd5c59a9f1dbc" resname="Ouvrez votre espace pro et choisissez l’horaire libéré dans votre journée.">
+        <source>Ouvrez votre espace pro et choisissez l’horaire libéré dans votre journée.</source>
+        <target>Ouvrez votre espace pro et choisissez l’horaire libéré dans votre journée.</target>
+      </trans-unit>
+      <trans-unit id="a0a1aac013bba0ab" resname="Payez sur place">
+        <source>Payez sur place</source>
+        <target>Payez sur place</target>
+      </trans-unit>
+      <trans-unit id="32e738c2068526fa" resname="Planification annulée. La version repasse en brouillon.">
+        <source>Planification annulée. La version repasse en brouillon.</source>
+        <target>Planification annulée. La version repasse en brouillon.</target>
+      </trans-unit>
+      <trans-unit id="cb170f37452872b5" resname="Planifiée">
+        <source>Planifiée</source>
+        <target>Planifiée</target>
+      </trans-unit>
+      <trans-unit id="5482bab4367345d4" resname="Politique de changement de prix enregistrée.">
+        <source>Politique de changement de prix enregistrée.</source>
+        <target>Politique de changement de prix enregistrée.</target>
+      </trans-unit>
+      <trans-unit id="9fef89bcd34451e1" resname="Prix conservé jusqu&apos;à la prochaine échéance">
+        <source>Prix conservé jusqu&apos;à la prochaine échéance</source>
+        <target>Prix conservé jusqu&apos;à la prochaine échéance</target>
+      </trans-unit>
+      <trans-unit id="9c9591cf9585cf1c" resname="Prix conservé pendant 12 mois">
+        <source>Prix conservé pendant 12 mois</source>
+        <target>Prix conservé pendant 12 mois</target>
+      </trans-unit>
+      <trans-unit id="319f59d1db2d3aa7" resname="Pros vérifiés">
+        <source>Pros vérifiés</source>
+        <target>Pros vérifiés</target>
+      </trans-unit>
+      <trans-unit id="06363b7d4ffbc363" resname="Publication à l&apos;avance">
+        <source>Publication à l&apos;avance</source>
+        <target>Publication à l&apos;avance</target>
+      </trans-unit>
+      <trans-unit id="d9d166933a8d3d3f" resname="Période comptée">
+        <source>Période comptée</source>
+        <target>Période comptée</target>
+      </trans-unit>
+      <trans-unit id="a90f1f2bfbb355e3" resname="Recevez le client">
+        <source>Recevez le client</source>
+        <target>Recevez le client</target>
+      </trans-unit>
+      <trans-unit id="a9705241c67f6a4b" resname="Recevez une alerte">
+        <source>Recevez une alerte</source>
+        <target>Recevez une alerte</target>
+      </trans-unit>
+      <trans-unit id="550ad366a08a2819" resname="Remise maximale">
+        <source>Remise maximale</source>
+        <target>Remise maximale</target>
+      </trans-unit>
+      <trans-unit id="d351d1e8becca216" resname="Remise minimale">
+        <source>Remise minimale</source>
+        <target>Remise minimale</target>
+      </trans-unit>
+      <trans-unit id="7ad564ae0b7c4c3c" resname="Remise par défaut">
+        <source>Remise par défaut</source>
+        <target>Remise par défaut</target>
+      </trans-unit>
+      <trans-unit id="217bb3b4a82b3e6f" resname="Remises">
+        <source>Remises</source>
+        <target>Remises</target>
+      </trans-unit>
+      <trans-unit id="1177e8c0f1a80f76" resname="Renseigne le nom du site, le domaine, l&apos;accroche, la description et l&apos;e-mail de contact.">
+        <source>Renseigne le nom du site, le domaine, l&apos;accroche, la description et l&apos;e-mail de contact.</source>
+        <target>Renseigne le nom du site, le domaine, l&apos;accroche, la description et l&apos;e-mail de contact.</target>
+      </trans-unit>
+      <trans-unit id="44a4b1f890d2d870" resname="Retour à la version %s : sa copie est en ligne.">
+        <source>Retour à la version %s : sa copie est en ligne.</source>
+        <target>Retour à la version %s : sa copie est en ligne.</target>
+      </trans-unit>
+      <trans-unit id="4f70350550b57c51" resname="Retrait automatique">
+        <source>Retrait automatique</source>
+        <target>Retrait automatique</target>
+      </trans-unit>
+      <trans-unit id="8da6b97357ce038d" resname="Règles de la version %s enregistrées.">
+        <source>Règles de la version %s enregistrées.</source>
+        <target>Règles de la version %s enregistrées.</target>
+      </trans-unit>
+      <trans-unit id="a3280c9d655152d9" resname="Règles invalides : {errors}.">
+        <source>Règles invalides : {errors}.</source>
+        <target>Règles invalides : {errors}.</target>
+      </trans-unit>
+      <trans-unit id="ca59d52496c99b19" resname="Réservations en cours par client">
+        <source>Réservations en cours par client</source>
+        <target>Réservations en cours par client</target>
+      </trans-unit>
+      <trans-unit id="2921b3263592e84e" resname="Réservez en deux clics">
+        <source>Réservez en deux clics</source>
+        <target>Réservez en deux clics</target>
+      </trans-unit>
+      <trans-unit id="1e86b0d8b246998a" resname="Seule une version archivée peut être restaurée. La {code} est {status}.">
+        <source>Seule une version archivée peut être restaurée. La {code} est {status}.</source>
+        <target>Seule une version archivée peut être restaurée. La {code} est {status}.</target>
+      </trans-unit>
+      <trans-unit id="c7092e91d8ba26c4" resname="Titre SEO">
+        <source>Titre SEO</source>
+        <target>Titre SEO</target>
+      </trans-unit>
+      <trans-unit id="18cd7efe16fcbc81" resname="Toutes les règles de la plateforme doivent être renseignées.">
+        <source>Toutes les règles de la plateforme doivent être renseignées.</source>
+        <target>Toutes les règles de la plateforme doivent être renseignées.</target>
+      </trans-unit>
+      <trans-unit id="f51efbfac467d7a5" resname="Un client annule">
+        <source>Un client annule</source>
+        <target>Un client annule</target>
+      </trans-unit>
+      <trans-unit id="b34a01fdbd8e74da" resname="Un code promo doit donner une remise ou des mois offerts.">
+        <source>Un code promo doit donner une remise ou des mois offerts.</source>
+        <target>Un code promo doit donner une remise ou des mois offerts.</target>
+      </trans-unit>
+      <trans-unit id="524174f5ea4f419e" resname="Un compte existe déjà avec cette adresse : connecte-toi avec ce compte puis reviens sur l&apos;installation.">
+        <source>Un compte existe déjà avec cette adresse : connecte-toi avec ce compte puis reviens sur l&apos;installation.</source>
+        <target>Un compte existe déjà avec cette adresse : connecte-toi avec ce compte puis reviens sur l&apos;installation.</target>
+      </trans-unit>
+      <trans-unit id="866c832b4165357d" resname="Un créneau vient de se libérer. Il est pour toi.">
+        <source>Un créneau vient de se libérer. Il est pour toi.</source>
+        <target>Un créneau vient de se libérer. Il est pour toi.</target>
+      </trans-unit>
+      <trans-unit id="04943f698a83fad1" resname="Un rendez-vous s’annule">
+        <source>Un rendez-vous s’annule</source>
+        <target>Un rendez-vous s’annule</target>
+      </trans-unit>
+      <trans-unit id="42368fc12b5061b8" resname="Version %s dupliquée en brouillon.">
+        <source>Version %s dupliquée en brouillon.</source>
+        <target>Version %s dupliquée en brouillon.</target>
+      </trans-unit>
+      <trans-unit id="8f6831a3015a26db" resname="Version %s mise en ligne.">
+        <source>Version %s mise en ligne.</source>
+        <target>Version %s mise en ligne.</target>
+      </trans-unit>
+      <trans-unit id="fdb617cfce24a85a" resname="Version %s supprimée.">
+        <source>Version %s supprimée.</source>
+        <target>Version %s supprimée.</target>
+      </trans-unit>
+      <trans-unit id="b6b75b246b0e35e4" resname="Vous accueillez le client">
+        <source>Vous accueillez le client</source>
+        <target>Vous accueillez le client</target>
+      </trans-unit>
+      <trans-unit id="a86b6c5871189267" resname="Vous fixez la remise">
+        <source>Vous fixez la remise</source>
+        <target>Vous fixez la remise</target>
+      </trans-unit>
+      <trans-unit id="cf374d8471f09bfd" resname="Vous êtes prévenu dès la réservation. Le client paie sur place.">
+        <source>Vous êtes prévenu dès la réservation. Le client paie sur place.</source>
+        <target>Vous êtes prévenu dès la réservation. Le client paie sur place.</target>
+      </trans-unit>
+      <trans-unit id="b714ed4ad0779875" resname="Vous êtes prévenu dès la réservation. Rien à encaisser en ligne.">
+        <source>Vous êtes prévenu dès la réservation. Rien à encaisser en ligne.</source>
+        <target>Vous êtes prévenu dès la réservation. Rien à encaisser en ligne.</target>
+      </trans-unit>
+      <trans-unit id="d9c643e4ed856470" resname="absences">
+        <source>absences</source>
+        <target>absences</target>
+      </trans-unit>
+      <trans-unit id="3cd57b84c3cb3ed6" resname="en ligne">
+        <source>en ligne</source>
+        <target>en ligne</target>
+      </trans-unit>
+      <trans-unit id="5cd11d34bcdfd6bb" resname="jours">
+        <source>jours</source>
+        <target>jours</target>
+      </trans-unit>
+      <trans-unit id="45b0e384bf43c0e0" resname="la remise minimale doit être inférieure à la maximale">
+        <source>la remise minimale doit être inférieure à la maximale</source>
+        <target>la remise minimale doit être inférieure à la maximale</target>
+      </trans-unit>
+      <trans-unit id="2db82a804b1b159e" resname="la remise par défaut doit être comprise entre la minimale et la maximale">
+        <source>la remise par défaut doit être comprise entre la minimale et la maximale</source>
+        <target>la remise par défaut doit être comprise entre la minimale et la maximale</target>
+      </trans-unit>
+      <trans-unit id="b97680e65518396f" resname="le retrait automatique doit arriver avant la fin de l&apos;annulation gratuite">
+        <source>le retrait automatique doit arriver avant la fin de l&apos;annulation gratuite</source>
+        <target>le retrait automatique doit arriver avant la fin de l&apos;annulation gratuite</target>
+      </trans-unit>
+      <trans-unit id="9baf3a40312f3984" resname="max">
+        <source>max</source>
+        <target>max</target>
+      </trans-unit>
+      <trans-unit id="4392a8cc67b0270b" resname="min avant">
+        <source>min avant</source>
+        <target>min avant</target>
+      </trans-unit>
+      <trans-unit id="779db12cdbc4b898" resname="{previous} ; {next}">
+        <source>{previous} ; {next}</source>
+        <target>{previous} ; {next}</target>
+      </trans-unit>
+      <trans-unit id="1024f6b847d89e7b" resname="À la réservation">
+        <source>À la réservation</source>
+        <target>À la réservation</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
