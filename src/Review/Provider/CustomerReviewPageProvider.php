@@ -60,7 +60,10 @@ class CustomerReviewPageProvider
     private function pending(User $user, array $reviewedIds): array
     {
         $now = new DateTimeImmutable();
-        $criteria = ['customer' => $user, 'status' => BookingStatus::HONORED];
+        $criteria = [
+            'customer' => $user,
+            'status' => BookingStatus::HONORED
+        ];
         $pending = [];
 
         foreach ($this->bookings->findBy($criteria, ['honoredAt' => 'DESC']) as $booking) {

@@ -2,6 +2,8 @@
 
 namespace App\Review\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ReviewStatus: string
 {
     case PUBLISHED = 'published';
@@ -35,18 +37,18 @@ enum ReviewStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::PUBLISHED => 'Publié',
-            self::REPORTED => 'Signalé',
-            self::HIDDEN => 'Masqué',
+            self::PUBLISHED => Translation::translate('Publié'),
+            self::REPORTED => Translation::translate('Signalé'),
+            self::HIDDEN => Translation::translate('Masqué'),
         };
     }
 
     public function proLabel(): string
     {
         return match ($this) {
-            self::PUBLISHED => 'En ligne',
-            self::REPORTED => 'En cours d\'examen',
-            self::HIDDEN => 'Masqué par l\'équipe',
+            self::PUBLISHED => Translation::translate('En ligne'),
+            self::REPORTED => Translation::translate('En cours d\'examen'),
+            self::HIDDEN => Translation::translate('Masqué par l\'équipe'),
         };
     }
 }

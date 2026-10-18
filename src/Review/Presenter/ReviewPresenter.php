@@ -122,7 +122,11 @@ class ReviewPresenter
 
         foreach (array_reverse(ReviewRating::cases()) as $rating) {
             $reviews = $distribution[$rating->value] ?? 0;
-            $bars[] = ['rating' => $rating->value, 'count' => $reviews, 'percent' => $this->percent($reviews, $count)];
+            $bars[] = [
+                'rating' => $rating->value,
+                'count' => $reviews,
+                'percent' => $this->percent($reviews, $count)
+            ];
         }
 
         return $bars;

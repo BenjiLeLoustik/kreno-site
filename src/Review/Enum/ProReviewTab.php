@@ -2,6 +2,8 @@
 
 namespace App\Review\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ProReviewTab: string
 {
     case ALL = 'all';
@@ -16,9 +18,9 @@ enum ProReviewTab: string
     public function label(): string
     {
         return match ($this) {
-            self::ALL => 'Tous',
-            self::UNANSWERED => 'Sans réponse',
-            self::REPORTED => 'Signalés',
+            self::ALL => Translation::translate('Tous'),
+            self::UNANSWERED => Translation::translate('Sans réponse'),
+            self::REPORTED => Translation::translate('Signalés'),
         };
     }
 

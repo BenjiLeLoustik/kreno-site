@@ -6670,6 +6670,138 @@
         <source>Établissement suspendu</source>
         <target>Établissement suspendu</target>
       </trans-unit>
+      <trans-unit id="4ae5f1c2f7fe0f90" resname="%d avis">
+        <source>%d avis</source>
+        <target>%d avis</target>
+      </trans-unit>
+      <trans-unit id="71f6f6ca38071b8b" resname="%s a répondu à ton avis">
+        <source>%s a répondu à ton avis</source>
+        <target>%s a répondu à ton avis</target>
+      </trans-unit>
+      <trans-unit id="40c90bd067f487e6" resname="Ancien client">
+        <source>Ancien client</source>
+        <target>Ancien client</target>
+      </trans-unit>
+      <trans-unit id="e9bc7fa38811a467" resname="Avis maintenu sur %s après examen">
+        <source>Avis maintenu sur %s après examen</source>
+        <target>Avis maintenu sur %s après examen</target>
+      </trans-unit>
+      <trans-unit id="22257e6153f796ce" resname="Avis masqué sur %s après examen">
+        <source>Avis masqué sur %s après examen</source>
+        <target>Avis masqué sur %s après examen</target>
+      </trans-unit>
+      <trans-unit id="de6f2a67f625c52b" resname="Avis masqué.">
+        <source>Avis masqué.</source>
+        <target>Avis masqué.</target>
+      </trans-unit>
+      <trans-unit id="594bbedd16c7b6b8" resname="Avis remis en ligne.">
+        <source>Avis remis en ligne.</source>
+        <target>Avis remis en ligne.</target>
+      </trans-unit>
+      <trans-unit id="3d7ed1bfba73247d" resname="Bien">
+        <source>Bien</source>
+        <target>Bien</target>
+      </trans-unit>
+      <trans-unit id="bfe212d9e70d93b0" resname="Cet avis a été masqué par notre équipe.">
+        <source>Cet avis a été masqué par notre équipe.</source>
+        <target>Cet avis a été masqué par notre équipe.</target>
+      </trans-unit>
+      <trans-unit id="ce1f3c74f1ec9422" resname="Cet avis est déjà en cours d&apos;examen par notre équipe.">
+        <source>Cet avis est déjà en cours d&apos;examen par notre équipe.</source>
+        <target>Cet avis est déjà en cours d&apos;examen par notre équipe.</target>
+      </trans-unit>
+      <trans-unit id="b707a35cbfe13310" resname="Cet avis est déjà en ligne.">
+        <source>Cet avis est déjà en ligne.</source>
+        <target>Cet avis est déjà en ligne.</target>
+      </trans-unit>
+      <trans-unit id="be71204dca487217" resname="Cet avis est déjà masqué.">
+        <source>Cet avis est déjà masqué.</source>
+        <target>Cet avis est déjà masqué.</target>
+      </trans-unit>
+      <trans-unit id="6f9118b445150b58" resname="Décevant">
+        <source>Décevant</source>
+        <target>Décevant</target>
+      </trans-unit>
+      <trans-unit id="0dc8ee555c28ec1b" resname="Excellent">
+        <source>Excellent</source>
+        <target>Excellent</target>
+      </trans-unit>
+      <trans-unit id="dac0d6c1dae0035e" resname="L&apos;avis {id} n&apos;existe pas pour votre établissement.">
+        <source>L&apos;avis {id} n&apos;existe pas pour votre établissement.</source>
+        <target>L&apos;avis {id} n&apos;existe pas pour votre établissement.</target>
+      </trans-unit>
+      <trans-unit id="99f46ddcc68910f5" resname="L&apos;avis {id} n&apos;existe pas.">
+        <source>L&apos;avis {id} n&apos;existe pas.</source>
+        <target>L&apos;avis {id} n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="b8577a735bcc217d" resname="Masqué">
+        <source>Masqué</source>
+        <target>Masqué</target>
+      </trans-unit>
+      <trans-unit id="117b799dc9370042" resname="Masqué par l&apos;équipe">
+        <source>Masqué par l&apos;équipe</source>
+        <target>Masqué par l&apos;équipe</target>
+      </trans-unit>
+      <trans-unit id="6bb72ff7bc06c7b1" resname="Masqués">
+        <source>Masqués</source>
+        <target>Masqués</target>
+      </trans-unit>
+      <trans-unit id="71308b606fb94f41" resname="Merci, ton avis est publié.">
+        <source>Merci, ton avis est publié.</source>
+        <target>Merci, ton avis est publié.</target>
+      </trans-unit>
+      <trans-unit id="28eca2c0e210fb64" resname="Moyen">
+        <source>Moyen</source>
+        <target>Moyen</target>
+      </trans-unit>
+      <trans-unit id="b98cdef17009fd34" resname="Nouvel avis %d/5 sur %s">
+        <source>Nouvel avis %d/5 sur %s</source>
+        <target>Nouvel avis %d/5 sur %s</target>
+      </trans-unit>
+      <trans-unit id="beb2c0bbf1bc26e0" resname="Publié">
+        <source>Publié</source>
+        <target>Publié</target>
+      </trans-unit>
+      <trans-unit id="e1f234dc9be7a970" resname="Sans réponse">
+        <source>Sans réponse</source>
+        <target>Sans réponse</target>
+      </trans-unit>
+      <trans-unit id="e5ece8365cb8156b" resname="Signalement envoyé : notre équipe va examiner cet avis.">
+        <source>Signalement envoyé : notre équipe va examiner cet avis.</source>
+        <target>Signalement envoyé : notre équipe va examiner cet avis.</target>
+      </trans-unit>
+      <trans-unit id="52191d07ab027c1c" resname="Signalé">
+        <source>Signalé</source>
+        <target>Signalé</target>
+      </trans-unit>
+      <trans-unit id="53279478d87a769c" resname="Signalés">
+        <source>Signalés</source>
+        <target>Signalés</target>
+      </trans-unit>
+      <trans-unit id="62a0f34dbb1484b7" resname="Ton avis sur %s a été masqué">
+        <source>Ton avis sur %s a été masqué</source>
+        <target>Ton avis sur %s a été masqué</target>
+      </trans-unit>
+      <trans-unit id="e88fcff9104392f9" resname="Très bien">
+        <source>Très bien</source>
+        <target>Très bien</target>
+      </trans-unit>
+      <trans-unit id="5e92f531d1da9e56" resname="Tu as déjà donné ton avis sur ce rendez-vous.">
+        <source>Tu as déjà donné ton avis sur ce rendez-vous.</source>
+        <target>Tu as déjà donné ton avis sur ce rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="c1e15852b7816d44" resname="Tu pourras donner ton avis une fois ton rendez-vous honoré.">
+        <source>Tu pourras donner ton avis une fois ton rendez-vous honoré.</source>
+        <target>Tu pourras donner ton avis une fois ton rendez-vous honoré.</target>
+      </trans-unit>
+      <trans-unit id="d0fc80d17ea84b8e" resname="Un avis peut être donné dans les {days} jours qui suivent le rendez-vous.">
+        <source>Un avis peut être donné dans les {days} jours qui suivent le rendez-vous.</source>
+        <target>Un avis peut être donné dans les {days} jours qui suivent le rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="82c114a395a6f093" resname="Votre réponse est publiée.">
+        <source>Votre réponse est publiée.</source>
+        <target>Votre réponse est publiée.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

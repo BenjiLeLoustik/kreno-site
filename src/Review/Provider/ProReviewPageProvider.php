@@ -40,7 +40,7 @@ class ProReviewPageProvider
         $review = $this->reviews->find($id);
 
         if (!$review instanceof EstablishmentReview || $review->getEstablishment() !== $establishment) {
-            throw new ProReviewNotFoundException();
+            throw new ProReviewNotFoundException($id);
         }
 
         return $review;
@@ -51,7 +51,11 @@ class ProReviewPageProvider
         $tabs = [];
 
         foreach (ProReviewTab::cases() as $tab) {
-            $tabs[] = ['key' => $tab->value, 'label' => $tab->label(), 'selected' => $tab === $selected];
+            $tabs[] = [
+                'key' => $tab->value,
+                'label' => $tab->label(),
+                'selected' => $tab === $selected
+            ];
         }
 
         return $tabs;

@@ -2,6 +2,8 @@
 
 namespace App\Review\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ReviewRating: int
 {
     case ONE = 1;
@@ -20,7 +22,10 @@ enum ReviewRating: int
         $choices = [];
 
         foreach (self::cases() as $rating) {
-            $choices[] = ['key' => $rating->value, 'label' => $rating->label()];
+            $choices[] = [
+                'key' => $rating->value,
+                'label' => $rating->label()
+            ];
         }
 
         return $choices;
@@ -34,11 +39,11 @@ enum ReviewRating: int
     public function label(): string
     {
         return match ($this) {
-            self::ONE => 'Décevant',
-            self::TWO => 'Moyen',
-            self::THREE => 'Bien',
-            self::FOUR => 'Très bien',
-            self::FIVE => 'Excellent',
+            self::ONE => Translation::translate('Décevant'),
+            self::TWO => Translation::translate('Moyen'),
+            self::THREE => Translation::translate('Bien'),
+            self::FOUR => Translation::translate('Très bien'),
+            self::FIVE => Translation::translate('Excellent'),
         };
     }
 }

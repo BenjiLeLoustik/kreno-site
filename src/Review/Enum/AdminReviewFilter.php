@@ -2,6 +2,8 @@
 
 namespace App\Review\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AdminReviewFilter: string
 {
     case REPORTED = 'reported';
@@ -17,10 +19,10 @@ enum AdminReviewFilter: string
     public function label(): string
     {
         return match ($this) {
-            self::REPORTED => 'Signalés',
-            self::HIDDEN => 'Masqués',
-            self::PUBLISHED => 'Publiés',
-            self::ALL => 'Tous',
+            self::REPORTED => Translation::translate('Signalés'),
+            self::HIDDEN => Translation::translate('Masqués'),
+            self::PUBLISHED => Translation::translate('Publiés'),
+            self::ALL => Translation::translate('Tous'),
         };
     }
 
