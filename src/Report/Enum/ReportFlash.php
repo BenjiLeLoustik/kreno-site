@@ -2,6 +2,8 @@
 
 namespace App\Report\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ReportFlash
 {
     case SENT;
@@ -21,10 +23,10 @@ enum ReportFlash
     public function text(): string
     {
         return match ($this) {
-            self::SENT => 'Signalement envoyé. Nous revenons vers vous par e-mail sous 48 h.',
-            self::MESSAGE_SENT => 'Message envoyé.',
-            self::ESTABLISHMENT_SENT => 'Signalement envoyé. L\'équipe Kréno l\'examine sous 48 h.',
-            self::REPLY_SENT => 'Réponse envoyée à l\'équipe Kréno.',
+            self::SENT => Translation::translate('Signalement envoyé. Nous revenons vers vous par e-mail sous 48 h.'),
+            self::MESSAGE_SENT => Translation::translate('Message envoyé.'),
+            self::ESTABLISHMENT_SENT => Translation::translate('Signalement envoyé. L\'équipe Kréno l\'examine sous 48 h.'),
+            self::REPLY_SENT => Translation::translate('Réponse envoyée à l\'équipe Kréno.'),
         };
     }
 }

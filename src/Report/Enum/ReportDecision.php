@@ -2,6 +2,8 @@
 
 namespace App\Report\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ReportDecision: string
 {
     case DISMISS = 'dismiss';
@@ -37,19 +39,19 @@ enum ReportDecision: string
     public function resolution(?ReportDirection $direction, int $days): string
     {
         return match ($this) {
-            self::DISMISS => 'Classé sans suite',
-            self::WARN => 'Avertissement envoyé',
+            self::DISMISS => Translation::translate('Classé sans suite'),
+            self::WARN => Translation::translate('Avertissement envoyé'),
             self::SUSPEND => $this->suspension($direction, $days),
-            self::RESOLVE => 'Traité',
+            self::RESOLVE => Translation::translate('Traité'),
         };
     }
 
     private function suspension(?ReportDirection $direction, int $days): string
     {
         if ($direction === ReportDirection::FROM_CUSTOMER) {
-            return 'Établissement suspendu';
+            return Translation::translate('Établissement suspendu');
         }
 
-        return sprintf('Compte client suspendu %d jours', $days);
+        return sprintf(Translation::translate('Compte client suspendu %d jours'), $days);
     }
 }

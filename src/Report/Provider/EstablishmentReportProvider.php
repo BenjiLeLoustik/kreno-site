@@ -104,7 +104,11 @@ class EstablishmentReportProvider
         $tabs = [];
 
         if ($canReport) {
-            $tabs[] = ['key' => ProReportTab::MINE->value, 'label' => ProReportTab::MINE->label(), 'count' => $mine];
+            $tabs[] = [
+                'key' => ProReportTab::MINE->value,
+                'label' => ProReportTab::MINE->label(),
+                'count' => $mine
+            ];
         }
 
         if ($canSeeReceived) {
@@ -169,7 +173,10 @@ class EstablishmentReportProvider
         );
 
         foreach ($bookings as $booking) {
-            $options[] = ['id' => $booking->getId(), 'label' => $this->presenter->proBookingLabel($booking)];
+            $options[] = [
+                'id' => $booking->getId(),
+                'label' => $this->presenter->proBookingLabel($booking)
+            ];
         }
 
         return $options;

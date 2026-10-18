@@ -48,7 +48,10 @@ class AdminReportPageProvider
         $directions = [];
 
         foreach (ReportDirection::cases() as $direction) {
-            $directions[] = ['key' => $direction->value, 'label' => $direction->label()];
+            $directions[] = [
+                'key' => $direction->value,
+                'label' => $direction->label()
+            ];
         }
 
         return $directions;

@@ -2,6 +2,8 @@
 
 namespace App\Report\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ReportReason: string
 {
     case PRICE_MISMATCH = 'price_mismatch';
@@ -57,26 +59,26 @@ enum ReportReason: string
     public function label(): string
     {
         return match ($this) {
-            self::PRICE_MISMATCH => 'Prix différent',
-            self::CLOSED => 'Établissement fermé',
-            self::SERVICE_MISMATCH => 'Prestation non conforme',
-            self::LAST_MINUTE_CANCELLATION => 'Annulation de dernière minute',
-            self::BEHAVIOR => 'Comportement inapproprié',
-            self::NO_SHOW => 'Absence non prévenue',
-            self::LATE => 'Retard important',
-            self::OTHER => 'Autre',
+            self::PRICE_MISMATCH => Translation::translate('Prix différent'),
+            self::CLOSED => Translation::translate('Établissement fermé'),
+            self::SERVICE_MISMATCH => Translation::translate('Prestation non conforme'),
+            self::LAST_MINUTE_CANCELLATION => Translation::translate('Annulation de dernière minute'),
+            self::BEHAVIOR => Translation::translate('Comportement inapproprié'),
+            self::NO_SHOW => Translation::translate('Absence non prévenue'),
+            self::LATE => Translation::translate('Retard important'),
+            self::OTHER => Translation::translate('Autre'),
         };
     }
 
     public function hint(): ?string
     {
         return match ($this) {
-            self::PRICE_MISMATCH => 'Le prix demandé n’est pas celui affiché.',
-            self::CLOSED => 'Personne à l’adresse au moment du rendez-vous.',
-            self::SERVICE_MISMATCH => 'Ce n’est pas la prestation réservée.',
-            self::LAST_MINUTE_CANCELLATION => 'L’établissement a annulé au dernier moment.',
-            self::BEHAVIOR => 'Propos ou attitude déplacés.',
-            self::OTHER => 'Un autre problème avec cette réservation.',
+            self::PRICE_MISMATCH => Translation::translate('Le prix demandé n’est pas celui affiché.'),
+            self::CLOSED => Translation::translate('Personne à l’adresse au moment du rendez-vous.'),
+            self::SERVICE_MISMATCH => Translation::translate('Ce n’est pas la prestation réservée.'),
+            self::LAST_MINUTE_CANCELLATION => Translation::translate('L’établissement a annulé au dernier moment.'),
+            self::BEHAVIOR => Translation::translate('Propos ou attitude déplacés.'),
+            self::OTHER => Translation::translate('Un autre problème avec cette réservation.'),
             default => null,
         };
     }

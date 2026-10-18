@@ -3,6 +3,7 @@
 namespace App\Report\Enum;
 
 use App\Repository\Report\ReportRepository;
+use App\Shared\Helper\Translation;
 
 enum AdminReportFilter: string
 {
@@ -20,7 +21,10 @@ enum AdminReportFilter: string
         $choices = [];
 
         foreach (self::cases() as $filter) {
-            $choices[] = ['key' => $filter->value, 'label' => $filter->label()];
+            $choices[] = [
+                'key' => $filter->value,
+                'label' => $filter->label()
+            ];
         }
 
         return $choices;
@@ -29,9 +33,9 @@ enum AdminReportFilter: string
     public function label(): string
     {
         return match ($this) {
-            self::OPEN => 'Ouverts',
-            self::CLOSED => 'Clos',
-            self::ALL => 'Tous',
+            self::OPEN => Translation::translate('Ouverts'),
+            self::CLOSED => Translation::translate('Clos'),
+            self::ALL => Translation::translate('Tous'),
         };
     }
 

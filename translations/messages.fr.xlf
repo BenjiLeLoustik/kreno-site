@@ -6374,6 +6374,302 @@
         <source>Évolution du prix de votre abonnement Kréno Pro au %s</source>
         <target>Évolution du prix de votre abonnement Kréno Pro au %s</target>
       </trans-unit>
+      <trans-unit id="b838051127508ec7" resname="%d signalement similaire ces %d derniers jours.">
+        <source>%d signalement similaire ces %d derniers jours.</source>
+        <target>%d signalement similaire ces %d derniers jours.</target>
+      </trans-unit>
+      <trans-unit id="b2867dedc0289702" resname="%d signalements similaires ces %d derniers jours.">
+        <source>%d signalements similaires ces %d derniers jours.</source>
+        <target>%d signalements similaires ces %d derniers jours.</target>
+      </trans-unit>
+      <trans-unit id="fe1305ba52afd578" resname="Absence non prévenue">
+        <source>Absence non prévenue</source>
+        <target>Absence non prévenue</target>
+      </trans-unit>
+      <trans-unit id="ea6c6ecd6fd4c6fb" resname="Annulation de dernière minute">
+        <source>Annulation de dernière minute</source>
+        <target>Annulation de dernière minute</target>
+      </trans-unit>
+      <trans-unit id="1286f1e9ed24f14c" resname="Aucun client à suspendre.">
+        <source>Aucun client à suspendre.</source>
+        <target>Aucun client à suspendre.</target>
+      </trans-unit>
+      <trans-unit id="9d018db2bfcad103" resname="Aucun établissement à suspendre.">
+        <source>Aucun établissement à suspendre.</source>
+        <target>Aucun établissement à suspendre.</target>
+      </trans-unit>
+      <trans-unit id="59633900b34874ab" resname="Avertissement envoyé">
+        <source>Avertissement envoyé</source>
+        <target>Avertissement envoyé</target>
+      </trans-unit>
+      <trans-unit id="2435a9bfbd8aa03e" resname="Basse">
+        <source>Basse</source>
+        <target>Basse</target>
+      </trans-unit>
+      <trans-unit id="a0e7e29db2bb5b59" resname="Ce client a déjà été signalé pour cette réservation.">
+        <source>Ce client a déjà été signalé pour cette réservation.</source>
+        <target>Ce client a déjà été signalé pour cette réservation.</target>
+      </trans-unit>
+      <trans-unit id="6fef082e075be3c3" resname="Ce motif concerne une réservation : choisis-la.">
+        <source>Ce motif concerne une réservation : choisis-la.</source>
+        <target>Ce motif concerne une réservation : choisis-la.</target>
+      </trans-unit>
+      <trans-unit id="46f80f56bc059b2e" resname="Ce n’est pas la prestation réservée.">
+        <source>Ce n’est pas la prestation réservée.</source>
+        <target>Ce n’est pas la prestation réservée.</target>
+      </trans-unit>
+      <trans-unit id="2a89f47e371a67ac" resname="Ce rendez-vous a été marqué comme honoré : il ne peut plus être déclaré en absence.">
+        <source>Ce rendez-vous a été marqué comme honoré : il ne peut plus être déclaré en absence.</source>
+        <target>Ce rendez-vous a été marqué comme honoré : il ne peut plus être déclaré en absence.</target>
+      </trans-unit>
+      <trans-unit id="a79ed15bde05558a" resname="Ce signalement est clos.">
+        <source>Ce signalement est clos.</source>
+        <target>Ce signalement est clos.</target>
+      </trans-unit>
+      <trans-unit id="dd19126032995108" resname="Ce signalement est déjà clos.">
+        <source>Ce signalement est déjà clos.</source>
+        <target>Ce signalement est déjà clos.</target>
+      </trans-unit>
+      <trans-unit id="1168b84aabf0bd13" resname="Ce signalement n&apos;a pas de pièce jointe.">
+        <source>Ce signalement n&apos;a pas de pièce jointe.</source>
+        <target>Ce signalement n&apos;a pas de pièce jointe.</target>
+      </trans-unit>
+      <trans-unit id="7ae43db39ee96c1b" resname="Ce signalement n&apos;attend pas de réponse de votre part.">
+        <source>Ce signalement n&apos;attend pas de réponse de votre part.</source>
+        <target>Ce signalement n&apos;attend pas de réponse de votre part.</target>
+      </trans-unit>
+      <trans-unit id="2048531c78c5415b" resname="Ce signalement ne vous appartient pas.">
+        <source>Ce signalement ne vous appartient pas.</source>
+        <target>Ce signalement ne vous appartient pas.</target>
+      </trans-unit>
+      <trans-unit id="ad04f95b589fc588" resname="Cet établissement n&apos;est pas en ligne.">
+        <source>Cet établissement n&apos;est pas en ligne.</source>
+        <target>Cet établissement n&apos;est pas en ligne.</target>
+      </trans-unit>
+      <trans-unit id="1d0c67d7b2c7b5cb" resname="Cette réservation a été annulée par l&apos;établissement : choisis « {reason} ».">
+        <source>Cette réservation a été annulée par l&apos;établissement : choisis « {reason} ».</source>
+        <target>Cette réservation a été annulée par l&apos;établissement : choisis « {reason} ».</target>
+      </trans-unit>
+      <trans-unit id="1e05ba3e245d7536" resname="Cette réservation a été annulée.">
+        <source>Cette réservation a été annulée.</source>
+        <target>Cette réservation a été annulée.</target>
+      </trans-unit>
+      <trans-unit id="64e47c94cdd0f0ac" resname="Cette réservation n&apos;a pas été annulée par l&apos;établissement.">
+        <source>Cette réservation n&apos;a pas été annulée par l&apos;établissement.</source>
+        <target>Cette réservation n&apos;a pas été annulée par l&apos;établissement.</target>
+      </trans-unit>
+      <trans-unit id="ed7e1da3a482cf7f" resname="Choisis la réservation ou l&apos;établissement concerné.">
+        <source>Choisis la réservation ou l&apos;établissement concerné.</source>
+        <target>Choisis la réservation ou l&apos;établissement concerné.</target>
+      </trans-unit>
+      <trans-unit id="e9676fa7051c97b6" resname="Classé">
+        <source>Classé</source>
+        <target>Classé</target>
+      </trans-unit>
+      <trans-unit id="dc1c2f0fd7480dba" resname="Classé sans suite">
+        <source>Classé sans suite</source>
+        <target>Classé sans suite</target>
+      </trans-unit>
+      <trans-unit id="95418219cd2aa3c1" resname="Clos">
+        <source>Clos</source>
+        <target>Clos</target>
+      </trans-unit>
+      <trans-unit id="b87172a7b5525bb9" resname="Comportement inapproprié">
+        <source>Comportement inapproprié</source>
+        <target>Comportement inapproprié</target>
+      </trans-unit>
+      <trans-unit id="045f84cf55800067" resname="Compte client suspendu %d jours">
+        <source>Compte client suspendu %d jours</source>
+        <target>Compte client suspendu %d jours</target>
+      </trans-unit>
+      <trans-unit id="ae709ad255c907ec" resname="Concernant l’établissement">
+        <source>Concernant l’établissement</source>
+        <target>Concernant l’établissement</target>
+      </trans-unit>
+      <trans-unit id="612e974374b589a3" resname="Décision enregistrée. Les deux parties sont prévenues par e-mail.">
+        <source>Décision enregistrée. Les deux parties sont prévenues par e-mail.</source>
+        <target>Décision enregistrée. Les deux parties sont prévenues par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="ddb87657d2fd4026" resname="En attente de l’établissement">
+        <source>En attente de l’établissement</source>
+        <target>En attente de l’établissement</target>
+      </trans-unit>
+      <trans-unit id="f96729cbfd675e27" resname="En cours d&apos;examen">
+        <source>En cours d&apos;examen</source>
+        <target>En cours d&apos;examen</target>
+      </trans-unit>
+      <trans-unit id="e6092b784274e169" resname="Envoyé">
+        <source>Envoyé</source>
+        <target>Envoyé</target>
+      </trans-unit>
+      <trans-unit id="9c3e565aa2f13df5" resname="Haute">
+        <source>Haute</source>
+        <target>Haute</target>
+      </trans-unit>
+      <trans-unit id="f3bfd2fbd0a506af" resname="Kréno">
+        <source>Kréno</source>
+        <target>Kréno</target>
+      </trans-unit>
+      <trans-unit id="236a05cdb8ac3beb" resname="La pièce jointe doit être une image ou un PDF de moins de 5 Mo.">
+        <source>La pièce jointe doit être une image ou un PDF de moins de 5 Mo.</source>
+        <target>La pièce jointe doit être une image ou un PDF de moins de 5 Mo.</target>
+      </trans-unit>
+      <trans-unit id="dda5067a57577168" resname="Le prix demandé n’est pas celui affiché.">
+        <source>Le prix demandé n’est pas celui affiché.</source>
+        <target>Le prix demandé n’est pas celui affiché.</target>
+      </trans-unit>
+      <trans-unit id="c3f3cf87cf41652a" resname="Le signalement est possible dans les {hours} h qui suivent le rendez-vous.">
+        <source>Le signalement est possible dans les {hours} h qui suivent le rendez-vous.</source>
+        <target>Le signalement est possible dans les {hours} h qui suivent le rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="3aee1a979fc96359" resname="L’établissement a annulé au dernier moment.">
+        <source>L’établissement a annulé au dernier moment.</source>
+        <target>L’établissement a annulé au dernier moment.</target>
+      </trans-unit>
+      <trans-unit id="f49ece1949021026" resname="Message envoyé.">
+        <source>Message envoyé.</source>
+        <target>Message envoyé.</target>
+      </trans-unit>
+      <trans-unit id="2aefe19b768a574b" resname="Moyenne">
+        <source>Moyenne</source>
+        <target>Moyenne</target>
+      </trans-unit>
+      <trans-unit id="ac7755d6f9c7d380" resname="Note interne ajoutée.">
+        <source>Note interne ajoutée.</source>
+        <target>Note interne ajoutée.</target>
+      </trans-unit>
+      <trans-unit id="b2770fef713a79a4" resname="Ouvert">
+        <source>Ouvert</source>
+        <target>Ouvert</target>
+      </trans-unit>
+      <trans-unit id="fa97fff3aaa88689" resname="Ouverts">
+        <source>Ouverts</source>
+        <target>Ouverts</target>
+      </trans-unit>
+      <trans-unit id="aa0a500e37fd6daf" resname="Personne à l’adresse au moment du rendez-vous.">
+        <source>Personne à l’adresse au moment du rendez-vous.</source>
+        <target>Personne à l’adresse au moment du rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="547dd9be75a43670" resname="Premier signalement pour ce client.">
+        <source>Premier signalement pour ce client.</source>
+        <target>Premier signalement pour ce client.</target>
+      </trans-unit>
+      <trans-unit id="033151208893901c" resname="Premier signalement pour cet établissement.">
+        <source>Premier signalement pour cet établissement.</source>
+        <target>Premier signalement pour cet établissement.</target>
+      </trans-unit>
+      <trans-unit id="48c9e7751e38b4e1" resname="Prestation non conforme">
+        <source>Prestation non conforme</source>
+        <target>Prestation non conforme</target>
+      </trans-unit>
+      <trans-unit id="5cd6d9803134b60e" resname="Prix différent">
+        <source>Prix différent</source>
+        <target>Prix différent</target>
+      </trans-unit>
+      <trans-unit id="871f9019c554d2ad" resname="Propos ou attitude déplacés.">
+        <source>Propos ou attitude déplacés.</source>
+        <target>Propos ou attitude déplacés.</target>
+      </trans-unit>
+      <trans-unit id="2d9a0edcdc03f0ec" resname="Retard important">
+        <source>Retard important</source>
+        <target>Retard important</target>
+      </trans-unit>
+      <trans-unit id="70138402e4303c82" resname="Réponse attendue">
+        <source>Réponse attendue</source>
+        <target>Réponse attendue</target>
+      </trans-unit>
+      <trans-unit id="e4864806112f484c" resname="Réponse envoyée à l&apos;équipe Kréno.">
+        <source>Réponse envoyée à l&apos;équipe Kréno.</source>
+        <target>Réponse envoyée à l&apos;équipe Kréno.</target>
+      </trans-unit>
+      <trans-unit id="c6802b8234b44b7f" resname="Résolu">
+        <source>Résolu</source>
+        <target>Résolu</target>
+      </trans-unit>
+      <trans-unit id="32d564b3165e15f1" resname="Signalement %s : %s">
+        <source>Signalement %s : %s</source>
+        <target>Signalement %s : %s</target>
+      </trans-unit>
+      <trans-unit id="0a16cb651b3735d1" resname="Signalement envoyé. L&apos;équipe Kréno l&apos;examine sous 48 h.">
+        <source>Signalement envoyé. L&apos;équipe Kréno l&apos;examine sous 48 h.</source>
+        <target>Signalement envoyé. L&apos;équipe Kréno l&apos;examine sous 48 h.</target>
+      </trans-unit>
+      <trans-unit id="106c920182fe8019" resname="Signalement envoyé. Nous revenons vers vous par e-mail sous 48 h.">
+        <source>Signalement envoyé. Nous revenons vers vous par e-mail sous 48 h.</source>
+        <target>Signalement envoyé. Nous revenons vers vous par e-mail sous 48 h.</target>
+      </trans-unit>
+      <trans-unit id="8331ac1204cffe31" resname="Signalement introuvable.">
+        <source>Signalement introuvable.</source>
+        <target>Signalement introuvable.</target>
+      </trans-unit>
+      <trans-unit id="0f011121af1a2682" resname="Signalement pris en charge.">
+        <source>Signalement pris en charge.</source>
+        <target>Signalement pris en charge.</target>
+      </trans-unit>
+      <trans-unit id="aa1c56829d2ab30a" resname="Signalé par %s%s · « %s »">
+        <source>Signalé par %s%s · « %s »</source>
+        <target>Signalé par %s%s · « %s »</target>
+      </trans-unit>
+      <trans-unit id="f7118c82762a2bcd" resname="Signalé par un client">
+        <source>Signalé par un client</source>
+        <target>Signalé par un client</target>
+      </trans-unit>
+      <trans-unit id="88fb144055c1b0b3" resname="Signalé par un établissement">
+        <source>Signalé par un établissement</source>
+        <target>Signalé par un établissement</target>
+      </trans-unit>
+      <trans-unit id="c2cd9b1b5f10d77f" resname="Suspendre l&apos;établissement">
+        <source>Suspendre l&apos;établissement</source>
+        <target>Suspendre l&apos;établissement</target>
+      </trans-unit>
+      <trans-unit id="e0c2d904b86d8008" resname="Suspendre le client 30 jours">
+        <source>Suspendre le client 30 jours</source>
+        <target>Suspendre le client 30 jours</target>
+      </trans-unit>
+      <trans-unit id="42d292273e36a12c" resname="Traité">
+        <source>Traité</source>
+        <target>Traité</target>
+      </trans-unit>
+      <trans-unit id="cdf37789dafc2b9a" resname="Tu as déjà signalé un problème sur cette réservation : ajoute un message à ton signalement.">
+        <source>Tu as déjà signalé un problème sur cette réservation : ajoute un message à ton signalement.</source>
+        <target>Tu as déjà signalé un problème sur cette réservation : ajoute un message à ton signalement.</target>
+      </trans-unit>
+      <trans-unit id="1d66a7e7e1dc36e8" resname="Un autre problème avec cette réservation.">
+        <source>Un autre problème avec cette réservation.</source>
+        <target>Un autre problème avec cette réservation.</target>
+      </trans-unit>
+      <trans-unit id="fb1e2f3d9dee222e" resname="Une absence confirmée compte pour la suspension automatique du client (%d absences en %d jours).">
+        <source>Une absence confirmée compte pour la suspension automatique du client (%d absences en %d jours).</source>
+        <target>Une absence confirmée compte pour la suspension automatique du client (%d absences en %d jours).</target>
+      </trans-unit>
+      <trans-unit id="50797a3962de1485" resname="Vous pourrez signaler ce client une fois l&apos;heure du rendez-vous passée.">
+        <source>Vous pourrez signaler ce client une fois l&apos;heure du rendez-vous passée.</source>
+        <target>Vous pourrez signaler ce client une fois l&apos;heure du rendez-vous passée.</target>
+      </trans-unit>
+      <trans-unit id="948fe603f61dc036" resname="client">
+        <source>client</source>
+        <target>client</target>
+      </trans-unit>
+      <trans-unit id="a5836894a524c994" resname="client %s">
+        <source>client %s</source>
+        <target>client %s</target>
+      </trans-unit>
+      <trans-unit id="b243c8e267da3cf5" resname="un client">
+        <source>un client</source>
+        <target>un client</target>
+      </trans-unit>
+      <trans-unit id="f7fafb6b50dde21a" resname="Équipe Kréno">
+        <source>Équipe Kréno</source>
+        <target>Équipe Kréno</target>
+      </trans-unit>
+      <trans-unit id="91366659c439aad9" resname="Établissement fermé">
+        <source>Établissement fermé</source>
+        <target>Établissement fermé</target>
+      </trans-unit>
+      <trans-unit id="8c5f244a5f713bc5" resname="Établissement suspendu">
+        <source>Établissement suspendu</source>
+        <target>Établissement suspendu</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

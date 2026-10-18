@@ -19,6 +19,7 @@ use App\Report\Exception\NoCustomerToSuspendException;
 use App\Report\Exception\NoEstablishmentToSuspendException;
 use App\Report\Exception\ReportAlreadyClosedException;
 use App\Report\Helper\ReportStatusHelper;
+use App\Shared\Helper\Translation;
 use App\User\Enum\NotificationType;
 use App\User\Service\NotificationService;
 use App\User\Service\SanctionService;
@@ -123,7 +124,7 @@ class ReportModerationService
 
     private function log(Report $report, User $admin, string $decision, string $resolution, string $message): void
     {
-        $text = sprintf('Signalement %s : %s', ReportStatusHelper::reference($report), $resolution);
+        $text = sprintf(Translation::translate('Signalement %s : %s'), ReportStatusHelper::reference($report), $resolution);
         $context = [
             'decision' => $decision,
             'message' => $message

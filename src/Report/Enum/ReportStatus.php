@@ -2,6 +2,8 @@
 
 namespace App\Report\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ReportStatus: string
 {
     case SENT = 'sent';
@@ -13,31 +15,32 @@ enum ReportStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::SENT => 'Envoyé',
-            self::IN_REVIEW => 'En cours d\'examen',
-            self::AWAITING_REPLY => 'Réponse attendue',
-            self::RESOLVED => 'Traité',
-            self::DISMISSED => 'Classé',
+            self::SENT => Translation::translate('Envoyé'),
+            self::IN_REVIEW => Translation::translate('En cours d\'examen'),
+            self::AWAITING_REPLY => Translation::translate('Réponse attendue'),
+            self::RESOLVED => Translation::translate('Traité'),
+            self::DISMISSED => Translation::translate('Classé'),
         };
     }
 
     public function customerLabel(): string
     {
         return match ($this) {
-            self::SENT => 'Envoyé',
-            self::IN_REVIEW, self::AWAITING_REPLY => 'En cours',
-            self::RESOLVED => 'Résolu',
-            self::DISMISSED => 'Classé',
+            self::SENT => Translation::translate('Envoyé'),
+            self::IN_REVIEW,
+            self::AWAITING_REPLY => Translation::translate('En cours'),
+            self::RESOLVED => Translation::translate('Résolu'),
+            self::DISMISSED => Translation::translate('Classé'),
         };
     }
 
     public function adminLabel(): string
     {
         return match ($this) {
-            self::SENT, self::IN_REVIEW => 'Ouvert',
-            self::AWAITING_REPLY => 'En attente de l’établissement',
-            self::RESOLVED => 'Traité',
-            self::DISMISSED => 'Classé',
+            self::SENT, self::IN_REVIEW => Translation::translate('Ouvert'),
+            self::AWAITING_REPLY => Translation::translate('En attente de l’établissement'),
+            self::RESOLVED => Translation::translate('Traité'),
+            self::DISMISSED => Translation::translate('Classé'),
         };
     }
 

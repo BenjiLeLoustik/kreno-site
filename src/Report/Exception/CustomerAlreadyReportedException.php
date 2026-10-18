@@ -3,11 +3,14 @@
 namespace App\Report\Exception;
 
 use App\Shared\Exception\BusinessRuleException;
+use App\Shared\Helper\Translation;
 
 class CustomerAlreadyReportedException extends BusinessRuleException
 {
     public function __construct()
     {
-        parent::__construct('Ce client a déjà été signalé pour cette réservation.');
+        parent::__construct(
+            Translation::translate('Ce client a déjà été signalé pour cette réservation.')
+        );
     }
 }

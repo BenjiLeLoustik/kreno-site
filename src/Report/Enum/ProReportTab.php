@@ -2,6 +2,8 @@
 
 namespace App\Report\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ProReportTab: string
 {
     case MINE = 'mine';
@@ -23,8 +25,8 @@ enum ProReportTab: string
     public function label(): string
     {
         return match ($this) {
-            self::MINE => 'Mes signalements',
-            self::RECEIVED => 'Concernant l’établissement',
+            self::MINE => Translation::translate('Mes signalements'),
+            self::RECEIVED => Translation::translate('Concernant l’établissement'),
         };
     }
 }

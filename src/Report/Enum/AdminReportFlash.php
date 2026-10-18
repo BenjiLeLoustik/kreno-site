@@ -2,6 +2,8 @@
 
 namespace App\Report\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AdminReportFlash
 {
     case REVIEWED;
@@ -11,9 +13,9 @@ enum AdminReportFlash
     public function text(): string
     {
         return match ($this) {
-            self::REVIEWED => 'Signalement pris en charge.',
-            self::NOTE_ADDED => 'Note interne ajoutée.',
-            self::DECIDED => 'Décision enregistrée. Les deux parties sont prévenues par e-mail.',
+            self::REVIEWED => Translation::translate('Signalement pris en charge.'),
+            self::NOTE_ADDED => Translation::translate('Note interne ajoutée.'),
+            self::DECIDED => Translation::translate('Décision enregistrée. Les deux parties sont prévenues par e-mail.'),
         };
     }
 }

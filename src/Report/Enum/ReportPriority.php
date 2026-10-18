@@ -2,6 +2,8 @@
 
 namespace App\Report\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ReportPriority: string
 {
     case HIGH = 'high';
@@ -34,9 +36,9 @@ enum ReportPriority: string
     public function label(): string
     {
         return match ($this) {
-            self::HIGH => 'Haute',
-            self::MID => 'Moyenne',
-            self::LOW => 'Basse',
+            self::HIGH => Translation::translate('Haute'),
+            self::MID => Translation::translate('Moyenne'),
+            self::LOW => Translation::translate('Basse'),
         };
     }
 }
