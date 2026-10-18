@@ -3550,6 +3550,98 @@
         <source>TVA intracommunautaire : {vat}</source>
         <target>TVA intracommunautaire : {vat}</target>
       </trans-unit>
+      <trans-unit id="9cdc3a2147edba32" resname="+%d cette semaine">
+        <source>+%d cette semaine</source>
+        <target>+%d cette semaine</target>
+      </trans-unit>
+      <trans-unit id="3e7ef1c2649c9c4b" resname="Avis">
+        <source>Avis</source>
+        <target>Avis</target>
+      </trans-unit>
+      <trans-unit id="7693733533f28b83" resname="Catégories et villes">
+        <source>Catégories et villes</source>
+        <target>Catégories et villes</target>
+      </trans-unit>
+      <trans-unit id="15412239df87dffc" resname="Erreurs du site">
+        <source>Erreurs du site</source>
+        <target>Erreurs du site</target>
+      </trans-unit>
+      <trans-unit id="dbc468a14b601d5d" resname="FAQ">
+        <source>FAQ</source>
+        <target>FAQ</target>
+      </trans-unit>
+      <trans-unit id="365bb8429d7dbe08" resname="Messages reçus">
+        <source>Messages reçus</source>
+        <target>Messages reçus</target>
+      </trans-unit>
+      <trans-unit id="c27a33880e2251ad" resname="Modération des pros">
+        <source>Modération des pros</source>
+        <target>Modération des pros</target>
+      </trans-unit>
+      <trans-unit id="5c0b2f25084e01e7" resname="Pros actifs">
+        <source>Pros actifs</source>
+        <target>Pros actifs</target>
+      </trans-unit>
+      <trans-unit id="fda775974143543e" resname="Pros à vérifier">
+        <source>Pros à vérifier</source>
+        <target>Pros à vérifier</target>
+      </trans-unit>
+      <trans-unit id="7aa152d1c6369892" resname="Réglages et journal">
+        <source>Réglages et journal</source>
+        <target>Réglages et journal</target>
+      </trans-unit>
+      <trans-unit id="e29592e638c89cc0" resname="Réservations aujourd’hui">
+        <source>Réservations aujourd’hui</source>
+        <target>Réservations aujourd’hui</target>
+      </trans-unit>
+      <trans-unit id="9c343d80dbb3c5c9" resname="Signalements ouverts">
+        <source>Signalements ouverts</source>
+        <target>Signalements ouverts</target>
+      </trans-unit>
+      <trans-unit id="d9ae7eb4ceb33e44" resname="Tarifs et formules">
+        <source>Tarifs et formules</source>
+        <target>Tarifs et formules</target>
+      </trans-unit>
+      <trans-unit id="23d3938b5ef05663" resname="Utilisateurs">
+        <source>Utilisateurs</source>
+        <target>Utilisateurs</target>
+      </trans-unit>
+      <trans-unit id="da00ce9199fd78fe" resname="Versions du site">
+        <source>Versions du site</source>
+        <target>Versions du site</target>
+      </trans-unit>
+      <trans-unit id="9217c182b4f4f471" resname="Vue d&apos;ensemble">
+        <source>Vue d&apos;ensemble</source>
+        <target>Vue d&apos;ensemble</target>
+      </trans-unit>
+      <trans-unit id="e2a7ff32f8dc9d82" resname="moins d&apos;1 h">
+        <source>moins d&apos;1 h</source>
+        <target>moins d&apos;1 h</target>
+      </trans-unit>
+      <trans-unit id="a4656f55ca473607" resname="plus ancien : %s">
+        <source>plus ancien : %s</source>
+        <target>plus ancien : %s</target>
+      </trans-unit>
+      <trans-unit id="48d9f6328b35d0e8" resname="rien en attente">
+        <source>rien en attente</source>
+        <target>rien en attente</target>
+      </trans-unit>
+      <trans-unit id="f2cb078b612c6e9a" resname="{count, plural, =0 {aucune priorité haute} one {# priorité haute} other {# priorités hautes}}">
+        <source>{count, plural, =0 {aucune priorité haute} one {# priorité haute} other {# priorités hautes}}</source>
+        <target>{count, plural, =0 {aucune priorité haute} one {# priorité haute} other {# priorités hautes}}</target>
+      </trans-unit>
+      <trans-unit id="0d764df4856fadd1" resname="{count, plural, one {# annulation} other {# annulations}}">
+        <source>{count, plural, one {# annulation} other {# annulations}}</source>
+        <target>{count, plural, one {# annulation} other {# annulations}}</target>
+      </trans-unit>
+      <trans-unit id="45f0a4bba7b0c953" resname="{count, plural, one {# jour} other {# jours}}">
+        <source>{count, plural, one {# jour} other {# jours}}</source>
+        <target>{count, plural, one {# jour} other {# jours}}</target>
+      </trans-unit>
+      <trans-unit id="3348a9c82a658890" resname="{hours} h">
+        <source>{hours} h</source>
+        <target>{hours} h</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

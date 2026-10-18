@@ -2,6 +2,8 @@
 
 namespace App\Admin\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class BillingBuilder extends AbstractNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class BillingBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Facturation';
+        return Translation::translate('Facturation');
     }
 
     public function getRoute(): string

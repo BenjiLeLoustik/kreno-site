@@ -2,6 +2,8 @@
 
 namespace App\Admin\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class PricingBuilder extends AbstractNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class PricingBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Tarifs et formules';
+        return Translation::translate('Tarifs et formules');
     }
 
     public function getRoute(): string

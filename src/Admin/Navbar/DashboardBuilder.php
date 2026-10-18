@@ -2,6 +2,8 @@
 
 namespace App\Admin\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class DashboardBuilder extends AbstractNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class DashboardBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Vue d\'ensemble';
+        return Translation::translate('Vue d\'ensemble');
     }
 
     public function getRoute(): string

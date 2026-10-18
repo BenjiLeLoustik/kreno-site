@@ -2,6 +2,8 @@
 
 namespace App\Admin\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class CatalogBuilder extends AbstractNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class CatalogBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Catégories et villes';
+        return Translation::translate('Catégories et villes');
     }
 
     public function getRoute(): string

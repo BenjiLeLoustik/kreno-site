@@ -2,6 +2,8 @@
 
 namespace App\Admin\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class EstablishmentBuilder extends AbstractNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class EstablishmentBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Établissements';
+        return Translation::translate('Établissements');
     }
 
     public function getRoute(): string

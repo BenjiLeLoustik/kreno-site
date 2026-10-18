@@ -4,6 +4,7 @@ namespace App\Admin\Navbar;
 
 use App\Log\Enum\AppLogStatus;
 use App\Repository\AppLogRepository;
+use App\Shared\Helper\Translation;
 
 class ErrorBuilder extends AbstractNavbarBuilder
 {
@@ -19,7 +20,7 @@ class ErrorBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Erreurs du site';
+        return Translation::translate('Erreurs du site');
     }
 
     public function getRoute(): string

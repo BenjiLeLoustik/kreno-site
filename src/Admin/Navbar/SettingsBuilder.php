@@ -2,6 +2,8 @@
 
 namespace App\Admin\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class SettingsBuilder extends AbstractNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class SettingsBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Réglages et journal';
+        return Translation::translate('Réglages et journal');
     }
 
     public function getRoute(): string

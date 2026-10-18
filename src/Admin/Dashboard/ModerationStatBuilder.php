@@ -4,6 +4,7 @@ namespace App\Admin\Dashboard;
 
 use App\Establishment\Enum\EstablishmentStatus;
 use App\Repository\Company\CompanyEstablishmentRepository;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class ModerationStatBuilder extends AbstractStatBuilder
@@ -20,7 +21,7 @@ class ModerationStatBuilder extends AbstractStatBuilder
 
     public function getLabel(): string
     {
-        return 'Pros à vérifier';
+        return Translation::translate('Pros à vérifier');
     }
 
     public function getRoute(): string
@@ -45,9 +46,12 @@ class ModerationStatBuilder extends AbstractStatBuilder
         $since = $oldest?->getUpdatedAt();
 
         if ($since !== null) {
-            $sinceText = sprintf('plus ancien : %s', $this->age($since, $now));
+            $sinceText = sprintf(
+                Translation::translate('plus ancien : %s'),
+                $this->age($since, $now)
+            );
         } else {
-            $sinceText = 'rien en attente';
+            $sinceText = Translation::translate('rien en attente');
         }
 
         return new DashboardStat($count, $sinceText, $count > 0);
@@ -57,19 +61,19 @@ class ModerationStatBuilder extends AbstractStatBuilder
     {
         $hours = intdiv(max(0, $now->getTimestamp() - $since->getTimestamp()), 3600);
 
-        if ($hours < 24) {
-            if ($hours < 1) {
-                return 'moins d\'1 h';
-            }
-            return sprintf('%d h', $hours);
+        if ($hours < 1) {
+            return Translation::translate('moins d\'1 h');
         }
 
-        $days = intdiv($hours, 24);
+        if ($hours < 24) {
+            return Translation::translate('{hours} h', ['hours' => $hours]);
+        }
 
-        return sprintf(
-            '%d %s',
-            $days,
-            $this->plural($days, 'jour', 'jours')
+        return Translation::translate(
+            '{count, plural, one {# jour} other {# jours}}',
+            [
+                'count' => intdiv($hours, 24)
+            ],
         );
     }
 }

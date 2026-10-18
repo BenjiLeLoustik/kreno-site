@@ -2,6 +2,8 @@
 
 namespace App\Admin\Navbar;
 
+use App\Shared\Helper\Translation;
+
 class VersionBuilder extends AbstractNavbarBuilder
 {
     public function getKey(): string
@@ -11,7 +13,7 @@ class VersionBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Versions du site';
+        return Translation::translate('Versions du site');
     }
 
     public function getRoute(): string

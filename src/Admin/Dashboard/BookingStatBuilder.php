@@ -3,6 +3,7 @@
 namespace App\Admin\Dashboard;
 
 use App\Repository\BookingRepository;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class BookingStatBuilder extends AbstractStatBuilder
@@ -19,7 +20,7 @@ class BookingStatBuilder extends AbstractStatBuilder
 
     public function getLabel(): string
     {
-        return 'Réservations aujourd’hui';
+        return Translation::translate('Réservations aujourd’hui');
     }
 
     public function getRoute(): string
@@ -36,15 +37,20 @@ class BookingStatBuilder extends AbstractStatBuilder
     {
         $today = $now->setTime(0, 0);
         $tomorrow = $today->modify('+1 day');
-        $cancellations = $this->bookings->countCancelledBetween($today, $tomorrow);
 
         return new DashboardStat(
             $this->bookings->countCreatedBetween($today, $tomorrow),
-            sprintf(
-                '%d %s',
-                $cancellations,
-                $this->plural($cancellations, 'annulation', 'annulations')
-            ),
+            $this->note($this->bookings->countCancelledBetween($today, $tomorrow)),
+        );
+    }
+
+    private function note(int $cancellations): string
+    {
+        return Translation::translate(
+            '{count, plural, one {# annulation} other {# annulations}}',
+            [
+                'count' => $cancellations
+            ],
         );
     }
 }

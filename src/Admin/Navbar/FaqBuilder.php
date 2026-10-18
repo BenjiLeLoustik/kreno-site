@@ -3,6 +3,7 @@
 namespace App\Admin\Navbar;
 
 use App\Admin\Navbar\AbstractNavbarBuilder;
+use App\Shared\Helper\Translation;
 
 class FaqBuilder extends AbstractNavbarBuilder
 {
@@ -14,7 +15,7 @@ class FaqBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'FAQ';
+        return Translation::translate('FAQ');
     }
 
     public function getRoute(): string

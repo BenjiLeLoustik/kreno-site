@@ -3,6 +3,7 @@
 namespace App\Admin\Navbar;
 
 use App\Repository\AppContactRepository;
+use App\Shared\Helper\Translation;
 use App\Support\Enum\AppContactStatus;
 
 class ContactBuilder extends AbstractNavbarBuilder
@@ -19,7 +20,7 @@ class ContactBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Messages reçus';
+        return Translation::translate('Messages reçus');
     }
 
     public function getRoute(): string

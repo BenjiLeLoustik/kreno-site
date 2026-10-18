@@ -5,6 +5,7 @@ namespace App\Admin\Dashboard;
 use App\Establishment\Enum\EstablishmentStatus;
 use App\Establishment\Helper\CalendarHelper;
 use App\Repository\Company\CompanyEstablishmentRepository;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class ProStatBuilder extends AbstractStatBuilder
@@ -21,7 +22,7 @@ class ProStatBuilder extends AbstractStatBuilder
 
     public function getLabel(): string
     {
-        return 'Pros actifs';
+        return Translation::translate('Pros actifs');
     }
 
     public function getRoute(): string
@@ -43,7 +44,10 @@ class ProStatBuilder extends AbstractStatBuilder
     {
         return new DashboardStat(
             $this->establishments->countByStatus(EstablishmentStatus::ONLINE),
-            sprintf('+%d cette semaine', $this->establishments->countVerifiedSince(CalendarHelper::mondayOf($now)->setTime(0, 0))),
+            sprintf(
+                Translation::translate('+%d cette semaine'),
+                $this->establishments->countVerifiedSince(CalendarHelper::mondayOf($now)->setTime(0, 0))
+            ),
         );
     }
 }

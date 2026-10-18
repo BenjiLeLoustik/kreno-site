@@ -4,6 +4,7 @@ namespace App\Admin\Navbar;
 
 use App\Repository\Establishment\EstablishmentReviewRepository;
 use App\Review\Enum\ReviewStatus;
+use App\Shared\Helper\Translation;
 
 class ReviewBuilder extends AbstractNavbarBuilder
 {
@@ -19,7 +20,7 @@ class ReviewBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Avis';
+        return Translation::translate('Avis');
     }
 
     public function getRoute(): string

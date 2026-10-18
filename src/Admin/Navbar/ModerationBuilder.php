@@ -4,6 +4,7 @@ namespace App\Admin\Navbar;
 
 use App\Establishment\Enum\EstablishmentStatus;
 use App\Repository\Company\CompanyEstablishmentRepository;
+use App\Shared\Helper\Translation;
 
 class ModerationBuilder extends AbstractNavbarBuilder
 {
@@ -19,7 +20,7 @@ class ModerationBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Modération des pros';
+        return Translation::translate('Modération des pros');
     }
 
     public function getRoute(): string

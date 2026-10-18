@@ -3,6 +3,7 @@
 namespace App\Admin\Navbar;
 
 use App\Repository\Report\ReportRepository;
+use App\Shared\Helper\Translation;
 
 class ReportBuilder extends AbstractNavbarBuilder
 {
@@ -18,7 +19,7 @@ class ReportBuilder extends AbstractNavbarBuilder
 
     public function getLabel(): string
     {
-        return 'Signalements';
+        return Translation::translate('Signalements');
     }
 
     public function getRoute(): string
