@@ -1062,6 +1062,66 @@
         <source>Le créneau est automatiquement remis en ligne : il peut encore trouver preneur.</source>
         <target>Le créneau est automatiquement remis en ligne : il peut encore trouver preneur.</target>
       </trans-unit>
+      <trans-unit id="5019dc5c39d8e310" resname="Bonjour {firstName},">
+        <source>Bonjour {firstName},</source>
+        <target>Bonjour {firstName},</target>
+      </trans-unit>
+      <trans-unit id="3b7b8d1ded17ac4c" resname="Bonjour {firstname},">
+        <source>Bonjour {firstname},</source>
+        <target>Bonjour {firstname},</target>
+      </trans-unit>
+      <trans-unit id="73c0105572f376d9" resname="Bonjour,">
+        <source>Bonjour,</source>
+        <target>Bonjour,</target>
+      </trans-unit>
+      <trans-unit id="26a5e68ec221d420" resname="Bonne journée,">
+        <source>Bonne journée,</source>
+        <target>Bonne journée,</target>
+      </trans-unit>
+      <trans-unit id="50b729062f7ad47c" resname="Cet e-mail t&apos;a été envoyé par Kréno. Tu peux gérer tes notifications depuis ton espace client.">
+        <source>Cet e-mail t&apos;a été envoyé par Kréno. Tu peux gérer tes notifications depuis ton espace client.</source>
+        <target>Cet e-mail t&apos;a été envoyé par Kréno. Tu peux gérer tes notifications depuis ton espace client.</target>
+      </trans-unit>
+      <trans-unit id="2cfd5ac283161d22" resname="Cet e-mail vous a été envoyé par Kréno Pro dans le cadre de votre activité professionnelle.">
+        <source>Cet e-mail vous a été envoyé par Kréno Pro dans le cadre de votre activité professionnelle.</source>
+        <target>Cet e-mail vous a été envoyé par Kréno Pro dans le cadre de votre activité professionnelle.</target>
+      </trans-unit>
+      <trans-unit id="9d6338a61512e866" resname="E-mail automatique envoyé par la plateforme Kréno.">
+        <source>E-mail automatique envoyé par la plateforme Kréno.</source>
+        <target>E-mail automatique envoyé par la plateforme Kréno.</target>
+      </trans-unit>
+      <trans-unit id="35d410ef21066fc7" resname="L&apos;équipe Kréno Pro">
+        <source>L&apos;équipe Kréno Pro</source>
+        <target>L&apos;équipe Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="2745c9ebaa785831" resname="Les créneaux libérés près de chez toi">
+        <source>Les créneaux libérés près de chez toi</source>
+        <target>Les créneaux libérés près de chez toi</target>
+      </trans-unit>
+      <trans-unit id="96e7b969b18e309e" resname="L’espace des établissements">
+        <source>L’espace des établissements</source>
+        <target>L’espace des établissements</target>
+      </trans-unit>
+      <trans-unit id="e45388e50023e3f3" resname="L’équipe Kréno">
+        <source>L’équipe Kréno</source>
+        <target>L’équipe Kréno</target>
+      </trans-unit>
+      <trans-unit id="5ad067e8fb7d99a1" resname="Message automatique de la plateforme Kréno.">
+        <source>Message automatique de la plateforme Kréno.</source>
+        <target>Message automatique de la plateforme Kréno.</target>
+      </trans-unit>
+      <trans-unit id="e8b49088fe29424e" resname="interne">
+        <source>interne</source>
+        <target>interne</target>
+      </trans-unit>
+      <trans-unit id="28222c6e7a4c8ea9" resname="À très vite,">
+        <source>À très vite,</source>
+        <target>À très vite,</target>
+      </trans-unit>
+      <trans-unit id="4567c3efd2adb2b8" resname="Équipe interne">
+        <source>Équipe interne</source>
+        <target>Équipe interne</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
