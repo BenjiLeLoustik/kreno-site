@@ -5,13 +5,17 @@
 {% block mailContent %}
 
     <p>
-        Votre accès à {{ company }} sur Kréno Pro a été retiré par un administrateur de l’entreprise.
+        {{ translate('Votre accès à {company} sur Kréno Pro a été retiré par un administrateur de l\'entreprise.', {
+            company: company
+        }, domain: 'email') }}
     </p>
     <p>
-        Vous ne pouvez plus consulter ni gérer ses créneaux et réservations. Votre compte personnel reste actif.
+        {{ translate('Vous ne pouvez plus consulter ni gérer ses créneaux et réservations. Votre compte personnel reste actif.', domain: 'email') }}
     </p>
     <p>
-        Vous pensez qu’il s’agit d’une erreur ? Rapprochez-vous de l’entreprise ou écrivez-nous à {{ supportEmail }}.
+        {{ translate('Vous pensez qu’il s’agit d’une erreur ? Rapprochez-vous de l’entreprise ou écrivez-nous à {supportEmail}', {
+            supportEmail: supportEmail
+        }, domain: 'email') }}
     </p>
 
 {% endblock %}

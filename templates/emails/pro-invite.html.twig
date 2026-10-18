@@ -5,23 +5,31 @@
 {% block mailContent %}
 
     <p>
-        {{ inviter }} vous invite à rejoindre {{ target }} sur Kréno Pro en tant que {{ role|lower }}.
+        {{ translate('{inviter} vos invite à rejoindre {target} sur Krénà Pro en tant que {role}', {
+            inviter: inviter,
+            target: target,
+            role: role|lower
+        }, domain: 'email') }}
     </p>
     <p>
-        Kréno Pro permet de publier les créneaux libérés de l’établissement et de suivre les réservations des clients.
+        {{ translate('Kréno Pro permet de publier les créneaux libérés de l\'établissement et de suivre les réservations des clients.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ acceptUrl }}" style="{{ styles.button }}">
-            Accepter l’invitation
+            {{ translate('Accepter l’invitation', domain: 'email') }}
         </a>
     </p>
     {% if expiresAt %}
         <p>
-            Cette invitation est valable jusqu’au {{ expiresAt }}.
+            {{ translate('Cette invitation est valable jusqu\'au {expiresAt}.', {
+                expiresAt: expiresAt
+            }, domain: 'email') }}
         </p>
     {% endif %}
     <p>
-        Vous ne connaissez pas {{ inviter }} ? Ignorez simplement cet e-mail.
+        {{ translate('Vous ne connaissez pas {inviter} ? Ignoez simplement cet e-mail.', {
+            inviter: inviter
+        }, domain: 'email') }}
     </p>
 
 {% endblock %}

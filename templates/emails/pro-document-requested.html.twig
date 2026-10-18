@@ -5,16 +5,20 @@
 {% block mailContent %}
 
     <p>
-        Pour finaliser la vérification de {{ establishment.name }}, nous avons besoin d’un justificatif.
+        {{ translate('Pour finaliser la vérification de {name}, nous avons besoin d\'un justificatif.', {
+            name: establishment.name
+        }, domain: 'email') }}
     </p>
     <blockquote style="{{ styles.quote }}">
         {{ message|nl2br }}
     </blockquote>
     <p>
-        Répondez simplement à cet e-mail en joignant le document, ou envoyez-le à {{ replyEmail }}.
+        {{ translate('Répondez simplement à cet e-mail en joignant le document, ou envoyez-le à {replyEmail}', {
+            replyEmail: replyEmail
+        }, domain: 'email') }}
     </p>
     <p>
-        Votre établissement sera mis en ligne dès réception et vérification.
+        {{ translate('Votre établissement sera mis en ligne dès réception et vérification.', domain: 'email') }}
     </p>
 
 {% endblock %}

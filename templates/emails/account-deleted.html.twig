@@ -5,16 +5,18 @@
 {% block mailContent %}
 
     <p>
-        Ton compte Kréno est supprimé. Tes réservations à venir ont été annulées et les établissements concernés ont été prévenus.
+        {{ translate('Ton compte Kréno est supprimé. Tes réservations à venir ont été annulées et les établissements concernés ont été prévenus.', domain: 'email') }}
     </p>
     <p>
-        Tes données personnelles seront effacées dans les délais prévus par notre politique de confidentialité.
+        {{ translate('Tes données personnelles seront effacées dans les délais prévus par notre politique de confidentialité.', domain: 'email') }}
     </p>
     <p>
-        Merci d’avoir utilisé Kréno. Tu seras toujours le bienvenu :
-        <a href="{{ homeUrl }}" style="{{ styles.link }}">
-            kreno.fr
-        </a>
+        {{ translate('Merci d’avoir utilisé {site}. Tu seras toujours le bienvenu : {link}', {
+            site: website().siteName,
+            link: '<a href="' ~ homeUrl|e('html_attr') ~ '" style="' ~ styles.link|e('html_attr') ~ '">'
+            ~ homeUrl|replace({'https://': '', 'http://': ''})|trim('/')|e
+            ~ '</a>'
+        }, domain: 'email')|raw }}
     </p>
 
 {% endblock %}

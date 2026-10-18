@@ -5,19 +5,25 @@
 {% block mailContent %}
 
     <p>
-        Votre facture Kréno Pro
         {% if invoice.month %}
-            de {{ invoice.month }}
+            {{ translate('Votre facture {site} Pro de {month} est disponible.', {
+                site: website().siteName,
+                month: invoice.month
+            }, 'email') }}
+        {% else %}
+            {{ translate('Votre facture {site} Pro est disponible.', {site: website().siteName}, 'email') }}
         {% endif %}
-        est disponible.
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
-            Facture n° {{ invoice.number }} du {{ invoice.issuedAt }}
+            {{ translate('Facture n°{number} du {issuedAt}', {
+                number: invoice.number,
+                issuedAt: invoice.issuedAt
+            }, domain: 'email') }}
         </li>
         {% if invoice.period %}
             <li style="{{ styles.item }}">
-                Période : {{ invoice.period }}
+                {{ translate('Période :', domain: 'email') }} {{ invoice.period }}
             </li>
         {% endif %}
     </ul>
@@ -37,7 +43,7 @@
         {% endfor %}
         <tr>
             <td style="{{ styles.cell }}">
-                Total HT
+                {{ translate('Total HT', domain: 'email') }}
             </td>
             <td style="{{ styles.cellValue }}">
                 {{ invoice.totalExcludingTax }}
@@ -45,7 +51,7 @@
         </tr>
         <tr>
             <td style="{{ styles.cell }}">
-                TVA
+                {{ translate('TVA', domain: 'email') }}
             </td>
             <td style="{{ styles.cellValue }}">
                 {{ invoice.tax }}
@@ -53,7 +59,7 @@
         </tr>
         <tr>
             <td style="{{ styles.total }}">
-                Total TTC
+                {{ translate('Total TTC', domain: 'email') }}
             </td>
             <td style="{{ styles.totalValue }}">
                 {{ invoice.total }}
@@ -62,16 +68,19 @@
     </table>
     {% if paymentMethod %}
         <p>
-            Réglée le {{ paidAt }} par {{ paymentMethod.label }}.
+            {{ translate('Réglée le {paidAt} par {paymentMethod}.', {
+                paidAt: paidAt,
+                paymentMethod: paymentMethod.label
+            }, domain: 'email') }}
         </p>
     {% else %}
         <p>
-            Aucun montant n’est à régler.
+            {{ translate('Aucun montant n’est à régler.', domain: 'email') }}
         </p>
     {% endif %}
     <p style="{{ styles.actions }}">
         <a href="{{ invoice.url }}" style="{{ styles.button }}">
-            Voir la facture
+            {{ translate('Voir la facture', domain: 'email') }}
         </a>
     </p>
 

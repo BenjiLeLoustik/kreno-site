@@ -5,27 +5,32 @@
 {% block mailContent %}
 
     <p>
-        Votre signalement {{ report.reference }} a bien été transmis à l’équipe Kréno.
+        {{ translate('Votre signalement {reference} a bien été transmis ) l\'équipe Kréno', {reference: report.reference}, domain: 'email') }}
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
-            Motif : {{ report.reason }}
+            {{ translate('Motif :', domain: 'email') }} {{ report.reason }}
         </li>
         {% if report.booking %}
             <li style="{{ styles.item }}">
-                Rendez-vous : {{ report.booking.service }}, {{ report.booking.day }} à {{ report.booking.time }} ({{ report.booking.customer.name }})
+                {{ translate('Rendez-vous : {service}, {day} à {time} ({customerName})', {
+                    service: report.booking.service,
+                    day: report.booking.day,
+                    time: report.booking.time,
+                    customerName: report.booking.customer.name
+                }, domain: 'email') }}
             </li>
         {% endif %}
     </ul>
     <p>
-        Nous l’examinons et vous tiendrons informé de notre décision.
+        {{ translate('Nous l\'examinons et vous tiendrons informé de notre décision.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ report.proUrl }}" style="{{ styles.button }}">
-            Suivre le signalement
+            {{ translate('Suivre le signalement', domain: 'email') }}
         </a>
         <a href="{{ reportsUrl }}" style="{{ styles.buttonSecondary }}">
-            Tous mes signalements
+            {{ translate('Tous mes signalements', domain: 'email') }}
         </a>
     </p>
 

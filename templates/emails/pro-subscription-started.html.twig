@@ -5,38 +5,38 @@
 {% block mailContent %}
 
     <p>
-        {{ establishment }} est en ligne et votre abonnement est actif.
+        {{ translate('{establishment} est en ligne et votre abonnement est actif', {establishment: establishment}, domain: 'email') }}
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
-            Formule : {{ subscription.plan }} ({{ subscription.period|lower }})
+            {{ translate('Formule :', domain: 'email' )}} {{ subscription.plan }} ({{ subscription.period|lower }})
         </li>
         <li style="{{ styles.item }}">
-            Prix : {{ subscription.price }} HT
+            {{ translate('Prix : {price} HT', {price: subscription.price}, domain: 'email') }}
         </li>
         <li style="{{ styles.item }}">
-            Début : {{ subscription.startedAt }}
+            {{ translate('Début : ', domain: 'email') }} {{ subscription.startedAt }}
         </li>
         {% if subscription.periodEnd %}
             <li style="{{ styles.item }}">
-                Prochaine échéance : {{ subscription.periodEnd }}
+                {{ translate('Prochaine échéance :', domain: 'email') }} {{ subscription.periodEnd }}
             </li>
         {% endif %}
         {% if subscription.commissionFree %}
             <li style="{{ styles.item }}">
-                Aucune commission sur vos réservations
+                {{ translate('Aucune commission sur vos réservations', domain: 'email') }}
             </li>
         {% endif %}
     </ul>
     <p>
-        Vos factures seront disponibles dans votre espace facturation.
+        {{ translate('Vos factures seront disponibles dans votre espace facturation.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ slotUrl }}" style="{{ styles.button }}">
-            Publier un créneau
+            {{ translate('Publier un créneau', domain: 'email') }}
         </a>
         <a href="{{ subscription.url }}" style="{{ styles.buttonSecondary }}">
-            Mon abonnement
+            {{ translate('Mon abonnement', domain: 'email') }}
         </a>
     </p>
 

@@ -5,32 +5,32 @@
 {% block mailContent %}
 
     <p>
-        Un nouvel établissement attend sa validation :
+        {{ translate('Un nouvel établissement attend sa validation :', domain: 'email') }}
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
-            Nom : {{ establishment.name }} (#{{ establishment.id }})
+            {{ translate('Nom :', domain: 'email') }} {{ establishment.name }} (#{{ establishment.id }})
         </li>
         <li style="{{ styles.item }}">
-            Entreprise : {{ establishment.company }}
+            {{ translate('Entreprise :', domain: 'email') }} {{ establishment.company }}
         </li>
         <li style="{{ styles.item }}">
-            SIRET : {{ establishment.siret }}
+            {{ translate('SIRET :', domain: 'email') }} {{ establishment.siret }}
         </li>
         <li style="{{ styles.item }}">
-            Catégorie : {{ establishment.category }}
+            {{ translate('Catégorie :', domain: 'email') }} {{ establishment.category }}
         </li>
         <li style="{{ styles.item }}">
-            Adresse : {{ establishment.address }}
+            {{ translate('Adresse :', domain: 'email') }} {{ establishment.address }}
         </li>
         {% if establishment.phone %}
             <li style="{{ styles.item }}">
-                Téléphone : {{ establishment.phone }}
+                {{ translate('Téléphone :', domain: 'email') }} {{ establishment.phone }}
             </li>
         {% endif %}
     </ul>
     <p>
-        À traiter dans l’admin, section « Modération des pros ».
+        {{ translate('À traiter dans l’admin, section « Modération des pros ».', domain: 'email') }}
     </p>
 
 {% endblock %}

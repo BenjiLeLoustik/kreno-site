@@ -5,14 +5,19 @@
 {% block mailContent %}
 
     <p>
-        {{ member }} ({{ email }}) a accepté son invitation et rejoint {{ company }} sur Kréno Pro en tant que {{ role|lower }}.
+        {{ translate('{member} ({email}) a accepté son invitation et rejoint {company} sur Kréno Pro en tant que {role}', {
+            member: member,
+            email: email,
+            company: company,
+            role: role|lower
+        }, domain: 'email') }}
     </p>
     <p>
-        Vous pouvez modifier son rôle ou retirer son accès à tout moment depuis la gestion de l’équipe.
+        {{ translate('Vous pouvez modifier son rôle ou retirer son accès à tout moment depuis la gestion de l’équipe.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ dashboardUrl }}" style="{{ styles.button }}">
-            Ouvrir Kréno Pro
+            {{ translate('Ouvrir Kréno Pro', domain: 'email') }}
         </a>
     </p>
 

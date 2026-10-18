@@ -5,7 +5,7 @@
 {% block mailContent %}
 
     <p>
-        {{ booking.customer.name }} a annulé son rendez-vous :
+        {{ translate('{customerName} a annulé son rendez-vous :', {customerName: booking.customer.name}, domain: 'email') }}
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
@@ -15,30 +15,31 @@
             {{ booking.day }} à {{ booking.time }}
         </li>
         <li style="{{ styles.item }}">
-            Référence : {{ booking.reference }}
+            {{ translate('Référence :', domain: 'email') }} {{ booking.reference }}
         </li>
     </ul>
     {% if booking.cancellationReason %}
         <p>
-            Motif indiqué : « {{ booking.cancellationReason }} »
+            {{ translate('Motif indiqué : « {cancellationReason} »', {
+                cancellationReason: booking.cancellationReason
+            }, domain: 'email') }}
         </p>
     {% endif %}
     {% if slotReleased %}
         <p>
-            Le créneau est automatiquement remis en ligne : il peut encore trouver preneur.
+            {{ translate('Le créneau est automatiquement remis en ligne : il peut encore trouver preneur.', domain: 'email') }}
         </p>
     {% else %}
         <p>
-            Le créneau n’a pas pu être remis en ligne (trop proche de l’heure du rendez-vous). Vous pouvez en
-            <a href="{{ slotUrl }}" style="{{ styles.link }}">
-                publier un nouveau
-            </a>
-            .
+            {{ translate('Le créneau n’a pas pu être remis en ligne (trop proche de l’heure du rendez-vous). Vous pouvez en {open}publier un nouveau{close}.', {
+                open: '<a href="' ~ slotUrl|e('html_attr') ~ '" style="' ~ styles.link|e('html_attr') ~ '">',
+                close: '</a>'
+            }, domain: 'email')|raw }}
         </p>
     {% endif %}
     <p style="{{ styles.actions }}">
         <a href="{{ bookingsUrl }}" style="{{ styles.button }}">
-            Voir les réservations
+            {{ translate('Voir les réservations', domain: 'email') }}
         </a>
     </p>
 

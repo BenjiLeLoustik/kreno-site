@@ -6,41 +6,44 @@
 
     {% if lower %}
         <p>
-            Bonne nouvelle : le prix de votre formule {{ newPlan }} baisse.
+            {{ translate('Bonne nouvelle : le prix de votre formule {newPlan} baisse.', {newPlan: newPlan}, domain: 'email') }}
         </p>
     {% else %}
         <p>
-            Le prix de votre formule {{ newPlan }} évolue.
+            {{ translate('Le prix de votre formule {newPlan} évolue.', {newPlan: newPlan}, domain: 'email') }}
         </p>
     {% endif %}
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
-            Prix actuel : {{ currentPrice }} HT ({{ subscription.period|lower }})
+            {{ translate('Prix actuel: {price} HT ({period})', {
+                price: currentPrice,
+                period: subscription.period|lower
+            }, domain: 'email') }}
         </li>
         <li style="{{ styles.item }}">
-            Nouveau prix : {{ newPrice }} HT
+            {{ translate('Nouveau prix : {newPrice} HT', {newPrice: newPrice}, domain: 'email') }}
             {% if lower %}
-                (soit {{ difference }} de mois)
+                {{ translate('(soit {difference} de moins)', {difference: difference}, domain: 'email') }}
             {% else %}
-                (soit {{ difference }} de plus)
+                {{ translate('(soit {difference} de plus)', {difference: difference}, domain: 'email') }}
             {% endif %}
         </li>
         <li style="{{ styles.item }}">
-            Appliqué à partir du {{ effectiveAt }}, lors de votre prochaine échéance
+            {{ translate('Appliqué à partir du {effectiveAt}, lors de votre prochaine échéance', {effectiveAt: effectiveAt}, domain: 'email') }}
         </li>
     </ul>
     {% if lower %}
         <p>
-            Vous n’avez rien à faire : la baisse s’appliquera automatiquement.
+            {{ translate('Vous n\'avez rien à faire : la baisse s\'appliquera automatiquement.', domain: 'email') }}
         </p>
     {% else %}
         <p>
-            Vous n’avez rien à faire pour conserver votre formule. Si ce nouveau tarif ne vous convient pas, vous pouvez changer de formule ou résilier avant cette date, sans frais.
+            {{ translate('Vous n\'avez rien à faire pour conserver votre formule. Si ce nouveau tarif ne vous convient pas, vous pouvez changer de formule ou résilier avant cette date, sans frais.', domain: 'email') }}
         </p>
     {% endif %}
     <p style="{{ styles.actions }}">
         <a href="{{ subscription.url }}" style="{{ styles.button }}">
-            Mon abonnement
+            {{ translate('Mon abonnement', domain: 'email') }}
         </a>
     </p>
 

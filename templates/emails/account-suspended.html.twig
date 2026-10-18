@@ -5,25 +5,28 @@
 {% block mailContent %}
 
     <p>
-        Ton compte Kréno est suspendu
         {% if until %}
-            jusqu’au {{ until }}
+            {{ translate('Ton compte {site} est suspendu jusqu’au {date}.', {
+                site: website().siteName,
+                date: until
+            }, domain: 'email') }}
+        {% else %}
+            {{ translate('Ton compte {site} est suspendu.', {site: website().siteName}, domain: 'email') }}
         {% endif %}
-        .
     </p>
     <p>
-        Motif : {{ reason }}
+        {{ translate('Motif :', domain: 'email') }} {{ reason }}
     </p>
     {% if automatic %}
         <p>
-            Cette suspension est automatique : elle s’applique selon les règles de la plateforme, notamment en cas d’absences répétées à des rendez-vous.
+            {{ translate('Cette suspension est automatique : elle s’applique selon les règles de la plateforme, notamment en cas d’absences répétées à des rendez-vous.', domain: 'email') }}
         </p>
     {% endif %}
     <p>
-        Pendant cette période, tu ne peux pas réserver de nouveau créneau. Tes réservations passées restent consultables.
+        {{ translate('Pendant cette période, tu ne peux pas réserver de nouveau créneau. Tes réservations passées restent consultables.', domain: 'email') }}
     </p>
     <p>
-        Tu penses qu’il s’agit d’une erreur ? Écris-nous à {{ supportEmail }}.
+        {{ translate('Tu penses qu\'il s\'agit d\'une erreur ? Écris-nous à {supportEmail}.', {supportEmail: supportEmail}, domain: 'email') }}
     </p>
 
 {% endblock %}

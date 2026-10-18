@@ -5,14 +5,17 @@
 {% block mailContent %}
 
     <p>
-        Malgré nos relances, un paiement de votre abonnement {{ subscription.plan }} reste impayé. Les créneaux de {{ company }} ne sont plus publiés sur Kréno.
+        {{ translate('Malgré nos relances, un paiement de votre abonnement {plan} reste impayé. Les créneaux de {company} ne sont plus publiés sur Kréno.', {
+            plan: subscription.plan,
+            company: company,
+        }, domain: 'email') }}
     </p>
     <p>
-        Réglez la facture en attente pour retrouver immédiatement l’accès à la publication. Vous pouvez aussi mettre à jour votre moyen de paiement.
+        {{ translate('Réglez la facture en attente pour retrouver immédiatement l\'accès à la publication. Vous pouvez aussi mettre à jour votre moyen de paiement.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ billingUrl }}" style="{{ styles.button }}">
-            Régulariser ma situation
+            {{ translate('Régulariser ma situation', domain: 'email') }}
         </a>
     </p>
 

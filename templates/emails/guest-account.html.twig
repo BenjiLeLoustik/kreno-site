@@ -5,26 +5,26 @@
 {% block mailContent %}
 
     <p>
-        Pour ta réservation, nous avons créé ton compte Kréno. Il te permet de retrouver tes rendez-vous, de les annuler et de recevoir tes rappels.
+        {{ translate('Pour ta réservation, nous avons créé ton compte Kréno. Il te permet de retrouver tes rendez-vous, de les annuler et de recevoir tes rappels.', domain: 'email') }}
     </p>
     <p>
-        Choisis ton mot de passe pour y accéder :
+        {{ translate('Choisis ton mot de passe pour y accéder :', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ passwordUrl }}" style="{{ styles.button }}">
-            Choisir mon mot de passe
+            {{ translate('Choisir mon mot de passe', domain: 'email') }}
         </a>
     </p>
     <p>
-        Ce lien est valable {{ expiresIn }}. Passé ce délai, utilise
-        <a href="{{ forgotUrl }}" style="{{ styles.link }}">
-            mot de passe oublié
-        </a>
-        pour en recevoir un nouveau.
+        {{ translate('Ce lien est valable {expiresIn}. Passé ce délai, utilise {open}mot de passe oublié{close} pour en recevoir un nouveau.', {
+            expiresIn: expiresIn,
+            open: '<a href="' ~ forgotUrl|e('html_attr') ~ '" style="' ~ styles.link|e('html_attr') ~ '">',
+            close: '</a>'
+        }, domain: 'email')|raw }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ bookingsUrl }}" style="{{ styles.button }}">
-            Voir mes réservations
+            {{ translate('Voir mes réservations', domain: 'email') }}
         </a>
     </p>
 

@@ -5,36 +5,38 @@
 {% block mailContent %}
 
     <p>
-        Petit rappel : ton rendez-vous, c’est dans une heure.
+        {{ translate('Petit rappel : ton rendez-vous, c’est dans une heure.', domain: 'email') }}
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
             {{ booking.service }} ({{ booking.duration }})
         </li>
         <li style="{{ styles.item }}">
-            Aujourd’hui à {{ booking.time }}
+            {{ translate('Aujourd\'hui à {time}', {time: booking.time}, domain: 'email') }}
         </li>
         <li style="{{ styles.item }}">
             {{ booking.establishment.name }}, {{ booking.establishment.address }}
         </li>
         <li style="{{ styles.item }}">
-            {{ booking.price }}, à régler sur place
+            {{ translate('{price}, à réfler sur place', {price: booking.price}, domain: 'email') }}
         </li>
     </ul>
     {% if canCancel %}
         <p>
-            Un empêchement ? Tu peux encore annuler gratuitement depuis
-            <a href="{{ booking.url }}" style="{{ styles.link }}">
-                ta réservation
-            </a>.
+            {{ translate('Un empêchement ? Tu peux encore annuler gratuitement depuis {open}ta réservation{close}.', {
+                open: '<a href="' ~ booking.url|e('html_attr') ~ '" style="' ~ styles.link|e('html_attr') ~ '">',
+                close: '</a>'
+            }, domain: 'email')|raw }}
         </p>
     {% else %}
         <p>
-            Un empêchement ? Préviens l’établissement
             {% if booking.establishment.phone %}
-                au {{ booking.establishment.phone }}
+                {{ translate('Un empêchement ? Préviens l’établissement au {phone}. Une absence non prévenue peut entraîner la suspension de ton compte.', {
+                    phone: booking.establishment.phone
+                }, domain: 'email') }}
+            {% else %}
+                {{ translate('Un empêchement ? Préviens l’établissement. Une absence non prévenue peut entraîner la suspension de ton compte.', domain: 'email') }}
             {% endif %}
-            . Une absence non prévenue peut entraîner la suspension de ton compte.
         </p>
     {% endif %}
 

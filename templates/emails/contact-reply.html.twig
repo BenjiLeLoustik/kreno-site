@@ -3,20 +3,25 @@
 {% set mailType = 'default' %}
 
 {% block preheader %}
-    L’équipe Kréno a répondu à ta demande « {{ topic }} ».
+    {{ translate('L\'équipe Kréno a répondu à ta demande « {topic} ».', {topic: topic}, domain: 'email') }}
 {% endblock %}
 
 {% block mailContent %}
 
     <p>
-        L’équipe Kréno a répondu à ta demande « {{ topic }} »
         {% if reference %}
-            concernant la réservation
-            <strong style="{{ styles.strong }}">
-                {{ reference }}
-            </strong>
+            {{ translate('L’équipe {site} a répondu à ta demande « {topic} » concernant la réservation {reference} :', {
+                site: website().siteName,
+                topic: topic|e,
+                reference: '<strong style="' ~ styles.strong|e('html_attr') ~ '">' ~ reference|e ~ '</strong>'
+            }, domain: 'email')|raw }}
+        {% else %}
+            {{ translate('L’équipe {site} a répondu à ta demande « {topic} » :', {
+                site: website().siteName,
+                topic: topic
+            }, domain: 'email') }}
         {% endif %}
-        :</p>
+    </p>
 
     <blockquote style="{{ styles.quote }}">
         {{ reply|nl2br }}
@@ -24,13 +29,13 @@
 
     <p style="{{ styles.actions }}">
         <a href="{{ url }}" style="{{ styles.button }}">
-            Voir la conversation et répondre
+            {{ translate('Voir la conversation et répondre', domain: 'email') }}
         </a>
     </p>
 
     {% if original %}
         <p style="margin: 24px 0 8px; font-size: 13px; color: #6A6F8C;">
-            Ton message :
+            {{ translate('Ton message :', domain: 'email') }}
         </p>
         <blockquote style="{{ styles.quote }}">
             {{ original|nl2br }}
@@ -38,7 +43,7 @@
     {% endif %}
 
     <p>
-        Pour nous répondre, utilise le bouton ci-dessus : ta réponse arrivera directement dans ta demande.
+        {{ translate('Pour nous répondre, utilise le bouton ci-dessus : ta réponse arrivera directement dans ta demande.', domain: 'email') }}
     </p>
 
 {% endblock %}

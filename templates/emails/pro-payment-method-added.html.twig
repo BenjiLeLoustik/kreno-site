@@ -5,32 +5,35 @@
 {% block mailContent %}
 
     <p>
-        Un nouveau moyen de paiement a été enregistré sur votre compte Kréno Pro :
+        {{ translate('Un nouveau moyen de paiement a été enregistré sur votre compte Kréno Pro :', domain: 'email') }}
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
             {{ paymentMethod.label }}
             {% if paymentMethod.expiry %}
-                (expire {{ paymentMethod.expiry }})
+                {{ translate('(expire {expiry}', {expiry: paymentMethod.expiry}, domain: 'email') }}
             {% endif %}
         </li>
         {% if addedBy %}
             <li style="{{ styles.item }}">
-                Ajouté par {{ addedBy }} le {{ addedAt }}
+                {{ translate('Ajouté par {by} le {addedAt}', {
+                    by: addedBy,
+                    addedAt: addedAt
+                }, domain: 'email') }}
             </li>
         {% endif %}
         {% if default %}
             <li style="{{ styles.item }}">
-                Il sera utilisé pour vos prochains prélèvements.
+                {{ translate('Il sera utilisé pour vos prochains prélèvements.', domain: 'email') }}
             </li>
         {% endif %}
     </ul>
     <p>
-        Si vous n’êtes pas à l’origine de cet ajout, contactez-nous en répondant à cet e-mail.
+        {{ translate('Si vous n\'êtes pas à l\'origine de cet ajout, contactez-nous en répondant à cet e-mail.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ billingUrl }}" style="{{ styles.button }}">
-            Facturation
+            {{ translate('Facturation', domain: 'email') }}
         </a>
     </p>
 

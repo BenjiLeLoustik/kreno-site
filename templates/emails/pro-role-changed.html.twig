@@ -5,26 +5,30 @@
 {% block mailContent %}
 
     <p>
-        Votre rôle chez {{ company }}
         {% if establishment %}
-            pour {{ establishment }}
+            {{ translate('Votre rôle chez {company} pour {establishment} a changé :', {
+                company: company,
+                establishment: establishment
+            }, domain: 'email') }}
+        {% else %}
+            {{ translate('Votre rôle chez {company} a changé :', {company: company}, domain: 'email') }}
         {% endif %}
-        a changé :
+
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
-            Avant : {{ previousRole }}
+            {{ translate('Avant :', domain: 'email') }} {{ previousRole }}
         </li>
         <li style="{{ styles.item }}">
-            Maintenant : {{ newRole }}
+            {{ translate('Maintenant :', domain: 'email') }} {{ newRole }}
         </li>
     </ul>
     <p>
-        Vos accès sont mis à jour dès maintenant.
+        {{ translate('Vos accès sont mis à jour dès maintenant.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ dashboardUrl }}" style="{{ styles.button }}">
-            Ouvrir Kréno Pro
+            {{ translate('Ouvrir Kréno Pro', domain: 'email') }}
         </a>
     </p>
 

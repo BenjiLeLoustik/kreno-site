@@ -5,15 +5,19 @@
 {% block mailContent %}
 
     <p>
-        Un avoir a été émis sur votre compte Kréno Pro.
+        {{ translate('Un avoir a été émis sur votre compte Kréno Pro.', domain: 'email') }}
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
             Avoir n° {{ invoice.number }} du {{ invoice.issuedAt }}
+            {{ translate('Avoir n°{number} du {issuedAt}', {
+                number: invoice.number,
+                issuedAt: invoice.issuedAt
+            }, domain: 'email') }}
         </li>
         {% if credited %}
             <li style="{{ styles.item }}">
-                Sur la facture n° {{ credited }}
+                {{ translate('Sur la facture n°{credited}', {credited: credited}, domain: 'email') }}
             </li>
         {% endif %}
     </ul>
@@ -30,7 +34,7 @@
         {% endfor %}
         <tr>
             <td style="{{ styles.total }}">
-                Total TTC
+                {{ translate('Total TTC', domain: 'email') }}
             </td>
             <td style="{{ styles.totalValue }}">
                 {{ invoice.total }}
@@ -38,11 +42,11 @@
         </tr>
     </table>
     <p>
-        Ce montant sera déduit de vos prochaines factures ou remboursé sur votre moyen de paiement.
+        {{ translate('Ce montant sera déduit de vos prochaines factures ou remboursé sur votre moyen de paiement.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ invoice.url }}" style="{{ styles.button }}">
-            Voir l’avoir
+            {{ translate('Voir l’avoir', domain: 'email') }}
         </a>
     </p>
 

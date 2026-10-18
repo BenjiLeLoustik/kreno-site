@@ -7,10 +7,11 @@
     {% if alert %}
         <p>
             Un créneau correspond à ton alerte « {{ alert.label }} » ({{ alert.description }}) :
+            {{ translate('Un créneau correspond à ton alerte « {label} » ({description}) :', {label: alert.label, description: alert.description}, domain: 'email') }}
         </p>
     {% else %}
         <p>
-            {{ slot.establishment.name }}, que tu suis, vient de libérer un créneau :
+            {{ translate('{establishment}, que tu suis, vient de libérer un créneau :', {establishment: slot.establishment.name}, domain: 'email') }}
         </p>
     {% endif %}
     <ul style="{{ styles.list }}">
@@ -21,26 +22,30 @@
             {{ slot.service }} ({{ slot.duration }})
         </li>
         <li style="{{ styles.item }}">
-            {{ slot.day }} à {{ slot.time }}
+            {{ translate('{day} à {time}', {day: slot.day, time: slot.time}, domain: 'email') }}
         </li>
         <li style="{{ styles.item }}">
-            {{ slot.price }} au lieu de {{ slot.originalPrice }} ({{ slot.discount }})
+            {{ translate('{price} au lieu de {originalPrice} ({discount})', {
+                price: slot.price,
+                originalPrice: slot.originalPrice,
+                discount: slot.discount
+            }, domain: 'email') }}
         </li>
     </ul>
     <p style="{{ styles.actions }}">
         <a href="{{ slot.url }}" style="{{ styles.button }}">
-            Réserver ce créneau
+            {{ translate('Réserver ce créneau', domain: 'email') }}
         </a>
     </p>
     <p>
-        Les créneaux partent vite : premier arrivé, premier servi.
+        {{ translate('Les créneaux partent vite : premier arrivé, premier servi.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ alertsUrl }}" style="{{ styles.button }}">
-            Gérer mes alertes
+            {{ translate('Gérer mes alertes', domain: 'email') }}
         </a>
         <a href="{{ settingsUrl }}" style="{{ styles.buttonSecondary }}">
-            Ne plus recevoir ces e-mails
+            {{ translate('Ne plus recevoir ces e-mails', domain: 'email') }}
         </a>
     </p>
 

@@ -5,42 +5,48 @@
 {% block mailContent %}
 
     <p>
-        Votre créneau a trouvé preneur !
+        {{ translate('Votre créneau a trouvé preneur !', domain: 'email') }}
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
             {{ booking.service }} ({{ booking.duration }})
         </li>
         <li style="{{ styles.item }}">
-            {{ booking.day }} à {{ booking.time }}
+            {{ translate('{day} à {time}', {
+                day: booking.day,
+                time: booking.time
+            }, domain: 'email') }}
         </li>
         <li style="{{ styles.item }}">
-            Client : {{ booking.customer.name }}
+            {{ translate('Client :', domain: 'email') }} {{ booking.customer.name }}
             {% if booking.customer.phone %}
                 · {{ booking.customer.phone }}
             {% endif %}
         </li>
         <li style="{{ styles.item }}">
-            Prix : {{ booking.price }} (au lieu de {{ booking.originalPrice }}), réglé sur place
+            {{ translate('Prix : {price} (au lieu de {originalPrice}), réglé sur place', {
+                price: booking.price,
+                originalPrice: booking.originalPrice
+            }, domain: 'email') }}
         </li>
         <li style="{{ styles.item }}">
-            Référence : {{ booking.reference }}
+            {{ translate('Référence :', domain: 'email') }} {{ booking.reference }}
         </li>
     </ul>
     {% if booking.note %}
         <p>
-            Note du client : « {{ booking.note }} »
+            {{ translate('Note du client :', domain: 'email') }} « {{ booking.note }} »
         </p>
     {% endif %}
     <p>
-        Après le rendez-vous, pensez à indiquer s’il a été honoré.
+        {{ translate('Après le rendez-vous, pensez à indiquer s’il a été honoré.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ booking.proUrl }}" style="{{ styles.button }}">
-            Voir la réservation
+            {{ translate('Voir la réservation', domain: 'email') }}
         </a>
         <a href="{{ bookingsUrl }}" style="{{ styles.buttonSecondary }}">
-            Toutes les réservations
+            {{ translate('Toutes les réservations', domain: 'email') }}
         </a>
     </p>
 

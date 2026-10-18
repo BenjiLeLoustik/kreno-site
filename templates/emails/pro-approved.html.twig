@@ -5,14 +5,16 @@
 {% block mailContent %}
 
     <p>
-        Bonne nouvelle : {{ establishment.name }} est validé et en ligne sur Kréno.
+        {{ translate('Bonne nouvelle : {name} est validé et en ligne sur Kréno.', {name: establishment.name}, domain: 'email') }}
     </p>
     <p>
-        Les clients de {{ establishment.city }} peuvent désormais vous trouver et vous suivre. Publiez votre premier créneau libéré pour recevoir vos premières réservations.
+        {{ translate('Les clients de {city} peuvent désormais vous trouver et vous suivre. Publiez votre premier créneau libéré pour recevoir vos premières réservations.', {
+            city: establishment.city
+        }, domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ slotUrl }}" style="{{ styles.button }}">
-            Publier un créneau
+            {{ translate('Publier un créneau', domain: 'email') }}
         </a>
     </p>
     <p>
@@ -23,7 +25,7 @@
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ dashboardUrl }}" style="{{ styles.button }}">
-            Ouvrir Kréno Pro
+            {{ translate('Ouvrir Kréno Pro', domain: 'email') }}
         </a>
     </p>
 

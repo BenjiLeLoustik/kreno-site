@@ -5,36 +5,51 @@
 {% block mailContent %}
 
     <p>
-        Un client a signalé un problème concernant {{ report.establishment.name }} (signalement {{ report.reference }}).
+        {{ translate('Un client a signalé un problème concernant {establishment} (signalement {reference}', {
+            establishment: report.establishment,
+            reference: report.reference
+        }, domain: 'email') }}
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
-            Motif : {{ report.reason }}
+            {{ translate('Motif :', domain: 'email') }} {{ report.reason }}
         </li>
         {% if report.booking %}
             <li style="{{ styles.item }}">
-                Rendez-vous : {{ report.booking.service }}, {{ report.booking.day }} à {{ report.booking.time }} (réf. {{ report.booking.reference }})
+                {{ translate('Rendez-vous : {service}, {day} à {time} (réf. {reference})', {
+                    service: report.booking.service,
+                    day: report.booking.day,
+                    time: report.booking.time,
+                    reference: report.booking.reference
+                }, domain: 'email') }}
             </li>
         {% endif %}
     </ul>
     {% if report.description %}
         <p>
-            Message du client :
+            {{ translate('Message du client :', domain: 'email') }}
         </p>
         <blockquote style="{{ styles.quote }}">
             {{ report.description|nl2br }}
         </blockquote>
     {% endif %}
     <p>
-        Vous avez {{ replyWithin }} pour donner votre version
+
         {% if deadline %}
-            , soit jusqu’au {{ deadline }}
+            {{ translate('Vous avez {replyWithin} pour donner votre version, soit jusqu\'au {deadline}. Passé ce délai, notre équipe tranchera sur la base des éléments disponibles.', {
+                replyWithin: replyWithin,
+                deadline: deadline
+            }, domain: 'email') }}
+        {% else %}
+            {{ translate('Vous avez {replyWithin} pour donner votre version. Passé ce délai, notre équipe tranchera sur la base des éléments disponibles.', {
+                replyWithin: replyWithin
+            }, domain: 'email') }}
         {% endif %}
-        . Passé ce délai, notre équipe tranchera sur la base des éléments disponibles.
+
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ report.proUrl }}" style="{{ styles.button }}">
-            Répondre au signalement
+            {{ translate('Répondre au signalement', domain: 'email') }}
         </a>
     </p>
 

@@ -5,21 +5,27 @@
 {% block mailContent %}
 
     <p>
-        Bonne nouvelle : la résiliation est annulée, votre abonnement {{ subscription.plan }} pour {{ company }} continue.
+        {{ translate('Bonne nouvelle : la résiliation est annulée, votre abonnement {plan} pour {company} continue.', {
+            plan: subscription.plan,
+            company: company
+        }, domain: 'email') }}
     </p>
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
-            Prix : {{ subscription.price }} HT ({{ subscription.period|lower }})
+            {{ translate('Prix : {price} HT ({period})', {
+                price: subscription.price,
+                period: subscription.period|lower
+            }, domain: 'email') }}
         </li>
         {% if subscription.periodEnd %}
             <li style="{{ styles.item }}">
-                Prochaine échéance : {{ subscription.periodEnd }}
+                {{ translate('Prochaine échéance :', domain: 'email') }} {{ subscription.periodEnd }}
             </li>
         {% endif %}
     </ul>
     <p style="{{ styles.actions }}">
         <a href="{{ subscription.url }}" style="{{ styles.button }}">
-            Mon abonnement
+            {{ translate('Mon abonnement', domain: 'email') }}
         </a>
     </p>
 

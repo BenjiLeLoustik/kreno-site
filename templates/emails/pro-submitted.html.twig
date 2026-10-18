@@ -6,16 +6,19 @@
 
     <p>
         Merci ! L’inscription de {{ establishment.name }} est complète.
+        {{ translate('Merci ! L\'inscription de {name} est complète', {name: establishment.name}, domain: 'email') }}
     </p>
     <p>
-        Notre équipe vérifie vos informations (SIRET, adresse, prestations) sous {{ delay }}. Vous recevrez un e-mail dès que votre établissement sera en ligne.
+        {{ translate('Notre équipe vérifie vos informations (SIRET, adresse, prestations) sous {delay}. Vous receverez un e-mail dès que votre établissement sera en ligne.', {
+            delay: delay
+        }, domain: 'email') }}
     </p>
     <p>
-        En attendant, vous pouvez compléter votre page : photos, horaires, description.
+        {{ translate('En attendant, vous pouvez compléter votre page : photos, horaires, description.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ dashboardUrl }}" style="{{ styles.button }}">
-            Ouvrir Kréno Pro
+            {{ translate('Ouvrir Kréno Pro', domain: 'email') }}
         </a>
     </p>
 

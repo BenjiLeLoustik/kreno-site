@@ -5,17 +5,19 @@
 {% block mailContent %}
 
     <p>
-        {{ establishment.name }} est de nouveau en ligne sur Kréno.
+        {{ translate('{name} est de nouveau en ligne sur Kréno.', {
+            name: establishment.name,
+        }, domain: 'email') }}
     </p>
     <p>
-        Votre page est à nouveau visible et vous pouvez publier vos créneaux libérés.
+        {{ translate('Votre page est à nouveau visible et vous pouvez publier vos créneaux libérés.', domain: 'email') }}
     </p>
     <p style="{{ styles.actions }}">
         <a href="{{ slotUrl }}" style="{{ styles.button }}">
-            Publier un créneau
+            {{ translate('Publier un créneau', domain: 'email') }}
         </a>
         <a href="{{ dashboardUrl }}" style="{{ styles.buttonSecondary }}">
-            Ouvrir Kréno Pro
+            {{ translate('Ouvrir Kréno Pro', domain: 'email') }}
         </a>
     </p>
 
