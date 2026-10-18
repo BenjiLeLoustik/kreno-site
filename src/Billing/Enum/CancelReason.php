@@ -2,6 +2,8 @@
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum CancelReason: string
 {
     case PRICE = 'price';
@@ -13,11 +15,11 @@ enum CancelReason: string
     public function label(): string
     {
         return match ($this) {
-            self::PRICE => 'C’est trop cher pour moi',
-            self::VOLUME => 'Je n’ai pas assez de réservations',
-            self::PAUSE => 'Je ferme temporairement',
-            self::CLOSE => 'Je ferme définitivement',
-            self::OTHER => 'Autre raison',
+            self::PRICE => Translation::translate('C’est trop cher pour moi'),
+            self::VOLUME => Translation::translate('Je n’ai pas assez de réservations'),
+            self::PAUSE => Translation::translate('Je ferme temporairement'),
+            self::CLOSE => Translation::translate('Je ferme définitivement'),
+            self::OTHER => Translation::translate('Autre raison'),
         };
     }
 }

@@ -4,6 +4,7 @@ namespace App\Billing\Helper;
 
 use App\Billing\Enum\PaymentMethodType;
 use App\Entity\Company\CompanyPaymentMethod;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class PaymentMethodHelper
@@ -15,7 +16,10 @@ class PaymentMethodHelper
         }
 
         if ($method->getType() === PaymentMethodType::SEPA_DEBIT) {
-            return sprintf('Prélèvement SEPA •••• %s', $method->getLast4());
+            return sprintf(
+                Translation::translate('Prélèvement SEPA •••• %s'),
+                $method->getLast4()
+            );
         }
 
         $paymentMethod = $method->getBrand() ?? 'carte';
@@ -26,10 +30,10 @@ class PaymentMethodHelper
     public static function brand(CompanyPaymentMethod $method): string
     {
         if ($method->getType() === PaymentMethodType::SEPA_DEBIT) {
-            return 'SEPA';
+            return Translation::translate('SEPA');
         }
 
-        $paymentMethod = $method->getBrand() ?? 'CB';
+        $paymentMethod = $method->getBrand() ?? Translation::translate('CB');
         return mb_strtoupper($paymentMethod);
     }
 

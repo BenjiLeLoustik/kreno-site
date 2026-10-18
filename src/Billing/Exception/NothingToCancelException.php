@@ -3,11 +3,14 @@
 namespace App\Billing\Exception;
 
 use App\Shared\Exception\BusinessRuleException;
+use App\Shared\Helper\Translation;
 
 class NothingToCancelException extends BusinessRuleException
 {
     public function __construct()
     {
-        parent::__construct('Votre formule est sans abonnement : il n\'y a rien à résilier.');
+        parent::__construct(
+            Translation::translate('Votre formule est sans abonnement : il n\'y a rien à résilier.')
+        );
     }
 }

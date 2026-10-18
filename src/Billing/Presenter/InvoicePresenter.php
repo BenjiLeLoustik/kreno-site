@@ -13,12 +13,11 @@ use App\Entity\Company\CompanyInvoiceLine;
 use App\Entity\Company\CompanyPayment;
 use App\Shared\Helper\DateHelper;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use NeoPHP\Component\Container\Attribute\Autowire;
 
 class InvoicePresenter
 {
-    public const LATE_FEE_NOTICE = 'En cas de retard de paiement, indemnité forfaitaire pour frais de recouvrement de 40 € (art. L441-10 du Code de commerce). Pas d\'escompte pour paiement anticipé.';
-
     public function __construct(
         #[Autowire(config: 'packages.billing.issuer')]
         private array $issuer = [],
@@ -80,8 +79,15 @@ class InvoicePresenter
                 'billedTo' => $this->billedTo($invoice, $billingEmail),
                 'issuer' => $this->issuer,
                 'creditedInvoice' => $invoice->getCreditedInvoice()?->getNumber(),
-                'legalNotice' => self::LATE_FEE_NOTICE,
+                'legalNotice' => self::lateFeeNotice(),
             ];
+    }
+
+    public static function lateFeeNotice(): string
+    {
+        return Translation::translate(
+            'En cas de retard de paiement, indemnité forfaitaire pour frais de recouvrement de 40 €  (art. L441-10 du Code de commerce). Pas d\'escompte pour paiement anticipé.'
+        );
     }
 
     private function isCreditNote(CompanyInvoice $invoice): bool
@@ -163,10 +169,17 @@ class InvoicePresenter
         $count = $this->bookedSlots($invoice);
 
         if ($count > 1) {
-            return sprintf('À la réservation, %d créneaux réservés · %s', $count, $month);
+            return sprintf(
+                Translation::translate('À la réservation, %d créneaux réservés · %s'),
+                $count,
+                $month);
         }
 
-        return sprintf('À la réservation, %d créneau réservé · %s', $count, $month);
+        return sprintf(
+            Translation::translate('À la réservation, %d créneau réservé · %s'),
+            $count,
+            $month
+        );
     }
 
     private function creditNoteSummary(CompanyInvoice $invoice): string
@@ -174,10 +187,13 @@ class InvoicePresenter
         $credited = $invoice->getCreditedInvoice();
 
         if ($credited === null) {
-            return 'Avoir';
+            return Translation::translate('Avoir');
         }
 
-        return sprintf('Avoir sur la facture %s', $credited->getNumber());
+        return sprintf(
+            Translation::translate('Avoir sur la facture %s'),
+            $credited->getNumber()
+        );
     }
 
     private function month(CompanyInvoice $invoice): string
@@ -217,7 +233,7 @@ class InvoicePresenter
         $succeeded = $this->succeededPayment($invoice);
 
         if ($succeeded === null) {
-            return 'Rien à régler.';
+            return Translation::translate('Rien à régler.');
         }
 
         return $this->paidSentence($succeeded, $failures);
@@ -228,19 +244,25 @@ class InvoicePresenter
         $credited = $invoice->getCreditedInvoice();
 
         if ($credited === null) {
-            return 'Avoir déduit de la prochaine facture.';
+            return Translation::translate('Avoir déduit de la prochaine facture.');
         }
 
-        return sprintf('Avoir rattaché à la facture %s.', $credited->getNumber());
+        return sprintf(
+            Translation::translate('Avoir rattaché à la facture %s.'),
+            $credited->getNumber()
+        );
     }
 
     private function unpaidSentence(int $failures): string
     {
         if ($failures > 0) {
-            return sprintf('Paiement refusé %d fois. À régler depuis votre espace.', $failures);
+            return sprintf(
+                Translation::translate('Paiement refusé %d fois. À régler depuis votre espace.'),
+                $failures
+            );
         }
 
-        return 'À régler à réception.';
+        return Translation::translate('À régler à réception.');
     }
 
     private function paidSentence(CompanyPayment $payment, int $failures): string
@@ -249,10 +271,19 @@ class InvoicePresenter
         $method = PaymentMethodHelper::label($payment->getPaymentMethod()) ?? 'paiement en ligne';
 
         if ($failures > 0) {
-            return sprintf('Payée le %s par %s, après %d refus.', $date, $method, $failures);
+            return sprintf(
+                Translation::translate('Payée le %s par %s, après %d refus.'),
+                $date,
+                $method,
+                $failures
+            );
         }
 
-        return sprintf('Payée le %s par %s.', $date, $method);
+        return sprintf(
+            Translation::translate('Payée le %s par %s.'),
+            $date,
+            $method
+        );
     }
 
     private function succeededPayment(CompanyInvoice $invoice): ?CompanyPayment

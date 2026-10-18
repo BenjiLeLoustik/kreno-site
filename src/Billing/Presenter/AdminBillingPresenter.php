@@ -15,6 +15,7 @@ use App\Entity\Company\CompanySubscription;
 use App\Repository\Company\CompanyInvoiceRepository;
 use App\Repository\Company\CompanyPaymentMethodRepository;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 
 class AdminBillingPresenter
 {
@@ -102,7 +103,12 @@ class AdminBillingPresenter
 
     private function establishments(int $count): string
     {
-        return sprintf('%d établissement%s', $count, $count > 1 ? 's' : '');
+        return Translation::translate(
+            '{count, plural, one {# établissement} other {# établissements}}',
+            [
+                'count' => $count
+            ]
+        );
     }
 
     private function latestStatus(?CompanyInvoice $invoice): LatestInvoiceStatus

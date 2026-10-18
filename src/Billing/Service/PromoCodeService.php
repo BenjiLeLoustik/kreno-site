@@ -6,6 +6,7 @@ use App\Billing\Exception\InvalidPromoCodeException;
 use App\Entity\Website\WebsitePlan;
 use App\Entity\Website\WebsitePromoCode;
 use App\Repository\Website\WebsitePromoCodeRepository;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PlanBilling;
 use App\Website\Provider\WebsiteProvider;
 use DateTimeImmutable;
@@ -79,21 +80,31 @@ class PromoCodeService
 
         if ($promo->getDiscountPercent() > 0) {
             $parts[] = sprintf(
-                '-%d %% pendant %d mois',
+                Translation::translate('-%d %% pendant %d mois'),
                 $promo->getDiscountPercent(),
                 $promo->getDurationMonths()
             );
         }
 
-        return implode(', puis ', $parts);
+        return array_reduce(
+            array_slice($parts, 1),
+            static fn (string $previous, string $next): string => Translation::translate(
+                '{previous}, puis {next}',
+                [
+                    'previous' => $previous,
+                    'next' => $next
+                ],
+            ),
+            $parts[0] ?? '',
+        );
     }
 
     private function freeMonths(int $months): string
     {
         if ($months > 1) {
-            return sprintf('%d mois offerts', $months);
+            return sprintf(Translation::translate('%d mois offerts'), $months);
         }
 
-        return sprintf('%d mois offert', $months);
+        return sprintf(Translation::translate('%d mois offert'), $months);
     }
 }

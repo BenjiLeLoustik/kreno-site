@@ -24,7 +24,9 @@ class PromoQuoteProvider
         try {
             return $this->resolve($input);
         } catch (BusinessRuleException $exception) {
-            return ['error' => $exception->getMessage()];
+            return [
+                'error' => $exception->getMessage()
+            ];
         }
     }
 
@@ -38,7 +40,10 @@ class PromoQuoteProvider
         }
 
         return [
-            'promo' => ['code' => $promo->getCode(), 'label' => $this->promos->describe($promo)],
+            'promo' => [
+                'code' => $promo->getCode(),
+                'label' => $this->promos->describe($promo)
+            ],
             'quote' => $this->prices->quote($plan, BillingPeriod::from($input->period), $promo),
         ];
     }

@@ -83,7 +83,13 @@ class InvoiceService
         array $extraLines = [],
     ): CompanyInvoice {
         $company = $subscription->getCompany() ?? throw new SubscriptionWithoutCompanyException();
-        $lines = [['label' => $label, 'unitPrice' => $amount], ...$extraLines];
+        $lines = [
+            [
+                'label' => $label,
+                'unitPrice' => $amount
+            ],
+            ...$extraLines
+        ];
 
         return $this->issue($company, $lines, $periodStart, $periodEnd, $subscription);
     }

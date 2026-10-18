@@ -9,6 +9,7 @@ use App\Entity\Company\CompanySubscription;
 use App\Entity\Website\WebsitePlan;
 use App\Entity\Website\WebsitePromoCode;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PlanBilling;
 use DateTimeImmutable;
 
@@ -78,9 +79,9 @@ class PriceCalculator
             'period' => $period->value,
             'perBooking' => $this->isPerBooking($plan),
             'price' => $price,
-            'priceLabel' => MoneyHelper::formatExact($price) . ' HT',
+            'priceLabel' => MoneyHelper::formatExact($price) . Translation::translate(' HT'),
             'priceIncludingTax' => $priceIncludingTax,
-            'priceIncludingTaxLabel' => MoneyHelper::formatExact($priceIncludingTax) . ' TTC',
+            'priceIncludingTaxLabel' => MoneyHelper::formatExact($priceIncludingTax) . Translation::translate(' TTC'),
             'unit' => $this->unit($plan, $period),
             'monthlyEquivalent' => $this->monthlyEquivalent($plan, $period, $price),
             'vatRate' => $vatRate,
@@ -169,14 +170,14 @@ class PriceCalculator
     private function unit(WebsitePlan $plan, BillingPeriod $period): string
     {
         if ($this->isPerBooking($plan)) {
-            return 'par créneau réservé';
+            return Translation::translate('par créneau réservé');
         }
 
         if ($period === BillingPeriod::YEARLY) {
-            return 'par an';
+            return Translation::translate('par an');
         }
 
-        return 'par mois';
+        return Translation::translate('par mois');
     }
 
     private function monthlyEquivalent(WebsitePlan $plan, BillingPeriod $period, int $price): ?string
@@ -185,26 +186,26 @@ class PriceCalculator
             return null;
         }
 
-        return MoneyHelper::formatExact((int) round($price / 12)) . ' / mois';
+        return MoneyHelper::formatExact((int) round($price / 12)) . Translation::translate(' / mois');
     }
 
     private function firstLabel(WebsitePlan $plan, ?WebsitePromoCode $promo, int $price, int $first): string
     {
         if ($this->isPerBooking($plan)) {
-            return 'Facturé en fin de mois selon les créneaux réservés';
+            return Translation::translate('Facturé en fin de mois selon les créneaux réservés');
         }
 
         $vatRate = $plan->getVatRate();
         $priceLabel = MoneyHelper::formatExact(MoneyHelper::includingTax($price, $vatRate));
 
         if ($promo === null || $first === $price) {
-            return $priceLabel . ' TTC';
+            return $priceLabel . Translation::translate(' TTC');
         }
 
         $firstLabel = MoneyHelper::formatExact(MoneyHelper::includingTax($first, $vatRate));
 
         return sprintf(
-            '%s TTC (puis %s dès le %de mois)',
+            Translation::translate('%s TTC (puis %s dès le %de mois)'),
             $firstLabel,
             $priceLabel,
             $this->promoMonths($promo) + 1

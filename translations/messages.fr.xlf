@@ -3642,6 +3642,854 @@
         <source>{hours} h</source>
         <target>{hours} h</target>
       </trans-unit>
+      <trans-unit id="926154739ac788bb" resname=" / mois">
+        <source> / mois</source>
+        <target> / mois</target>
+      </trans-unit>
+      <trans-unit id="51c227236d7df1ca" resname=" HT">
+        <source> HT</source>
+        <target> HT</target>
+      </trans-unit>
+      <trans-unit id="fbb1ff5cd3a9cb7a" resname=" TTC">
+        <source> TTC</source>
+        <target> TTC</target>
+      </trans-unit>
+      <trans-unit id="d4e52240d8d82071" resname="%d %s au %d %s %d">
+        <source>%d %s au %d %s %d</source>
+        <target>%d %s au %d %s %d</target>
+      </trans-unit>
+      <trans-unit id="836c27d1cb9c88e8" resname="%d abonnement actif">
+        <source>%d abonnement actif</source>
+        <target>%d abonnement actif</target>
+      </trans-unit>
+      <trans-unit id="a7bb53bfdad6c057" resname="%d abonnements actifs">
+        <source>%d abonnements actifs</source>
+        <target>%d abonnements actifs</target>
+      </trans-unit>
+      <trans-unit id="2d832f447d718f6d" resname="%d avoir">
+        <source>%d avoir</source>
+        <target>%d avoir</target>
+      </trans-unit>
+      <trans-unit id="fe3b8eaccff10a48" resname="%d avoirs">
+        <source>%d avoirs</source>
+        <target>%d avoirs</target>
+      </trans-unit>
+      <trans-unit id="51205921c5025b58" resname="%d créneaux réservés · %s le mois dernier">
+        <source>%d créneaux réservés · %s le mois dernier</source>
+        <target>%d créneaux réservés · %s le mois dernier</target>
+      </trans-unit>
+      <trans-unit id="6ec432a476193501" resname="%d jours d&apos;essai">
+        <source>%d jours d&apos;essai</source>
+        <target>%d jours d&apos;essai</target>
+      </trans-unit>
+      <trans-unit id="11151a4ecf925c01" resname="%d mois offert">
+        <source>%d mois offert</source>
+        <target>%d mois offert</target>
+      </trans-unit>
+      <trans-unit id="44ed3453c2a49b5d" resname="%d mois offerts">
+        <source>%d mois offerts</source>
+        <target>%d mois offerts</target>
+      </trans-unit>
+      <trans-unit id="5ed614d523b066d4" resname="%d établissement">
+        <source>%d établissement</source>
+        <target>%d établissement</target>
+      </trans-unit>
+      <trans-unit id="23a092b0eb4b5b5c" resname="%d établissements">
+        <source>%d établissements</source>
+        <target>%d établissements</target>
+      </trans-unit>
+      <trans-unit id="ef969117f74190ba" resname="%s %% ce mois">
+        <source>%s %% ce mois</source>
+        <target>%s %% ce mois</target>
+      </trans-unit>
+      <trans-unit id="0de82ea54d026b47" resname="%s HT / an · %s TTC">
+        <source>%s HT / an · %s TTC</source>
+        <target>%s HT / an · %s TTC</target>
+      </trans-unit>
+      <trans-unit id="6ff95adae8ec1bf7" resname="%s HT / mois · %s TTC">
+        <source>%s HT / mois · %s TTC</source>
+        <target>%s HT / mois · %s TTC</target>
+      </trans-unit>
+      <trans-unit id="347f4c4cbc4499fc" resname="%s HT par créneau réservé">
+        <source>%s HT par créneau réservé</source>
+        <target>%s HT par créneau réservé</target>
+      </trans-unit>
+      <trans-unit id="9ecb7171790140cc" resname="%s TTC (puis %s dès le %de mois)">
+        <source>%s TTC (puis %s dès le %de mois)</source>
+        <target>%s TTC (puis %s dès le %de mois)</target>
+      </trans-unit>
+      <trans-unit id="fd14ab68e45892e1" resname="%s · %d mois offerts">
+        <source>%s · %d mois offerts</source>
+        <target>%s · %d mois offerts</target>
+      </trans-unit>
+      <trans-unit id="66030b99878f33c2" resname="%s, prorata au %s">
+        <source>%s, prorata au %s</source>
+        <target>%s, prorata au %s</target>
+      </trans-unit>
+      <trans-unit id="c13b9c6df3dad515" resname="%s, prorata du %s au %s">
+        <source>%s, prorata du %s au %s</source>
+        <target>%s, prorata du %s au %s</target>
+      </trans-unit>
+      <trans-unit id="976e5d5ec31b9efe" resname="+%d ce mois">
+        <source>+%d ce mois</source>
+        <target>+%d ce mois</target>
+      </trans-unit>
+      <trans-unit id="60f9e6bbddd804ff" resname="-%d %% pendant %d mois">
+        <source>-%d %% pendant %d mois</source>
+        <target>-%d %% pendant %d mois</target>
+      </trans-unit>
+      <trans-unit id="8cff214baf828ae8" resname="-20 % pendant 3 mois">
+        <source>-20 % pendant 3 mois</source>
+        <target>-20 % pendant 3 mois</target>
+      </trans-unit>
+      <trans-unit id="bd25fd311e6c5f8b" resname="1 mois offert">
+        <source>1 mois offert</source>
+        <target>1 mois offert</target>
+      </trans-unit>
+      <trans-unit id="7f1127eece3bf5c8" resname="ANNULÉE">
+        <source>ANNULÉE</source>
+        <target>ANNULÉE</target>
+      </trans-unit>
+      <trans-unit id="8c1e21958c2ffd2c" resname="AVOIR">
+        <source>AVOIR</source>
+        <target>AVOIR</target>
+      </trans-unit>
+      <trans-unit id="7475fb6a12d5d5c0" resname="Abonnement de %s modifié : %s → %s (%s)">
+        <source>Abonnement de %s modifié : %s → %s (%s)</source>
+        <target>Abonnement de %s modifié : %s → %s (%s)</target>
+      </trans-unit>
+      <trans-unit id="18f07a29a7b5cd15" resname="Abonnement modifié. L&apos;entreprise a été prévenue par e-mail et l&apos;action est notée dans le journal.">
+        <source>Abonnement modifié. L&apos;entreprise a été prévenue par e-mail et l&apos;action est notée dans le journal.</source>
+        <target>Abonnement modifié. L&apos;entreprise a été prévenue par e-mail et l&apos;action est notée dans le journal.</target>
+      </trans-unit>
+      <trans-unit id="306bcd9f4d9800de" resname="Abonnement sans entreprise.">
+        <source>Abonnement sans entreprise.</source>
+        <target>Abonnement sans entreprise.</target>
+      </trans-unit>
+      <trans-unit id="c57b7253626b1a28" resname="Ajoutez un autre moyen de paiement avant de supprimer celui-ci.">
+        <source>Ajoutez un autre moyen de paiement avant de supprimer celui-ci.</source>
+        <target>Ajoutez un autre moyen de paiement avant de supprimer celui-ci.</target>
+      </trans-unit>
+      <trans-unit id="9dad52f2a4ea5720" resname="Ajoutez un moyen de paiement pour changer de formule.">
+        <source>Ajoutez un moyen de paiement pour changer de formule.</source>
+        <target>Ajoutez un moyen de paiement pour changer de formule.</target>
+      </trans-unit>
+      <trans-unit id="86a523616a064c52" resname="Annonce tarifaire : %d nouvelle(s), %d correction(s), %d annulation(s)">
+        <source>Annonce tarifaire : %d nouvelle(s), %d correction(s), %d annulation(s)</source>
+        <target>Annonce tarifaire : %d nouvelle(s), %d correction(s), %d annulation(s)</target>
+      </trans-unit>
+      <trans-unit id="a2fe8e999e38ed30" resname="Annuel">
+        <source>Annuel</source>
+        <target>Annuel</target>
+      </trans-unit>
+      <trans-unit id="58524ce81f34c879" resname="Annulé">
+        <source>Annulé</source>
+        <target>Annulé</target>
+      </trans-unit>
+      <trans-unit id="2f7ea8495f478552" resname="Annulée">
+        <source>Annulée</source>
+        <target>Annulée</target>
+      </trans-unit>
+      <trans-unit id="4679b3b12de0b53a" resname="Aucun">
+        <source>Aucun</source>
+        <target>Aucun</target>
+      </trans-unit>
+      <trans-unit id="717e1336fb712681" resname="Aucun abonnement">
+        <source>Aucun abonnement</source>
+        <target>Aucun abonnement</target>
+      </trans-unit>
+      <trans-unit id="fe740a294cd7d9f7" resname="Aucun abonnement en cours.">
+        <source>Aucun abonnement en cours.</source>
+        <target>Aucun abonnement en cours.</target>
+      </trans-unit>
+      <trans-unit id="f4ce2fae545463cd" resname="Aucun paiement n&apos;est en retard.">
+        <source>Aucun paiement n&apos;est en retard.</source>
+        <target>Aucun paiement n&apos;est en retard.</target>
+      </trans-unit>
+      <trans-unit id="8602950538e7b4bd" resname="Aucun, période en cours due">
+        <source>Aucun, période en cours due</source>
+        <target>Aucun, période en cours due</target>
+      </trans-unit>
+      <trans-unit id="283bea519f16704f" resname="Aucune facture">
+        <source>Aucune facture</source>
+        <target>Aucune facture</target>
+      </trans-unit>
+      <trans-unit id="12dfc6b0bea4d929" resname="Aucune facture sur laquelle émettre un avoir.">
+        <source>Aucune facture sur laquelle émettre un avoir.</source>
+        <target>Aucune facture sur laquelle émettre un avoir.</target>
+      </trans-unit>
+      <trans-unit id="acf05bf872e90a20" resname="Aucune facture à régler.">
+        <source>Aucune facture à régler.</source>
+        <target>Aucune facture à régler.</target>
+      </trans-unit>
+      <trans-unit id="d743a8edcef07a2a" resname="Aucune formule choisie.">
+        <source>Aucune formule choisie.</source>
+        <target>Aucune formule choisie.</target>
+      </trans-unit>
+      <trans-unit id="c4e3775ce3a2d900" resname="Aucune formule « à la réservation » n&apos;est proposée.">
+        <source>Aucune formule « à la réservation » n&apos;est proposée.</source>
+        <target>Aucune formule « à la réservation » n&apos;est proposée.</target>
+      </trans-unit>
+      <trans-unit id="335073fe46a3035d" resname="Aucune résiliation n&apos;est prévue.">
+        <source>Aucune résiliation n&apos;est prévue.</source>
+        <target>Aucune résiliation n&apos;est prévue.</target>
+      </trans-unit>
+      <trans-unit id="e712294b5a5d146b" resname="Autre raison">
+        <source>Autre raison</source>
+        <target>Autre raison</target>
+      </trans-unit>
+      <trans-unit id="e598a5afcae50d2c" resname="Avoir déduit de la prochaine facture.">
+        <source>Avoir déduit de la prochaine facture.</source>
+        <target>Avoir déduit de la prochaine facture.</target>
+      </trans-unit>
+      <trans-unit id="f7b697ff36af617e" resname="Avoir rattaché à la facture %s.">
+        <source>Avoir rattaché à la facture %s.</source>
+        <target>Avoir rattaché à la facture %s.</target>
+      </trans-unit>
+      <trans-unit id="992ac4d6be9d988d" resname="Avoir sur la dernière facture">
+        <source>Avoir sur la dernière facture</source>
+        <target>Avoir sur la dernière facture</target>
+      </trans-unit>
+      <trans-unit id="b6a496e377ac9b87" resname="Avoir sur la facture %s">
+        <source>Avoir sur la facture %s</source>
+        <target>Avoir sur la facture %s</target>
+      </trans-unit>
+      <trans-unit id="fe8c717b13489692" resname="Avoir sur la facture %s : %s">
+        <source>Avoir sur la facture %s : %s</source>
+        <target>Avoir sur la facture %s : %s</target>
+      </trans-unit>
+      <trans-unit id="777182272c5179d6" resname="Avoirs émis">
+        <source>Avoirs émis</source>
+        <target>Avoirs émis</target>
+      </trans-unit>
+      <trans-unit id="8c6460cf71af9807" resname="Brouillon">
+        <source>Brouillon</source>
+        <target>Brouillon</target>
+      </trans-unit>
+      <trans-unit id="bf7b0ead279760f8" resname="CB">
+        <source>CB</source>
+        <target>CB</target>
+      </trans-unit>
+      <trans-unit id="84a3e45cafab93a5" resname="Ce code n&apos;existe pas ou a expiré.">
+        <source>Ce code n&apos;existe pas ou a expiré.</source>
+        <target>Ce code n&apos;existe pas ou a expiré.</target>
+      </trans-unit>
+      <trans-unit id="8bab59d042695aba" resname="Ce code promo n&apos;est pas valable pour cette formule.">
+        <source>Ce code promo n&apos;est pas valable pour cette formule.</source>
+        <target>Ce code promo n&apos;est pas valable pour cette formule.</target>
+      </trans-unit>
+      <trans-unit id="8132d7aeaa26611a" resname="Ce moyen de paiement n&apos;appartient pas à l&apos;entreprise.">
+        <source>Ce moyen de paiement n&apos;appartient pas à l&apos;entreprise.</source>
+        <target>Ce moyen de paiement n&apos;appartient pas à l&apos;entreprise.</target>
+      </trans-unit>
+      <trans-unit id="d41a358d6e319c87" resname="Ce moyen de paiement n&apos;est pas accepté.">
+        <source>Ce moyen de paiement n&apos;est pas accepté.</source>
+        <target>Ce moyen de paiement n&apos;est pas accepté.</target>
+      </trans-unit>
+      <trans-unit id="29f653e282bfbb3c" resname="Cette facture est déjà réglée.">
+        <source>Cette facture est déjà réglée.</source>
+        <target>Cette facture est déjà réglée.</target>
+      </trans-unit>
+      <trans-unit id="5a93fe6df3ea2ee0" resname="Cette facture ne peut pas faire l&apos;objet d&apos;un avoir.">
+        <source>Cette facture ne peut pas faire l&apos;objet d&apos;un avoir.</source>
+        <target>Cette facture ne peut pas faire l&apos;objet d&apos;un avoir.</target>
+      </trans-unit>
+      <trans-unit id="2a92c6da8b5c1d23" resname="Cette formule n&apos;est pas proposée.">
+        <source>Cette formule n&apos;est pas proposée.</source>
+        <target>Cette formule n&apos;est pas proposée.</target>
+      </trans-unit>
+      <trans-unit id="aa03cffb377d4fb3" resname="Cette offre concerne les abonnements.">
+        <source>Cette offre concerne les abonnements.</source>
+        <target>Cette offre concerne les abonnements.</target>
+      </trans-unit>
+      <trans-unit id="cd60b0d6b8bc4e3c" resname="Cette offre n&apos;est plus disponible.">
+        <source>Cette offre n&apos;est plus disponible.</source>
+        <target>Cette offre n&apos;est plus disponible.</target>
+      </trans-unit>
+      <trans-unit id="f4aade0278263b85" resname="Changement enregistré : il prendra effet le %s.">
+        <source>Changement enregistré : il prendra effet le %s.</source>
+        <target>Changement enregistré : il prendra effet le %s.</target>
+      </trans-unit>
+      <trans-unit id="6b2962cd377d1983" resname="Choisissez d&apos;abord votre formule.">
+        <source>Choisissez d&apos;abord votre formule.</source>
+        <target>Choisissez d&apos;abord votre formule.</target>
+      </trans-unit>
+      <trans-unit id="057294080a4edf51" resname="Choisissez une formule pour publier des créneaux.">
+        <source>Choisissez une formule pour publier des créneaux.</source>
+        <target>Choisissez une formule pour publier des créneaux.</target>
+      </trans-unit>
+      <trans-unit id="8d63ef2ec61cbec7" resname="Code %s : %s, jusqu&apos;au %s">
+        <source>Code %s : %s, jusqu&apos;au %s</source>
+        <target>Code %s : %s, jusqu&apos;au %s</target>
+      </trans-unit>
+      <trans-unit id="1ab65b298b9a2585" resname="Commission de %s HT par créneau réservé">
+        <source>Commission de %s HT par créneau réservé</source>
+        <target>Commission de %s HT par créneau réservé</target>
+      </trans-unit>
+      <trans-unit id="990baebf47070308" resname="Commissions du mois">
+        <source>Commissions du mois</source>
+        <target>Commissions du mois</target>
+      </trans-unit>
+      <trans-unit id="00f13813db60d30c" resname="Crédit %s non utilisé">
+        <source>Crédit %s non utilisé</source>
+        <target>Crédit %s non utilisé</target>
+      </trans-unit>
+      <trans-unit id="6626751187eefb69" resname="Créez d&apos;abord le code {code} dans « Tarifs et abonnements ».">
+        <source>Créez d&apos;abord le code {code} dans « Tarifs et abonnements ».</source>
+        <target>Créez d&apos;abord le code {code} dans « Tarifs et abonnements ».</target>
+      </trans-unit>
+      <trans-unit id="ecaa7b5a637a6e3e" resname="Créneaux illimités">
+        <source>Créneaux illimités</source>
+        <target>Créneaux illimités</target>
+      </trans-unit>
+      <trans-unit id="547f8348527d1e33" resname="Créneaux réservés · %s">
+        <source>Créneaux réservés · %s</source>
+        <target>Créneaux réservés · %s</target>
+      </trans-unit>
+      <trans-unit id="7f85ec3e0f2f3fdf" resname="C’est trop cher pour moi">
+        <source>C’est trop cher pour moi</source>
+        <target>C’est trop cher pour moi</target>
+      </trans-unit>
+      <trans-unit id="8bd65b80c1d475e2" resname="Dernier rappel par e-mail et dans votre espace.">
+        <source>Dernier rappel par e-mail et dans votre espace.</source>
+        <target>Dernier rappel par e-mail et dans votre espace.</target>
+      </trans-unit>
+      <trans-unit id="333b61be1e187920" resname="Débité sous 2 jours ouvrés, sans validation bancaire">
+        <source>Débité sous 2 jours ouvrés, sans validation bancaire</source>
+        <target>Débité sous 2 jours ouvrés, sans validation bancaire</target>
+      </trans-unit>
+      <trans-unit id="52dbcc7db1d973c9" resname="Délai de %d jours accordé à %s.">
+        <source>Délai de %d jours accordé à %s.</source>
+        <target>Délai de %d jours accordé à %s.</target>
+      </trans-unit>
+      <trans-unit id="55d1aceb9edcf90c" resname="Délai de paiement de %d jours accordé à %s">
+        <source>Délai de paiement de %d jours accordé à %s</source>
+        <target>Délai de paiement de %d jours accordé à %s</target>
+      </trans-unit>
+      <trans-unit id="2f6c8477e92bc6ea" resname="En attente">
+        <source>En attente</source>
+        <target>En attente</target>
+      </trans-unit>
+      <trans-unit id="1eadc16f62edaee0" resname="En attente de mise en ligne">
+        <source>En attente de mise en ligne</source>
+        <target>En attente de mise en ligne</target>
+      </trans-unit>
+      <trans-unit id="96bbd94465ead582" resname="En cas de retard de paiement, indemnité forfaitaire pour frais de recouvrement de 40 €  (art. L441-10 du Code de commerce). Pas d&apos;escompte pour paiement anticipé.">
+        <source>En cas de retard de paiement, indemnité forfaitaire pour frais de recouvrement de 40 €  (art. L441-10 du Code de commerce). Pas d&apos;escompte pour paiement anticipé.</source>
+        <target>En cas de retard de paiement, indemnité forfaitaire pour frais de recouvrement de 40 €  (art. L441-10 du Code de commerce). Pas d&apos;escompte pour paiement anticipé.</target>
+      </trans-unit>
+      <trans-unit id="797f5dcd0217e2b9" resname="En cours">
+        <source>En cours</source>
+        <target>En cours</target>
+      </trans-unit>
+      <trans-unit id="408beba4ee45e862" resname="Encaissé ce mois">
+        <source>Encaissé ce mois</source>
+        <target>Encaissé ce mois</target>
+      </trans-unit>
+      <trans-unit id="0622ff17dba7204e" resname="Engagement %d mois">
+        <source>Engagement %d mois</source>
+        <target>Engagement %d mois</target>
+      </trans-unit>
+      <trans-unit id="386ba00551360e17" resname="Entreprises abonnées">
+        <source>Entreprises abonnées</source>
+        <target>Entreprises abonnées</target>
+      </trans-unit>
+      <trans-unit id="cf525651e28223fc" resname="Expire {date}">
+        <source>Expire {date}</source>
+        <target>Expire {date}</target>
+      </trans-unit>
+      <trans-unit id="f28b39fc21e0aa2f" resname="Expirée">
+        <source>Expirée</source>
+        <target>Expirée</target>
+      </trans-unit>
+      <trans-unit id="96f4ce40811d4be3" resname="Facture %s">
+        <source>Facture %s</source>
+        <target>Facture %s</target>
+      </trans-unit>
+      <trans-unit id="00694ae5a17dd391" resname="Facture introuvable.">
+        <source>Facture introuvable.</source>
+        <target>Facture introuvable.</target>
+      </trans-unit>
+      <trans-unit id="0d352128ae1aeff8" resname="Facture réglée.">
+        <source>Facture réglée.</source>
+        <target>Facture réglée.</target>
+      </trans-unit>
+      <trans-unit id="7a5f57d862701ff7" resname="Facture sans entreprise.">
+        <source>Facture sans entreprise.</source>
+        <target>Facture sans entreprise.</target>
+      </trans-unit>
+      <trans-unit id="2567d1e3e94aafad" resname="Facturé en fin de mois">
+        <source>Facturé en fin de mois</source>
+        <target>Facturé en fin de mois</target>
+      </trans-unit>
+      <trans-unit id="74e4e08fc6018525" resname="Facturé en fin de mois selon les créneaux réservés">
+        <source>Facturé en fin de mois selon les créneaux réservés</source>
+        <target>Facturé en fin de mois selon les créneaux réservés</target>
+      </trans-unit>
+      <trans-unit id="dfb6342d01470e48" resname="Fermeture, congés, travaux : suspendez l’abonnement sans perdre votre page.">
+        <source>Fermeture, congés, travaux : suspendez l’abonnement sans perdre votre page.</source>
+        <target>Fermeture, congés, travaux : suspendez l’abonnement sans perdre votre page.</target>
+      </trans-unit>
+      <trans-unit id="c8d41f44a3da2f72" resname="HT par an, soit %s / mois">
+        <source>HT par an, soit %s / mois</source>
+        <target>HT par an, soit %s / mois</target>
+      </trans-unit>
+      <trans-unit id="ff68294405153ce8" resname="HT par créneau réservé">
+        <source>HT par créneau réservé</source>
+        <target>HT par créneau réservé</target>
+      </trans-unit>
+      <trans-unit id="8735878910b63ab6" resname="HT par mois">
+        <source>HT par mois</source>
+        <target>HT par mois</target>
+      </trans-unit>
+      <trans-unit id="31195d6e073d6574" resname="Immédiatement, avec prorata">
+        <source>Immédiatement, avec prorata</source>
+        <target>Immédiatement, avec prorata</target>
+      </trans-unit>
+      <trans-unit id="e4500ca3de165a1a" resname="Indiquez vos informations de facturation.">
+        <source>Indiquez vos informations de facturation.</source>
+        <target>Indiquez vos informations de facturation.</target>
+      </trans-unit>
+      <trans-unit id="192887fc6046dad9" resname="Informations de facturation enregistrées.">
+        <source>Informations de facturation enregistrées.</source>
+        <target>Informations de facturation enregistrées.</target>
+      </trans-unit>
+      <trans-unit id="9e045021b76041de" resname="Je comprends que mes créneaux seront facturés %s HT par réservation à partir du %s.">
+        <source>Je comprends que mes créneaux seront facturés %s HT par réservation à partir du %s.</source>
+        <target>Je comprends que mes créneaux seront facturés %s HT par réservation à partir du %s.</target>
+      </trans-unit>
+      <trans-unit id="53d07cfd73815585" resname="Je ferme définitivement">
+        <source>Je ferme définitivement</source>
+        <target>Je ferme définitivement</target>
+      </trans-unit>
+      <trans-unit id="abec1f57ca734a06" resname="Je ferme temporairement">
+        <source>Je ferme temporairement</source>
+        <target>Je ferme temporairement</target>
+      </trans-unit>
+      <trans-unit id="d5d52fc95ede1920" resname="Je n’ai pas assez de réservations">
+        <source>Je n’ai pas assez de réservations</source>
+        <target>Je n’ai pas assez de réservations</target>
+      </trans-unit>
+      <trans-unit id="263aacadac588c8b" resname="La remise est appliquée à votre abonnement.">
+        <source>La remise est appliquée à votre abonnement.</source>
+        <target>La remise est appliquée à votre abonnement.</target>
+      </trans-unit>
+      <trans-unit id="f0311f446cd2dd08" resname="La résiliation est déjà enregistrée.">
+        <source>La résiliation est déjà enregistrée.</source>
+        <target>La résiliation est déjà enregistrée.</target>
+      </trans-unit>
+      <trans-unit id="e4247e2efeb001c6" resname="La {code} augmente le prix de {count} abonnement(s) : sa mise en ligne doit être planifiée au moins {days} jours à l&apos;avance pour respecter le préavis.">
+        <source>La {code} augmente le prix de {count} abonnement(s) : sa mise en ligne doit être planifiée au moins {days} jours à l&apos;avance pour respecter le préavis.</source>
+        <target>La {code} augmente le prix de {count} abonnement(s) : sa mise en ligne doit être planifiée au moins {days} jours à l&apos;avance pour respecter le préavis.</target>
+      </trans-unit>
+      <trans-unit id="9a53354ffff4da4b" resname="Le plus choisi">
+        <source>Le plus choisi</source>
+        <target>Le plus choisi</target>
+      </trans-unit>
+      <trans-unit id="8174c9963d51458c" resname="Le prestataire de paiement a refusé la requête : {reason}">
+        <source>Le prestataire de paiement a refusé la requête : {reason}</source>
+        <target>Le prestataire de paiement a refusé la requête : {reason}</target>
+      </trans-unit>
+      <trans-unit id="ddd3dd5464532b2d" resname="Le prestataire de paiement est injoignable : {reason}">
+        <source>Le prestataire de paiement est injoignable : {reason}</source>
+        <target>Le prestataire de paiement est injoignable : {reason}</target>
+      </trans-unit>
+      <trans-unit id="8cfd0b26f6057abe" resname="Le prestataire de paiement ne répond pas. Réessayez dans quelques instants.">
+        <source>Le prestataire de paiement ne répond pas. Réessayez dans quelques instants.</source>
+        <target>Le prestataire de paiement ne répond pas. Réessayez dans quelques instants.</target>
+      </trans-unit>
+      <trans-unit id="aea77fa10e6d3967" resname="Mandat SEPA">
+        <source>Mandat SEPA</source>
+        <target>Mandat SEPA</target>
+      </trans-unit>
+      <trans-unit id="8f259d93410473ab" resname="Mandat signé le {date}">
+        <source>Mandat signé le {date}</source>
+        <target>Mandat signé le {date}</target>
+      </trans-unit>
+      <trans-unit id="269588ce444727d7" resname="Mensuel">
+        <source>Mensuel</source>
+        <target>Mensuel</target>
+      </trans-unit>
+      <trans-unit id="42dd586c06d6ef0d" resname="Mettre en pause">
+        <source>Mettre en pause</source>
+        <target>Mettre en pause</target>
+      </trans-unit>
+      <trans-unit id="d7667720fc9bf8bd" resname="Mettre en pause %d mois">
+        <source>Mettre en pause %d mois</source>
+        <target>Mettre en pause %d mois</target>
+      </trans-unit>
+      <trans-unit id="8a7d9f8e67f560f3" resname="Mise en avant dans le quartier">
+        <source>Mise en avant dans le quartier</source>
+        <target>Mise en avant dans le quartier</target>
+      </trans-unit>
+      <trans-unit id="947cc07e2b3e8a73" resname="Montant">
+        <source>Montant</source>
+        <target>Montant</target>
+      </trans-unit>
+      <trans-unit id="14b4be8505383071" resname="Moyen de paiement enregistré.">
+        <source>Moyen de paiement enregistré.</source>
+        <target>Moyen de paiement enregistré.</target>
+      </trans-unit>
+      <trans-unit id="3803fad6261f295b" resname="Moyen de paiement introuvable.">
+        <source>Moyen de paiement introuvable.</source>
+        <target>Moyen de paiement introuvable.</target>
+      </trans-unit>
+      <trans-unit id="203636034046d266" resname="Moyen de paiement par défaut modifié.">
+        <source>Moyen de paiement par défaut modifié.</source>
+        <target>Moyen de paiement par défaut modifié.</target>
+      </trans-unit>
+      <trans-unit id="0d03dde8e1520bd3" resname="Moyen de paiement supprimé.">
+        <source>Moyen de paiement supprimé.</source>
+        <target>Moyen de paiement supprimé.</target>
+      </trans-unit>
+      <trans-unit id="c97be8c7150867c2" resname="Nouvelle tentative">
+        <source>Nouvelle tentative</source>
+        <target>Nouvelle tentative</target>
+      </trans-unit>
+      <trans-unit id="f85becdd607c7ea9" resname="Nouvelle tentative automatique sur le moyen par défaut.">
+        <source>Nouvelle tentative automatique sur le moyen par défaut.</source>
+        <target>Nouvelle tentative automatique sur le moyen par défaut.</target>
+      </trans-unit>
+      <trans-unit id="89547f1fd6fee2fc" resname="Nouvelle tentative de paiement de la facture %s (%s)">
+        <source>Nouvelle tentative de paiement de la facture %s (%s)</source>
+        <target>Nouvelle tentative de paiement de la facture %s (%s)</target>
+      </trans-unit>
+      <trans-unit id="8b9d971ea0b418f4" resname="Offre inconnue.">
+        <source>Offre inconnue.</source>
+        <target>Offre inconnue.</target>
+      </trans-unit>
+      <trans-unit id="863b2d64fddaf3c5" resname="PAYÉE">
+        <source>PAYÉE</source>
+        <target>PAYÉE</target>
+      </trans-unit>
+      <trans-unit id="fe294d352d4e6d07" resname="Paiement en retard">
+        <source>Paiement en retard</source>
+        <target>Paiement en retard</target>
+      </trans-unit>
+      <trans-unit id="04c338d2a40a4d9a" resname="Paiement introuvable.">
+        <source>Paiement introuvable.</source>
+        <target>Paiement introuvable.</target>
+      </trans-unit>
+      <trans-unit id="07602e08f5a644ab" resname="Paiement refusé %d fois. À régler depuis votre espace.">
+        <source>Paiement refusé %d fois. À régler depuis votre espace.</source>
+        <target>Paiement refusé %d fois. À régler depuis votre espace.</target>
+      </trans-unit>
+      <trans-unit id="d1fa7bc69262f9da" resname="Paiement refusé. E-mail envoyé au propriétaire et à la comptabilité.">
+        <source>Paiement refusé. E-mail envoyé au propriétaire et à la comptabilité.</source>
+        <target>Paiement refusé. E-mail envoyé au propriétaire et à la comptabilité.</target>
+      </trans-unit>
+      <trans-unit id="9e9cf74f49ce0e80" resname="Paiements refusés">
+        <source>Paiements refusés</source>
+        <target>Paiements refusés</target>
+      </trans-unit>
+      <trans-unit id="11203adc046b02a0" resname="Passez plutôt « %s »">
+        <source>Passez plutôt « %s »</source>
+        <target>Passez plutôt « %s »</target>
+      </trans-unit>
+      <trans-unit id="75abf67901a2e3be" resname="Payer %s par prélèvement">
+        <source>Payer %s par prélèvement</source>
+        <target>Payer %s par prélèvement</target>
+      </trans-unit>
+      <trans-unit id="2542792ee0354944" resname="Payé">
+        <source>Payé</source>
+        <target>Payé</target>
+      </trans-unit>
+      <trans-unit id="abfdec4b23e74a6c" resname="Payée">
+        <source>Payée</source>
+        <target>Payée</target>
+      </trans-unit>
+      <trans-unit id="d166cf56ed42f307" resname="Payée le %s par %s, après %d refus.">
+        <source>Payée le %s par %s, après %d refus.</source>
+        <target>Payée le %s par %s, après %d refus.</target>
+      </trans-unit>
+      <trans-unit id="9b2a77f9de05f0a0" resname="Payée le %s par %s.">
+        <source>Payée le %s par %s.</source>
+        <target>Payée le %s par %s.</target>
+      </trans-unit>
+      <trans-unit id="ecd8079b7dd6b298" resname="Plus de mise en avant dans le quartier">
+        <source>Plus de mise en avant dans le quartier</source>
+        <target>Plus de mise en avant dans le quartier</target>
+      </trans-unit>
+      <trans-unit id="48754573002a76cb" resname="Prochaine échéance">
+        <source>Prochaine échéance</source>
+        <target>Prochaine échéance</target>
+      </trans-unit>
+      <trans-unit id="c5110876d2b32ab2" resname="Profiter de l’offre">
+        <source>Profiter de l’offre</source>
+        <target>Profiter de l’offre</target>
+      </trans-unit>
+      <trans-unit id="34f41ac1010951fa" resname="Préfixe de facturation invalide pour &quot;%s&quot; : &quot;%s&quot; (lettres majuscules, chiffres et tirets uniquement).">
+        <source>Préfixe de facturation invalide pour &quot;%s&quot; : &quot;%s&quot; (lettres majuscules, chiffres et tirets uniquement).</source>
+        <target>Préfixe de facturation invalide pour &quot;%s&quot; : &quot;%s&quot; (lettres majuscules, chiffres et tirets uniquement).</target>
+      </trans-unit>
+      <trans-unit id="efb39049eac60ec1" resname="Prélèvement SEPA •••• %s">
+        <source>Prélèvement SEPA •••• %s</source>
+        <target>Prélèvement SEPA •••• %s</target>
+      </trans-unit>
+      <trans-unit id="4b298877d4433eac" resname="Prélèvement relancé : %s.">
+        <source>Prélèvement relancé : %s.</source>
+        <target>Prélèvement relancé : %s.</target>
+      </trans-unit>
+      <trans-unit id="29827d09f43d6e6f" resname="Prélèvement réussi. La facture est réglée.">
+        <source>Prélèvement réussi. La facture est réglée.</source>
+        <target>Prélèvement réussi. La facture est réglée.</target>
+      </trans-unit>
+      <trans-unit id="44a10bad0bb2541c" resname="Refusé">
+        <source>Refusé</source>
+        <target>Refusé</target>
+      </trans-unit>
+      <trans-unit id="b1dfb5cfb197a423" resname="Refusée aujourd&apos;hui · réessayer la même carte">
+        <source>Refusée aujourd&apos;hui · réessayer la même carte</source>
+        <target>Refusée aujourd&apos;hui · réessayer la même carte</target>
+      </trans-unit>
+      <trans-unit id="58401c77775d75cf" resname="Renseignez d&apos;abord votre établissement.">
+        <source>Renseignez d&apos;abord votre établissement.</source>
+        <target>Renseignez d&apos;abord votre établissement.</target>
+      </trans-unit>
+      <trans-unit id="b04059695319fbf1" resname="Restez sur %s avec cette remise appliquée dès la prochaine facture.">
+        <source>Restez sur %s avec cette remise appliquée dès la prochaine facture.</source>
+        <target>Restez sur %s avec cette remise appliquée dès la prochaine facture.</target>
+      </trans-unit>
+      <trans-unit id="af21a7e806185d21" resname="Revenu mensuel récurrent">
+        <source>Revenu mensuel récurrent</source>
+        <target>Revenu mensuel récurrent</target>
+      </trans-unit>
+      <trans-unit id="8a3d193ef68f75e3" resname="Rien à régler.">
+        <source>Rien à régler.</source>
+        <target>Rien à régler.</target>
+      </trans-unit>
+      <trans-unit id="f82b3e2c6575fe32" resname="Réessayer le paiement de %s">
+        <source>Réessayer le paiement de %s</source>
+        <target>Réessayer le paiement de %s</target>
+      </trans-unit>
+      <trans-unit id="7dfc08b2ca6a996b" resname="Résiliation annulée : votre abonnement continue.">
+        <source>Résiliation annulée : votre abonnement continue.</source>
+        <target>Résiliation annulée : votre abonnement continue.</target>
+      </trans-unit>
+      <trans-unit id="7bb45da0fbececd6" resname="Résiliation enregistrée. Votre formule reste active jusqu&apos;au %s.">
+        <source>Résiliation enregistrée. Votre formule reste active jusqu&apos;au %s.</source>
+        <target>Résiliation enregistrée. Votre formule reste active jusqu&apos;au %s.</target>
+      </trans-unit>
+      <trans-unit id="274dec3d7eb9b4c9" resname="Résiliations">
+        <source>Résiliations</source>
+        <target>Résiliations</target>
+      </trans-unit>
+      <trans-unit id="ec2f744d441c158f" resname="Résiliée">
+        <source>Résiliée</source>
+        <target>Résiliée</target>
+      </trans-unit>
+      <trans-unit id="06f2825af70d64fd" resname="Réussi">
+        <source>Réussi</source>
+        <target>Réussi</target>
+      </trans-unit>
+      <trans-unit id="832c3b1ba4883107" resname="SEPA">
+        <source>SEPA</source>
+        <target>SEPA</target>
+      </trans-unit>
+      <trans-unit id="76e51ae00034b8fa" resname="Sans commission">
+        <source>Sans commission</source>
+        <target>Sans commission</target>
+      </trans-unit>
+      <trans-unit id="afab79cb62f11760" resname="Seul un abonnement actif peut être mis en pause.">
+        <source>Seul un abonnement actif peut être mis en pause.</source>
+        <target>Seul un abonnement actif peut être mis en pause.</target>
+      </trans-unit>
+      <trans-unit id="f46f31fcb3b0b473" resname="Signature de notification invalide.">
+        <source>Signature de notification invalide.</source>
+        <target>Signature de notification invalide.</target>
+      </trans-unit>
+      <trans-unit id="e5bde7ee2d52c429" resname="Statistiques détaillées masquées">
+        <source>Statistiques détaillées masquées</source>
+        <target>Statistiques détaillées masquées</target>
+      </trans-unit>
+      <trans-unit id="4a040c2780a80831" resname="Un paiement est en attente depuis trop longtemps : réglez la facture pour publier à nouveau.">
+        <source>Un paiement est en attente depuis trop longtemps : réglez la facture pour publier à nouveau.</source>
+        <target>Un paiement est en attente depuis trop longtemps : réglez la facture pour publier à nouveau.</target>
+      </trans-unit>
+      <trans-unit id="58bf8e6fd91bf5e1" resname="Une facture payée ne peut pas être annulée : émettez un avoir.">
+        <source>Une facture payée ne peut pas être annulée : émettez un avoir.</source>
+        <target>Une facture payée ne peut pas être annulée : émettez un avoir.</target>
+      </trans-unit>
+      <trans-unit id="1e4a44591369d0f6" resname="Vos %d page établissement">
+        <source>Vos %d page établissement</source>
+        <target>Vos %d page établissement</target>
+      </trans-unit>
+      <trans-unit id="9273607be7db8d47" resname="Vos %d pages établissement">
+        <source>Vos %d pages établissement</source>
+        <target>Vos %d pages établissement</target>
+      </trans-unit>
+      <trans-unit id="93335b542604c7a4" resname="Vos créneaux ne sont plus publiés jusqu&apos;au règlement. Vos données sont conservées.">
+        <source>Vos créneaux ne sont plus publiés jusqu&apos;au règlement. Vos données sont conservées.</source>
+        <target>Vos créneaux ne sont plus publiés jusqu&apos;au règlement. Vos données sont conservées.</target>
+      </trans-unit>
+      <trans-unit id="254975e76d52daa4" resname="Vos créneaux, réservations et avis">
+        <source>Vos créneaux, réservations et avis</source>
+        <target>Vos créneaux, réservations et avis</target>
+      </trans-unit>
+      <trans-unit id="b66cd1180af788bf" resname="Votre abonnement est en pause : la publication de créneaux reprendra à la fin de la pause.">
+        <source>Votre abonnement est en pause : la publication de créneaux reprendra à la fin de la pause.</source>
+        <target>Votre abonnement est en pause : la publication de créneaux reprendra à la fin de la pause.</target>
+      </trans-unit>
+      <trans-unit id="58e015e37010f39a" resname="Votre abonnement est mis en pause.">
+        <source>Votre abonnement est mis en pause.</source>
+        <target>Votre abonnement est mis en pause.</target>
+      </trans-unit>
+      <trans-unit id="fafdd590c18f1eee" resname="Votre banque n&apos;a pas validé l&apos;enregistrement de ce moyen de paiement.">
+        <source>Votre banque n&apos;a pas validé l&apos;enregistrement de ce moyen de paiement.</source>
+        <target>Votre banque n&apos;a pas validé l&apos;enregistrement de ce moyen de paiement.</target>
+      </trans-unit>
+      <trans-unit id="7a51bd5afbaa0e30" resname="Votre entreprise a déjà une formule active : changez-la depuis la facturation.">
+        <source>Votre entreprise a déjà une formule active : changez-la depuis la facturation.</source>
+        <target>Votre entreprise a déjà une formule active : changez-la depuis la facturation.</target>
+      </trans-unit>
+      <trans-unit id="44980e51a0ddb168" resname="Votre formule est sans abonnement : il n&apos;y a rien à résilier.">
+        <source>Votre formule est sans abonnement : il n&apos;y a rien à résilier.</source>
+        <target>Votre formule est sans abonnement : il n&apos;y a rien à résilier.</target>
+      </trans-unit>
+      <trans-unit id="19586e0e0b4ab28d" resname="Votre formule passera à la réservation à la prochaine échéance.">
+        <source>Votre formule passera à la réservation à la prochaine échéance.</source>
+        <target>Votre formule passera à la réservation à la prochaine échéance.</target>
+      </trans-unit>
+      <trans-unit id="ffb1245a32a1d52e" resname="Votre historique et vos factures">
+        <source>Votre historique et vos factures</source>
+        <target>Votre historique et vos factures</target>
+      </trans-unit>
+      <trans-unit id="198645dac6116285" resname="Vous devez accepter le mandat de prélèvement SEPA.">
+        <source>Vous devez accepter le mandat de prélèvement SEPA.</source>
+        <target>Vous devez accepter le mandat de prélèvement SEPA.</target>
+      </trans-unit>
+      <trans-unit id="379d02b9ae792e80" resname="Vous paierez seulement %s HT par créneau réservé, sans résilier.">
+        <source>Vous paierez seulement %s HT par créneau réservé, sans résilier.</source>
+        <target>Vous paierez seulement %s HT par créneau réservé, sans résilier.</target>
+      </trans-unit>
+      <trans-unit id="47a561617e188d36" resname="Vous êtes déjà sur cette formule.">
+        <source>Vous êtes déjà sur cette formule.</source>
+        <target>Vous êtes déjà sur cette formule.</target>
+      </trans-unit>
+      <trans-unit id="80a1151ac2f580bd" resname="Vous êtes maintenant sur la formule %s.">
+        <source>Vous êtes maintenant sur la formule %s.</source>
+        <target>Vous êtes maintenant sur la formule %s.</target>
+      </trans-unit>
+      <trans-unit id="6525d2433816320f" resname="abonnements et commissions">
+        <source>abonnements et commissions</source>
+        <target>abonnements et commissions</target>
+      </trans-unit>
+      <trans-unit id="2bd2138e16283cc8" resname="aucun moyen de paiement enregistré">
+        <source>aucun moyen de paiement enregistré</source>
+        <target>aucun moyen de paiement enregistré</target>
+      </trans-unit>
+      <trans-unit id="4798de88e69c0702" resname="authentification 3D Secure non validée">
+        <source>authentification 3D Secure non validée</source>
+        <target>authentification 3D Secure non validée</target>
+      </trans-unit>
+      <trans-unit id="90e8bea3b4d911dd" resname="carte expirée">
+        <source>carte expirée</source>
+        <target>carte expirée</target>
+      </trans-unit>
+      <trans-unit id="56c4a663033b4737" resname="code de sécurité incorrect">
+        <source>code de sécurité incorrect</source>
+        <target>code de sécurité incorrect</target>
+      </trans-unit>
+      <trans-unit id="ee968c7ea95ffe6d" resname="engagement %d mois">
+        <source>engagement %d mois</source>
+        <target>engagement %d mois</target>
+      </trans-unit>
+      <trans-unit id="5480b8f8cc9eeefb" resname="erreur de traitement chez la banque">
+        <source>erreur de traitement chez la banque</source>
+        <target>erreur de traitement chez la banque</target>
+      </trans-unit>
+      <trans-unit id="95c1a62736e82b06" resname="paiement refusé par la banque">
+        <source>paiement refusé par la banque</source>
+        <target>paiement refusé par la banque</target>
+      </trans-unit>
+      <trans-unit id="13b99844489ed64a" resname="par an">
+        <source>par an</source>
+        <target>par an</target>
+      </trans-unit>
+      <trans-unit id="c272ad2325613d4d" resname="par créneau réservé">
+        <source>par créneau réservé</source>
+        <target>par créneau réservé</target>
+      </trans-unit>
+      <trans-unit id="7518647c3314f880" resname="par mois">
+        <source>par mois</source>
+        <target>par mois</target>
+      </trans-unit>
+      <trans-unit id="8e0e3e74319e037c" resname="plafond de paiement atteint">
+        <source>plafond de paiement atteint</source>
+        <target>plafond de paiement atteint</target>
+      </trans-unit>
+      <trans-unit id="db2045c16b25dc4d" resname="provision insuffisante">
+        <source>provision insuffisante</source>
+        <target>provision insuffisante</target>
+      </trans-unit>
+      <trans-unit id="f5b5318315412193" resname="relances automatiques J+3, J+7">
+        <source>relances automatiques J+3, J+7</source>
+        <target>relances automatiques J+3, J+7</target>
+      </trans-unit>
+      <trans-unit id="f9a7d4b6f6fd7a21" resname="sans engagement">
+        <source>sans engagement</source>
+        <target>sans engagement</target>
+      </trans-unit>
+      <trans-unit id="ac0960c9c274c2c9" resname="sur %d actifs">
+        <source>sur %d actifs</source>
+        <target>sur %d actifs</target>
+      </trans-unit>
+      <trans-unit id="8770021d8f27fd67" resname="terme de la période">
+        <source>terme de la période</source>
+        <target>terme de la période</target>
+      </trans-unit>
+      <trans-unit id="0c070a400157f890" resname="validation bancaire requise">
+        <source>validation bancaire requise</source>
+        <target>validation bancaire requise</target>
+      </trans-unit>
+      <trans-unit id="b17a07fc724031c6" resname="{previous}, puis {next}">
+        <source>{previous}, puis {next}</source>
+        <target>{previous}, puis {next}</target>
+      </trans-unit>
+      <trans-unit id="cd5af15652cb469f" resname="À PAYER">
+        <source>À PAYER</source>
+        <target>À PAYER</target>
+      </trans-unit>
+      <trans-unit id="b0c8b1b0378e14a4" resname="À la prochaine échéance">
+        <source>À la prochaine échéance</source>
+        <target>À la prochaine échéance</target>
+      </trans-unit>
+      <trans-unit id="51eed52b5ee6653a" resname="À la réservation, %d créneau réservé · %s">
+        <source>À la réservation, %d créneau réservé · %s</source>
+        <target>À la réservation, %d créneau réservé · %s</target>
+      </trans-unit>
+      <trans-unit id="f6e7c468347ff69a" resname="À la réservation, %d créneaux réservés · %s">
+        <source>À la réservation, %d créneaux réservés · %s</source>
+        <target>À la réservation, %d créneaux réservés · %s</target>
+      </trans-unit>
+      <trans-unit id="f86724b3a373e52f" resname="À payer">
+        <source>À payer</source>
+        <target>À payer</target>
+      </trans-unit>
+      <trans-unit id="c9a98695ec80d442" resname="À régler à réception.">
+        <source>À régler à réception.</source>
+        <target>À régler à réception.</target>
+      </trans-unit>
+      <trans-unit id="fdf3f6d53c9ea75f" resname="Échec">
+        <source>Échec</source>
+        <target>Échec</target>
+      </trans-unit>
+      <trans-unit id="4656f6e02a62a404" resname="Échec du paiement">
+        <source>Échec du paiement</source>
+        <target>Échec du paiement</target>
+      </trans-unit>
+      <trans-unit id="29f1f10908e85fea" resname="Établissements abonnés">
+        <source>Établissements abonnés</source>
+        <target>Établissements abonnés</target>
+      </trans-unit>
+      <trans-unit id="e0fa28ebd5de6ade" resname="Établissements illimités">
+        <source>Établissements illimités</source>
+        <target>Établissements illimités</target>
+      </trans-unit>
+      <trans-unit id="046d0cc34acad522" resname="à la prochaine échéance">
+        <source>à la prochaine échéance</source>
+        <target>à la prochaine échéance</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

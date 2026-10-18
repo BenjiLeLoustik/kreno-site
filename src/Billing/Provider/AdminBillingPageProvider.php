@@ -65,7 +65,10 @@ class AdminBillingPageProvider
             return null;
         }
 
-        return ['id' => $company->getId(), 'name' => $company->getName()];
+        return [
+            'id' => $company->getId(),
+            'name' => $company->getName()
+        ];
     }
 
     private function selected(?Company $company, array $subscriptions): ?array
@@ -114,7 +117,10 @@ class AdminBillingPageProvider
         $applications = [];
 
         foreach (ChangeApplication::cases() as $application) {
-            $applications[] = ['key' => $application->value, 'label' => $application->label()];
+            $applications[] = [
+                'key' => $application->value,
+                'label' => $application->label()
+            ];
         }
 
         return $applications;
@@ -125,7 +131,10 @@ class AdminBillingPageProvider
         $gestures = [];
 
         foreach (BillingGesture::cases() as $gesture) {
-            $gestures[] = ['key' => $gesture->value, 'label' => $gesture->label()];
+            $gestures[] = [
+                'key' => $gesture->value,
+                'label' => $gesture->label()
+            ];
         }
 
         return $gestures;

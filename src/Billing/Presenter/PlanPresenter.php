@@ -8,6 +8,7 @@ use App\Entity\Company\CompanySubscription;
 use App\Entity\Website\WebsitePlan;
 use App\Entity\Website\WebsitePromoCode;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PlanBilling;
 
 class PlanPresenter
@@ -79,30 +80,33 @@ class PlanPresenter
     {
         if ($this->isPerBooking($plan)) {
             return [
-                'Aucun abonnement',
-                'Créneaux illimités',
-                'Facturé en fin de mois'
+                Translation::translate('Aucun abonnement'),
+                Translation::translate('Créneaux illimités'),
+                Translation::translate('Facturé en fin de mois')
             ];
         }
 
         $perks = [];
 
         if ($plan->isCommissionFree()) {
-            $perks[] = 'Sans commission';
+            $perks[] = Translation::translate('Sans commission');
         }
 
         if ($plan->isFeatured()) {
-            $perks[] = 'Mise en avant dans le quartier';
+            $perks[] = Translation::translate('Mise en avant dans le quartier');
         }
 
         $perks[] = $this->establishmentsPerk($plan->getMaxEstablishments());
 
         if ($plan->isAdvancedStats()) {
-            $perks[] = 'Statistiques détaillées';
+            $perks[] = Translation::translate('Statistiques détaillées');
         }
 
         if ($plan->getTrialDays() > 0) {
-            $perks[] = sprintf('%d jours d\'essai', $plan->getTrialDays());
+            $perks[] = sprintf(
+                Translation::translate('%d jours d\'essai'),
+                $plan->getTrialDays()
+            );
         }
 
         $perks[] = $this->commitmentPerk($plan->getCommitmentMonths());
@@ -130,7 +134,7 @@ class PlanPresenter
     private function tag(WebsitePlan $plan): ?string
     {
         if ($plan->isFeatured()) {
-            return 'Le plus choisi';
+            return Translation::translate('Le plus choisi');
         }
 
         return null;
@@ -139,17 +143,17 @@ class PlanPresenter
     private function unit(WebsitePlan $plan, BillingPeriod $period, int $price): string
     {
         if ($this->isPerBooking($plan)) {
-            return 'HT par créneau réservé';
+            return Translation::translate('HT par créneau réservé');
         }
 
         if ($period === BillingPeriod::YEARLY) {
             return sprintf(
-                'HT par an, soit %s / mois',
+                Translation::translate('HT par an, soit %s / mois'),
                 MoneyHelper::formatExact((int) round($price / 12))
             );
         }
 
-        return 'HT par mois';
+        return Translation::translate('HT par mois');
     }
 
     private function isCurrent(WebsitePlan $plan, BillingPeriod $period, ?CompanySubscription $current): bool
@@ -184,7 +188,11 @@ class PlanPresenter
     private function periodLabel(BillingPeriod $period, int $offeredMonths): string
     {
         if ($period === BillingPeriod::YEARLY && $offeredMonths > 0) {
-            return sprintf('%s · %d mois offerts', $period->label(), $offeredMonths);
+            return sprintf(
+                Translation::translate('%s · %d mois offerts'),
+                $period->label(),
+                $offeredMonths
+            );
         }
 
         return $period->label();
@@ -193,22 +201,31 @@ class PlanPresenter
     private function establishmentsPerk(?int $max): string
     {
         if ($max === null) {
-            return 'Établissements illimités';
+            return Translation::translate('Établissements illimités');
         }
 
         if ($max > 1) {
-            return sprintf('%d établissements', $max);
+            return sprintf(
+                Translation::translate('%d établissements'),
+                $max
+            );
         }
 
-        return sprintf('%d établissement', $max);
+        return sprintf(
+            Translation::translate('%d établissement'),
+            $max
+        );
     }
 
     private function commitmentPerk(int $months): string
     {
         if ($months > 0) {
-            return sprintf('Engagement %d mois', $months);
+            return sprintf(
+                Translation::translate('Engagement %d mois'),
+                $months
+            );
         }
 
-        return 'Sans engagement';
+        return Translation::translate('Sans engagement');
     }
 }

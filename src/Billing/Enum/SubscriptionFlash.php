@@ -2,6 +2,8 @@
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum SubscriptionFlash
 {
     case CHANGE_SCHEDULED;
@@ -19,12 +21,12 @@ enum SubscriptionFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::CHANGE_SCHEDULED => 'Changement enregistré : il prendra effet le %s.',
-            self::CHANGED => 'Vous êtes maintenant sur la formule %s.',
-            self::CANCELLED => 'Résiliation enregistrée. Votre formule reste active jusqu\'au %s.',
-            self::CANCELLATION_REVOKED => 'Résiliation annulée : votre abonnement continue.',
-            self::NEXT_DUE_DATE => 'à la prochaine échéance',
-            self::PERIOD_END => 'terme de la période',
+            self::CHANGE_SCHEDULED => Translation::translate('Changement enregistré : il prendra effet le %s.'),
+            self::CHANGED => Translation::translate('Vous êtes maintenant sur la formule %s.'),
+            self::CANCELLED => Translation::translate('Résiliation enregistrée. Votre formule reste active jusqu\'au %s.'),
+            self::CANCELLATION_REVOKED => Translation::translate('Résiliation annulée : votre abonnement continue.'),
+            self::NEXT_DUE_DATE => Translation::translate('à la prochaine échéance'),
+            self::PERIOD_END => Translation::translate('terme de la période'),
         };
     }
 }

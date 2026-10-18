@@ -13,6 +13,7 @@ use App\Entity\Company\CompanyPaymentMethod;
 use App\Entity\Company\CompanySubscription;
 use App\Shared\Helper\DateHelper;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class PaymentPresenter
@@ -45,7 +46,7 @@ class PaymentPresenter
             'id' => $payment->getId(),
             'status' => $payment->getStatus()->value,
             'statusLabel' => $payment->getStatus()->label(),
-            'amount' => MoneyHelper::formatExact($payment->getAmount()) . ' TTC',
+            'amount' => MoneyHelper::formatExact($payment->getAmount()) . Translation::translate(' TTC'),
             'amountCents' => $payment->getAmount(),
             'method' => PaymentMethodHelper::label($payment->getPaymentMethod()),
             'attemptedAt' => DateHelper::iso($payment->getAttemptedAt()),
@@ -79,10 +80,10 @@ class PaymentPresenter
         }
 
         if ($expired) {
-            return 'Expirée';
+            return Translation::translate('Expirée');
         }
 
-        return 'Expire ' . PaymentMethodHelper::expiry($method);
+        return Translation::translate('Expire {date}', ['date' => PaymentMethodHelper::expiry($method)]);
     }
 
     private function mandateNote(CompanyPaymentMethod $method): string
@@ -90,10 +91,10 @@ class PaymentPresenter
         $acceptedAt = $method->getMandateAcceptedAt();
 
         if ($acceptedAt === null) {
-            return 'Mandat SEPA';
+            return Translation::translate('Mandat SEPA');
         }
 
-        return 'Mandat signé le ' . PeriodHelper::shortDay($acceptedAt);
+        return Translation::translate('Mandat signé le {date}', ['date' => PeriodHelper::shortDay($acceptedAt)]);
     }
 
     private function attemptDate(CompanyPayment $payment): ?string
@@ -113,34 +114,37 @@ class PaymentPresenter
             return null;
         }
 
-        return ['number' => $invoice->getNumber(), 'status' => $invoice->getStatus()->value];
+        return [
+            'number' => $invoice->getNumber(),
+            'status' => $invoice->getStatus()->value
+        ];
     }
 
     private function facts(array $data, ?CompanyInvoice $invoice, ?CompanySubscription $subscription): array
     {
         $facts = [
-            $this->fact('Montant', $data['amount']),
-            $this->fact('Moyen de paiement', $data['method']),
-            $this->fact('Date', $data['date']),
+            $this->fact(Translation::translate('Montant'), $data['amount']),
+            $this->fact(Translation::translate('Moyen de paiement'), $data['method']),
+            $this->fact(Translation::translate('Date'), $data['date']),
         ];
 
         $plan = $subscription?->getPlan();
 
         if ($plan !== null) {
-            $facts[] = $this->fact('Formule', $plan->getName());
+            $facts[] = $this->fact(Translation::translate('Formule'), $plan->getName());
         }
 
         $start = $invoice?->getPeriodStart();
         $end = $invoice?->getPeriodEnd();
 
         if ($start !== null && $end !== null) {
-            $facts[] = $this->fact('Période', PeriodHelper::label($start, $end));
+            $facts[] = $this->fact(Translation::translate('Période'), PeriodHelper::label($start, $end));
         }
 
         $periodEnd = $subscription?->getCurrentPeriodEnd();
 
         if ($periodEnd !== null && $subscription->getCancelAt() === null) {
-            $facts[] = $this->fact('Prochaine échéance', PeriodHelper::shortDay($periodEnd));
+            $facts[] = $this->fact(Translation::translate('Prochaine échéance'), PeriodHelper::shortDay($periodEnd));
         }
 
         return $facts;
@@ -159,8 +163,8 @@ class PaymentPresenter
         $timeline = [];
 
         if ($failedAt !== null) {
-            $refused = 'Paiement refusé. E-mail envoyé au propriétaire et à la comptabilité.';
-            $retry = 'Nouvelle tentative automatique sur le moyen par défaut.';
+            $refused = Translation::translate('Paiement refusé. E-mail envoyé au propriétaire et à la comptabilité.');
+            $retry = Translation::translate('Nouvelle tentative automatique sur le moyen par défaut.');
             $timeline[] = $this->step($failedAt, $refused, 'danger');
 
             foreach ($this->retryDates($failedAt, $graceUntil) as $retryAt) {
@@ -169,8 +173,8 @@ class PaymentPresenter
         }
 
         if ($graceUntil !== null) {
-            $reminder = 'Dernier rappel par e-mail et dans votre espace.';
-            $suspended = 'Vos créneaux ne sont plus publiés jusqu\'au règlement. Vos données sont conservées.';
+            $reminder = Translation::translate('Dernier rappel par e-mail et dans votre espace.');
+            $suspended = Translation::translate('Vos créneaux ne sont plus publiés jusqu\'au règlement. Vos données sont conservées.');
             $timeline[] = $this->step($graceUntil->modify('-7 days'), $reminder, 'warning');
             $timeline[] = $this->step($graceUntil, $suspended, 'muted');
         }
@@ -221,20 +225,26 @@ class PaymentPresenter
         $amount = MoneyHelper::formatExact($payment->getAmount());
 
         if ($method->getType() === PaymentMethodType::SEPA_DEBIT) {
-            return sprintf('Payer %s par prélèvement', $amount);
+            return sprintf(
+                Translation::translate('Payer %s par prélèvement'),
+                $amount
+            );
         }
 
-        return sprintf('Réessayer le paiement de %s', $amount);
+        return sprintf(
+            Translation::translate('Réessayer le paiement de %s'),
+            $amount
+        );
     }
 
     private function retryNote(CompanyPaymentMethod $method, CompanyPayment $payment): ?string
     {
         if ($method === $payment->getPaymentMethod()) {
-            return 'Refusée aujourd\'hui · réessayer la même carte';
+            return Translation::translate('Refusée aujourd\'hui · réessayer la même carte');
         }
 
         if ($method->getType() === PaymentMethodType::SEPA_DEBIT) {
-            return 'Débité sous 2 jours ouvrés, sans validation bancaire';
+            return Translation::translate('Débité sous 2 jours ouvrés, sans validation bancaire');
         }
 
         return null;

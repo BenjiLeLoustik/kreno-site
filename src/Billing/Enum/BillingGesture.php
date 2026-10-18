@@ -2,6 +2,8 @@
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum BillingGesture: string
 {
     case NONE = 'none';
@@ -12,10 +14,10 @@ enum BillingGesture: string
     public function label(): string
     {
         return match ($this) {
-            self::NONE => 'Aucun',
-            self::FREE_MONTH => '1 mois offert',
-            self::DISCOUNT => '-20 % pendant 3 mois',
-            self::CREDIT => 'Avoir sur la dernière facture',
+            self::NONE => Translation::translate('Aucun'),
+            self::FREE_MONTH => Translation::translate('1 mois offert'),
+            self::DISCOUNT => Translation::translate('-20 % pendant 3 mois'),
+            self::CREDIT => Translation::translate('Avoir sur la dernière facture'),
         };
     }
 

@@ -164,6 +164,9 @@ class BillingPageProvider
             return null;
         }
 
-        return ['clientSecret' => $secret, 'gatewayKey' => $this->gateway->getPublicKey()];
+        return [
+            'clientSecret' => $secret,
+            'gatewayKey' => $this->gateway->getPublicKey()
+        ];
     }
 }

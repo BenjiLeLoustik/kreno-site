@@ -22,6 +22,7 @@ use App\Entity\Website\WebsitePlan;
 use App\Repository\Company\CompanyInvoiceRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PlanBilling;
 use DateTimeImmutable;
 
@@ -52,7 +53,11 @@ class SubscriptionPresenter
             'id' => $subscription->getId(),
             'status' => $subscription->getStatus()->value,
             'statusLabel' => $subscription->getStatus()->label(),
-            'plan' => ['code' => $plan?->getCode(), 'name' => $plan?->getName(), 'perBooking' => $perBooking],
+            'plan' => [
+                'code' => $plan?->getCode(),
+                'name' => $plan?->getName(),
+                'perBooking' => $perBooking
+            ],
             'period' => $subscription->getPeriod()->value,
             'periodLabel' => $subscription->getPeriod()->label(),
             'priceLine' => $this->priceLine($subscription),
@@ -87,7 +92,7 @@ class SubscriptionPresenter
 
         return [
             'invoice' => $invoice->getNumber(),
-            'amount' => MoneyHelper::formatExact($invoice->getTotalExcludingTax()) . ' HT',
+            'amount' => MoneyHelper::formatExact($invoice->getTotalExcludingTax()) . Translation::translate(' HT'),
             'amountIncludingTax' => MoneyHelper::formatExact($invoice->getTotalIncludingTax()),
             'failedAt' => PeriodHelper::shortDay($failed->getAttemptedAt()),
             'method' => PaymentMethodHelper::label($failed->getPaymentMethod()),
@@ -106,7 +111,7 @@ class SubscriptionPresenter
         $fee = MoneyHelper::formatExact($perBooking->getPrice());
         $count = count($this->billableEstablishments($subscription));
         $switchDate = PeriodHelper::shortDay($end);
-        $acknowledgement = 'Je comprends que mes créneaux seront facturés %s HT par réservation à partir du %s.';
+        $acknowledgement = Translation::translate('Je comprends que mes créneaux seront facturés %s HT par réservation à partir du %s.');
 
         return [
             'plan' => $plan?->getName(),
@@ -114,7 +119,7 @@ class SubscriptionPresenter
             'activeUntil' => $this->activeUntil($end),
             'switchDate' => $switchDate,
             'nextPlan' => $perBooking->getName(),
-            'refund' => 'Aucun, période en cours due',
+            'refund' => Translation::translate('Aucun, période en cours due'),
             'establishmentsCount' => $count,
             'keep' => $this->kept($count),
             'lose' => $this->lost($plan, $fee),
@@ -168,16 +173,27 @@ class SubscriptionPresenter
         $price = MoneyHelper::formatExact($unit);
 
         if ($this->isPerBooking($subscription)) {
-            return sprintf('%s HT par créneau réservé', $price);
+            return sprintf(
+                Translation::translate('%s HT par créneau réservé'),
+                $price
+            );
         }
 
         $priceIncludingTax = MoneyHelper::formatExact(MoneyHelper::includingTax($unit, $this->vatRate($subscription)));
 
         if ($subscription->getPeriod() === BillingPeriod::YEARLY) {
-            return sprintf('%s HT / an · %s TTC', $price, $priceIncludingTax);
+            return sprintf(
+                Translation::translate('%s HT / an · %s TTC'),
+                $price,
+                $priceIncludingTax
+            );
         }
 
-        return sprintf('%s HT / mois · %s TTC', $price, $priceIncludingTax);
+        return sprintf(
+            Translation::translate('%s HT / mois · %s TTC'),
+            $price,
+            $priceIncludingTax
+        );
     }
 
     private function commitment(?WebsitePlan $plan): string
@@ -185,10 +201,13 @@ class SubscriptionPresenter
         $months = $plan?->getCommitmentMonths() ?? 0;
 
         if ($months > 0) {
-            return sprintf('engagement %d mois', $months);
+            return sprintf(
+                Translation::translate('engagement %d mois'),
+                $months
+            );
         }
 
-        return 'sans engagement';
+        return Translation::translate('sans engagement');
     }
 
     private function promo(CompanySubscription $subscription, DateTimeImmutable $now): ?string
@@ -203,7 +222,7 @@ class SubscriptionPresenter
         $description = $this->promos->describe($promo);
 
         return sprintf(
-            'Code %s : %s, jusqu\'au %s',
+            Translation::translate('Code %s : %s, jusqu\'au %s'),
             $promo->getCode(),
             $description,
             PeriodHelper::shortDay($endsAt)
@@ -227,7 +246,7 @@ class SubscriptionPresenter
 
         return [
             'date' => PeriodHelper::shortDay($end),
-            'amount' => MoneyHelper::formatExact($amountIncludingTax) . ' TTC',
+            'amount' => MoneyHelper::formatExact($amountIncludingTax) . Translation::translate(' TTC'),
             'label' => sprintf('%s, %s', $subscription->getPlan()?->getName(), PeriodHelper::monthName($end)),
         ];
     }
@@ -301,7 +320,7 @@ class SubscriptionPresenter
     private function failureReason(CompanyPayment $payment): ?string
     {
         if ($payment->getStatus() === PaymentStatus::REQUIRES_ACTION) {
-            return 'validation bancaire requise';
+            return Translation::translate('validation bancaire requise');
         }
 
         return $payment->getFailureMessage();
@@ -318,29 +337,37 @@ class SubscriptionPresenter
 
     private function kept(int $count): array
     {
-        $pages = sprintf('Vos %d page établissement', $count);
+        $pages = sprintf(
+            Translation::translate('Vos %d page établissement'),
+            $count
+        );
 
         if ($count > 1) {
-            $pages = sprintf('Vos %d pages établissement', $count);
+            $pages = sprintf(
+                Translation::translate('Vos %d pages établissement'),
+                $count
+            );
         }
 
         return [
             $pages,
-            'Vos créneaux, réservations et avis',
-            'Votre historique et vos factures'
+            Translation::translate('Vos créneaux, réservations et avis'),
+            Translation::translate('Votre historique et vos factures')
         ];
     }
 
     private function lost(?WebsitePlan $plan, string $fee): array
     {
-        $lost = [sprintf('Commission de %s HT par créneau réservé', $fee)];
+        $lost = [
+            sprintf(Translation::translate('Commission de %s HT par créneau réservé'), $fee)
+        ];
 
         if ($plan?->isFeatured()) {
-            $lost[] = 'Plus de mise en avant dans le quartier';
+            $lost[] = Translation::translate('Plus de mise en avant dans le quartier');
         }
 
         if ($plan?->isAdvancedStats()) {
-            $lost[] = 'Statistiques détaillées masquées';
+            $lost[] = Translation::translate('Statistiques détaillées masquées');
         }
 
         return $lost;
@@ -351,7 +378,10 @@ class SubscriptionPresenter
         $reasons = [];
 
         foreach (CancelReason::cases() as $reason) {
-            $reasons[] = ['key' => $reason->value, 'label' => $reason->label()];
+            $reasons[] = [
+                'key' => $reason->value,
+                'label' => $reason->label()
+            ];
         }
 
         return $reasons;
@@ -367,15 +397,15 @@ class SubscriptionPresenter
         }
 
         $offers[CancelReason::VOLUME->value] = [
-            'title' => sprintf('Passez plutôt « %s »', $perBooking->getName()),
-            'text' => sprintf('Vous paierez seulement %s HT par créneau réservé, sans résilier.', $fee),
-            'cta' => 'Changer de formule',
+            'title' => sprintf(Translation::translate('Passez plutôt « %s »'), $perBooking->getName()),
+            'text' => sprintf(Translation::translate('Vous paierez seulement %s HT par créneau réservé, sans résilier.'), $fee),
+            'cta' => Translation::translate('Changer de formule'),
         ];
 
         $offers[CancelReason::PAUSE->value] = [
-            'title' => sprintf('Mettre en pause %d mois', RenewalService::PAUSE_MONTHS),
-            'text' => 'Fermeture, congés, travaux : suspendez l’abonnement sans perdre votre page.',
-            'cta' => 'Mettre en pause',
+            'title' => sprintf(Translation::translate('Mettre en pause %d mois'), RenewalService::PAUSE_MONTHS),
+            'text' => Translation::translate('Fermeture, congés, travaux : suspendez l’abonnement sans perdre votre page.'),
+            'cta' => Translation::translate('Mettre en pause'),
         ];
 
         return $offers;
@@ -393,12 +423,12 @@ class SubscriptionPresenter
             return null;
         }
 
-        $text = 'Restez sur %s avec cette remise appliquée dès la prochaine facture.';
+        $text = Translation::translate('Restez sur %s avec cette remise appliquée dès la prochaine facture.');
 
         return [
             'title' => $this->promos->describe($promo),
             'text' => sprintf($text, $subscription->getPlan()?->getName()),
-            'cta' => 'Profiter de l’offre',
+            'cta' => Translation::translate('Profiter de l’offre'),
         ];
     }
 }

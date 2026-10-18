@@ -2,6 +2,8 @@
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum BillingFlash
 {
     case INFO_SAVED;
@@ -13,11 +15,11 @@ enum BillingFlash
     public function text(): string
     {
         return match ($this) {
-            self::INFO_SAVED => 'Informations de facturation enregistrées.',
-            self::METHOD_SAVED => 'Moyen de paiement enregistré.',
-            self::METHOD_DEFAULT => 'Moyen de paiement par défaut modifié.',
-            self::METHOD_DELETED => 'Moyen de paiement supprimé.',
-            self::INVOICE_PAID => 'Facture réglée.',
+            self::INFO_SAVED => Translation::translate('Informations de facturation enregistrées.'),
+            self::METHOD_SAVED => Translation::translate('Moyen de paiement enregistré.'),
+            self::METHOD_DEFAULT => Translation::translate('Moyen de paiement par défaut modifié.'),
+            self::METHOD_DELETED => Translation::translate('Moyen de paiement supprimé.'),
+            self::INVOICE_PAID => Translation::translate('Facture réglée.'),
         };
     }
 }

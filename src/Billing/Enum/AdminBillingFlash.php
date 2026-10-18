@@ -2,6 +2,8 @@
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AdminBillingFlash
 {
     case RETRY_SUCCEEDED;
@@ -34,11 +36,10 @@ enum AdminBillingFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::RETRY_SUCCEEDED => 'Prélèvement réussi. La facture est réglée.',
-            self::RETRY_RELAUNCHED => 'Prélèvement relancé : %s.',
-            self::GRACE_GRANTED => 'Délai de %d jours accordé à %s.',
-            self::SUBSCRIPTION_CHANGED => 'Abonnement modifié. L\'entreprise a été prévenue par e-mail '
-                . 'et l\'action est notée dans le journal.',
+            self::RETRY_SUCCEEDED => Translation::translate('Prélèvement réussi. La facture est réglée.'),
+            self::RETRY_RELAUNCHED => Translation::translate('Prélèvement relancé : %s.'),
+            self::GRACE_GRANTED => Translation::translate('Délai de %d jours accordé à %s.'),
+            self::SUBSCRIPTION_CHANGED => Translation::translate('Abonnement modifié. L\'entreprise a été prévenue par e-mail et l\'action est notée dans le journal.'),
         };
     }
 }

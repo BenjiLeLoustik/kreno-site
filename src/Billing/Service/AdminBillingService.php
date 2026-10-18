@@ -25,6 +25,7 @@ use App\Log\Service\ActivityLogger;
 use App\Repository\Company\CompanyInvoiceRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PlanBilling;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
@@ -53,7 +54,7 @@ class AdminBillingService
         $invoice = $this->invoices->findUnpaidForCompany($company)[0] ?? throw new NoUnpaidInvoiceException();
         $attempt = $this->payments->collect($invoice);
         $message = sprintf(
-            'Nouvelle tentative de paiement de la facture %s (%s)',
+            Translation::translate('Nouvelle tentative de paiement de la facture %s (%s)'),
             $invoice->getNumber(),
             $company->getName(),
         );
@@ -70,7 +71,11 @@ class AdminBillingService
     {
         $subscription = $this->currentSubscription($company);
         $this->access->grant($subscription, (int) $input->days);
-        $message = sprintf('Délai de paiement de %d jours accordé à %s', $input->days, $company->getName());
+        $message = sprintf(
+            Translation::translate('Délai de paiement de %d jours accordé à %s'),
+            $input->days,
+            $company->getName()
+        );
 
         $this->logger->log(ActivityType::BILLING, $message, $admin, null, $subscription, [
             'reason' => $input->reason,
@@ -102,7 +107,7 @@ class AdminBillingService
         }
 
         $message = sprintf(
-            'Abonnement de %s modifié : %s → %s (%s)',
+            Translation::translate('Abonnement de %s modifié : %s → %s (%s)'),
             $company->getName(),
             $before,
             $plan->getName(),
@@ -184,11 +189,11 @@ class AdminBillingService
     ): void {
         $lines = [
             [
-                'label' => sprintf('%s, prorata au %s', $plan->getName(), PeriodHelper::day($quote['periodEnd'])),
+                'label' => sprintf(Translation::translate('%s, prorata au %s'), $plan->getName(), PeriodHelper::day($quote['periodEnd'])),
                 'unitPrice' => $quote['charge'],
             ],
             [
-                'label' => sprintf('Crédit %s non utilisé', $current->getPlan()?->getName()),
+                'label' => sprintf(Translation::translate('Crédit %s non utilisé'), $current->getPlan()?->getName()),
                 'unitPrice' => -min($quote['credit'], $quote['charge']),
             ],
         ];
@@ -208,7 +213,7 @@ class AdminBillingService
             throw new NoCreditableInvoiceException();
         }
 
-        $label = sprintf('Avoir sur la facture %s : %s', $last->getNumber(), $reason);
+        $label = sprintf(Translation::translate('Avoir sur la facture %s : %s'), $last->getNumber(), $reason);
 
         $this->invoiceService->credit($last, null, $label);
     }

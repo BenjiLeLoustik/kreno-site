@@ -3,11 +3,14 @@
 namespace App\Billing\Exception;
 
 use App\Shared\Exception\BusinessRuleException;
+use App\Shared\Helper\Translation;
 
 class PlanNotOfferedException extends BusinessRuleException
 {
     public function __construct()
     {
-        parent::__construct('Cette formule n\'est pas proposée.');
+        parent::__construct(
+            Translation::translate('Cette formule n\'est pas proposée.')
+        );
     }
 }

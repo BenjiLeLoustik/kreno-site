@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum InvoiceType: string
 {
     case INVOICE = 'invoice';
@@ -12,8 +14,8 @@ enum InvoiceType: string
     public function label(): string
     {
         return match ($this) {
-            self::INVOICE => 'Facture',
-            self::CREDIT_NOTE => 'Avoir',
+            self::INVOICE => Translation::translate('Facture'),
+            self::CREDIT_NOTE => Translation::translate('Avoir'),
         };
     }
 }

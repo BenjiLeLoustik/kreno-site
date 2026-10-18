@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum PaymentMethodType: string
 {
     case CARD = 'card';
@@ -12,8 +14,8 @@ enum PaymentMethodType: string
     public function label(): string
     {
         return match ($this) {
-            self::CARD => 'Carte bancaire',
-            self::SEPA_DEBIT => 'Prélèvement SEPA',
+            self::CARD => Translation::translate('Carte bancaire'),
+            self::SEPA_DEBIT => Translation::translate('Prélèvement SEPA'),
         };
     }
 }

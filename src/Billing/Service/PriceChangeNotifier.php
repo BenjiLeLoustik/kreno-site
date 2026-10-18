@@ -15,6 +15,7 @@ use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Repository\Company\CompanyPriceNoticeRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PriceChangePolicy;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
@@ -194,7 +195,7 @@ class PriceChangeNotifier
     private function logAnnouncement(WebsiteConfig $version, array $counts): void
     {
         $message = sprintf(
-            'Annonce tarifaire : %d nouvelle(s), %d correction(s), %d annulation(s)',
+            Translation::translate('Annonce tarifaire : %d nouvelle(s), %d correction(s), %d annulation(s)'),
             $counts['new'],
             $counts['corrected'],
             $counts['cancelled'],

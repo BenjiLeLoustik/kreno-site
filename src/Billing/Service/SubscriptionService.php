@@ -33,6 +33,7 @@ use App\Entity\Website\WebsitePromoCode;
 use App\Establishment\Enum\EstablishmentStatus;
 use App\Repository\Company\CompanyPaymentMethodRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PlanBilling;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
@@ -418,7 +419,7 @@ class SubscriptionService
         DateTimeImmutable $now,
     ): CompanyInvoice {
         $label = sprintf(
-            '%s, prorata du %s au %s',
+            Translation::translate('%s, prorata du %s au %s'),
             $subscription->getPlan()?->getName(),
             PeriodHelper::day($now),
             PeriodHelper::day($quote['periodEnd']),
@@ -432,7 +433,7 @@ class SubscriptionService
 
         if ($quote['credit'] > 0) {
             $lines[] = [
-                'label' => sprintf('Crédit %s non utilisé', $current->getPlan()?->getName()),
+                'label' => sprintf(Translation::translate('Crédit %s non utilisé'), $current->getPlan()?->getName()),
                 'unitPrice' => -min($quote['credit'], $quote['charge']),
             ];
         }

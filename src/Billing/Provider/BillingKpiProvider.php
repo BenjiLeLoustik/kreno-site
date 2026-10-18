@@ -13,6 +13,7 @@ use App\Repository\Company\CompanyInvoiceRepository;
 use App\Repository\Company\CompanyPaymentRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PlanBilling;
 use DateTimeImmutable;
 
@@ -60,9 +61,9 @@ class BillingKpiProvider
 
         return $this->kpi(
             'cashed',
-            'Encaissé ce mois',
+            Translation::translate('Encaissé ce mois'),
             $value,
-            'abonnements et commissions'
+            Translation::translate('abonnements et commissions')
         );
     }
 
@@ -73,9 +74,9 @@ class BillingKpiProvider
 
         return $this->kpi(
             'subscribed',
-            'Entreprises abonnées',
+            Translation::translate('Entreprises abonnées'),
             (string) $count,
-            sprintf('+%d ce mois', $started)
+            sprintf(Translation::translate('+%d ce mois'), $started)
         );
     }
 
@@ -85,9 +86,9 @@ class BillingKpiProvider
 
         return $this->kpi(
             'failed',
-            'Paiements refusés',
+            Translation::translate('Paiements refusés'),
             (string) $count,
-            'relances automatiques J+3, J+7',
+            Translation::translate('relances automatiques J+3, J+7'),
             'danger'
         );
     }
@@ -96,15 +97,15 @@ class BillingKpiProvider
     {
         $value = MoneyHelper::format(abs($this->invoices->sumCreditNotesBetween($from, $to)));
         $count = $this->invoices->countCreditNotesBetween($from, $to);
-        $note = sprintf('%d avoir', $count);
+        $note = sprintf(Translation::translate('%d avoir'), $count);
 
         if ($count > 1) {
-            $note = sprintf('%d avoirs', $count);
+            $note = sprintf(Translation::translate('%d avoirs'), $count);
         }
 
         return $this->kpi(
             'credits',
-            'Avoirs émis',
+            Translation::translate('Avoirs émis'),
             $value,
             $note
         );
@@ -119,15 +120,15 @@ class BillingKpiProvider
         }
 
         $count = count($subscriptions);
-        $note = sprintf('%d abonnement actif', $count);
+        $note = sprintf(Translation::translate('%d abonnement actif'), $count);
 
         if ($count > 1) {
-            $note = sprintf('%d abonnements actifs', $count);
+            $note = sprintf(Translation::translate('%d abonnements actifs'), $count);
         }
 
         return $this->kpi(
             'mrr',
-            'Revenu mensuel récurrent',
+            Translation::translate('Revenu mensuel récurrent'),
             MoneyHelper::format($mrr),
             $note
         );
@@ -149,11 +150,15 @@ class BillingKpiProvider
         $current = MoneyHelper::format($this->bookings->sumFeesBetween($from, $to));
         $previous = MoneyHelper::format($this->bookings->sumFeesBetween($previousFrom, $previousTo));
         $booked = $this->bookings->countFeesBetween($from, $to);
-        $note = sprintf('%d créneaux réservés · %s le mois dernier', $booked, $previous);
+        $note = sprintf(
+            Translation::translate('%d créneaux réservés · %s le mois dernier'),
+            $booked,
+            $previous
+        );
 
         return $this->kpi(
             'commissions',
-            'Commissions du mois',
+            Translation::translate('Commissions du mois'),
             $current,
             $note
         );
@@ -168,11 +173,11 @@ class BillingKpiProvider
         }
 
         $online = $this->establishments->count(['status' => EstablishmentStatus::ONLINE]);
-        $note = sprintf('sur %d actifs', $online);
+        $note = sprintf(Translation::translate('sur %d actifs'), $online);
 
         return $this->kpi(
             'subscribed',
-            'Établissements abonnés',
+            Translation::translate('Établissements abonnés'),
             (string) $covered,
             $note
         );
@@ -206,11 +211,11 @@ class BillingKpiProvider
             $tone = 'danger';
         }
 
-        $note = sprintf('%s %% ce mois', $this->cancellationRate($canceled, $active + $canceled));
+        $note = sprintf(Translation::translate('%s %% ce mois'), $this->cancellationRate($canceled, $active + $canceled));
 
         return $this->kpi(
             'canceled',
-            'Résiliations',
+            Translation::translate('Résiliations'),
             (string) $canceled,
             $note,
             $tone

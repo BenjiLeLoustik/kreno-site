@@ -2,6 +2,7 @@
 
 namespace App\Billing\Exception;
 
+use App\Shared\Helper\Translation;
 use Throwable;
 
 class PaymentGatewayUnreachableException extends PaymentGatewayException
@@ -9,7 +10,7 @@ class PaymentGatewayUnreachableException extends PaymentGatewayException
     public function __construct(Throwable $previous)
     {
         parent::__construct(
-            'Le prestataire de paiement est injoignable : {reason}',
+            Translation::translate('Le prestataire de paiement est injoignable : {reason}'),
             [
                 'reason' => $previous->getMessage()
             ],

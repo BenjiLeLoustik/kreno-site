@@ -22,9 +22,14 @@ class PaymentSetupProvider
         try {
             $setup = $this->methodService->startSetup($company, $type);
         } catch (BusinessRuleException|PaymentGatewayException $exception) {
-            return ['error' => $exception->getMessage()];
+            return [
+                'error' => $exception->getMessage()
+            ];
         }
 
-        return ['setup' => $setup->toArray(), 'gatewayKey' => $this->gateway->getPublicKey()];
+        return [
+            'setup' => $setup->toArray(),
+            'gatewayKey' => $this->gateway->getPublicKey()
+        ];
     }
 }

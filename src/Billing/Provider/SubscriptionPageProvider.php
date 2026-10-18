@@ -145,7 +145,10 @@ class SubscriptionPageProvider
             return null;
         }
 
-        return ['code' => $promo->getCode(), 'label' => $this->promos->describe($promo)];
+        return [
+            'code' => $promo->getCode(),
+            'label' => $this->promos->describe($promo)
+        ];
     }
 
     private function quoteProrata(

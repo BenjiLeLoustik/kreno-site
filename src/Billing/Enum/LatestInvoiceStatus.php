@@ -2,6 +2,8 @@
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum LatestInvoiceStatus: string
 {
     case PAID = 'paid';
@@ -13,11 +15,11 @@ enum LatestInvoiceStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::PAID => 'Payé',
-            self::PENDING => 'En attente',
-            self::FAILED => 'Refusé',
-            self::RETRY => 'Nouvelle tentative',
-            self::NONE => 'Aucune facture',
+            self::PAID => Translation::translate('Payé'),
+            self::PENDING => Translation::translate('En attente'),
+            self::FAILED => Translation::translate('Refusé'),
+            self::RETRY => Translation::translate('Nouvelle tentative'),
+            self::NONE => Translation::translate('Aucune facture'),
         };
     }
 

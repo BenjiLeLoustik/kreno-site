@@ -4,6 +4,7 @@ namespace App\Billing\Helper;
 
 use App\Billing\Enum\BillingPeriod;
 use App\Shared\Enum\Month;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class PeriodHelper
@@ -48,7 +49,7 @@ class PeriodHelper
         $last = $end->modify('-1 day');
 
         return sprintf(
-            '%d %s au %d %s %d',
+            Translation::translate('%d %s au %d %s %d'),
             (int) $start->format('j'),
             self::month($start),
             (int) $last->format('j'),

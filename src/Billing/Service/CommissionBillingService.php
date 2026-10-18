@@ -8,6 +8,7 @@ use App\Entity\Company\Company;
 use App\Repository\BookingRepository;
 use App\Repository\Company\CompanyInvoiceRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class CommissionBillingService
@@ -70,7 +71,7 @@ class CommissionBillingService
 
             $establishment = $first->getSlot()?->getEstablishment();
             $lines[] = [
-                'label' => sprintf('Créneaux réservés · %s', $establishment?->getName()),
+                'label' => sprintf(Translation::translate('Créneaux réservés · %s'), $establishment?->getName()),
                 'quantity' => count($bookings),
                 'unitPrice' => $first->getFee(),
                 'establishment' => $establishment,

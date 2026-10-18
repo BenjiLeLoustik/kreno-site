@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum BillingPeriod: string
 {
     case MONTHLY = 'monthly';
@@ -12,8 +14,8 @@ enum BillingPeriod: string
     public function label(): string
     {
         return match ($this) {
-            self::MONTHLY => 'Mensuel',
-            self::YEARLY => 'Annuel',
+            self::MONTHLY => Translation::translate('Mensuel'),
+            self::YEARLY => Translation::translate('Annuel'),
         };
     }
 }

@@ -22,6 +22,7 @@ use App\Entity\User\User;
 use App\Repository\Company\CompanyPaymentMethodRepository;
 use App\Repository\Company\CompanyPaymentRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
@@ -75,7 +76,7 @@ class PaymentService
         $result = $this->gateway->charge(
             $method,
             $payment->getAmount(),
-            sprintf('Facture %s', $invoice->getNumber()),
+            sprintf(Translation::translate('Facture %s'), $invoice->getNumber()),
             sprintf('kreno-payment-%d', $payment->getId()),
             $offSession,
         );
@@ -191,7 +192,7 @@ class PaymentService
             PaymentStatus::FAILED,
             null,
             'missing_payment_method',
-            'aucun moyen de paiement enregistré',
+            Translation::translate('aucun moyen de paiement enregistré'),
         );
     }
 
