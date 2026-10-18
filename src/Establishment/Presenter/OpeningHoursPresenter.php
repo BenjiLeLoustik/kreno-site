@@ -6,6 +6,7 @@ use App\Entity\Establishment\EstablishmentClosure;
 use App\Establishment\Helper\OpeningHoursHelper;
 use App\Shared\Enum\Weekday;
 use App\Shared\Helper\DateHelper;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class OpeningHoursPresenter
@@ -66,7 +67,10 @@ class OpeningHoursPresenter
         $result = [];
 
         foreach ($ranges as [$opensAt, $closesAt]) {
-            $result[] = ['opensAt' => $opensAt, 'closesAt' => $closesAt];
+            $result[] = [
+                'opensAt' => $opensAt,
+                'closesAt' => $closesAt
+            ];
         }
 
         return $result;
@@ -78,9 +82,9 @@ class OpeningHoursPresenter
         $endsOn = $closure->getEndsOn()?->format('d/m/Y');
 
         if ($startsOn === $endsOn) {
-            return sprintf('Le %s', $startsOn);
+            return sprintf(Translation::translate('Le %s'), $startsOn);
         }
 
-        return sprintf('Du %s au %s', $startsOn, $endsOn);
+        return sprintf(Translation::translate('Du %s au %s'), $startsOn, $endsOn);
     }
 }

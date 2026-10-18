@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum FollowLabel
 {
     case FOLLOWING;
@@ -19,8 +21,8 @@ enum FollowLabel
     public function label(): string
     {
         return match ($this) {
-            self::FOLLOWING => 'Salon suivi ✓',
-            self::FOLLOW => 'Suivre ce salon',
+            self::FOLLOWING => Translation::translate('Salon suivi ✓'),
+            self::FOLLOW => Translation::translate('Suivre ce salon'),
         };
     }
 }

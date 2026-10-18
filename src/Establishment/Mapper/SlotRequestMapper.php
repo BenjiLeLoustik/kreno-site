@@ -35,7 +35,10 @@ class SlotRequestMapper
 
     public static function next(SlotInput $input): array
     {
-        return ['serviceId' => $input->serviceId, 'day' => $input->day];
+        return [
+            'serviceId' => $input->serviceId,
+            'day' => $input->day
+        ];
     }
 
     public static function listQuery(Request $request): array
@@ -46,6 +49,8 @@ class SlotRequestMapper
             return [];
         }
 
-        return ['filter' => $filter->value];
+        return [
+            'filter' => $filter->value
+        ];
     }
 }

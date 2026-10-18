@@ -18,6 +18,7 @@ use App\Repository\BookingRepository;
 use App\Shared\Helper\DateHelper;
 use App\Shared\Helper\DurationHelper;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\User\Helper\UserNameHelper;
 use App\Website\Provider\WebsiteProvider;
 use DateTimeImmutable;
@@ -207,7 +208,7 @@ class SlotPresenter
             return null;
         }
 
-        return sprintf('expire à %s', DateHelper::time($slot->getVisibleUntil()));
+        return sprintf(Translation::translate('expire à %s'), DateHelper::time($slot->getVisibleUntil()));
     }
 
     private function dashboardDetail(array $row): string
@@ -248,7 +249,7 @@ class SlotPresenter
             return sprintf('-%d %%', $slot->getDiscount());
         }
 
-        return sprintf('Plus que %d min', $remainingMinutes);
+        return sprintf(Translation::translate('Plus que %d min'), $remainingMinutes);
     }
 
     private function distanceKm(?float $distance): ?float
@@ -301,7 +302,10 @@ class SlotPresenter
         $infos = [];
 
         foreach (SlotInfo::cases() as $info) {
-            $infos[] = ['title' => $info->title(), 'text' => $info->text($cancellationDelay)];
+            $infos[] = [
+                'title' => $info->title(),
+                'text' => $info->text($cancellationDelay)
+            ];
         }
 
         return $infos;

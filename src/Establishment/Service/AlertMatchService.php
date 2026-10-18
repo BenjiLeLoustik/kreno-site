@@ -9,6 +9,7 @@ use App\Establishment\Helper\GeoHelper;
 use App\Establishment\Helper\OpeningHoursHelper;
 use App\Establishment\Model\SlotMatch;
 use App\Repository\Establishment\EstablishmentSlotRepository;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class AlertMatchService
@@ -97,7 +98,7 @@ class AlertMatchService
     {
         $parts = [
             $this->categoriesLabel($alert),
-            sprintf('à moins de %d km', $alert->getRadiusKm()),
+            sprintf(Translation::translate('à moins de %d km'), $alert->getRadiusKm()),
         ];
 
         $startTime = $alert->getStartTime();
@@ -105,7 +106,7 @@ class AlertMatchService
 
         if ($startTime !== null && $endTime !== null) {
             $parts[] = sprintf(
-                'entre %s et %s',
+                Translation::translate('entre %s et %s'),
                 OpeningHoursHelper::time($startTime->format('H:i')),
                 OpeningHoursHelper::time($endTime->format('H:i')),
             );
@@ -155,7 +156,7 @@ class AlertMatchService
         }
 
         if ($names === []) {
-            return 'Toutes catégories';
+            return Translation::translate('Toutes catégories');
         }
 
         return implode(', ', $names);

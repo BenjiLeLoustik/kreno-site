@@ -160,7 +160,10 @@ class ProSlotPageProvider
 
         for ($offset = 0; $offset <= $windowDays; ++$offset) {
             $day = $now->setTime(0, 0)->modify(sprintf('+%d days', $offset));
-            $days[] = ['value' => $day->format('Y-m-d'), 'label' => CalendarHelper::dayLabel($day, $now)];
+            $days[] = [
+                'value' => $day->format('Y-m-d'),
+                'label' => CalendarHelper::dayLabel($day, $now)
+            ];
         }
 
         return $days;

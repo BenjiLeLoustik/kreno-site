@@ -31,7 +31,9 @@ class FollowPageProvider
             }
         }
 
-        return ['follows' => $follows];
+        return [
+            'follows' => $follows
+        ];
     }
 
     public function establishment(int $id): CompanyEstablishment

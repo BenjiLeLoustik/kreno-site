@@ -6,6 +6,7 @@ use App\Entity\Company\CompanyEstablishment;
 use App\Entity\User\User;
 use App\Establishment\Enum\EstablishmentStatus;
 use App\Repository\Establishment\EstablishmentSlotRepository;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 use NeoPHP\Component\Routing\RoutingManagerInterface;
 
@@ -53,88 +54,102 @@ class ProWelcomeProvider
     private function accountTask(User $user): array
     {
         $done = $user->getEmailVerifiedAt() !== null;
-        $text = 'Identité et e-mail vérifiés';
+        $text = Translation::translate('Identité et e-mail vérifiés');
 
-        return $this->task('account', $done, 'Créer votre compte', $text, 'pro_company', 'Voir');
+        return $this->task(
+            'account',
+            $done,
+            Translation::translate('Créer votre compte'),
+            $text,
+            'pro_company',
+            Translation::translate('Voir')
+        );
     }
 
     private function verifiedTask(bool $online): array
     {
-        $text = 'Vérification en cours par l’équipe Kréno';
+        $text = Translation::translate('Vérification en cours par l’équipe Kréno');
 
         if ($online) {
-            $text = 'SIRET contrôlé par l’équipe Kréno';
+            $text = Translation::translate('SIRET contrôlé par l’équipe Kréno');
         }
 
         return $this->task(
             'verified',
             $online,
-            'Établissement vérifié',
+            Translation::translate('Établissement vérifié'),
             $text,
             'pro_establishment',
-            'Voir'
+            Translation::translate('Voir')
         );
     }
 
     private function servicesTask(CompanyEstablishment $establishment): array
     {
         $count = $this->activeServices($establishment);
-        $title = 'Ajouter vos prestations';
+        $title = Translation::translate('Ajouter vos prestations');
 
         if ($count === 0) {
-            $text = 'Ce que vous proposez, avec durée et prix';
+            $text = Translation::translate('Ce que vous proposez, avec durée et prix');
 
-            return $this->task('services', false, $title, $text, 'pro_services', 'Ajouter');
+            return $this->task(
+                'services',
+                false,
+                $title,
+                $text,
+                'pro_services',
+                Translation::translate('Ajouter')
+            );
         }
 
         $discount = (int) $establishment->getDefaultDiscount();
-        $text = sprintf('%d prestation · remise par défaut −%d %%', $count, $discount);
+        $text = sprintf(Translation::translate('%d prestation · remise par défaut −%d %%'), $count, $discount);
 
         if ($count > 1) {
-            $text = sprintf('%d prestations · remise par défaut −%d %%', $count, $discount);
+            $text = sprintf(Translation::translate('%d prestations · remise par défaut −%d %%'), $count, $discount);
         }
 
-        return $this->task('services', true, $title, $text, 'pro_services', 'Modifier');
+        return $this->task('services', true, $title, $text, 'pro_services', Translation::translate('Modifier'));
     }
 
     private function imagesTask(int $images): array
     {
         $done = $images >= self::RECOMMENDED_IMAGES;
         $text = sprintf(
-            'Les pages avec %d photos ou plus sont 2× plus réservées',
+            Translation::translate('Les pages avec %d photos ou plus sont 2× plus réservées'),
             self::RECOMMENDED_IMAGES
         );
 
         if ($done) {
-            $text = sprintf('%d photos en ligne', $images);
+            $text = sprintf(Translation::translate('%d photos en ligne'), $images);
         }
 
         return $this->task(
             'images',
             $done,
-            'Ajouter des photos',
+            Translation::translate('Ajouter des photos'),
             $text,
             'pro_establishment',
-            'Ajouter'
+            Translation::translate('Ajouter')
         );
     }
 
     private function slotTask(CompanyEstablishment $establishment): array
     {
         $published = $this->slots->countCreatedSince($establishment, new DateTimeImmutable(self::EVER)) > 0;
-        $text = 'Un trou dans l’agenda ? C’est le moment.';
+        $text = Translation::translate('Un trou dans l’agenda ? C’est le moment.');
 
         if ($published) {
-            $text = 'Votre premier créneau est publié';
+            $text = Translation::translate('Votre premier créneau est publié');
         }
 
         return $this->task(
             'slot',
             $published,
-            'Publier votre premier créneau',
+            Translation::translate('Publier votre premier créneau'),
             $text,
             'pro_slot_new',
-            'Publier'
+            Translation::translate('Publier')
         );
     }
 

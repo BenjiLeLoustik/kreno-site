@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AdminEstablishmentFlash
 {
     case SUSPENDED;
@@ -15,8 +17,8 @@ enum AdminEstablishmentFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::SUSPENDED => '%s est suspendu. Le pro a été prévenu par e-mail.',
-            self::RESUMED => '%s est de nouveau en ligne.',
+            self::SUSPENDED => Translation::translate('%s est suspendu. Le pro a été prévenu par e-mail.'),
+            self::RESUMED => Translation::translate('%s est de nouveau en ligne.'),
         };
     }
 }

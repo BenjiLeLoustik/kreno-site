@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum AdminEstablishmentFilter: string
 {
     case ALL = 'all';
@@ -18,7 +20,10 @@ enum AdminEstablishmentFilter: string
         $choices = [];
 
         foreach (self::cases() as $filter) {
-            $choices[] = ['key' => $filter->value, 'label' => $filter->label()];
+            $choices[] = [
+                'key' => $filter->value,
+                'label' => $filter->label()
+            ];
         }
 
         return $choices;
@@ -27,9 +32,9 @@ enum AdminEstablishmentFilter: string
     public function label(): string
     {
         return match ($this) {
-            self::ALL => 'Tous',
-            self::ONLINE => 'En ligne',
-            self::SUSPENDED => 'Suspendus',
+            self::ALL => Translation::translate('Tous'),
+            self::ONLINE => Translation::translate('En ligne'),
+            self::SUSPENDED => Translation::translate('Suspendus'),
         };
     }
 

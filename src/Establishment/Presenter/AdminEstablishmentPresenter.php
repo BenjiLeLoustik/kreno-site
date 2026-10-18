@@ -145,7 +145,7 @@ class AdminEstablishmentPresenter
     private function fillRate(int $published, int $booked): string
     {
         if ($published === 0) {
-            return '—';
+            return '-';
         }
 
         return sprintf('%d %%', round($booked / $published * 100));

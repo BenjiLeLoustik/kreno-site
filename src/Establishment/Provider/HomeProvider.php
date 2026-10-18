@@ -12,6 +12,7 @@ use App\Establishment\Service\SlotSearchService;
 use App\Repository\BookingRepository;
 use App\Shared\Helper\DurationHelper;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PlanBilling;
 use App\Website\Provider\WebsiteProvider;
 use DateTimeImmutable;
@@ -38,7 +39,11 @@ class HomeProvider
         $steps = [];
 
         foreach (HomeStep::cases() as $step) {
-            $steps[] = ['n' => (string) $step->value, 'title' => $step->title(), 'text' => $step->text()];
+            $steps[] = [
+                'n' => (string) $step->value,
+                'title' => $step->title(),
+                'text' => $step->text()
+            ];
         }
 
         return $steps;
@@ -69,19 +74,19 @@ class HomeProvider
         return $this->facts ??= [
             [
                 'value' => '30 s',
-                'label' => 'pour publier un créneau libéré',
+                'label' => Translation::translate('pour publier un créneau libéré'),
             ],
             [
                 'value' => '0 €',
-                'label' => 'si personne ne réserve',
+                'label' => Translation::translate('si personne ne réserve'),
             ],
             [
                 'value' => $this->commission(),
-                'label' => 'de commission par réservation',
+                'label' => Translation::translate('de commission par réservation'),
             ],
             [
                 'value' => $this->averageDelay(),
-                'label' => 'en moyenne pour trouver preneur',
+                'label' => Translation::translate('en moyenne pour trouver preneur'),
             ],
         ];
     }

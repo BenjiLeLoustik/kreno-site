@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum HomeStep: int
 {
     case RELEASE = 1;
@@ -11,18 +13,18 @@ enum HomeStep: int
     public function title(): string
     {
         return match ($this) {
-            self::RELEASE => 'Un pro libère un créneau',
-            self::BOOK => 'Tu le réserves en deux clics',
-            self::PAY => 'Tu paies sur place',
+            self::RELEASE => Translation::translate('Un pro libère un créneau'),
+            self::BOOK => Translation::translate('Tu le réserves en deux clics'),
+            self::PAY => Translation::translate('Tu paies sur place'),
         };
     }
 
     public function text(): string
     {
         return match ($this) {
-            self::RELEASE => 'Un client annule ? Le pro publie l’horaire libéré avec une remise, en quelques secondes.',
-            self::BOOK => 'Tu reçois une alerte si c’est près de toi. Le créneau est bloqué à ton nom dès la réservation.',
-            self::PAY => 'Pas de prépaiement : tu règles le prix réduit directement chez le pro, comme d’habitude.',
+            self::RELEASE => Translation::translate('Un client annule ? Le pro publie l’horaire libéré avec une remise, en quelques secondes.'),
+            self::BOOK => Translation::translate('Tu reçois une alerte si c’est près de toi. Le créneau est bloqué à ton nom dès la réservation.'),
+            self::PAY => Translation::translate('Pas de prépaiement : tu règles le prix réduit directement chez le pro, comme d’habitude.'),
         };
     }
 }

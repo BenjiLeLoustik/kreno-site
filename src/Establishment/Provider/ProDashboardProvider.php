@@ -12,6 +12,7 @@ use App\Repository\BookingRepository;
 use App\Repository\Establishment\EstablishmentSlotRepository;
 use App\Shared\Helper\DateHelper;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\User\Helper\UserNameHelper;
 use DateTimeImmutable;
 
@@ -34,7 +35,7 @@ class ProDashboardProvider
 
         return [
             'date' => CalendarHelper::longDate($now),
-            'greeting' => sprintf('Bonjour %s', $user->getFirstName()),
+            'greeting' => sprintf(Translation::translate('Bonjour %s'), $user->getFirstName()),
             'stats' => $this->stats($establishment, $now),
             'today' => $this->today($establishment, $now),
             'recent' => $this->recent($establishment, $now),
@@ -80,7 +81,7 @@ class ProDashboardProvider
     private function client(?User $customer): string
     {
         if ($customer === null) {
-            return '—';
+            return '-';
         }
 
         return UserNameHelper::shortName($customer);
@@ -106,13 +107,13 @@ class ProDashboardProvider
 
         return [
             $this->publishedStat($published, $published - $publishedBefore),
-            $this->stat('booked', 'Créneaux réservés', (string) $booked, $this->fillNote($published, $booked), 'up'),
-            $this->stat('revenue', 'Chiffre récupéré', MoneyHelper::format($revenue), 'avec Kréno', 'neutral'),
+            $this->stat('booked', Translation::translate('Créneaux réservés'), (string) $booked, $this->fillNote($published, $booked), 'up'),
+            $this->stat('revenue', Translation::translate('Chiffre récupéré'), MoneyHelper::format($revenue), Translation::translate('avec Kréno'), 'neutral'),
             $this->stat(
                 'customers',
-                'Nouveaux clients',
+                Translation::translate('Nouveaux clients'),
                 (string) $this->newCustomers($establishment, $since),
-                'venus par Kréno',
+                Translation::translate('venus par Kréno'),
                 'neutral',
             ),
         ];
@@ -128,18 +129,18 @@ class ProDashboardProvider
             $trend = 'up';
         }
 
-        $note = sprintf('%s%d vs mois dernier', $sign, $delta);
+        $note = sprintf(Translation::translate('%s%d vs mois dernier'), $sign, $delta);
 
-        return $this->stat('published', 'Créneaux publiés', (string) $published, $note, $trend);
+        return $this->stat('published', Translation::translate('Créneaux publiés'), (string) $published, $note, $trend);
     }
 
     private function fillNote(int $published, int $booked): string
     {
         if ($published === 0) {
-            return 'Aucun créneau publié';
+            return Translation::translate('Aucun créneau publié');
         }
 
-        return sprintf('%d %% de remplissage', round($booked / $published * 100));
+        return sprintf(Translation::translate('%d %% de remplissage'), round($booked / $published * 100));
     }
 
     private function newCustomers(CompanyEstablishment $establishment, DateTimeImmutable $since): int

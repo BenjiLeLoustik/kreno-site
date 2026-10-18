@@ -2,12 +2,15 @@
 
 namespace App\Establishment\Exception;
 
+use App\Shared\Helper\Translation;
 use NeoPHP\Component\Http\Exception\NotFoundHttpException;
 
 class ProSlotNotFoundException extends NotFoundHttpException
 {
     public function __construct()
     {
-        parent::__construct('Créneau introuvable.');
+        parent::__construct(
+            Translation::translate('Créneau introuvable.')
+        );
     }
 }

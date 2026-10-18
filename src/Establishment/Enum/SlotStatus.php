@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum SlotStatus: string
 {
     case AVAILABLE = 'available';
@@ -14,10 +16,10 @@ enum SlotStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::AVAILABLE => 'Disponible',
-            self::BOOKED => 'Réservé',
-            self::WITHDRAWN => 'Retiré',
-            self::EXPIRED => 'Expiré',
+            self::AVAILABLE => Translation::translate('Disponible'),
+            self::BOOKED => Translation::translate('Réservé'),
+            self::WITHDRAWN => Translation::translate('Retiré'),
+            self::EXPIRED => Translation::translate('Expiré'),
         };
     }
 }

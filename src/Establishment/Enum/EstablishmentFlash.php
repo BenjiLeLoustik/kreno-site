@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum EstablishmentFlash
 {
     case UPDATED;
@@ -12,10 +14,10 @@ enum EstablishmentFlash
     public function text(): string
     {
         return match ($this) {
-            self::UPDATED => 'Informations enregistrées.',
-            self::HOURS_SAVED => 'Horaires enregistrés.',
-            self::CLOSURE_ADDED => 'Fermeture exceptionnelle ajoutée.',
-            self::CLOSURE_DELETED => 'Fermeture supprimée.',
+            self::UPDATED => Translation::translate('Informations enregistrées.'),
+            self::HOURS_SAVED => Translation::translate('Horaires enregistrés.'),
+            self::CLOSURE_ADDED => Translation::translate('Fermeture exceptionnelle ajoutée.'),
+            self::CLOSURE_DELETED => Translation::translate('Fermeture supprimée.'),
         };
     }
 }

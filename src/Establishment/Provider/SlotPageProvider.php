@@ -111,7 +111,10 @@ class SlotPageProvider
             return null;
         }
 
-        return ['firstName' => $user->getFirstName(), 'email' => $user->getEmail()];
+        return [
+            'firstName' => $user->getFirstName(),
+            'email' => $user->getEmail()
+        ];
     }
 
     private function pullOld(int $id): array

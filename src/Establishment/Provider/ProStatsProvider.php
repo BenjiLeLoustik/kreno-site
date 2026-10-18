@@ -14,6 +14,7 @@ use App\Repository\Establishment\EstablishmentSlotRepository;
 use App\Shared\Enum\Weekday;
 use App\Shared\Helper\DurationHelper;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class ProStatsProvider
@@ -92,17 +93,17 @@ class ProStatsProvider
             $this->delayKpi($this->delays($current)),
             [
                 'key' => 'customers',
-                'label' => 'Nouveaux clients',
+                'label' => Translation::translate('Nouveaux clients'),
                 'value' => (string) $this->newCustomers($establishment, $current, $from),
-                'note' => 'venus par Kréno',
+                'note' => Translation::translate('venus par Kréno'),
             ],
         ];
     }
 
     private function fillKpi(?int $rate, ?int $previousRate): array
     {
-        $value = '—';
-        $note = 'sur la période précédente';
+        $value = '-';
+        $note = Translation::translate('sur la période précédente');
 
         if ($rate !== null) {
             $value = sprintf('%d %%', $rate);
@@ -114,7 +115,7 @@ class ProStatsProvider
 
         return [
             'key' => 'fill',
-            'label' => 'Taux de remplissage',
+            'label' => Translation::translate('Taux de remplissage'),
             'value' => $value,
             'note' => $note
         ];
@@ -138,15 +139,15 @@ class ProStatsProvider
         }
 
         $count = count($earned);
-        $note = sprintf('sur %d créneau', $count);
+        $note = sprintf(Translation::translate('sur %d créneau'), $count);
 
         if ($count > 1) {
-            $note = sprintf('sur %d créneaux', $count);
+            $note = sprintf(Translation::translate('sur %d créneaux'), $count);
         }
 
         return [
             'key' => 'revenue',
-            'label' => 'Chiffre récupéré',
+            'label' => Translation::translate('Chiffre récupéré'),
             'value' => MoneyHelper::format($total),
             'note' => $note,
         ];
@@ -154,7 +155,7 @@ class ProStatsProvider
 
     private function delayKpi(array $delays): array
     {
-        $value = '—';
+        $value = '-';
 
         if ($delays !== []) {
             $value = DurationHelper::format((int) round(array_sum($delays) / count($delays)));
@@ -162,9 +163,9 @@ class ProStatsProvider
 
         return [
             'key' => 'delay',
-            'label' => 'Délai moyen de réservation',
+            'label' => Translation::translate('Délai moyen de réservation'),
             'value' => $value,
-            'note' => 'après publication',
+            'note' => Translation::translate('après publication'),
         ];
     }
 
@@ -234,7 +235,11 @@ class ProStatsProvider
         for ($i = 0; $i < self::WEEKS; ++$i) {
             $monday = $start->modify(sprintf('+%d weeks', $i));
             $label = 'S' . (int) $monday->format('W');
-            $weeks[$monday->format('Y-m-d')] = ['label' => $label, 'published' => 0, 'booked' => 0];
+            $weeks[$monday->format('Y-m-d')] = [
+                'label' => $label,
+                'published' => 0,
+                'booked' => 0
+            ];
         }
 
         return $weeks;
@@ -244,8 +249,8 @@ class ProStatsProvider
     {
         $title = sprintf(
             '%s, %s',
-            $this->countLabel($week['published'], 'publié', 'publiés'),
-            $this->countLabel($week['booked'], 'réservé', 'réservés'),
+            $this->countLabel($week['published'], Translation::translate('publié'), Translation::translate('publiés')),
+            $this->countLabel($week['booked'], Translation::translate('réservé'), Translation::translate('réservés')),
         );
 
         return $week + [
@@ -276,7 +281,7 @@ class ProStatsProvider
             $services[] = [
                 'name' => $name,
                 'count' => $count,
-                'label' => $this->countLabel($count, 'réservation', 'réservations'),
+                'label' => $this->countLabel($count, Translation::translate('réservation'), Translation::translate('réservations')),
                 'percent' => (int) round($count / $max * 100),
             ];
         }
@@ -342,12 +347,12 @@ class ProStatsProvider
     private function heatmapCell(Weekday $weekday, int $hour, array $delays): array
     {
         $average = null;
-        $title = sprintf('%s %dh · pas de donnée', $weekday->short(), $hour);
+        $title = sprintf(Translation::translate('%s %dh · pas de donnée'), $weekday->short(), $hour);
 
         if ($delays !== []) {
             $average = (int) round(array_sum($delays) / count($delays));
             $duration = DurationHelper::format($average);
-            $title = sprintf('%s %dh · réservé en %s en moyenne', $weekday->short(), $hour, $duration);
+            $title = sprintf(Translation::translate('%s %dh · réservé en %s en moyenne'), $weekday->short(), $hour, $duration);
         }
 
         return [
@@ -378,7 +383,7 @@ class ProStatsProvider
         }
 
         return sprintf(
-            'Vos créneaux partent le plus vite le %s vers %dh : publiez en priorité à ce moment-là.',
+            Translation::translate('Vos créneaux partent le plus vite le %s vers %dh : publiez en priorité à ce moment-là.'),
             mb_strtolower($best['weekday']->label()),
             $best['hour'],
         );

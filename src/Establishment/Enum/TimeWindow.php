@@ -2,6 +2,7 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 enum TimeWindow: string
@@ -21,12 +22,12 @@ enum TimeWindow: string
     public function label(): string
     {
         return match ($this) {
-            self::NOW => 'Maintenant',
-            self::MORNING => 'Ce matin',
-            self::AFTERNOON => 'Cet après-midi',
-            self::EVENING => 'Ce soir',
-            self::TOMORROW => 'Demain',
-            self::WEEK => 'Cette semaine',
+            self::NOW => Translation::translate('Maintenant'),
+            self::MORNING => Translation::translate('Ce matin'),
+            self::AFTERNOON => Translation::translate('Cet après-midi'),
+            self::EVENING => Translation::translate('Ce soir'),
+            self::TOMORROW => Translation::translate('Demain'),
+            self::WEEK => Translation::translate('Cette semaine'),
         };
     }
 

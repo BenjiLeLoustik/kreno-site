@@ -5330,6 +5330,622 @@
         <source>Établissement inaccessible.</source>
         <target>Établissement inaccessible.</target>
       </trans-unit>
+      <trans-unit id="57ac715493341e0f" resname="%d %% de remplissage">
+        <source>%d %% de remplissage</source>
+        <target>%d %% de remplissage</target>
+      </trans-unit>
+      <trans-unit id="a153edb211e3df6c" resname="%d créneau libre à %s">
+        <source>%d créneau libre à %s</source>
+        <target>%d créneau libre à %s</target>
+      </trans-unit>
+      <trans-unit id="e20c7990e0d009e7" resname="%d créneaux libres à %s">
+        <source>%d créneaux libres à %s</source>
+        <target>%d créneaux libres à %s</target>
+      </trans-unit>
+      <trans-unit id="22edd41e3d4b098d" resname="%d photos en ligne">
+        <source>%d photos en ligne</source>
+        <target>%d photos en ligne</target>
+      </trans-unit>
+      <trans-unit id="095a73dcf2947a52" resname="%d prestation · remise par défaut −%d %%">
+        <source>%d prestation · remise par défaut −%d %%</source>
+        <target>%d prestation · remise par défaut −%d %%</target>
+      </trans-unit>
+      <trans-unit id="fabacff4d36ac61b" resname="%d prestations · remise par défaut −%d %%">
+        <source>%d prestations · remise par défaut −%d %%</source>
+        <target>%d prestations · remise par défaut −%d %%</target>
+      </trans-unit>
+      <trans-unit id="7e1b656e1deb6577" resname="%s %dh · pas de donnée">
+        <source>%s %dh · pas de donnée</source>
+        <target>%s %dh · pas de donnée</target>
+      </trans-unit>
+      <trans-unit id="60a9de8c5abcf92b" resname="%s %dh · réservé en %s en moyenne">
+        <source>%s %dh · réservé en %s en moyenne</source>
+        <target>%s %dh · réservé en %s en moyenne</target>
+      </trans-unit>
+      <trans-unit id="f2cd31af20502688" resname="%s au %s">
+        <source>%s au %s</source>
+        <target>%s au %s</target>
+      </trans-unit>
+      <trans-unit id="292a35f1d40c8416" resname="%s est de nouveau en ligne.">
+        <source>%s est de nouveau en ligne.</source>
+        <target>%s est de nouveau en ligne.</target>
+      </trans-unit>
+      <trans-unit id="164190b474c51c91" resname="%s est suspendu. Le pro a été prévenu par e-mail.">
+        <source>%s est suspendu. Le pro a été prévenu par e-mail.</source>
+        <target>%s est suspendu. Le pro a été prévenu par e-mail.</target>
+      </trans-unit>
+      <trans-unit id="65e959626c450196" resname="%s et %s">
+        <source>%s et %s</source>
+        <target>%s et %s</target>
+      </trans-unit>
+      <trans-unit id="88b7ea647c03b7b7" resname="%s%d vs mois dernier">
+        <source>%s%d vs mois dernier</source>
+        <target>%s%d vs mois dernier</target>
+      </trans-unit>
+      <trans-unit id="4e9241c2a2827820" resname="30 jours">
+        <source>30 jours</source>
+        <target>30 jours</target>
+      </trans-unit>
+      <trans-unit id="5ce6303bdc6b8930" resname="7 jours">
+        <source>7 jours</source>
+        <target>7 jours</target>
+      </trans-unit>
+      <trans-unit id="d6950f95c6d95a03" resname="90 jours">
+        <source>90 jours</source>
+        <target>90 jours</target>
+      </trans-unit>
+      <trans-unit id="9f68b58a036bda67" resname="Ajouter des photos">
+        <source>Ajouter des photos</source>
+        <target>Ajouter des photos</target>
+      </trans-unit>
+      <trans-unit id="d3affa59c5da4ea7" resname="Ajouter vos prestations">
+        <source>Ajouter vos prestations</source>
+        <target>Ajouter vos prestations</target>
+      </trans-unit>
+      <trans-unit id="091400fd14ec7bc2" resname="Annulation gratuite">
+        <source>Annulation gratuite</source>
+        <target>Annulation gratuite</target>
+      </trans-unit>
+      <trans-unit id="2c7055005225fcfb" resname="Aucun créneau publié">
+        <source>Aucun créneau publié</source>
+        <target>Aucun créneau publié</target>
+      </trans-unit>
+      <trans-unit id="6df3911a668f7222" resname="Aucune carte demandée en ligne.">
+        <source>Aucune carte demandée en ligne.</source>
+        <target>Aucune carte demandée en ligne.</target>
+      </trans-unit>
+      <trans-unit id="9dd67bb84296bf4f" resname="Aucune ville disponible">
+        <source>Aucune ville disponible</source>
+        <target>Aucune ville disponible</target>
+      </trans-unit>
+      <trans-unit id="f2de9e072a83f7c9" resname="Aujourd’hui">
+        <source>Aujourd’hui</source>
+        <target>Aujourd’hui</target>
+      </trans-unit>
+      <trans-unit id="3a6b4df047ab09d5" resname="Ce créneau commence trop tôt : il serait retiré avant de pouvoir être réservé.">
+        <source>Ce créneau commence trop tôt : il serait retiré avant de pouvoir être réservé.</source>
+        <target>Ce créneau commence trop tôt : il serait retiré avant de pouvoir être réservé.</target>
+      </trans-unit>
+      <trans-unit id="deffa1161b0bc5d0" resname="Ce créneau est déjà publié.">
+        <source>Ce créneau est déjà publié.</source>
+        <target>Ce créneau est déjà publié.</target>
+      </trans-unit>
+      <trans-unit id="edce5aadafb22d4e" resname="Ce créneau n&apos;est plus disponible.">
+        <source>Ce créneau n&apos;est plus disponible.</source>
+        <target>Ce créneau n&apos;est plus disponible.</target>
+      </trans-unit>
+      <trans-unit id="6852594c306d48d6" resname="Ce créneau n&apos;existe pas.">
+        <source>Ce créneau n&apos;existe pas.</source>
+        <target>Ce créneau n&apos;existe pas.</target>
+      </trans-unit>
+      <trans-unit id="7d21dddd471bfc72" resname="Ce matin">
+        <source>Ce matin</source>
+        <target>Ce matin</target>
+      </trans-unit>
+      <trans-unit id="3e1fab7195f76c7c" resname="Ce membre a déjà un créneau sur cet horaire.">
+        <source>Ce membre a déjà un créneau sur cet horaire.</source>
+        <target>Ce membre a déjà un créneau sur cet horaire.</target>
+      </trans-unit>
+      <trans-unit id="45ce79a72cd80b1f" resname="Ce membre ne fait pas partie de l&apos;établissement.">
+        <source>Ce membre ne fait pas partie de l&apos;établissement.</source>
+        <target>Ce membre ne fait pas partie de l&apos;établissement.</target>
+      </trans-unit>
+      <trans-unit id="46f3c10b14000847" resname="Ce que vous proposez, avec durée et prix">
+        <source>Ce que vous proposez, avec durée et prix</source>
+        <target>Ce que vous proposez, avec durée et prix</target>
+      </trans-unit>
+      <trans-unit id="c3e9405b3270af4d" resname="Ce soir">
+        <source>Ce soir</source>
+        <target>Ce soir</target>
+      </trans-unit>
+      <trans-unit id="34d698d5250f953f" resname="Cet après-midi">
+        <source>Cet après-midi</source>
+        <target>Cet après-midi</target>
+      </trans-unit>
+      <trans-unit id="dd3b2b329c4d8b18" resname="Cet établissement n&apos;est pas disponible.">
+        <source>Cet établissement n&apos;est pas disponible.</source>
+        <target>Cet établissement n&apos;est pas disponible.</target>
+      </trans-unit>
+      <trans-unit id="22893e6186120d0e" resname="Cet établissement n&apos;existe pas ou n&apos;est plus en ligne.">
+        <source>Cet établissement n&apos;existe pas ou n&apos;est plus en ligne.</source>
+        <target>Cet établissement n&apos;existe pas ou n&apos;est plus en ligne.</target>
+      </trans-unit>
+      <trans-unit id="fb85f928e04c038d" resname="Cette fermeture est déjà passée.">
+        <source>Cette fermeture est déjà passée.</source>
+        <target>Cette fermeture est déjà passée.</target>
+      </trans-unit>
+      <trans-unit id="e0ab3be444437d36" resname="Cette prestation a déjà des créneaux : elle a été désactivée.">
+        <source>Cette prestation a déjà des créneaux : elle a été désactivée.</source>
+        <target>Cette prestation a déjà des créneaux : elle a été désactivée.</target>
+      </trans-unit>
+      <trans-unit id="616becfa5c4a622b" resname="Cette prestation n&apos;existe pas ou n&apos;est plus proposée.">
+        <source>Cette prestation n&apos;existe pas ou n&apos;est plus proposée.</source>
+        <target>Cette prestation n&apos;existe pas ou n&apos;est plus proposée.</target>
+      </trans-unit>
+      <trans-unit id="02ff5c80434f361a" resname="Chiffre récupéré">
+        <source>Chiffre récupéré</source>
+        <target>Chiffre récupéré</target>
+      </trans-unit>
+      <trans-unit id="979430d9692cd147" resname="Choisissez une photo à envoyer.">
+        <source>Choisissez une photo à envoyer.</source>
+        <target>Choisissez une photo à envoyer.</target>
+      </trans-unit>
+      <trans-unit id="e7a44649d3aba01e" resname="Créer votre compte">
+        <source>Créer votre compte</source>
+        <target>Créer votre compte</target>
+      </trans-unit>
+      <trans-unit id="6801d12092eb5b50" resname="Créneau introuvable.">
+        <source>Créneau introuvable.</source>
+        <target>Créneau introuvable.</target>
+      </trans-unit>
+      <trans-unit id="4d4e0fc1a4e0a4cb" resname="Créneaux publiés">
+        <source>Créneaux publiés</source>
+        <target>Créneaux publiés</target>
+      </trans-unit>
+      <trans-unit id="55b692e288dc3670" resname="Créneaux réservés">
+        <source>Créneaux réservés</source>
+        <target>Créneaux réservés</target>
+      </trans-unit>
+      <trans-unit id="e4c15e0b197d58c4" resname="Demain">
+        <source>Demain</source>
+        <target>Demain</target>
+      </trans-unit>
+      <trans-unit id="9a1efcc25128e624" resname="Description de la photo enregistrée.">
+        <source>Description de la photo enregistrée.</source>
+        <target>Description de la photo enregistrée.</target>
+      </trans-unit>
+      <trans-unit id="f4e4f699637be88f" resname="Disponible">
+        <source>Disponible</source>
+        <target>Disponible</target>
+      </trans-unit>
+      <trans-unit id="80dc0f63574616c9" resname="Du %s au %s">
+        <source>Du %s au %s</source>
+        <target>Du %s au %s</target>
+      </trans-unit>
+      <trans-unit id="fa61cb881fe59b0f" resname="Délai moyen de réservation">
+        <source>Délai moyen de réservation</source>
+        <target>Délai moyen de réservation</target>
+      </trans-unit>
+      <trans-unit id="e2053fb68b742c89" resname="En ligne">
+        <source>En ligne</source>
+        <target>En ligne</target>
+      </trans-unit>
+      <trans-unit id="4479ef3179427ee2" resname="Expiré">
+        <source>Expiré</source>
+        <target>Expiré</target>
+      </trans-unit>
+      <trans-unit id="c8951c5b3a68f5bf" resname="Expirés et retirés">
+        <source>Expirés et retirés</source>
+        <target>Expirés et retirés</target>
+      </trans-unit>
+      <trans-unit id="ef8ff8ef09d17fef" resname="Fermeture exceptionnelle ajoutée.">
+        <source>Fermeture exceptionnelle ajoutée.</source>
+        <target>Fermeture exceptionnelle ajoutée.</target>
+      </trans-unit>
+      <trans-unit id="2f5ec5bc34a8e38c" resname="Fermeture introuvable.">
+        <source>Fermeture introuvable.</source>
+        <target>Fermeture introuvable.</target>
+      </trans-unit>
+      <trans-unit id="5b5a3519d7383432" resname="Fermeture supprimée.">
+        <source>Fermeture supprimée.</source>
+        <target>Fermeture supprimée.</target>
+      </trans-unit>
+      <trans-unit id="91f0cbda0129d396" resname="Fermé">
+        <source>Fermé</source>
+        <target>Fermé</target>
+      </trans-unit>
+      <trans-unit id="477a18d2c0f6cf2b" resname="Hier">
+        <source>Hier</source>
+        <target>Hier</target>
+      </trans-unit>
+      <trans-unit id="58b8f30727fc3d6e" resname="Horaires enregistrés.">
+        <source>Horaires enregistrés.</source>
+        <target>Horaires enregistrés.</target>
+      </trans-unit>
+      <trans-unit id="aa54927e189ebabf" resname="Identité et e-mail vérifiés">
+        <source>Identité et e-mail vérifiés</source>
+        <target>Identité et e-mail vérifiés</target>
+      </trans-unit>
+      <trans-unit id="d4f691e10d99ec8d" resname="Informations enregistrées.">
+        <source>Informations enregistrées.</source>
+        <target>Informations enregistrées.</target>
+      </trans-unit>
+      <trans-unit id="846e76cefc044380" resname="Jusqu’à %s avant le rendez-vous.">
+        <source>Jusqu’à %s avant le rendez-vous.</source>
+        <target>Jusqu’à %s avant le rendez-vous.</target>
+      </trans-unit>
+      <trans-unit id="a8a75ac04ff54a29" resname="L&apos;établissement doit être en ligne pour publier un créneau.">
+        <source>L&apos;établissement doit être en ligne pour publier un créneau.</source>
+        <target>L&apos;établissement doit être en ligne pour publier un créneau.</target>
+      </trans-unit>
+      <trans-unit id="9dcd25f362580859" resname="L&apos;établissement est fermé ce jour-là.">
+        <source>L&apos;établissement est fermé ce jour-là.</source>
+        <target>L&apos;établissement est fermé ce jour-là.</target>
+      </trans-unit>
+      <trans-unit id="dc889f8e4321685b" resname="La date de fin doit suivre la date de début.">
+        <source>La date de fin doit suivre la date de début.</source>
+        <target>La date de fin doit suivre la date de début.</target>
+      </trans-unit>
+      <trans-unit id="211fdd5e9cdc1606" resname="La photo doit être au format JPEG, PNG ou WebP et peser moins de 8 Mo.">
+        <source>La photo doit être au format JPEG, PNG ou WebP et peser moins de 8 Mo.</source>
+        <target>La photo doit être au format JPEG, PNG ou WebP et peser moins de 8 Mo.</target>
+      </trans-unit>
+      <trans-unit id="09f8bc827862088b" resname="La plus grosse remise">
+        <source>La plus grosse remise</source>
+        <target>La plus grosse remise</target>
+      </trans-unit>
+      <trans-unit id="d2c6edd7d7db0507" resname="La remise doit être comprise entre {min} % et {max} %.">
+        <source>La remise doit être comprise entre {min} % et {max} %.</source>
+        <target>La remise doit être comprise entre {min} % et {max} %.</target>
+      </trans-unit>
+      <trans-unit id="9211c69ecf4ff0d1" resname="Le %s">
+        <source>Le %s</source>
+        <target>Le %s</target>
+      </trans-unit>
+      <trans-unit id="4a6eeee3af806902" resname="Le créneau de %s est retiré.">
+        <source>Le créneau de %s est retiré.</source>
+        <target>Le créneau de %s est retiré.</target>
+      </trans-unit>
+      <trans-unit id="95945bb9fafeb83b" resname="Le jour ou l&apos;heure du créneau est invalide.">
+        <source>Le jour ou l&apos;heure du créneau est invalide.</source>
+        <target>Le jour ou l&apos;heure du créneau est invalide.</target>
+      </trans-unit>
+      <trans-unit id="acae9b06bdfe943a" resname="Le plus proche">
+        <source>Le plus proche</source>
+        <target>Le plus proche</target>
+      </trans-unit>
+      <trans-unit id="bcbe82c4e79e6a1a" resname="Le plus tôt">
+        <source>Le plus tôt</source>
+        <target>Le plus tôt</target>
+      </trans-unit>
+      <trans-unit id="d34d60550eef5d88" resname="Les dates de fermeture sont invalides.">
+        <source>Les dates de fermeture sont invalides.</source>
+        <target>Les dates de fermeture sont invalides.</target>
+      </trans-unit>
+      <trans-unit id="442d0b10eb91a493" resname="Les pages avec %d photos ou plus sont 2× plus réservées">
+        <source>Les pages avec %d photos ou plus sont 2× plus réservées</source>
+        <target>Les pages avec %d photos ou plus sont 2× plus réservées</target>
+      </trans-unit>
+      <trans-unit id="4303250da364c67c" resname="Maintenant">
+        <source>Maintenant</source>
+        <target>Maintenant</target>
+      </trans-unit>
+      <trans-unit id="4da810a4639d3667" resname="Modifier dans Mes créneaux">
+        <source>Modifier dans Mes créneaux</source>
+        <target>Modifier dans Mes créneaux</target>
+      </trans-unit>
+      <trans-unit id="bd69f82df1c17bd4" resname="Nouveaux clients">
+        <source>Nouveaux clients</source>
+        <target>Nouveaux clients</target>
+      </trans-unit>
+      <trans-unit id="088ac179fa351ce3" resname="Ordre des photos enregistré.">
+        <source>Ordre des photos enregistré.</source>
+        <target>Ordre des photos enregistré.</target>
+      </trans-unit>
+      <trans-unit id="b2d7fbd5a67a68be" resname="Ordre des prestations enregistré.">
+        <source>Ordre des prestations enregistré.</source>
+        <target>Ordre des prestations enregistré.</target>
+      </trans-unit>
+      <trans-unit id="0f8210b9ec7dfe59" resname="Ouvert jusqu&apos;à %s">
+        <source>Ouvert jusqu&apos;à %s</source>
+        <target>Ouvert jusqu&apos;à %s</target>
+      </trans-unit>
+      <trans-unit id="797a3688a415a0f4" resname="Ouvre à %s">
+        <source>Ouvre à %s</source>
+        <target>Ouvre à %s</target>
+      </trans-unit>
+      <trans-unit id="166feb673544a493" resname="Pas de prépaiement : tu règles le prix réduit directement chez le pro, comme d’habitude.">
+        <source>Pas de prépaiement : tu règles le prix réduit directement chez le pro, comme d’habitude.</source>
+        <target>Pas de prépaiement : tu règles le prix réduit directement chez le pro, comme d’habitude.</target>
+      </trans-unit>
+      <trans-unit id="c953de7e8e2780d9" resname="Photo ajoutée.">
+        <source>Photo ajoutée.</source>
+        <target>Photo ajoutée.</target>
+      </trans-unit>
+      <trans-unit id="0b7ec589850851b3" resname="Photo introuvable.">
+        <source>Photo introuvable.</source>
+        <target>Photo introuvable.</target>
+      </trans-unit>
+      <trans-unit id="1810e0acd641eda3" resname="Photo supprimée.">
+        <source>Photo supprimée.</source>
+        <target>Photo supprimée.</target>
+      </trans-unit>
+      <trans-unit id="861b775f9b426d7e" resname="Place bloquée">
+        <source>Place bloquée</source>
+        <target>Place bloquée</target>
+      </trans-unit>
+      <trans-unit id="1b0e63a6fa8d4bfd" resname="Plus que %d min">
+        <source>Plus que %d min</source>
+        <target>Plus que %d min</target>
+      </trans-unit>
+      <trans-unit id="38ab32bf47e5a29e" resname="Prestation introuvable.">
+        <source>Prestation introuvable.</source>
+        <target>Prestation introuvable.</target>
+      </trans-unit>
+      <trans-unit id="82c4a552ece090e3" resname="Prestation supprimée.">
+        <source>Prestation supprimée.</source>
+        <target>Prestation supprimée.</target>
+      </trans-unit>
+      <trans-unit id="6b77e34ab754314a" resname="Prestation « %s » ajoutée.">
+        <source>Prestation « %s » ajoutée.</source>
+        <target>Prestation « %s » ajoutée.</target>
+      </trans-unit>
+      <trans-unit id="6983fb197c91fc02" resname="Prestation « %s » modifiée.">
+        <source>Prestation « %s » modifiée.</source>
+        <target>Prestation « %s » modifiée.</target>
+      </trans-unit>
+      <trans-unit id="d1e5426ddc3e0724" resname="Publier">
+        <source>Publier</source>
+        <target>Publier</target>
+      </trans-unit>
+      <trans-unit id="c92e067340512d1b" resname="Publier votre premier créneau">
+        <source>Publier votre premier créneau</source>
+        <target>Publier votre premier créneau</target>
+      </trans-unit>
+      <trans-unit id="61c7f9c25b467b27" resname="Retiré">
+        <source>Retiré</source>
+        <target>Retiré</target>
+      </trans-unit>
+      <trans-unit id="8e11a4130f0b8dd8" resname="Réceptionniste">
+        <source>Réceptionniste</source>
+        <target>Réceptionniste</target>
+      </trans-unit>
+      <trans-unit id="e4280737ec40f6a3" resname="Réservé">
+        <source>Réservé</source>
+        <target>Réservé</target>
+      </trans-unit>
+      <trans-unit id="1110da8fc79d0d01" resname="SIRET contrôlé par l’équipe Kréno">
+        <source>SIRET contrôlé par l’équipe Kréno</source>
+        <target>SIRET contrôlé par l’équipe Kréno</target>
+      </trans-unit>
+      <trans-unit id="a1111a163f99adb4" resname="Seul un créneau en ligne peut être retiré.">
+        <source>Seul un créneau en ligne peut être retiré.</source>
+        <target>Seul un créneau en ligne peut être retiré.</target>
+      </trans-unit>
+      <trans-unit id="fdc6e57147678a2f" resname="Seul un établissement en ligne peut être suspendu.">
+        <source>Seul un établissement en ligne peut être suspendu.</source>
+        <target>Seul un établissement en ligne peut être suspendu.</target>
+      </trans-unit>
+      <trans-unit id="99ea74f0364ec480" resname="Seul un établissement suspendu peut être remis en ligne.">
+        <source>Seul un établissement suspendu peut être remis en ligne.</source>
+        <target>Seul un établissement suspendu peut être remis en ligne.</target>
+      </trans-unit>
+      <trans-unit id="2f81bc24f1eb2299" resname="Suspendus">
+        <source>Suspendus</source>
+        <target>Suspendus</target>
+      </trans-unit>
+      <trans-unit id="1f0d7b0b36e074f2" resname="Taux de remplissage">
+        <source>Taux de remplissage</source>
+        <target>Taux de remplissage</target>
+      </trans-unit>
+      <trans-unit id="2ff59981438804b8" resname="Tous">
+        <source>Tous</source>
+        <target>Tous</target>
+      </trans-unit>
+      <trans-unit id="f352ceca9bda47b2" resname="Tu le réserves en deux clics">
+        <source>Tu le réserves en deux clics</source>
+        <target>Tu le réserves en deux clics</target>
+      </trans-unit>
+      <trans-unit id="4393958264944c4c" resname="Tu paies sur place">
+        <source>Tu paies sur place</source>
+        <target>Tu paies sur place</target>
+      </trans-unit>
+      <trans-unit id="611403434f78d8e5" resname="Tu reçois une alerte si c’est près de toi. Le créneau est bloqué à ton nom dès la réservation.">
+        <source>Tu reçois une alerte si c’est près de toi. Le créneau est bloqué à ton nom dès la réservation.</source>
+        <target>Tu reçois une alerte si c’est près de toi. Le créneau est bloqué à ton nom dès la réservation.</target>
+      </trans-unit>
+      <trans-unit id="a163a18fb601b06f" resname="Un client annule ? Le pro publie l’horaire libéré avec une remise, en quelques secondes.">
+        <source>Un client annule ? Le pro publie l’horaire libéré avec une remise, en quelques secondes.</source>
+        <target>Un client annule ? Le pro publie l’horaire libéré avec une remise, en quelques secondes.</target>
+      </trans-unit>
+      <trans-unit id="7085ad3885907fc6" resname="Un créneau est retiré au plus tard {minutes} min avant son début.">
+        <source>Un créneau est retiré au plus tard {minutes} min avant son début.</source>
+        <target>Un créneau est retiré au plus tard {minutes} min avant son début.</target>
+      </trans-unit>
+      <trans-unit id="749faa43d13b23ca" resname="Un créneau se publie au plus {days} jours à l&apos;avance.">
+        <source>Un créneau se publie au plus {days} jours à l&apos;avance.</source>
+        <target>Un créneau se publie au plus {days} jours à l&apos;avance.</target>
+      </trans-unit>
+      <trans-unit id="b30df0c6abccf8f3" resname="Un pro libère un créneau">
+        <source>Un pro libère un créneau</source>
+        <target>Un pro libère un créneau</target>
+      </trans-unit>
+      <trans-unit id="51039864d4b3fd70" resname="Un trou dans l’agenda ? C’est le moment.">
+        <source>Un trou dans l’agenda ? C’est le moment.</source>
+        <target>Un trou dans l’agenda ? C’est le moment.</target>
+      </trans-unit>
+      <trans-unit id="104d701636b68b65" resname="Une fermeture existe déjà sur cette période.">
+        <source>Une fermeture existe déjà sur cette période.</source>
+        <target>Une fermeture existe déjà sur cette période.</target>
+      </trans-unit>
+      <trans-unit id="67cc9c390467d3eb" resname="Voir la réservation">
+        <source>Voir la réservation</source>
+        <target>Voir la réservation</target>
+      </trans-unit>
+      <trans-unit id="a22222edbf9a9eea" resname="Vos créneaux partent le plus vite le %s vers %dh : publiez en priorité à ce moment-là.">
+        <source>Vos créneaux partent le plus vite le %s vers %dh : publiez en priorité à ce moment-là.</source>
+        <target>Vos créneaux partent le plus vite le %s vers %dh : publiez en priorité à ce moment-là.</target>
+      </trans-unit>
+      <trans-unit id="afc2f7fb92da2188" resname="Votre créneau de %s est en ligne. Il disparaîtra à %s s&apos;il n&apos;est pas réservé.">
+        <source>Votre créneau de %s est en ligne. Il disparaîtra à %s s&apos;il n&apos;est pas réservé.</source>
+        <target>Votre créneau de %s est en ligne. Il disparaîtra à %s s&apos;il n&apos;est pas réservé.</target>
+      </trans-unit>
+      <trans-unit id="282f19c3a84f81d2" resname="Votre premier créneau est publié">
+        <source>Votre premier créneau est publié</source>
+        <target>Votre premier créneau est publié</target>
+      </trans-unit>
+      <trans-unit id="f275f5816e8c0d35" resname="Vous ne suivez plus %s.">
+        <source>Vous ne suivez plus %s.</source>
+        <target>Vous ne suivez plus %s.</target>
+      </trans-unit>
+      <trans-unit id="7ede8c9dc3ecfbe4" resname="Vous pouvez ajouter jusqu&apos;à {max} photos.">
+        <source>Vous pouvez ajouter jusqu&apos;à {max} photos.</source>
+        <target>Vous pouvez ajouter jusqu&apos;à {max} photos.</target>
+      </trans-unit>
+      <trans-unit id="26d7f6de67e18fd7" resname="Vérification en cours par l’équipe Kréno">
+        <source>Vérification en cours par l’équipe Kréno</source>
+        <target>Vérification en cours par l’équipe Kréno</target>
+      </trans-unit>
+      <trans-unit id="cdc6c4dec53ff1aa" resname="après publication">
+        <source>après publication</source>
+        <target>après publication</target>
+      </trans-unit>
+      <trans-unit id="560d67d24041e9ea" resname="avec Kréno">
+        <source>avec Kréno</source>
+        <target>avec Kréno</target>
+      </trans-unit>
+      <trans-unit id="30f02d330c01766a" resname="ce matin">
+        <source>ce matin</source>
+        <target>ce matin</target>
+      </trans-unit>
+      <trans-unit id="bf1878724675ce4e" resname="de commission par réservation">
+        <source>de commission par réservation</source>
+        <target>de commission par réservation</target>
+      </trans-unit>
+      <trans-unit id="797cc3f796cfb933" resname="en ligne, pas encore réservé">
+        <source>en ligne, pas encore réservé</source>
+        <target>en ligne, pas encore réservé</target>
+      </trans-unit>
+      <trans-unit id="448f3b392eeae033" resname="en moyenne pour trouver preneur">
+        <source>en moyenne pour trouver preneur</source>
+        <target>en moyenne pour trouver preneur</target>
+      </trans-unit>
+      <trans-unit id="ef3fbd67801075fd" resname="entre %s et %s">
+        <source>entre %s et %s</source>
+        <target>entre %s et %s</target>
+      </trans-unit>
+      <trans-unit id="57a861a5a8af566c" resname="expire à %s">
+        <source>expire à %s</source>
+        <target>expire à %s</target>
+      </trans-unit>
+      <trans-unit id="57ba44a5197fb53c" resname="expiré sans réservation">
+        <source>expiré sans réservation</source>
+        <target>expiré sans réservation</target>
+      </trans-unit>
+      <trans-unit id="cc34e9d700ff98c5" resname="il y a %d h">
+        <source>il y a %d h</source>
+        <target>il y a %d h</target>
+      </trans-unit>
+      <trans-unit id="767aa0be63272a6e" resname="il y a %d min">
+        <source>il y a %d min</source>
+        <target>il y a %d min</target>
+      </trans-unit>
+      <trans-unit id="900300af1b6e2d92" resname="pour publier un créneau libéré">
+        <source>pour publier un créneau libéré</source>
+        <target>pour publier un créneau libéré</target>
+      </trans-unit>
+      <trans-unit id="0274b42b849b372e" resname="publié">
+        <source>publié</source>
+        <target>publié</target>
+      </trans-unit>
+      <trans-unit id="f0bf4efcaa93b9e7" resname="publiés">
+        <source>publiés</source>
+        <target>publiés</target>
+      </trans-unit>
+      <trans-unit id="a30eabb1c1619275" resname="retiré">
+        <source>retiré</source>
+        <target>retiré</target>
+      </trans-unit>
+      <trans-unit id="836162ece7ba8f78" resname="réservation">
+        <source>réservation</source>
+        <target>réservation</target>
+      </trans-unit>
+      <trans-unit id="48afcde48a9dad20" resname="réservé">
+        <source>réservé</source>
+        <target>réservé</target>
+      </trans-unit>
+      <trans-unit id="16315bc19b081beb" resname="réservé par %s">
+        <source>réservé par %s</source>
+        <target>réservé par %s</target>
+      </trans-unit>
+      <trans-unit id="d3b453861298a409" resname="réservés">
+        <source>réservés</source>
+        <target>réservés</target>
+      </trans-unit>
+      <trans-unit id="980432faadf7a5ff" resname="si personne ne réserve">
+        <source>si personne ne réserve</source>
+        <target>si personne ne réserve</target>
+      </trans-unit>
+      <trans-unit id="58ecd53c6cac97d6" resname="sur %d créneau">
+        <source>sur %d créneau</source>
+        <target>sur %d créneau</target>
+      </trans-unit>
+      <trans-unit id="371aac8cb9e01374" resname="sur %d créneaux">
+        <source>sur %d créneaux</source>
+        <target>sur %d créneaux</target>
+      </trans-unit>
+      <trans-unit id="526e0b560a5a4355" resname="sur la période précédente">
+        <source>sur la période précédente</source>
+        <target>sur la période précédente</target>
+      </trans-unit>
+      <trans-unit id="801ca3ef1e10e5fd" resname="venus par Kréno">
+        <source>venus par Kréno</source>
+        <target>venus par Kréno</target>
+      </trans-unit>
+      <trans-unit id="20c0d6b2a51e8b5b" resname="{day} : deux plages horaires se chevauchent.">
+        <source>{day} : deux plages horaires se chevauchent.</source>
+        <target>{day} : deux plages horaires se chevauchent.</target>
+      </trans-unit>
+      <trans-unit id="fbd071168bef4c11" resname="{day} : l&apos;heure d&apos;ouverture doit précéder l&apos;heure de fermeture.">
+        <source>{day} : l&apos;heure d&apos;ouverture doit précéder l&apos;heure de fermeture.</source>
+        <target>{day} : l&apos;heure d&apos;ouverture doit précéder l&apos;heure de fermeture.</target>
+      </trans-unit>
+      <trans-unit id="40b85f16ddb9a048" resname="« %s » est de nouveau proposée.">
+        <source>« %s » est de nouveau proposée.</source>
+        <target>« %s » est de nouveau proposée.</target>
+      </trans-unit>
+      <trans-unit id="f95fca24f6e0f56e" resname="« %s » est désactivée.">
+        <source>« %s » est désactivée.</source>
+        <target>« %s » est désactivée.</target>
+      </trans-unit>
+      <trans-unit id="6ba9deffbc9e6850" resname="À ton nom dès la confirmation.">
+        <source>À ton nom dès la confirmation.</source>
+        <target>À ton nom dès la confirmation.</target>
+      </trans-unit>
+      <trans-unit id="75aeff6b0640d89b" resname="Établissement introuvable.">
+        <source>Établissement introuvable.</source>
+        <target>Établissement introuvable.</target>
+      </trans-unit>
+      <trans-unit id="c9a4de5342b1d9a6" resname="Établissement vérifié">
+        <source>Établissement vérifié</source>
+        <target>Établissement vérifié</target>
+      </trans-unit>
+      <trans-unit id="f497a0089160619a" resname="Établissement « %s » remis en ligne">
+        <source>Établissement « %s » remis en ligne</source>
+        <target>Établissement « %s » remis en ligne</target>
+      </trans-unit>
+      <trans-unit id="321817b4872a8e8c" resname="Établissement « %s » suspendu">
+        <source>Établissement « %s » suspendu</source>
+        <target>Établissement « %s » suspendu</target>
+      </trans-unit>
+      <trans-unit id="4f2780cf0a7d10e5" resname="à l&apos;instant">
+        <source>à l&apos;instant</source>
+        <target>à l&apos;instant</target>
+      </trans-unit>
+      <trans-unit id="f46585b28eb1cf1c" resname="à moins de %d km">
+        <source>à moins de %d km</source>
+        <target>à moins de %d km</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

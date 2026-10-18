@@ -90,6 +90,10 @@ class ShopPageProvider
 
     private function crumb(?string $label, ?string $route = null, array $parameters = []): array
     {
-        return ['label' => $label, 'route' => $route, 'parameters' => $parameters];
+        return [
+            'label' => $label,
+            'route' => $route,
+            'parameters' => $parameters
+        ];
     }
 }

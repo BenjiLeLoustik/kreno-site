@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum SlotFlash
 {
     case PUBLISHED;
@@ -15,8 +17,8 @@ enum SlotFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::PUBLISHED => 'Votre créneau de %s est en ligne. Il disparaîtra à %s s\'il n\'est pas réservé.',
-            self::WITHDRAWN => 'Le créneau de %s est retiré.',
+            self::PUBLISHED => Translation::translate('Votre créneau de %s est en ligne. Il disparaîtra à %s s\'il n\'est pas réservé.'),
+            self::WITHDRAWN => Translation::translate('Le créneau de %s est retiré.'),
         };
     }
 }

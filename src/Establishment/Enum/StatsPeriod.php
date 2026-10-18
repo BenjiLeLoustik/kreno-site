@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum StatsPeriod: int
 {
     case WEEK = 7;
@@ -11,9 +13,9 @@ enum StatsPeriod: int
     public function label(): string
     {
         return match ($this) {
-            self::WEEK => '7 jours',
-            self::MONTH => '30 jours',
-            self::QUARTER => '90 jours',
+            self::WEEK => Translation::translate('7 jours'),
+            self::MONTH => Translation::translate('30 jours'),
+            self::QUARTER => Translation::translate('90 jours'),
         };
     }
 }

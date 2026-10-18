@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum SearchText
 {
     case FREE_SLOT;
@@ -25,9 +27,9 @@ enum SearchText
     private function pattern(): string
     {
         return match ($this) {
-            self::FREE_SLOT => '%d créneau libre à %s',
-            self::FREE_SLOTS => '%d créneaux libres à %s',
-            self::NO_CITY => 'Aucune ville disponible',
+            self::FREE_SLOT => Translation::translate('%d créneau libre à %s'),
+            self::FREE_SLOTS => Translation::translate('%d créneaux libres à %s'),
+            self::NO_CITY => Translation::translate('Aucune ville disponible'),
         };
     }
 }

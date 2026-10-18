@@ -4,6 +4,7 @@ namespace App\Establishment\Helper;
 
 use App\Shared\Enum\Month;
 use App\Shared\Enum\Weekday;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class CalendarHelper
@@ -16,9 +17,9 @@ class CalendarHelper
         $days = (int) $today->diff($date->setTime(0, 0))->format('%r%a');
 
         return match ($days) {
-            0 => 'Aujourd’hui',
-            1 => 'Demain',
-            -1 => 'Hier',
+            0 => Translation::translate('Aujourd’hui'),
+            1 => Translation::translate('Demain'),
+            -1 => Translation::translate('Hier'),
             default => self::shortDate($date),
         };
     }
@@ -98,11 +99,11 @@ class CalendarHelper
         $minutes = intdiv(max(0, $now->getTimestamp() - $date->getTimestamp()), 60);
 
         if ($minutes < 1) {
-            return 'à l\'instant';
+            return Translation::translate('à l\'instant');
         }
 
         if ($minutes < 60) {
-            return sprintf('il y a %d min', $minutes);
+            return sprintf(Translation::translate('il y a %d min'), $minutes);
         }
 
         if ($date->format('Y-m-d') !== $now->format('Y-m-d')) {
@@ -110,9 +111,9 @@ class CalendarHelper
         }
 
         if ((int) $date->format('G') < self::MORNING_END_HOUR) {
-            return 'ce matin';
+            return Translation::translate('ce matin');
         }
 
-        return sprintf('il y a %d h', intdiv($minutes, 60));
+        return sprintf(Translation::translate('il y a %d h'), intdiv($minutes, 60));
     }
 }

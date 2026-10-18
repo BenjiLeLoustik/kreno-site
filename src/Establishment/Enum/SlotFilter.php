@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum SlotFilter: string
 {
     case ALL = 'all';
@@ -17,10 +19,10 @@ enum SlotFilter: string
     public function label(): string
     {
         return match ($this) {
-            self::ALL => 'Tous',
-            self::ONLINE => 'En ligne',
-            self::BOOKED => 'Réservés',
-            self::EXPIRED => 'Expirés et retirés',
+            self::ALL => Translation::translate('Tous'),
+            self::ONLINE => Translation::translate('En ligne'),
+            self::BOOKED => Translation::translate('Réservés'),
+            self::EXPIRED => Translation::translate('Expirés et retirés'),
         };
     }
 

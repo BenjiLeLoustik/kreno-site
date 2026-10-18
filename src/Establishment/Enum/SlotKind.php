@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum SlotKind: string
 {
     case ONLINE = 'online';
@@ -12,29 +14,29 @@ enum SlotKind: string
     public function label(): string
     {
         return match ($this) {
-            self::ONLINE => 'En ligne',
-            self::BOOKED => 'Réservé',
-            self::EXPIRED => 'Expiré',
-            self::REMOVED => 'Retiré',
+            self::ONLINE => Translation::translate('En ligne'),
+            self::BOOKED => Translation::translate('Réservé'),
+            self::EXPIRED => Translation::translate('Expiré'),
+            self::REMOVED => Translation::translate('Retiré'),
         };
     }
 
     public function agendaText(string $client): string
     {
         return match ($this) {
-            self::ONLINE => 'en ligne, pas encore réservé',
-            self::BOOKED => sprintf('réservé par %s', $client),
-            self::EXPIRED => 'expiré sans réservation',
-            self::REMOVED => 'retiré',
+            self::ONLINE => Translation::translate('en ligne, pas encore réservé'),
+            self::BOOKED => sprintf(Translation::translate('réservé par %s'), $client),
+            self::EXPIRED => Translation::translate('expiré sans réservation'),
+            self::REMOVED => Translation::translate('retiré'),
         };
     }
 
     public function cta(): string
     {
         return match ($this) {
-            self::ONLINE => 'Modifier dans Mes créneaux',
-            self::BOOKED => 'Voir la réservation',
-            self::EXPIRED, self::REMOVED => 'Republier',
+            self::ONLINE => Translation::translate('Modifier dans Mes créneaux'),
+            self::BOOKED => Translation::translate('Voir la réservation'),
+            self::EXPIRED, self::REMOVED => Translation::translate('Republier'),
         };
     }
 

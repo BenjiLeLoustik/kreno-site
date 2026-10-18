@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ServiceFlash
 {
     case CREATED;
@@ -38,13 +40,13 @@ enum ServiceFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::CREATED => 'Prestation « %s » ajoutée.',
-            self::UPDATED => 'Prestation « %s » modifiée.',
-            self::REACTIVATED => '« %s » est de nouveau proposée.',
-            self::DEACTIVATED => '« %s » est désactivée.',
-            self::DELETED => 'Prestation supprimée.',
-            self::DEACTIVATED_INSTEAD => 'Cette prestation a déjà des créneaux : elle a été désactivée.',
-            self::REORDERED => 'Ordre des prestations enregistré.',
+            self::CREATED => Translation::translate('Prestation « %s » ajoutée.'),
+            self::UPDATED => Translation::translate('Prestation « %s » modifiée.'),
+            self::REACTIVATED => Translation::translate('« %s » est de nouveau proposée.'),
+            self::DEACTIVATED => Translation::translate('« %s » est désactivée.'),
+            self::DELETED => Translation::translate('Prestation supprimée.'),
+            self::DEACTIVATED_INSTEAD => Translation::translate('Cette prestation a déjà des créneaux : elle a été désactivée.'),
+            self::REORDERED => Translation::translate('Ordre des prestations enregistré.'),
         };
     }
 }

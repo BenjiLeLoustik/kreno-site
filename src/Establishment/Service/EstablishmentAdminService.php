@@ -11,6 +11,7 @@ use App\Establishment\Exception\ResumeNotAllowedException;
 use App\Establishment\Exception\SuspensionNotAllowedException;
 use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
+use App\Shared\Helper\Translation;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
@@ -35,7 +36,7 @@ class EstablishmentAdminService
         $this->orm->transactional(function () use ($establishment, $admin, $reason): void {
             $establishment->setStatus(EstablishmentStatus::PAUSED);
             $withdrawn = $this->publication->withdrawAll($establishment, $admin);
-            $message = sprintf('Établissement « %s » suspendu', $establishment->getName());
+            $message = sprintf(Translation::translate('Établissement « %s » suspendu'), $establishment->getName());
             $context = [
                 'reason' => $reason,
                 'withdrawnSlots' => $withdrawn
@@ -58,7 +59,7 @@ class EstablishmentAdminService
 
         $establishment->setStatus(EstablishmentStatus::ONLINE);
 
-        $message = sprintf('Établissement « %s » remis en ligne', $establishment->getName());
+        $message = sprintf(Translation::translate('Établissement « %s » remis en ligne'), $establishment->getName());
         $this->logger->log(ActivityType::MODERATION, $message, $admin, null, $establishment);
         $this->orm->flush();
 

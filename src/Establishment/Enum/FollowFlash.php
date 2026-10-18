@@ -2,6 +2,8 @@
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum FollowFlash
 {
     case UNFOLLOWED;
@@ -14,7 +16,7 @@ enum FollowFlash
     private function pattern(): string
     {
         return match ($this) {
-            self::UNFOLLOWED => 'Vous ne suivez plus %s.',
+            self::UNFOLLOWED => Translation::translate('Vous ne suivez plus %s.'),
         };
     }
 }

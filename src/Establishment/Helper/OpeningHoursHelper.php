@@ -5,6 +5,7 @@ namespace App\Establishment\Helper;
 use App\Entity\Establishment\EstablishmentOpeningHour;
 use App\Establishment\Enum\OpeningState;
 use App\Shared\Enum\Weekday;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class OpeningHoursHelper
@@ -85,10 +86,10 @@ class OpeningHoursHelper
         }
 
         if (count($names) === 2) {
-            return sprintf('%s et %s', $first, $last);
+            return sprintf(Translation::translate('%s et %s'), $first, $last);
         }
 
-        return sprintf('%s au %s', $first, $last);
+        return sprintf(Translation::translate('%s au %s'), $first, $last);
     }
 
     public static function isOpenAt(array $hours, DateTimeImmutable $at): bool
