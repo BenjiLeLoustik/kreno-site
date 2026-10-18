@@ -1,146 +1,189 @@
 {% extends "pdf/layout/_base.html.twig" %}
 
 {% block pdfTitle %}
-    {{ creditNote ? 'Avoir' : 'Facture' }} {{ invoice.number }}
+    {% if creditNote %}
+        {{ translate('Avoir {number}', {number: invoice.number}) }}
+    {% else %}
+        {{ translate('Facture {number}', {number: invoice.number}) }}
+    {% endif %}
+{% endblock %}
+
+{% block pdfFooter %}
+    {{ invoice.issuer.name }} · {{ invoice.issuer.address }} · {{ translate('SIREN {siren}', {siren: invoice.issuer.siren}) }}
 {% endblock %}
 
 {% block pdfContent %}
-    <table>
+    <table class="pdf-header">
         <tr>
-            <td>
-                <strong>
+            <td class="pdf-header__issuer">
+                <span class="pdf-header__name">
                     {{ invoice.issuer.name }}
-                </strong>
-                <br />
+                </span>
                 {{ invoice.issuer.address|nl2br }}
                 <br />
-                SIREN : {{ invoice.issuer.siren }}
+                {{ translate('SIREN {siren}', {siren: invoice.issuer.siren}) }}
                 <br />
-                TVA intracommunautaire : {{ invoice.issuer.vatNumber }}
+                {{ translate('TVA intracommunautaire : {vat}', {vat: invoice.issuer.vatNumber}) }}
             </td>
-            <td class="right">
-                <h1>
-                    {{ creditNote ? 'AVOIR' : 'FACTURE' }}
-                </h1>
-                N° {{ invoice.number }}
-                <br />
-                Date d’émission : {{ invoice.date }}
-                <br />
-                {% if not creditNote %}
-                    Échéance : {{ invoice.due }}
-                    <br />
+            <td class="pdf-header__doc">
+                {% if creditNote %}
+                    <h1 class="pdf-header__title pdf-header__title--credit">
+                        {{ translate('Avoir')|upper }}
+                    </h1>
+                {% else %}
+                    <h1 class="pdf-header__title">
+                        {{ translate('Facture')|upper }}
+                    </h1>
                 {% endif %}
-                {% if invoice.period %}
-                    Période : {{ invoice.period }}
-                    <br />
-                {% endif %}
+                <span class="pdf-header__number">
+                    {{ translate('N° {number}', {number: invoice.number}) }}
+                </span>
+                <table class="pdf-meta">
+                    <tr>
+                        <td class="pdf-meta__label">
+                            {{ translate('Date d’émission') }}
+                        </td>
+                        <td class="pdf-meta__value">
+                            {{ invoice.date }}
+                        </td>
+                    </tr>
+                    {% if not creditNote %}
+                        <tr>
+                            <td class="pdf-meta__label">
+                                {{ translate('Échéance') }}
+                            </td>
+                            <td class="pdf-meta__value">
+                                {{ invoice.due }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if invoice.period %}
+                        <tr>
+                            <td class="pdf-meta__label">
+                                {{ translate('Période') }}
+                            </td>
+                            <td class="pdf-meta__value">
+                                {{ invoice.period }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
                 {% if invoice.creditedInvoice %}
-                    Avoir sur la facture n° {{ invoice.creditedInvoice }}
+                    <p class="pdf-meta__note">
+                        {{ translate('Avoir sur la facture n° {number}', {number: invoice.creditedInvoice}) }}
+                    </p>
                 {% endif %}
             </td>
         </tr>
     </table>
 
-    <p>
-        <strong>
-            Facturé à
-        </strong>
-        <br />
-        {{ invoice.billedTo.name }}
-        <br />
-        {{ invoice.billedTo.address|nl2br }}
-        <br />
-        {% if invoice.billedTo.vatNumber %}
-            TVA intracommunautaire : {{ invoice.billedTo.vatNumber }}
-            <br />
-        {% endif %}
-        {% if invoice.billedTo.email %}
-            {{ invoice.billedTo.email }}
-        {% endif %}
-    </p>
+    <div class="pdf-party">
+        <span class="pdf-party__label">
+            {{ translate('Facturé à') }}
+        </span>
+        <span class="pdf-party__name">
+            {{ invoice.billedTo.name }}
+        </span>
+        <span class="pdf-party__detail">
+            {{ invoice.billedTo.address|nl2br }}
+            {% if invoice.billedTo.vatNumber %}
+                <br />
+                {{ translate('TVA intracommunautaire : {vat}', {vat: invoice.billedTo.vatNumber}) }}
+            {% endif %}
+            {% if invoice.billedTo.email %}
+                <br />
+                {{ invoice.billedTo.email }}
+            {% endif %}
+        </span>
+    </div>
 
-    <p>
-        {{ invoice.subtitle }}
-    </p>
+    {% if invoice.subtitle %}
+        <p class="pdf-subtitle">
+            {{ invoice.subtitle }}
+        </p>
+    {% endif %}
 
-    <table class="lines">
+    <table class="pdf-lines">
         <thead>
-            <tr>
-                <th>
-                    Désignation
-                </th>
-                <th class="right">
-                    Quantité
-                </th>
-                <th class="right">
-                    Prix unitaire HT
-                </th>
-                <th class="right">
-                    Total HT
-                </th>
-            </tr>
+        <tr>
+            <th class="pdf-lines__label">
+                {{ translate('Désignation') }}
+            </th>
+            <th class="pdf-lines__number">
+                {{ translate('Quantité') }}
+            </th>
+            <th class="pdf-lines__number">
+                {{ translate('Prix unitaire HT') }}
+            </th>
+            <th class="pdf-lines__number">
+                {{ translate('Total HT') }}
+            </th>
+        </tr>
         </thead>
         <tbody>
-            {% for line in invoice.lines %}
-                <tr>
-                    <td>
-                        {{ line.label }}
-                    </td>
-                    <td class="right">
-                        {{ line.qty }}
-                    </td>
-                    <td class="right">
-                        {{ line.unit }}
-                    </td>
-                    <td class="right">
-                        {{ line.total }}
-                    </td>
-                </tr>
-            {% endfor %}
+        {% for line in invoice.lines %}
+            <tr>
+                <td class="pdf-lines__label">
+                    {{ line.label }}
+                </td>
+                <td class="pdf-lines__number">
+                    {{ line.qty }}
+                </td>
+                <td class="pdf-lines__number">
+                    {{ line.unit }}
+                </td>
+                <td class="pdf-lines__number">
+                    {{ line.total }}
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 
-    <table>
+    <table class="pdf-totals">
         <tr>
-            <td class="right">
-                Total HT
-            </td>
-            <td class="right">
-                {{ invoice.ht }}
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                {{ invoice.vatLabel }}
-            </td>
-            <td class="right">
-                {{ invoice.vat }}
-            </td>
-        </tr>
-        <tr>
-            <td class="right">
-                <strong>
-                    Total TTC
-                </strong>
-            </td>
-            <td class="right">
-                <strong>
-                    {{ invoice.ttc }}
-                </strong>
+            <td class="pdf-totals__spacer"></td>
+            <td>
+                <table class="pdf-totals__table">
+                    <tr>
+                        <td class="pdf-totals__label">
+                            {{ translate('Total HT') }}
+                        </td>
+                        <td class="pdf-totals__value">
+                            {{ invoice.ht }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pdf-totals__label">
+                            {{ invoice.vatLabel }}
+                        </td>
+                        <td class="pdf-totals__value">
+                            {{ invoice.vat }}
+                        </td>
+                    </tr>
+                    <tr class="pdf-totals__row--grand">
+                        <td>
+                            {{ translate('Total TTC') }}
+                        </td>
+                        <td class="pdf-totals__value">
+                            {{ invoice.ttc }}
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
 
     {% if not creditNote %}
-        <p class="small">
-            Paiement par prélèvement automatique sur le moyen de paiement enregistré dans votre espace Kréno Pro.
+        <p class="pdf-notice">
+            {{ translate('Paiement par prélèvement automatique sur le moyen de paiement enregistré dans votre espace {site} Pro.', {
+                site: website().siteName
+            }) }}
         </p>
-        <p class="small">
-            {{ invoice.legalNotice }}
-        </p>
+        {% if invoice.legalNotice %}
+            <p class="pdf-notice">
+                {{ invoice.legalNotice }}
+            </p>
+        {% endif %}
     {% endif %}
-
-    <p class="small">
-        {{ invoice.issuer.name }} · {{ invoice.issuer.address }} · SIREN {{ invoice.issuer.siren }}
-    </p>
 {% endblock %}

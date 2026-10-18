@@ -3514,6 +3514,42 @@
         <source>{count, plural, one {# créneau libre} other {# créneaux libres}}</source>
         <target>{count, plural, one {# créneau libre} other {# créneaux libres}}</target>
       </trans-unit>
+      <trans-unit id="281c58c927f4431f" resname="Avoir sur la facture n° {number}">
+        <source>Avoir sur la facture n° {number}</source>
+        <target>Avoir sur la facture n° {number}</target>
+      </trans-unit>
+      <trans-unit id="f2edff7e21c4404f" resname="Avoir {number}">
+        <source>Avoir {number}</source>
+        <target>Avoir {number}</target>
+      </trans-unit>
+      <trans-unit id="da909fcda69ba314" resname="Date d’émission">
+        <source>Date d’émission</source>
+        <target>Date d’émission</target>
+      </trans-unit>
+      <trans-unit id="6d13ada103545e3c" resname="Facture {number}">
+        <source>Facture {number}</source>
+        <target>Facture {number}</target>
+      </trans-unit>
+      <trans-unit id="df9f4e438f75c6ba" resname="N° {number}">
+        <source>N° {number}</source>
+        <target>N° {number}</target>
+      </trans-unit>
+      <trans-unit id="e0269a60d1f3e29a" resname="Paiement par prélèvement automatique sur le moyen de paiement enregistré dans votre espace {site} Pro.">
+        <source>Paiement par prélèvement automatique sur le moyen de paiement enregistré dans votre espace {site} Pro.</source>
+        <target>Paiement par prélèvement automatique sur le moyen de paiement enregistré dans votre espace {site} Pro.</target>
+      </trans-unit>
+      <trans-unit id="cb9dee83068c28ef" resname="Prix unitaire HT">
+        <source>Prix unitaire HT</source>
+        <target>Prix unitaire HT</target>
+      </trans-unit>
+      <trans-unit id="a258a8ef030a35c8" resname="Quantité">
+        <source>Quantité</source>
+        <target>Quantité</target>
+      </trans-unit>
+      <trans-unit id="c60dae197749673a" resname="TVA intracommunautaire : {vat}">
+        <source>TVA intracommunautaire : {vat}</source>
+        <target>TVA intracommunautaire : {vat}</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
