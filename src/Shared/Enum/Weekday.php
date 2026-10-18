@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Enum;
 
+use App\Shared\Helper\Translation;
 use DateTimeInterface;
 
 enum Weekday: int
@@ -24,26 +25,26 @@ enum Weekday: int
     public function label(): string
     {
         return match ($this) {
-            self::MONDAY => 'Lundi',
-            self::TUESDAY => 'Mardi',
-            self::WEDNESDAY => 'Mercredi',
-            self::THURSDAY => 'Jeudi',
-            self::FRIDAY => 'Vendredi',
-            self::SATURDAY => 'Samedi',
-            self::SUNDAY => 'Dimanche',
+            self::MONDAY => Translation::translate('Lundi'),
+            self::TUESDAY => Translation::translate('Mardi'),
+            self::WEDNESDAY => Translation::translate('Mercredi'),
+            self::THURSDAY => Translation::translate('Jeudi'),
+            self::FRIDAY => Translation::translate('Vendredi'),
+            self::SATURDAY => Translation::translate('Samedi'),
+            self::SUNDAY => Translation::translate('Dimanche'),
         };
     }
 
     public function short(): string
     {
         return match ($this) {
-            self::MONDAY => 'Lun.',
-            self::TUESDAY => 'Mar.',
-            self::WEDNESDAY => 'Mer.',
-            self::THURSDAY => 'Jeu.',
-            self::FRIDAY => 'Ven.',
-            self::SATURDAY => 'Sam.',
-            self::SUNDAY => 'Dim.',
+            self::MONDAY => Translation::translate('Lun.'),
+            self::TUESDAY => Translation::translate('Mar.'),
+            self::WEDNESDAY => Translation::translate('Mer.'),
+            self::THURSDAY => Translation::translate('Jeu.'),
+            self::FRIDAY => Translation::translate('Ven.'),
+            self::SATURDAY => Translation::translate('Sam.'),
+            self::SUNDAY => Translation::translate('Dim.'),
         };
     }
 }

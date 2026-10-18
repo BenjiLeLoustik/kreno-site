@@ -3,6 +3,7 @@
 namespace App\Shared\Error\Context;
 
 use App\Shared\Error\Context\AbstractErrorContext;
+use App\Shared\Helper\Translation;
 use Throwable;
 
 class Context500 extends AbstractErrorContext
@@ -20,27 +21,27 @@ class Context500 extends AbstractErrorContext
 
     public function getLabel(): string
     {
-        return 'imprévu';
+        return Translation::translate('imprévu');
     }
 
     public function getName(): string
     {
-        return 'Erreur technique';
+        return Translation::translate('Erreur technique');
     }
 
     public function getHint(): string
     {
-        return 'Nous sommes prévenus.';
+        return Translation::translate('Nous sommes prévenus.');
     }
 
     public function getTitle(): string
     {
-        return 'Un imprévu de notre côté.';
+        return Translation::translate('Un imprévu de notre côté.');
     }
 
     public function getMessage(): string
     {
-        return 'Réessayez dans quelques instants. Si le problème continue, écrivez-nous depuis la page d\'aide.';
+        return Translation::translate('Réessayez dans quelques instants. Si le problème continue, écrivez-nous depuis la page d\'aide.');
     }
 
     public function hasHelpLink(): bool

@@ -24,17 +24,17 @@ class DurationHelper
         $minutes = intdiv(max(0, $until->getTimestamp() - $now->getTimestamp()), 60);
 
         if ($minutes < 1) {
-            return 'Encore moins de 1min';
+            return Translation::translate('Encore moins de 1min');
         }
 
         if ($minutes < 60) {
-            return sprintf('Encore %dmin', $minutes);
+            return sprintf(Translation::translate('Encore %dmin'), $minutes);
         }
 
         $rest = $minutes % 60;
 
         return $rest === 0
-            ? sprintf('Encore %d h', intdiv($minutes, 60))
-            : sprintf('Encore %d h %dmin', intdiv($minutes, 60), $rest);
+            ? sprintf(Translation::translate('Encore %d h'), intdiv($minutes, 60))
+            : sprintf(Translation::translate('Encore %d h %dmin'), intdiv($minutes, 60), $rest);
     }
 }

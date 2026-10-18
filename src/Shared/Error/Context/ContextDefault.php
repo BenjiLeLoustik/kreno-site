@@ -2,6 +2,7 @@
 
 namespace App\Shared\Error\Context;
 
+use App\Shared\Helper\Translation;
 use Throwable;
 
 class ContextDefault extends AbstractErrorContext
@@ -18,27 +19,27 @@ class ContextDefault extends AbstractErrorContext
 
     public function getLabel(): string
     {
-        return 'demande refusée';
+        return Translation::translate('demande refusée');
     }
 
     public function getName(): string
     {
-        return 'Demande impossible';
+        return Translation::translate('Demande impossible');
     }
 
     public function getHint(): string
     {
-        return 'Cette action n\'a pas abouti.';
+        return Translation::translate('Cette action n\'a pas abouti.');
     }
 
     public function getTitle(): string
     {
-        return 'Cette demande n\'a pas abouti.';
+        return Translation::translate('Cette demande n\'a pas abouti.');
     }
 
     public function getMessage(): string
     {
-        return 'Revenez en arrière et réessayez. Si le problème continue, écrivez-nous depuis la page d\'aide.';
+        return Translation::translate('Revenez en arrière et réessayez. Si le problème continue, écrivez-nous depuis la page d\'aide.');
     }
 
     public function hasHelpLink(): bool

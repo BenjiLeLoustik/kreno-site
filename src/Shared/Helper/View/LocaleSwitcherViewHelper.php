@@ -28,13 +28,20 @@ class LocaleSwitcherViewHelper implements ViewFunctionInterface
         }
 
         return [
-            'current' => ['code' => $current, 'label' => LanguageHelper::label($current)],
+            'current' => [
+                'code' => $current,
+                'label' => LanguageHelper::label($current)
+            ],
             'items' => $items,
         ];
     }
 
     private function item(string $locale, string $current): array
     {
-        return ['code' => $locale, 'label' => LanguageHelper::label($locale), 'current' => $locale === $current];
+        return [
+            'code' => $locale,
+            'label' => LanguageHelper::label($locale),
+            'current' => $locale === $current
+        ];
     }
 }

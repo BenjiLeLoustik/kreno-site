@@ -2,6 +2,7 @@
 
 namespace App\Shared\Error\Context;
 
+use App\Shared\Helper\Translation;
 use NeoPHP\Component\Csrf\Exception\InvalidCsrfTokenException;
 use Throwable;
 
@@ -19,26 +20,26 @@ class ContextExpired extends AbstractErrorContext
 
     public function getLabel(): string
     {
-        return 'page expirée';
+        return Translation::translate('page expirée');
     }
 
     public function getName(): string
     {
-        return 'Page expirée';
+        return Translation::translate('Page expirée');
     }
 
     public function getHint(): string
     {
-        return 'Le formulaire est resté ouvert trop longtemps.';
+        return Translation::translate('Le formulaire est resté ouvert trop longtemps.');
     }
 
     public function getTitle(): string
     {
-        return 'La page a expiré.';
+        return Translation::translate('La page a expiré.');
     }
 
     public function getMessage(): string
     {
-        return 'Pour votre sécurité, le formulaire n\'a pas été envoyé. Rechargez la page puis réessayez.';
+        return Translation::translate('Pour votre sécurité, le formulaire n\'a pas été envoyé. Rechargez la page puis réessayez.');
     }
 }

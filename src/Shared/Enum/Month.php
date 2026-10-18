@@ -2,6 +2,7 @@
 
 namespace App\Shared\Enum;
 
+use App\Shared\Helper\Translation;
 use DateTimeInterface;
 
 enum Month: int
@@ -27,36 +28,36 @@ enum Month: int
     public function label(): string
     {
         return match ($this) {
-            self::JANUARY => 'janvier',
-            self::FEBRUARY => 'février',
-            self::MARCH => 'mars',
-            self::APRIL => 'avril',
-            self::MAY => 'mai',
-            self::JUNE => 'juin',
-            self::JULY => 'juillet',
-            self::AUGUST => 'août',
-            self::SEPTEMBER => 'septembre',
-            self::OCTOBER => 'octobre',
-            self::NOVEMBER => 'novembre',
-            self::DECEMBER => 'décembre',
+            self::JANUARY => Translation::translate('janvier'),
+            self::FEBRUARY => Translation::translate('février'),
+            self::MARCH => Translation::translate('mars'),
+            self::APRIL => Translation::translate('avril'),
+            self::MAY => Translation::translate('mai'),
+            self::JUNE => Translation::translate('juin'),
+            self::JULY => Translation::translate('juillet'),
+            self::AUGUST => Translation::translate('août'),
+            self::SEPTEMBER => Translation::translate('septembre'),
+            self::OCTOBER => Translation::translate('octobre'),
+            self::NOVEMBER => Translation::translate('novembre'),
+            self::DECEMBER => Translation::translate('décembre'),
         };
     }
 
     public function short(): string
     {
         return match ($this) {
-            self::JANUARY => 'janv.',
-            self::FEBRUARY => 'févr.',
-            self::MARCH => 'mars',
-            self::APRIL => 'avr.',
-            self::MAY => 'mai',
-            self::JUNE => 'juin',
-            self::JULY => 'juil.',
-            self::AUGUST => 'août',
-            self::SEPTEMBER => 'sept.',
-            self::OCTOBER => 'oct.',
-            self::NOVEMBER => 'nov.',
-            self::DECEMBER => 'déc.',
+            self::JANUARY => Translation::translate('janv.'),
+            self::FEBRUARY => Translation::translate('févr.'),
+            self::MARCH => Translation::translate('mars'),
+            self::APRIL => Translation::translate('avr.'),
+            self::MAY => Translation::translate('mai'),
+            self::JUNE => Translation::translate('juin'),
+            self::JULY => Translation::translate('juil.'),
+            self::AUGUST => Translation::translate('août'),
+            self::SEPTEMBER => Translation::translate('sept.'),
+            self::OCTOBER => Translation::translate('oct.'),
+            self::NOVEMBER => Translation::translate('nov.'),
+            self::DECEMBER => Translation::translate('déc.'),
         };
     }
 }

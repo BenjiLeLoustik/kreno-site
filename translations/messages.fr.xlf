@@ -6802,6 +6802,294 @@
         <source>Votre réponse est publiée.</source>
         <target>Votre réponse est publiée.</target>
       </trans-unit>
+      <trans-unit id="58b8bf7de679c65b" resname="Accès refusé">
+        <source>Accès refusé</source>
+        <target>Accès refusé</target>
+      </trans-unit>
+      <trans-unit id="389e0dcf9d414f92" resname="Ce compte n&apos;a pas accès à cette page.">
+        <source>Ce compte n&apos;a pas accès à cette page.</source>
+        <target>Ce compte n&apos;a pas accès à cette page.</target>
+      </trans-unit>
+      <trans-unit id="ef49679a9069ca15" resname="Ce créneau-là est déjà parti.">
+        <source>Ce créneau-là est déjà parti.</source>
+        <target>Ce créneau-là est déjà parti.</target>
+      </trans-unit>
+      <trans-unit id="c12384bf669307ab" resname="Ce lien a expiré ou n&apos;a jamais existé.">
+        <source>Ce lien a expiré ou n&apos;a jamais existé.</source>
+        <target>Ce lien a expiré ou n&apos;a jamais existé.</target>
+      </trans-unit>
+      <trans-unit id="7c413f15d6475dbb" resname="Ce type de fichier n&apos;est pas accepté.">
+        <source>Ce type de fichier n&apos;est pas accepté.</source>
+        <target>Ce type de fichier n&apos;est pas accepté.</target>
+      </trans-unit>
+      <trans-unit id="195c80bb1da60ef1" resname="Cette action n&apos;a pas abouti.">
+        <source>Cette action n&apos;a pas abouti.</source>
+        <target>Cette action n&apos;a pas abouti.</target>
+      </trans-unit>
+      <trans-unit id="b976cf23d37266bb" resname="Cette demande n&apos;a pas abouti.">
+        <source>Cette demande n&apos;a pas abouti.</source>
+        <target>Cette demande n&apos;a pas abouti.</target>
+      </trans-unit>
+      <trans-unit id="4a972a0645678359" resname="Cette porte est fermée.">
+        <source>Cette porte est fermée.</source>
+        <target>Cette porte est fermée.</target>
+      </trans-unit>
+      <trans-unit id="84b752fbf2053f12" resname="Chemin de fichier invalide.">
+        <source>Chemin de fichier invalide.</source>
+        <target>Chemin de fichier invalide.</target>
+      </trans-unit>
+      <trans-unit id="d222c49d551322e6" resname="Demande impossible">
+        <source>Demande impossible</source>
+        <target>Demande impossible</target>
+      </trans-unit>
+      <trans-unit id="27da90d73d2d81eb" resname="Dim.">
+        <source>Dim.</source>
+        <target>Dim.</target>
+      </trans-unit>
+      <trans-unit id="2813b1cab4d1f5cb" resname="Dimanche">
+        <source>Dimanche</source>
+        <target>Dimanche</target>
+      </trans-unit>
+      <trans-unit id="a4bea56210efc95a" resname="Encore %d h">
+        <source>Encore %d h</source>
+        <target>Encore %d h</target>
+      </trans-unit>
+      <trans-unit id="a98f8f66f506b0f7" resname="Encore %d h %dmin">
+        <source>Encore %d h %dmin</source>
+        <target>Encore %d h %dmin</target>
+      </trans-unit>
+      <trans-unit id="8fa8fb8e0d059977" resname="Encore %dmin">
+        <source>Encore %dmin</source>
+        <target>Encore %dmin</target>
+      </trans-unit>
+      <trans-unit id="26628a9274de8c0e" resname="Encore moins de 1min">
+        <source>Encore moins de 1min</source>
+        <target>Encore moins de 1min</target>
+      </trans-unit>
+      <trans-unit id="16a1265da5feabbf" resname="Erreur technique">
+        <source>Erreur technique</source>
+        <target>Erreur technique</target>
+      </trans-unit>
+      <trans-unit id="9e7fe6ece7f8354c" resname="Jeu.">
+        <source>Jeu.</source>
+        <target>Jeu.</target>
+      </trans-unit>
+      <trans-unit id="a9691b35a8dee364" resname="Jeudi">
+        <source>Jeudi</source>
+        <target>Jeudi</target>
+      </trans-unit>
+      <trans-unit id="e3311d8b55624c58" resname="La langue {locale} n&apos;est pas disponible.">
+        <source>La langue {locale} n&apos;est pas disponible.</source>
+        <target>La langue {locale} n&apos;est pas disponible.</target>
+      </trans-unit>
+      <trans-unit id="7b357f5737348ff6" resname="La page a expiré.">
+        <source>La page a expiré.</source>
+        <target>La page a expiré.</target>
+      </trans-unit>
+      <trans-unit id="adaddfdb9f22b7c7" resname="La page de vous cherchez n&apos;existe pas ou plus. Un créneau réservé ou expiré disparaît aussi du site.">
+        <source>La page de vous cherchez n&apos;existe pas ou plus. Un créneau réservé ou expiré disparaît aussi du site.</source>
+        <target>La page de vous cherchez n&apos;existe pas ou plus. Un créneau réservé ou expiré disparaît aussi du site.</target>
+      </trans-unit>
+      <trans-unit id="95f2d6c37c2f45b3" resname="Le dossier &quot;%s&quot; n&apos;a pas pu être créé.">
+        <source>Le dossier &quot;%s&quot; n&apos;a pas pu être créé.</source>
+        <target>Le dossier &quot;%s&quot; n&apos;a pas pu être créé.</target>
+      </trans-unit>
+      <trans-unit id="23e7182f2f2cd02d" resname="Le fichier &quot;%s&quot; est introuvable.">
+        <source>Le fichier &quot;%s&quot; est introuvable.</source>
+        <target>Le fichier &quot;%s&quot; est introuvable.</target>
+      </trans-unit>
+      <trans-unit id="271f656524e796f7" resname="Le fichier &quot;%s&quot; n&apos;a pas pu être écrit.">
+        <source>Le fichier &quot;%s&quot; n&apos;a pas pu être écrit.</source>
+        <target>Le fichier &quot;%s&quot; n&apos;a pas pu être écrit.</target>
+      </trans-unit>
+      <trans-unit id="98e2c95c00f4b21b" resname="Le fichier est trop volumineux.">
+        <source>Le fichier est trop volumineux.</source>
+        <target>Le fichier est trop volumineux.</target>
+      </trans-unit>
+      <trans-unit id="c497f353e0b19571" resname="Le fichier n&apos;a pas pu être enregistré.">
+        <source>Le fichier n&apos;a pas pu être enregistré.</source>
+        <target>Le fichier n&apos;a pas pu être enregistré.</target>
+      </trans-unit>
+      <trans-unit id="9fe1999037bd2c35" resname="Le fichier n&apos;a pas pu être reçu.">
+        <source>Le fichier n&apos;a pas pu être reçu.</source>
+        <target>Le fichier n&apos;a pas pu être reçu.</target>
+      </trans-unit>
+      <trans-unit id="fc6db1083f17d7b3" resname="Le formulaire est resté ouvert trop longtemps.">
+        <source>Le formulaire est resté ouvert trop longtemps.</source>
+        <target>Le formulaire est resté ouvert trop longtemps.</target>
+      </trans-unit>
+      <trans-unit id="b521c0c94b7d266b" resname="Lun.">
+        <source>Lun.</source>
+        <target>Lun.</target>
+      </trans-unit>
+      <trans-unit id="2a7f3d396ccb0e5a" resname="Lundi">
+        <source>Lundi</source>
+        <target>Lundi</target>
+      </trans-unit>
+      <trans-unit id="e4c5a36da2b749aa" resname="Mar.">
+        <source>Mar.</source>
+        <target>Mar.</target>
+      </trans-unit>
+      <trans-unit id="b906bf1dcf3d5c4e" resname="Mardi">
+        <source>Mardi</source>
+        <target>Mardi</target>
+      </trans-unit>
+      <trans-unit id="fcc4151918bef9e5" resname="Mer.">
+        <source>Mer.</source>
+        <target>Mer.</target>
+      </trans-unit>
+      <trans-unit id="2d5f175141bc2adb" resname="Mercredi">
+        <source>Mercredi</source>
+        <target>Mercredi</target>
+      </trans-unit>
+      <trans-unit id="fb249c450c88aa91" resname="Nous sommes prévenus.">
+        <source>Nous sommes prévenus.</source>
+        <target>Nous sommes prévenus.</target>
+      </trans-unit>
+      <trans-unit id="cd90b06a561ab4ce" resname="Page expirée">
+        <source>Page expirée</source>
+        <target>Page expirée</target>
+      </trans-unit>
+      <trans-unit id="6ed2223d2886bd72" resname="Page introuvable">
+        <source>Page introuvable</source>
+        <target>Page introuvable</target>
+      </trans-unit>
+      <trans-unit id="c872c33ae9d82023" resname="Pour votre sécurité, le formulaire n&apos;a pas été envoyé. Rechargez la page puis réessayez.">
+        <source>Pour votre sécurité, le formulaire n&apos;a pas été envoyé. Rechargez la page puis réessayez.</source>
+        <target>Pour votre sécurité, le formulaire n&apos;a pas été envoyé. Rechargez la page puis réessayez.</target>
+      </trans-unit>
+      <trans-unit id="46947a1b8595c4c7" resname="Revenez en arrière et réessayez. Si le problème continue, écrivez-nous depuis la page d&apos;aide.">
+        <source>Revenez en arrière et réessayez. Si le problème continue, écrivez-nous depuis la page d&apos;aide.</source>
+        <target>Revenez en arrière et réessayez. Si le problème continue, écrivez-nous depuis la page d&apos;aide.</target>
+      </trans-unit>
+      <trans-unit id="d73318e171f64b94" resname="Réessayez dans quelques instants. Si le problème continue, écrivez-nous depuis la page d&apos;aide.">
+        <source>Réessayez dans quelques instants. Si le problème continue, écrivez-nous depuis la page d&apos;aide.</source>
+        <target>Réessayez dans quelques instants. Si le problème continue, écrivez-nous depuis la page d&apos;aide.</target>
+      </trans-unit>
+      <trans-unit id="7f69b101a1d95c10" resname="Sam.">
+        <source>Sam.</source>
+        <target>Sam.</target>
+      </trans-unit>
+      <trans-unit id="8b870e81d4a25bf6" resname="Samedi">
+        <source>Samedi</source>
+        <target>Samedi</target>
+      </trans-unit>
+      <trans-unit id="755c4804b9a860d7" resname="Un imprévu de notre côté.">
+        <source>Un imprévu de notre côté.</source>
+        <target>Un imprévu de notre côté.</target>
+      </trans-unit>
+      <trans-unit id="be1a7ff141bf0cf4" resname="Ven.">
+        <source>Ven.</source>
+        <target>Ven.</target>
+      </trans-unit>
+      <trans-unit id="1fbbc09b61755708" resname="Vendredi">
+        <source>Vendredi</source>
+        <target>Vendredi</target>
+      </trans-unit>
+      <trans-unit id="4c7a92d32dbaeed6" resname="Vous n&apos;avez pas accès a cette page avec ce compte. Connectez-vous avec le bon compte ou revenez à l&apos;accueil.">
+        <source>Vous n&apos;avez pas accès a cette page avec ce compte. Connectez-vous avec le bon compte ou revenez à l&apos;accueil.</source>
+        <target>Vous n&apos;avez pas accès a cette page avec ce compte. Connectez-vous avec le bon compte ou revenez à l&apos;accueil.</target>
+      </trans-unit>
+      <trans-unit id="5c3592d66accb550" resname="accès réservé">
+        <source>accès réservé</source>
+        <target>accès réservé</target>
+      </trans-unit>
+      <trans-unit id="8643090c123bcb35" resname="août">
+        <source>août</source>
+        <target>août</target>
+      </trans-unit>
+      <trans-unit id="34f578cbc575f54c" resname="avr.">
+        <source>avr.</source>
+        <target>avr.</target>
+      </trans-unit>
+      <trans-unit id="13a86fa9ec44433d" resname="avril">
+        <source>avril</source>
+        <target>avril</target>
+      </trans-unit>
+      <trans-unit id="f97c708697c37e36" resname="créneau perdu">
+        <source>créneau perdu</source>
+        <target>créneau perdu</target>
+      </trans-unit>
+      <trans-unit id="a8dc572acacde478" resname="demande refusée">
+        <source>demande refusée</source>
+        <target>demande refusée</target>
+      </trans-unit>
+      <trans-unit id="ff2dbc8a1123dd15" resname="déc.">
+        <source>déc.</source>
+        <target>déc.</target>
+      </trans-unit>
+      <trans-unit id="4c33d0ec59afc610" resname="décembre">
+        <source>décembre</source>
+        <target>décembre</target>
+      </trans-unit>
+      <trans-unit id="a85dad60a6dc5f21" resname="févr.">
+        <source>févr.</source>
+        <target>févr.</target>
+      </trans-unit>
+      <trans-unit id="31a8d44abceb4e98" resname="février">
+        <source>février</source>
+        <target>février</target>
+      </trans-unit>
+      <trans-unit id="ee08036a3f77c804" resname="imprévu">
+        <source>imprévu</source>
+        <target>imprévu</target>
+      </trans-unit>
+      <trans-unit id="9ee0c43ddaae68ad" resname="janv.">
+        <source>janv.</source>
+        <target>janv.</target>
+      </trans-unit>
+      <trans-unit id="201f33e6faca9fe2" resname="janvier">
+        <source>janvier</source>
+        <target>janvier</target>
+      </trans-unit>
+      <trans-unit id="2c95eb9a3ffde132" resname="juil.">
+        <source>juil.</source>
+        <target>juil.</target>
+      </trans-unit>
+      <trans-unit id="c45ca44e0fe890fe" resname="juillet">
+        <source>juillet</source>
+        <target>juillet</target>
+      </trans-unit>
+      <trans-unit id="2ec2c7eef805f9fa" resname="juin">
+        <source>juin</source>
+        <target>juin</target>
+      </trans-unit>
+      <trans-unit id="7d980bbde514db41" resname="mai">
+        <source>mai</source>
+        <target>mai</target>
+      </trans-unit>
+      <trans-unit id="d158be41db87d705" resname="mars">
+        <source>mars</source>
+        <target>mars</target>
+      </trans-unit>
+      <trans-unit id="674f0fd3a12caf7d" resname="nov.">
+        <source>nov.</source>
+        <target>nov.</target>
+      </trans-unit>
+      <trans-unit id="cf27de0dc0016684" resname="novembre">
+        <source>novembre</source>
+        <target>novembre</target>
+      </trans-unit>
+      <trans-unit id="b7a516f6ab8a159c" resname="oct.">
+        <source>oct.</source>
+        <target>oct.</target>
+      </trans-unit>
+      <trans-unit id="68e717c9943a783e" resname="octobre">
+        <source>octobre</source>
+        <target>octobre</target>
+      </trans-unit>
+      <trans-unit id="244124e97730f3f9" resname="page expirée">
+        <source>page expirée</source>
+        <target>page expirée</target>
+      </trans-unit>
+      <trans-unit id="89f17d1e6b49cb5d" resname="sept.">
+        <source>sept.</source>
+        <target>sept.</target>
+      </trans-unit>
+      <trans-unit id="d7ffcba6a9518657" resname="septembre">
+        <source>septembre</source>
+        <target>septembre</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
