@@ -10,11 +10,11 @@
     </span>
     {% if shop.free > 0 %}
         <span class="shop-tile__free shop-tile__free--open">
-            {{ shop.free }} créneau{{ shop.free > 1 ? 'x' : '' }} libre{{ shop.free > 1 ? 's' : '' }}
+            {{ translate('{count, plural, one {# créneau libre} other {# créneaux libres}}', {count: shop.free}) }}
         </span>
     {% else %}
         <span class="shop-tile__free">
-            Rien en ce moment
+            {{ translate('Rien en ce moment') }}
         </span>
     {% endif %}
 </a>

@@ -3,7 +3,7 @@
 
 {% if switcher.items|length > 1 %}
     <details class="locale-switcher locale-switcher--{{ variant }}">
-        <summary class="locale-switcher__toggle" aria-label="Langue : {{ switcher.current.label }}">
+        <summary class="locale-switcher__toggle" aria-label="{{ translate('Langue: {label}', {label: switcher.current.label}) }}">
             <i data-lucide="globe" class="locale-switcher__icon"></i>
             <span class="locale-switcher__current">
                 {{ switcher.current.label }}

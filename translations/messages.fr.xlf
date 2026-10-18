@@ -3494,6 +3494,26 @@
         <source>← Retour à la connexion</source>
         <target>← Retour à la connexion</target>
       </trans-unit>
+      <trans-unit id="18b48656e7d8ee7f" resname="Langue: {label}">
+        <source>Langue: {label}</source>
+        <target>Langue: {label}</target>
+      </trans-unit>
+      <trans-unit id="6e2e07a652014887" resname="Périodicité">
+        <source>Périodicité</source>
+        <target>Périodicité</target>
+      </trans-unit>
+      <trans-unit id="e9716112f30386e4" resname="Rien en ce moment">
+        <source>Rien en ce moment</source>
+        <target>Rien en ce moment</target>
+      </trans-unit>
+      <trans-unit id="c9f6b527c374d720" resname="Réserver">
+        <source>Réserver</source>
+        <target>Réserver</target>
+      </trans-unit>
+      <trans-unit id="f54cdd2da40d5d59" resname="{count, plural, one {# créneau libre} other {# créneaux libres}}">
+        <source>{count, plural, one {# créneau libre} other {# créneaux libres}}</source>
+        <target>{count, plural, one {# créneau libre} other {# créneaux libres}}</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
