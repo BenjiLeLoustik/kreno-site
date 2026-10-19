@@ -7970,6 +7970,10 @@
         <source>{what} · {date} · {reference}</source>
         <target>{what} · {date} · {reference}</target>
       </trans-unit>
+      <trans-unit id="0246af3a6be3039b" resname="Propulsé par {open}NeoPHP{close}">
+        <source>Propulsé par {open}NeoPHP{close}</source>
+        <target>Propulsé par {open}NeoPHP{close}</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
