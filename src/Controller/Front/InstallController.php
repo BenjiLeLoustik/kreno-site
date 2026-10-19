@@ -67,7 +67,7 @@ class InstallController extends AbstractFrontController
             && !$this->invalid($rules)
             && !$this->invalidAll($plans)
             && $this->attempt(function () use ($identity, $rules, $plans, $needsAdmin, $adminValues, &$actor): void {
-                $this->installer->assertInstallable($identity, $rules, $plans);
+                $this->installer->assertInstallable($rules, $plans);
 
                 if ($needsAdmin) {
                     $actor = $this->installer->createAdmin(...InstallRequestMapper::admin($adminValues));
