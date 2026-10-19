@@ -3,7 +3,7 @@
 dsn: '%env(MAILER_DSN)%'
 
 # Sender used when an email has no from()
-from: '%env(APP_NAME)% <noreply@example.com>'
+from: '%env(APP_NAME)% <noreply@kreno.neophp.fr>'
 
 envelope:
     # Forces the envelope sender (bounces), ~ = the From address
