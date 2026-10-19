@@ -41,13 +41,17 @@
                     <span class="booking-list__text">
                         <b class="booking-list__name">
                             {% if booking.establishment %}
-                                {{ booking.establishment }}
+                                {{ booking.establishment.name }}
                             {% else %}
                                 -
                             {% endif %}
                         </b>
                         <span class="booking-list__meta">
-                            {{ booking.what }} · {{ booking.date }} · {{ booking.reference }}
+                            {{ translate('{what} · {date} · {reference}', {
+                                what: booking.what,
+                                date: booking.date,
+                                reference: booking.reference
+                            }) }}
                         </span>
                     </span>
                     <span class="booking-list__aside">
