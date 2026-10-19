@@ -107,7 +107,10 @@
             {% if context.current and not context.current.online %}
                 <div class="pro-banner">
                     <i data-lucide="info" class="pro-nav__icon"></i>
-                    {{ translate('{contextName} est « {contextStatus} » : vos créneaux ne sont pas encore visibles des clients.') }}
+                    {{ translate('{contextName} est « {contextStatus} » : vos créneaux ne sont pas encore visibles des clients.', {
+                        contextName: context.current.name,
+                        contextStatus: context.current.statusLabel
+                    }) }}
                 </div>
             {% endif %}
 
