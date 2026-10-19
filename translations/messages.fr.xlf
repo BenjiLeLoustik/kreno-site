@@ -7950,6 +7950,10 @@
         <source>Établissement ou équipe Kréno</source>
         <target>Établissement ou équipe Kréno</target>
       </trans-unit>
+      <trans-unit id="9e48d46daed9737a" resname="Annulation gratuit jusqu&apos;à {freeCancellationUntil}">
+        <source>Annulation gratuit jusqu&apos;à {freeCancellationUntil}</source>
+        <target>Annulation gratuit jusqu&apos;à {freeCancellationUntil}</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
