@@ -219,11 +219,15 @@
                         <ul class="shop-hours">
                             {% for hour in shop.hours %}
                                 <li class="shop-hours__row{{ hour.closed ? ' shop-hours__row--closed' : '' }}">
-                                    <span>
+                                    <span class="shop-hours__day">
                                         {{ hour.day }}
                                     </span>
-                                    <span>
-                                        {{ hour.time }}
+                                    <span class="shop-hours__time">
+                                        {% for range in hour.time|split(' / ') %}
+                                            <span class="shop-hours__range">
+                                                {{ range }}
+                                            </span>
+                                        {% endfor %}
                                     </span>
                                 </li>
                             {% endfor %}
@@ -239,12 +243,14 @@
                         <ul class="shop-hours">
                             {% for closure in shop.closures %}
                                 <li class="shop-hours__row shop-hours__row--closed">
-                                    <span>
+                                    <span class="shop-hours__day">
                                         {{ closure.label }}
                                     </span>
                                     {% if closure.reason %}
-                                        <span>
-                                            {{ closure.reason }}
+                                        <span class="shop-hours__time">
+                                            <span class="shop-hours__note">
+                                                {{ closure.reason }}
+                                            </span>
                                         </span>
                                     {% endif %}
                                 </li>
@@ -277,7 +283,7 @@
                     {% if app_user() %}
                         <button type="button" class="shop-follow__button{{ shop.following ? ' shop-follow__button--active' : '' }}" aria-pressed="{{ shop.following ? 'true' : 'false' }}" data-shop-follow data-url="{{ path('shop_follow', { city: shop.city.slug, slug: shop.slug }) }}">
                             <span data-shop-follow-label>
-                                {% if show.following %}
+                                {% if shop.following %}
                                     {{ translate('Salon suivi ✓') }}
                                 {% else %}
                                     {{ translate('Suivre ce salon') }}
