@@ -7954,6 +7954,10 @@
         <source>Annulation gratuit jusqu&apos;à {freeCancellationUntil}</source>
         <target>Annulation gratuit jusqu&apos;à {freeCancellationUntil}</target>
       </trans-unit>
+      <trans-unit id="d4b4e2cd350d851f" resname="Il disparaîtra à 14 h 20 s&apos;il n&apos;est pas réservé.">
+        <source>Il disparaîtra à 14 h 20 s&apos;il n&apos;est pas réservé.</source>
+        <target>Il disparaîtra à 14 h 20 s&apos;il n&apos;est pas réservé.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
