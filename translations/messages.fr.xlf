@@ -7962,6 +7962,14 @@
         <source>{status} · sous 48 h ouvrées en général.</source>
         <target>{status} · sous 48 h ouvrées en général.</target>
       </trans-unit>
+      <trans-unit id="23b548c22a1c4263" resname="{site} Pro">
+        <source>{site} Pro</source>
+        <target>{site} Pro</target>
+      </trans-unit>
+      <trans-unit id="d536a9c673777932" resname="{what} · {date} · {reference}">
+        <source>{what} · {date} · {reference}</source>
+        <target>{what} · {date} · {reference}</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
