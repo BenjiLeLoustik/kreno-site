@@ -136,7 +136,7 @@
                 {% if route_exists('page_legal') %}
                     {% set terms = '<a href="' ~ path('page_legal', { document: 'cgv' }) ~ '" target="_blank" rel="noopener">' ~ terms ~ '</a>' %}
                 {% endif %}
-                {{ translate('J\'accepte les {terms} et je certifie être habilité·e à représenter cet établissement.', { terms: terms }) }}
+                {{ translate('J\'accepte les {terms} et je certifie être habilité·e à représenter cet établissement.', { terms: terms })|raw }}
             </span>
         </label>
 
