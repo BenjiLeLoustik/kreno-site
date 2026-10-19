@@ -11,12 +11,9 @@ enum AdminBookingText
     public static function today(int $created, int $cancelled, int $noShows): string
     {
         return self::TODAY->text(
-            $created,
-            self::plural($created),
-            $cancelled,
-            self::plural($cancelled),
-            $noShows,
-            self::plural($noShows),
+            self::bookings($created),
+            self::cancellations($cancelled),
+            self::absences($noShows)
         );
     }
 
