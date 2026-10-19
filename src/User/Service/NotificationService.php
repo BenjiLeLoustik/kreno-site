@@ -11,18 +11,28 @@ use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class NotificationService
 {
+    public const TITLE_LENGTH = 160;
+
+    public const BODY_LENGTH = 255;
+
     public function __construct(
         private OrmManagerInterface $orm,
         private UserNotificationRepository $notifications,
     ) {
     }
 
-    public function notify(User $user, NotificationType $type, string $title, ?string $body = null, ?string $link = null, bool $flush = true): UserNotification
-    {
+    public function notify(
+        User $user,
+        NotificationType $type,
+        string $title,
+        ?string $body = null,
+        ?string $link = null,
+        bool $flush = true,
+    ): UserNotification {
         $notification = (new UserNotification())
             ->setType($type)
-            ->setTitle(mb_substr($title, 0, 160))
-            ->setBody($body !== null ? mb_substr($body, 0, 255) : null)
+            ->setTitle(mb_substr($title, 0, self::TITLE_LENGTH))
+            ->setBody($this->body($body))
             ->setLink($link);
 
         $user->addNotification($notification);
@@ -37,10 +47,12 @@ class NotificationService
 
     public function markRead(UserNotification $notification): void
     {
-        if ($notification->getReadAt() === null) {
-            $notification->setReadAt(new DateTimeImmutable());
-            $this->orm->flush();
+        if ($notification->getReadAt() !== null) {
+            return;
         }
+
+        $notification->setReadAt(new DateTimeImmutable());
+        $this->orm->flush();
     }
 
     public function markAllRead(User $user): int
@@ -55,5 +67,14 @@ class NotificationService
         $this->orm->flush();
 
         return count($unread);
+    }
+
+    private function body(?string $body): ?string
+    {
+        if ($body === null) {
+            return null;
+        }
+
+        return mb_substr($body, 0, self::BODY_LENGTH);
     }
 }

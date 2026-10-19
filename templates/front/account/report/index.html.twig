@@ -2,72 +2,118 @@
 
 {% set account_section = 'reports' %}
 
-{% block title %}Signalements · {{ website().siteName }}{% endblock %}
+{% block title %}
+    {{ translate('Signalements · {site}', {site: website().siteName}) }}
+{% endblock %}
 
 {% block account_content %}
     <header class="account-head">
-        <h1 class="account-head__title">Signalements</h1>
-        <p class="account-head__subtitle">Un souci avec un rendez-vous ? Prévenez-nous dans les {{ form.windowHours }} h : l'équipe {{ website().siteName }} revient vers vous par e-mail.</p>
+        <h1 class="account-head__title">
+            {{ translate('Signalements') }}
+        </h1>
+        <p class="account-head__subtitle">
+            {{ translate('Un soucis avec un rendez-vous ? Prévenez-nous dans les {windowHours} h : l\'équipe {site} revient vers vous par e-mail.', {
+                windowHours: form.windowHours,
+                site: website().siteName,
+            }) }}
+        </p>
     </header>
 
     <section class="account-card">
-        <h2 class="account-section__title">Signaler un problème</h2>
+        <h2 class="account-section__title">
+            {{ translate('Signaler un problème') }}
+        </h2>
         {% if form.bookings is not empty %}
             <form method="post" action="{{ path('account_report_create') }}" enctype="multipart/form-data" class="report-form">
                 {{ csrf_field('account')|raw }}
                 <label for="report-booking" class="form-field">
-                    Réservation concernée
+                    {{ translate('Réservation concernée') }}
                     <select id="report-booking" name="booking" required class="form-input">
                         {% for booking in form.bookings %}
-                            <option value="{{ booking.reference }}"{{ booking.reference == form.selected ? ' selected' : '' }}>{{ booking.label }}{% if booking.establishment %} · {{ booking.establishment }}{% endif %}</option>
+                            <option value="{{ booking.reference }}"{{ booking.reference == form.selected ? ' selected' : '' }}>
+                                {{ booking.label }}
+                                {% if booking.establishment %}
+                                    · {{ booking.establishment }}
+                                {% endif %}
+                            </option>
                         {% endfor %}
                     </select>
                 </label>
                 <fieldset class="report-form__reasons">
-                    <legend class="report-form__legend">Motif</legend>
+                    <legend class="report-form__legend">
+                        {{ translate('Motif') }}
+                    </legend>
                     {% for reason in form.reasons %}
                         <label class="report-reason">
                             <input type="radio" name="reason" value="{{ reason.key }}" required class="report-reason__input"{{ reason.selected ? ' checked' : '' }}>
                             <span class="report-reason__text">
-                                <b class="report-reason__label">{{ reason.label }}</b>
-                                {% if reason.hint %}<span class="report-reason__hint">{{ reason.hint }}</span>{% endif %}
+                                <b class="report-reason__label">
+                                    {{ reason.label }}
+                                </b>
+                                {% if reason.hint %}
+                                    <span class="report-reason__hint">
+                                        {{ reason.hint }}
+                                    </span>
+                                {% endif %}
                             </span>
                         </label>
                     {% endfor %}
                 </fieldset>
                 <label for="report-description" class="form-field">
-                    Ce qui s'est passé
+                    {{ translate('Ce qui s\'est passé') }}
                     <textarea id="report-description" name="description" rows="4" required minlength="10" maxlength="2000" class="form-input report-form__area">{{ form.description }}</textarea>
                 </label>
                 <label for="report-attachment" class="form-field">
-                    <span>Pièce jointe <span class="report-form__muted">(facultatif : photo ou PDF)</span></span>
+                    <span>
+                        {{ translate('Pièce jointe') }}
+                        <span class="report-form__muted">
+                            {{ translate('(facultatif : photo ou PDF)') }}
+                        </span>
+                    </span>
                     <input id="report-attachment" type="file" name="attachment" accept="image/jpeg,image/png,image/webp,application/pdf" class="report-form__file">
                 </label>
                 <div>
-                    <button type="submit" class="btn btn--ink btn--small">Envoyer le signalement</button>
+                    <button type="submit" class="btn btn--ink btn--small">
+                        {{ translate('Envoyer le signalement') }}
+                    </button>
                 </div>
             </form>
         {% else %}
-            <p class="account-card__muted">Aucune réservation ne peut être signalée en ce moment. Le signalement est possible jusqu'à {{ form.windowHours }} h après le rendez-vous.</p>
+            <p class="account-card__muted">
+                {{ translate('Aucune réservation ne peut être signalée en ce moment. Le signalement est possible jusqu\'à {windowHours} h après le rendez-vous.', {windowHours: form.windowHours}) }}
+            </p>
         {% endif %}
     </section>
 
     <section class="account-section">
-        <h2 class="account-section__title">Mes signalements</h2>
+        <h2 class="account-section__title">
+            {{ translate('Mes signalements') }}
+        </h2>
         {% if reports is not empty %}
             <div class="report-list">
                 {% for report in reports %}
                     <a href="{{ path('account_report_show', { id: report.id }) }}" class="report-list__item">
                         <span class="report-list__text">
-                            <b class="report-list__title">{{ report.title }}</b>
-                            <span class="report-list__meta">{{ report.reference }}{% if report.detail %} · {{ report.detail }}{% endif %}</span>
+                            <b class="report-list__title">
+                                {{ report.title }}
+                            </b>
+                            <span class="report-list__meta">
+                                {{ report.reference }}
+                                {% if report.detail %}
+                                    · {{ report.detail }}
+                                {% endif %}
+                            </span>
                         </span>
-                        <span class="account-status account-status--{{ report.kind }}">{{ report.status }}</span>
+                        <span class="account-status account-status--{{ report.kind }}">
+                            {{ report.status }}
+                        </span>
                     </a>
                 {% endfor %}
             </div>
         {% else %}
-            <p class="account-card__muted">Vous n'avez fait aucun signalement.</p>
+            <p class="account-card__muted">
+                {{ translate('Vous n\'avez fait aucun signalement.') }}
+            </p>
         {% endif %}
     </section>
 {% endblock %}

@@ -1,18 +1,231 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ locale|default('fr') }}">
     <head>
         <meta charset="utf-8">
         <title>{% block pdfTitle %}{% endblock %}</title>
         <style>
-            body { font-family: "DejaVu Sans", sans-serif; font-size: 10pt; color: #000; }
-            table { width: 100%; border-collapse: collapse; }
-            td, th { padding: 4pt 6pt; vertical-align: top; text-align: left; }
-            .lines th, .lines td { border-bottom: 1px solid #999; }
-            .right { text-align: right; }
-            .small { font-size: 8pt; }
+            @page {
+                margin: 18mm 16mm 22mm 16mm;
+            }
+
+            body {
+                font-family: "DejaVu Sans", sans-serif;
+                font-size: 9pt;
+                line-height: 1.45;
+                color: #1f2937;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            td,
+            th {
+                padding: 0;
+                vertical-align: top;
+                text-align: left;
+            }
+
+            p {
+                margin: 0;
+            }
+
+            .pdf-header {
+                margin-bottom: 28pt;
+            }
+
+            .pdf-header__issuer {
+                width: 55%;
+                color: #4b5563;
+            }
+
+            .pdf-header__name {
+                display: block;
+                margin-bottom: 4pt;
+                font-size: 13pt;
+                font-weight: bold;
+                color: #111827;
+            }
+
+            .pdf-header__doc {
+                width: 45%;
+                text-align: right;
+            }
+
+            .pdf-header__title {
+                margin: 0 0 6pt 0;
+                font-size: 22pt;
+                font-weight: bold;
+                letter-spacing: 2pt;
+                color: #111827;
+            }
+
+            .pdf-header__title--credit {
+                color: #b45309;
+            }
+
+            .pdf-header__number {
+                display: block;
+                margin-bottom: 8pt;
+                font-size: 10pt;
+                font-weight: bold;
+                color: #374151;
+            }
+
+            .pdf-meta {
+                width: auto;
+                margin-left: auto;
+            }
+
+            .pdf-meta td {
+                padding: 1pt 0 1pt 12pt;
+                color: #4b5563;
+            }
+
+            .pdf-meta__label {
+                text-align: right;
+                color: #6b7280;
+            }
+
+            .pdf-meta__value {
+                text-align: right;
+                font-weight: bold;
+                color: #111827;
+            }
+
+            .pdf-meta__note {
+                padding-top: 6pt;
+                text-align: right;
+                font-size: 8pt;
+                color: #b45309;
+            }
+
+            .pdf-party {
+                margin-bottom: 20pt;
+                padding: 10pt 12pt;
+                background-color: #f3f4f6;
+                border-radius: 4pt;
+            }
+
+            .pdf-party__label {
+                display: block;
+                margin-bottom: 4pt;
+                font-size: 7.5pt;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 1pt;
+                color: #6b7280;
+            }
+
+            .pdf-party__name {
+                display: block;
+                font-size: 10.5pt;
+                font-weight: bold;
+                color: #111827;
+            }
+
+            .pdf-party__detail {
+                color: #4b5563;
+            }
+
+            .pdf-subtitle {
+                margin-bottom: 10pt;
+                font-size: 10pt;
+                font-weight: bold;
+                color: #111827;
+            }
+
+            .pdf-lines {
+                margin-bottom: 16pt;
+            }
+
+            .pdf-lines th {
+                padding: 7pt 8pt;
+                background-color: #111827;
+                font-size: 7.5pt;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 0.5pt;
+                color: #ffffff;
+            }
+
+            .pdf-lines td {
+                padding: 8pt;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .pdf-lines tr {
+                page-break-inside: avoid;
+            }
+
+            .pdf-lines__label {
+                width: 52%;
+            }
+
+            .pdf-lines__number {
+                text-align: right;
+                white-space: nowrap;
+            }
+
+            .pdf-lines th.pdf-lines__number {
+                text-align: right;
+            }
+
+            .pdf-totals {
+                margin-bottom: 24pt;
+                page-break-inside: avoid;
+            }
+
+            .pdf-totals__spacer {
+                width: 55%;
+            }
+
+            .pdf-totals__table td {
+                padding: 5pt 8pt;
+            }
+
+            .pdf-totals__label {
+                color: #4b5563;
+            }
+
+            .pdf-totals__value {
+                text-align: right;
+                white-space: nowrap;
+            }
+
+            .pdf-totals__row--grand td {
+                padding-top: 8pt;
+                padding-bottom: 8pt;
+                border-top: 2px solid #111827;
+                font-size: 11pt;
+                font-weight: bold;
+                color: #111827;
+            }
+
+            .pdf-notice {
+                margin-bottom: 6pt;
+                font-size: 7.5pt;
+                color: #6b7280;
+            }
+
+            .pdf-footer {
+                position: fixed;
+                bottom: -12mm;
+                left: 0;
+                right: 0;
+                padding-top: 6pt;
+                border-top: 1px solid #e5e7eb;
+                font-size: 7pt;
+                text-align: center;
+                color: #9ca3af;
+            }
         </style>
     </head>
     <body>
-        {% block pdfContent %}{% endblock %}
+    <div class="pdf-footer">
+        {% block pdfFooter %}{% endblock %}
+    </div>
+    {% block pdfContent %}{% endblock %}
     </body>
 </html>

@@ -7,10 +7,13 @@ use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Repository\BookingRepository;
 use App\Repository\User\UserRepository;
-use App\Shared\Exception\BusinessRuleException;
+use App\Shared\Helper\Translation;
 use App\User\Enum\NotificationType;
 use App\User\Enum\UserStatus;
+use App\User\Enum\UserText;
 use App\User\Event\UserSuspendedEvent;
+use App\User\Exception\AccountDeletedException;
+use App\User\Exception\AccountNotSuspendableException;
 use App\User\Helper\UserNameHelper;
 use App\Website\Provider\WebsiteProvider;
 use DateTimeImmutable;
@@ -44,23 +47,30 @@ class SanctionService
             return false;
         }
 
-        $this->suspend($customer, $rule->getSuspensionDays(), sprintf('%d absences non prévenues en %d jours', $noShows, $rule->getNoShowWindowDays()), null, true);
+        $reason = sprintf(Translation::translate('%d absences non prévenues en %d jours'), $noShows, $rule->getNoShowWindowDays());
+        $this->suspend($customer, $rule->getSuspensionDays(), $reason, null, true);
 
         return true;
     }
 
-    public function suspend(User $user, int $days, string $reason, ?User $actor = null, bool $automatic = false): User
-    {
+    public function suspend(
+        User $user,
+        int $days,
+        string $reason,
+        ?User $actor = null,
+        bool $automatic = false,
+    ): User {
         if ($user->getStatus() === UserStatus::BANNED || $user->getStatus() === UserStatus::DELETED) {
-            throw new BusinessRuleException('Ce compte ne peut pas être suspendu.');
+            throw new AccountNotSuspendableException();
         }
 
         $until = new DateTimeImmutable(sprintf('+%d days', $days));
 
         $user->setStatus(UserStatus::SUSPENDED)->setSuspendedUntil($until)->setStatusReason($reason);
 
-        $this->notifications->notify($user, NotificationType::INFO, sprintf('Compte suspendu jusqu\'au %s', $until->format('d/m/Y')), $reason, null, false);
-        $this->logger->log(ActivityType::SANCTION, sprintf('%s suspendu %d jours%s', UserNameHelper::shortName($user), $days, $automatic ? ' (automatique)' : ''), $actor, null, $user, ['reason' => $reason]);
+        $title = UserText::SUSPENDED_UNTIL->text($until->format('d/m/Y'));
+        $this->notifications->notify($user, NotificationType::INFO, $title, $reason, null, false);
+        $this->logSuspension($user, $days, $reason, $actor, $automatic);
         $this->orm->flush();
 
         $this->events->dispatch(new UserSuspendedEvent($user, $reason, $automatic));
@@ -76,7 +86,8 @@ class SanctionService
 
         $user->setStatus(UserStatus::ACTIVE)->setSuspendedUntil(null)->setStatusReason(null);
 
-        $this->logger->log(ActivityType::SANCTION, sprintf('Sanction levée pour %s', UserNameHelper::shortName($user)), $actor, null, $user);
+        $message = sprintf('Sanction levée pour %s', UserNameHelper::shortName($user));
+        $this->logger->log(ActivityType::SANCTION, $message, $actor, null, $user);
         $this->orm->flush();
 
         return $user;
@@ -85,12 +96,13 @@ class SanctionService
     public function ban(User $user, string $reason, ?User $actor = null): User
     {
         if ($user->getStatus() === UserStatus::DELETED) {
-            throw new BusinessRuleException('Ce compte a été supprimé.');
+            throw new AccountDeletedException();
         }
 
         $user->setStatus(UserStatus::BANNED)->setSuspendedUntil(null)->setStatusReason($reason);
 
-        $this->logger->log(ActivityType::SANCTION, sprintf('%s banni', UserNameHelper::shortName($user)), $actor, null, $user, ['reason' => $reason]);
+        $message = sprintf('%s banni', UserNameHelper::shortName($user));
+        $this->logger->log(ActivityType::SANCTION, $message, $actor, null, $user, ['reason' => $reason]);
         $this->orm->flush();
 
         return $user;
@@ -108,5 +120,17 @@ class SanctionService
         $this->orm->flush();
 
         return $count;
+    }
+
+    private function logSuspension(User $user, int $days, string $reason, ?User $actor, bool $automatic): void
+    {
+        $suffix = '';
+
+        if ($automatic) {
+            $suffix = ' (automatique)';
+        }
+
+        $message = sprintf('%s suspendu %d jours%s', UserNameHelper::shortName($user), $days, $suffix);
+        $this->logger->log(ActivityType::SANCTION, $message, $actor, null, $user, ['reason' => $reason]);
     }
 }

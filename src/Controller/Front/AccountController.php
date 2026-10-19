@@ -2,18 +2,13 @@
 
 namespace App\Controller\Front;
 
-use App\Booking\Provider\CustomerDashboardProvider;
 use App\Shared\Helper\DownloadHelper;
-use App\User\Dto\ChangePasswordInput;
-use App\User\Dto\DeleteAccountInput;
-use App\User\Dto\ProfileInput;
-use App\User\Dto\SettingsInput;
-use App\User\Presenter\AlertPresenter;
-use App\User\Presenter\UserPresenter;
+use App\User\Enum\AccountFlash;
+use App\User\Mapper\AccountRequestMapper;
+use App\User\Provider\AccountPageProvider;
 use App\User\Service\AccountService;
 use App\User\Service\DataExportService;
 use App\User\Service\PasswordService;
-use App\Website\Provider\WebsiteProvider;
 use NeoPHP\Component\Csrf\Attribute\Csrf;
 use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Component\Http\Response\RedirectResponse;
@@ -26,42 +21,27 @@ class AccountController extends AbstractFrontController
         private AccountService $accounts,
         private PasswordService $passwords,
         private DataExportService $exports,
-        private CustomerDashboardProvider $dashboard,
-        private WebsiteProvider $website,
-        private UserPresenter $presenter,
-        private AlertPresenter $alertPresenter,
+        private AccountPageProvider $pages,
     ) {
     }
 
     #[Route('/account', name: 'account_index', methods: ['GET'])]
     public function index(): Response
     {
-        $user = $this->currentUser();
-
-        return $this->render('front/account/index.html.twig', [
-            'user' => $this->presenter->profile($user),
-            'dashboard' => $this->dashboard->build($user),
-            'alerts' => $this->alertPresenter->presentAll($user->getAlerts()->toArray()),
-            'rules' => $this->customerRules(),
-        ]);
+        return $this->render('front/account/index.html.twig', $this->pages->index($this->currentUser()));
     }
 
     #[Csrf('account')]
     #[Route('/account/profile', name: 'account_profile', methods: ['POST'])]
     public function profile(Request $request): RedirectResponse
     {
-        $input = new ProfileInput();
-        $input->firstName = trim($request->request->getString('firstName'));
-        $input->lastName = trim($request->request->getString('lastName'));
-        $input->phone = trim($request->request->getString('phone'));
-        $input->email = trim($request->request->getString('email'));
+        $input = AccountRequestMapper::profile($request);
 
-        if ($input->firstName === '') {
-            $this->addFlash('error', 'Indiquez votre prénom.');
-        } elseif ($input->email === '') {
-            $this->addFlash('error', 'Indiquez votre adresse e-mail.');
-        } elseif (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->accounts->updateProfile($this->currentUser(), $input), 'Informations enregistrées.');
+        if (!$this->invalid($input)) {
+            $this->attempt(
+                fn () => $this->accounts->updateProfile($this->currentUser(), $input),
+                AccountFlash::PROFILE_SAVED->text(),
+            );
         }
 
         return $this->redirect($this->generateUrl('account_settings') . '#informations');
@@ -71,14 +51,13 @@ class AccountController extends AbstractFrontController
     #[Route('/account/password', name: 'account_password', methods: ['POST'])]
     public function password(Request $request): RedirectResponse
     {
-        $input = new ChangePasswordInput();
-        $input->currentPassword = $request->request->getString('currentPassword');
-        $input->newPassword = $request->request->getString('newPassword');
+        $input = AccountRequestMapper::password($request);
 
-        if ($input->newPassword !== $request->request->getString('confirmPassword')) {
-            $this->addFlash('error', 'Les deux mots de passe ne correspondent pas.');
-        } elseif (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->passwords->change($this->currentUser(), $input), 'Mot de passe modifié.');
+        if (!$this->invalid($input)) {
+            $this->attempt(
+                fn () => $this->passwords->change($this->currentUser(), $input),
+                AccountFlash::PASSWORD_CHANGED->text(),
+            );
         }
 
         return $this->redirect($this->generateUrl('account_settings') . '#mot-de-passe');
@@ -87,18 +66,19 @@ class AccountController extends AbstractFrontController
     #[Route('/account/settings', name: 'account_settings', methods: ['GET'])]
     public function settings(): Response
     {
-        return $this->render('front/account/settings.html.twig', [
-            'profile' => $this->presenter->profile($this->currentUser()),
-        ]);
+        return $this->render('front/account/settings.html.twig', $this->pages->settings($this->currentUser()));
     }
 
     #[Csrf('account')]
     #[Route('/account/settings', name: 'account_settings_update', methods: ['POST'])]
     public function updateSettings(Request $request): RedirectResponse
     {
-        $input = new SettingsInput();
-        $input->emailNotifications = $request->request->getBoolean('emailNotifications');
-        $this->attempt(fn () => $this->accounts->updateSettings($this->currentUser(), $input), 'Préférences enregistrées.');
+        $input = AccountRequestMapper::settings($request);
+
+        $this->attempt(
+            fn () => $this->accounts->updateSettings($this->currentUser(), $input),
+            AccountFlash::SETTINGS_SAVED->text(),
+        );
 
         return $this->redirect($this->generateUrl('account_settings') . '#e-mails');
     }
@@ -114,8 +94,7 @@ class AccountController extends AbstractFrontController
     public function delete(Request $request): Response
     {
         $user = $this->currentUser();
-        $input = new DeleteAccountInput();
-        $input->confirmation = $request->request->getString('confirmation');
+        $input = AccountRequestMapper::deletion($request);
 
         if ($this->invalid($input) || !$this->attempt(fn () => $this->accounts->delete($user))) {
             return $this->redirect($this->generateUrl('account_settings') . '#supprimer');
@@ -124,18 +103,5 @@ class AccountController extends AbstractFrontController
         $this->logoutUser();
 
         return $this->redirectToRoute('home_index');
-    }
-
-    private function customerRules(): array
-    {
-        $rule = $this->website->getRule();
-
-        return [
-            'freeCancellationMinutes' => $rule->getFreeCancellationMinutes(),
-            'maxUpcomingBookings' => $rule->getMaxUpcomingBookingsPerUser(),
-            'toleratedNoShows' => $rule->getToleratedNoShows(),
-            'noShowWindowDays' => $rule->getNoShowWindowDays(),
-            'suspensionDays' => $rule->getSuspensionDays(),
-        ];
     }
 }

@@ -3,10 +3,6 @@
         @apply mx-auto flex max-w-[1200px] flex-col gap-7 px-6 pt-7 pb-16 lg:flex-row lg:items-start;
     }
 
-    .account-nav {
-        @apply flex gap-1 overflow-x-auto lg:sticky lg:top-6 lg:w-[240px] lg:shrink-0 lg:flex-col lg:overflow-visible;
-    }
-
     .account-nav__title {
         @apply hidden font-display text-[30px] font-extrabold tracking-[-0.03em] lg:mb-3 lg:block;
     }

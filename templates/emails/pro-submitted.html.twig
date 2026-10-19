@@ -4,9 +4,22 @@
 
 {% block mailContent %}
 
-    <p>Merci ! L’inscription de {{ establishment.name }} est complète.</p>
-    <p>Notre équipe vérifie vos informations (SIRET, adresse, prestations) sous {{ delay }}. Vous recevrez un e-mail dès que votre établissement sera en ligne.</p>
-    <p>En attendant, vous pouvez compléter votre page : photos, horaires, description.</p>
-    <p style="{{ styles.actions }}"><a href="{{ dashboardUrl }}" style="{{ styles.button }}">Ouvrir Kréno Pro</a></p>
+    <p>
+        Merci ! L’inscription de {{ establishment.name }} est complète.
+        {{ translate('Merci ! L\'inscription de {name} est complète', {name: establishment.name}, domain: 'email') }}
+    </p>
+    <p>
+        {{ translate('Notre équipe vérifie vos informations (SIRET, adresse, prestations) sous {delay}. Vous receverez un e-mail dès que votre établissement sera en ligne.', {
+            delay: delay
+        }, domain: 'email') }}
+    </p>
+    <p>
+        {{ translate('En attendant, vous pouvez compléter votre page : photos, horaires, description.', domain: 'email') }}
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ dashboardUrl }}" style="{{ styles.button }}">
+            {{ translate('Ouvrir Kréno Pro', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

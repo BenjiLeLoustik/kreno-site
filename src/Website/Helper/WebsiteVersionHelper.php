@@ -3,13 +3,12 @@
 namespace App\Website\Helper;
 
 use App\Entity\Website\WebsiteConfig;
-use App\Website\Enum\WebsiteStatus;
 
 class WebsiteVersionHelper
 {
     public static function isEditable(WebsiteConfig $website): bool
     {
-        return in_array($website->getStatus(), [WebsiteStatus::DRAFT, WebsiteStatus::SCHEDULED], true);
+        return $website->getStatus()->isEditable();
     }
 
     public static function nextCode(array $existingCodes): string

@@ -1,2 +1,6 @@
-<p style="margin: 0 0 6px;">Cet e-mail t’a été envoyé par Kréno. Tu peux gérer tes notifications depuis ton espace client.</p>
-<p style="margin: 0;">{{ [footer.legalName ?? null, footer.address ?? null]|filter(value => value)|join(' · ') }}</p>
+<p style="margin: 0 0 6px;">
+    {{ translate('Cet e-mail t\'a été envoyé par Kréno. Tu peux gérer tes notifications depuis ton espace client.', domain: 'email') }}
+</p>
+<p style="margin: 0;">
+    {{ [footer.legalName ?? null, footer.address ?? null]|filter(value => value)|join(' · ') }}
+</p>

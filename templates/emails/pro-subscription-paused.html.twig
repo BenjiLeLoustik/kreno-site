@@ -4,9 +4,23 @@
 
 {% block mailContent %}
 
-    <p>Votre abonnement {{ subscription.plan }} pour {{ company }} est en pause jusqu’au {{ subscription.pausedUntil }}.</p>
-    <p>Pendant la pause, vous n’êtes pas prélevé et vous ne pouvez pas publier de créneaux. Votre page et vos informations sont conservées.</p>
-    <p>L’abonnement reprendra automatiquement à cette date, au même tarif.</p>
-    <p style="{{ styles.actions }}"><a href="{{ subscription.url }}" style="{{ styles.button }}">Mon abonnement</a></p>
+    <p>
+        {{ translate('Votre abonnement {plan} pour {company} est en pause jusqu\'au {pausedUntil}', {
+            plan: subscription.plan,
+            company: company,
+            pausedUntil: subscription.pausedUntil
+        }, domain: 'email') }}
+    </p>
+    <p>
+        {{ translate('Pendant la pause, vous n\'êtes pas prélevé et vous ne pouvez pas publier de créneaux. Votre page et vos informations sont conservées.', domain: 'email') }}
+    </p>
+    <p>
+        {{ translate('L\'abonnement reprendra automatiquement à cette date, au même tarif.', domain: 'email') }}
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ subscription.url }}" style="{{ styles.button }}">
+            {{ translate('Mon abonnement', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

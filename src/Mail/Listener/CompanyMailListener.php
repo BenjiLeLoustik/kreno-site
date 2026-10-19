@@ -13,9 +13,16 @@ use App\Company\Event\MemberRemovedEvent;
 use App\Company\Event\MemberRoleChangedEvent;
 use App\Company\Event\ProAccountCreatedEvent;
 use App\Company\Helper\RoleHelper;
+use App\Entity\Company\Company;
 use App\Entity\Company\CompanyEstablishment;
+use App\Entity\Company\CompanyInvitation;
+use App\Entity\Company\CompanyMember;
+use App\Entity\User\User;
+use App\Establishment\Enum\EstablishmentRole;
 use App\Establishment\Event\EstablishmentResumedEvent;
 use App\Establishment\Event\EstablishmentSuspendedEvent;
+use App\Mail\Enum\MailSubject;
+use App\Mail\Enum\MailText;
 use App\Mail\Presenter\MailContextPresenter;
 use App\Mail\Provider\RecipientProvider;
 use App\Mail\Service\MailService;
@@ -39,10 +46,12 @@ class CompanyMailListener
     #[AsListener(ProAccountCreatedEvent::class)]
     public function onProAccountCreated(ProAccountCreatedEvent $event): void
     {
-        $this->mail->toUser(MailService::PRO, $event->user, sprintf('Votre code de vérification Kréno Pro : %s', $event->verificationCode), 'pro-verify-code', [
+        $subject = MailSubject::PRO_VERIFY_CODE->text($event->verificationCode);
+
+        $this->mail->toUser(MailService::PRO, $event->user, $subject, 'pro-verify-code', [
             'code' => $event->verificationCode,
             'company' => $event->company->getName(),
-            'expiresIn' => '30 minutes',
+            'expiresIn' => MailText::THIRTY_MINUTES->text(),
             'signupUrl' => $this->mail->url('pro_signup'),
         ]);
     }
@@ -52,16 +61,16 @@ class CompanyMailListener
     {
         $invitation = $event->invitation;
         $inviter = $invitation->getInvitedBy();
-        $inviterName = $inviter !== null ? UserNameHelper::fullName($inviter) : 'L’équipe Kréno';
+        $inviterName = $this->inviterName($inviter);
         $target = $invitation->getEstablishment()?->getName() ?? $invitation->getCompany()?->getName();
-        $role = $invitation->getRole()?->value ?? $invitation->getEstablishmentRole()?->value ?? 'employee';
+        $subject = MailSubject::PRO_INVITE->text($inviterName, $target);
 
-        $this->mail->send(MailService::PRO, (string) $invitation->getEmail(), sprintf('%s vous invite à rejoindre %s sur Kréno Pro', $inviterName, $target), 'pro-invite', [
+        $this->mail->send(MailService::PRO, (string) $invitation->getEmail(), $subject, 'pro-invite', [
             'inviter' => $inviterName,
             'company' => $invitation->getCompany()?->getName(),
             'establishment' => $this->context->establishment($invitation->getEstablishment()),
             'target' => $target,
-            'role' => RoleHelper::label($role),
+            'role' => RoleHelper::label($this->invitationRole($invitation)),
             'acceptUrl' => $this->mail->url('pro_invitation_show', ['token' => $event->token]),
             'expiresAt' => PeriodHelper::day($invitation->getExpiresAt()),
         ], $inviter?->getEmail());
@@ -76,7 +85,7 @@ class CompanyMailListener
             return;
         }
 
-        $this->mail->toUser(MailService::PRO, $user, 'Votre rôle a changé sur Kréno Pro', 'pro-role-changed', [
+        $this->mail->toUser(MailService::PRO, $user, MailSubject::ROLE_CHANGED->text(), 'pro-role-changed', [
             'company' => $event->member->getCompany()?->getName(),
             'establishment' => $event->establishment?->getName(),
             'previousRole' => RoleHelper::label($event->previousRole),
@@ -96,13 +105,14 @@ class CompanyMailListener
             return;
         }
 
-        $recipients = array_values(array_diff($this->recipients->admins($company), [$this->mail->address($user)]));
+        $name = UserNameHelper::fullName($user);
+        $subject = MailSubject::MEMBER_JOINED->text($name, $company->getName());
 
-        $this->mail->send(MailService::PRO, $recipients, sprintf('%s a rejoint %s sur Kréno Pro', UserNameHelper::fullName($user), $company->getName()), 'pro-member-joined', [
-            'member' => UserNameHelper::fullName($user),
+        $this->mail->send(MailService::PRO, $this->colleagues($company, $user), $subject, 'pro-member-joined', [
+            'member' => $name,
             'email' => $user->getEmail(),
             'company' => $company->getName(),
-            'role' => RoleHelper::label($member->getRole()?->value ?? $member->getEstablishmentRoles()->first()?->getRole()->value ?? 'employee'),
+            'role' => RoleHelper::label($this->memberRole($member)),
             'dashboardUrl' => $this->mail->url('pro_dashboard'),
         ]);
     }
@@ -116,8 +126,11 @@ class CompanyMailListener
             return;
         }
 
-        $this->mail->toUser(MailService::PRO, $user, sprintf('Votre accès à %s sur Kréno Pro a été retiré', $event->member->getCompany()?->getName()), 'pro-member-removed', [
-            'company' => $event->member->getCompany()?->getName(),
+        $company = $event->member->getCompany()?->getName();
+        $subject = MailSubject::MEMBER_REMOVED->text($company);
+
+        $this->mail->toUser(MailService::PRO, $user, $subject, 'pro-member-removed', [
+            'company' => $company,
             'supportEmail' => $this->supportAddress,
         ]);
     }
@@ -126,19 +139,18 @@ class CompanyMailListener
     public function onSubmitted(EstablishmentSubmittedEvent $event): void
     {
         $establishment = $event->establishment;
+        $subject = MailSubject::ESTABLISHMENT_SUBMITTED->text($establishment->getName());
 
-        $this->mail->send(MailService::PRO, $this->recipients->admins($establishment->getCompany()), sprintf('%s : inscription reçue, vérification en cours', $establishment->getName()), 'pro-submitted', [
+        $this->sendToAdmins($establishment, $subject, 'pro-submitted', [
             'establishment' => $this->context->establishment($establishment),
-            'delay' => '48 h ouvrées',
+            'delay' => MailText::TWO_BUSINESS_DAYS->text(),
             'dashboardUrl' => $this->mail->url('pro_dashboard'),
         ]);
 
-        $this->mail->send(MailService::PRO, $this->moderationAddress, sprintf('Nouvel établissement à valider : %s', $establishment->getName()), 'moderation-submitted', [
-            'establishment' => $this->context->establishment($establishment) + [
-                    'id' => $establishment->getId(),
-                    'siret' => $establishment->getSiret(),
-                    'company' => $establishment->getCompany()?->getName(),
-                ],
+        $subject = MailSubject::MODERATION_SUBMITTED->text($establishment->getName());
+
+        $this->mail->send(MailService::PRO, $this->moderationAddress, $subject, 'moderation-submitted', [
+            'establishment' => $this->moderationContext($establishment),
         ]);
     }
 
@@ -146,8 +158,10 @@ class CompanyMailListener
     public function onApproved(EstablishmentApprovedEvent $event): void
     {
         $establishment = $event->establishment;
+        $recipients = $this->recipients->establishment($establishment);
+        $subject = MailSubject::ESTABLISHMENT_APPROVED->text($establishment->getName());
 
-        $this->mail->send(MailService::PRO, $this->recipients->establishment($establishment), sprintf('%s est en ligne sur Kréno', $establishment->getName()), 'pro-approved', [
+        $this->mail->send(MailService::PRO, $recipients, $subject, 'pro-approved', [
             'establishment' => $this->context->establishment($establishment),
             'slotUrl' => $this->mail->url('pro_slot_new'),
             'dashboardUrl' => $this->mail->url('pro_dashboard'),
@@ -158,8 +172,9 @@ class CompanyMailListener
     public function onRejected(EstablishmentRejectedEvent $event): void
     {
         $establishment = $event->establishment;
+        $subject = MailSubject::ESTABLISHMENT_REJECTED->text($establishment->getName());
 
-        $this->mail->send(MailService::PRO, $this->recipients->admins($establishment->getCompany()), sprintf('%s : votre inscription n’a pas pu être validée', $establishment->getName()), 'pro-rejected', [
+        $this->sendToAdmins($establishment, $subject, 'pro-rejected', [
             'establishment' => $this->context->establishment($establishment),
             'reason' => $event->reason,
             'message' => $event->message,
@@ -172,8 +187,9 @@ class CompanyMailListener
     public function onDocumentRequested(DocumentRequestedEvent $event): void
     {
         $establishment = $event->establishment;
+        $subject = MailSubject::DOCUMENT_REQUESTED->text($establishment->getName());
 
-        $this->mail->send(MailService::PRO, $this->recipients->admins($establishment->getCompany()), sprintf('%s : un justificatif est nécessaire', $establishment->getName()), 'pro-document-requested', [
+        $this->sendToAdmins($establishment, $subject, 'pro-document-requested', [
             'establishment' => $this->context->establishment($establishment),
             'message' => $event->message,
             'replyEmail' => $this->moderationAddress,
@@ -184,8 +200,9 @@ class CompanyMailListener
     public function onEstablishmentSuspended(EstablishmentSuspendedEvent $event): void
     {
         $establishment = $event->getEstablishment();
+        $subject = MailSubject::ESTABLISHMENT_SUSPENDED->text($establishment->getName());
 
-        $this->sendToEstablishment($establishment, sprintf('%s est suspendu sur Kréno', $establishment->getName()), 'pro-establishment-suspended', [
+        $this->sendToEstablishment($establishment, $subject, 'pro-establishment-suspended', [
             'reason' => $event->getReason(),
             'supportEmail' => $this->supportAddress,
         ]);
@@ -195,17 +212,75 @@ class CompanyMailListener
     public function onEstablishmentResumed(EstablishmentResumedEvent $event): void
     {
         $establishment = $event->getEstablishment();
+        $subject = MailSubject::ESTABLISHMENT_RESUMED->text($establishment->getName());
 
-        $this->sendToEstablishment($establishment, sprintf('%s est de nouveau en ligne sur Kréno', $establishment->getName()), 'pro-establishment-resumed', [
+        $this->sendToEstablishment($establishment, $subject, 'pro-establishment-resumed', [
             'slotUrl' => $this->mail->url('pro_slot_new'),
         ]);
     }
 
-    private function sendToEstablishment(CompanyEstablishment $establishment, string $subject, string $template, array $context): void
+    private function sendToAdmins(
+        CompanyEstablishment $establishment,
+        string $subject,
+        string $template,
+        array $context,
+        ?string $replyTo = null,
+    ): void {
+        $recipients = $this->recipients->admins($establishment->getCompany());
+
+        $this->mail->send(MailService::PRO, $recipients, $subject, $template, $context, $replyTo);
+    }
+
+    private function sendToEstablishment(
+        CompanyEstablishment $establishment,
+        string $subject,
+        string $template,
+        array $context,
+    ): void {
+        $context += [
+            'establishment' => $this->context->establishment($establishment),
+            'dashboardUrl' => $this->mail->url('pro_dashboard'),
+        ];
+
+        $recipients = $this->recipients->establishment($establishment);
+
+        $this->mail->send(MailService::PRO, $recipients, $subject, $template, $context);
+    }
+
+    private function inviterName(?User $inviter): string
     {
-        $this->mail->send(MailService::PRO, $this->recipients->establishment($establishment), $subject, $template, $context + [
-                'establishment' => $this->context->establishment($establishment),
-                'dashboardUrl' => $this->mail->url('pro_dashboard'),
-            ]);
+        if ($inviter === null) {
+            return MailText::DEFAULT_INVITER->text();
+        }
+
+        return UserNameHelper::fullName($inviter);
+    }
+
+    private function invitationRole(CompanyInvitation $invitation): string
+    {
+        return $invitation->getRole()?->value
+            ?? $invitation->getEstablishmentRole()?->value
+            ?? EstablishmentRole::EMPLOYEE->value;
+    }
+
+    private function memberRole(CompanyMember $member): string
+    {
+        return $member->getRole()?->value
+            ?? $member->getEstablishmentRoles()->first()?->getRole()->value
+            ?? EstablishmentRole::EMPLOYEE->value;
+    }
+
+    private function colleagues(Company $company, User $user): array
+    {
+        return array_values(array_diff($this->recipients->admins($company), [$this->mail->address($user)]));
+    }
+
+    private function moderationContext(CompanyEstablishment $establishment): array
+    {
+        return $this->context->establishment($establishment) + [
+                'id' => $establishment->getId(),
+                'siret' => $establishment->getSiret(),
+                'company' => $establishment->getCompany()?->getName(),
+            ];
     }
 }

@@ -13,19 +13,35 @@ class WebsiteProvider
     private ?WebsiteConfig $live = null;
 
     public function __construct(
-        private readonly WebsiteConfigRepository $websites,
-        private readonly WebsitePlanRepository $plans,
+        private WebsiteConfigRepository $websites,
+        private WebsitePlanRepository $plans,
     ) {
     }
 
     public function getLive(): WebsiteConfig
     {
-        return $this->live ??= $this->websites->findLive() ?? throw new NoLiveWebsiteException();
+        if ($this->live !== null) {
+            return $this->live;
+        }
+
+        $live = $this->websites->findLive();
+
+        if ($live === null) {
+            throw new NoLiveWebsiteException();
+        }
+
+        return $this->live = $live;
     }
 
     public function getRule(): WebsiteRule
     {
-        return $this->getLive()->getRule() ?? throw new NoLiveWebsiteException();
+        $rule = $this->getLive()->getRule();
+
+        if ($rule === null) {
+            throw new NoLiveWebsiteException();
+        }
+
+        return $rule;
     }
 
     public function getPlans(): array

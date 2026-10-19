@@ -1,27 +1,68 @@
 <div class="admin-form__row">
-    <label class="admin-field">Nom<input type="text" name="name" value="{{ plan.name ?? '' }}" required minlength="2" maxlength="80" class="admin-input"></label>
+    <label class="admin-field">
+        Nom
+        <input type="text" name="name" value="{{ plan.name ?? '' }}" required minlength="2" maxlength="80" class="admin-input">
+    </label>
     <label class="admin-field">
         Facturation
         <select name="billing" class="admin-input">
             {% for billing in billings %}
-                <option value="{{ billing.value }}"{{ billing.value == (plan.billing ?? 'subscription') ? ' selected' : '' }}>{{ billing.label }}</option>
+                <option value="{{ billing.value }}"{{ billing.value == (plan.billing ?? 'subscription') ? ' selected' : '' }}>
+                    {{ billing.label }}
+                </option>
             {% endfor %}
         </select>
     </label>
 </div>
-<label class="admin-field">Description<input type="text" name="description" value="{{ plan.description ?? '' }}" maxlength="255" class="admin-input"></label>
+<label class="admin-field">
+    Description
+    <input type="text" name="description" value="{{ plan.description ?? '' }}" maxlength="255" class="admin-input">
+</label>
 <div class="admin-form__row admin-form__row--3">
-    <label class="admin-field">Prix HT<span class="admin-field__hint">en centimes (3900 = 39 €)</span><input type="number" name="price" value="{{ plan.price ?? 0 }}" min="0" required class="admin-input"></label>
-    <label class="admin-field">Prix annuel HT<span class="admin-field__hint">en centimes, 0 si aucun</span><input type="number" name="yearlyPrice" value="{{ plan.yearlyPrice ?? 0 }}" min="0" class="admin-input"></label>
-    <label class="admin-field">TVA (%)<span class="admin-field__hint">&nbsp;</span><input type="number" name="vatRate" value="{{ plan.vatRate ?? 20 }}" min="0" max="100" required class="admin-input"></label>
+    <label class="admin-field">
+        Prix HT
+        <span class="admin-field__hint">
+            en centimes (3900 = 39 €)
+        </span>
+        <input type="number" name="price" value="{{ plan.price ?? 0 }}" min="0" required class="admin-input">
+    </label>
+    <label class="admin-field">
+        Prix annuel HT
+        <span class="admin-field__hint">
+            en centimes, 0 si aucun
+        </span>
+        <input type="number" name="yearlyPrice" value="{{ plan.yearlyPrice ?? 0 }}" min="0" class="admin-input">
+    </label>
+    <label class="admin-field">
+        TVA (%)
+        <span class="admin-field__hint">
+            &nbsp;
+        </span>
+        <input type="number" name="vatRate" value="{{ plan.vatRate ?? 20 }}" min="0" max="100" required class="admin-input">
+    </label>
 </div>
 <div class="admin-form__row admin-form__row--3">
-    <label class="admin-field">Essai (jours)<input type="number" name="trialDays" value="{{ plan.trialDays ?? 0 }}" min="0" max="90" required class="admin-input"></label>
-    <label class="admin-field">Engagement (mois)<input type="number" name="commitmentMonths" value="{{ plan.commitmentMonths ?? 0 }}" min="0" max="36" required class="admin-input"></label>
-    <label class="admin-field">Établissements max<input type="number" name="maxEstablishments" value="{{ plan.maxEstablishments ?? 1 }}" min="1" max="1000" class="admin-input"></label>
+    <label class="admin-field">
+        Essai (jours)
+        <input type="number" name="trialDays" value="{{ plan.trialDays ?? 0 }}" min="0" max="90" required class="admin-input">
+    </label>
+    <label class="admin-field">
+        Engagement (mois)
+        <input type="number" name="commitmentMonths" value="{{ plan.commitmentMonths ?? 0 }}" min="0" max="36" required class="admin-input">
+    </label>
+    <label class="admin-field">
+        Établissements max
+        <input type="number" name="maxEstablishments" value="{{ plan.maxEstablishments ?? 1 }}" min="1" max="1000" class="admin-input">
+    </label>
 </div>
 <div class="admin-actions">
-    {% for flag, label in { unlimitedEstablishments: 'Établissements illimités', commissionFree: 'Sans commission', featured: 'Mise en avant', advancedStats: 'Statistiques avancées', active: 'Active' } %}
+    {% for flag, label in {
+        unlimitedEstablishments: 'Établissements illimités',
+        commissionFree: 'Sans commission',
+        featured: 'Mise en avant',
+        advancedStats: 'Statistiques avancées',
+        active: 'Active'
+    } %}
         {% set checked = flag == 'unlimitedEstablishments' ? (plan is defined and plan.maxEstablishments is null) : (plan[flag] ?? (flag == 'active')) %}
         <label class="admin-check">
             <input type="hidden" name="{{ flag }}" value="0">

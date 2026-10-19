@@ -32,7 +32,7 @@
     }
 
     .report-table {
-        @apply overflow-x-auto rounded-[18px] border border-[#E2E0EA] bg-white;
+        @apply relative overflow-x-auto rounded-[18px] border border-[#E2E0EA] bg-white;
     }
 
     .report-table__table {

@@ -4,35 +4,30 @@ namespace App\Billing\Gateway;
 
 use App\Billing\Enum\PaymentMethodType;
 use App\Billing\Enum\PaymentStatus;
-use App\Billing\Exception\PaymentGatewayException;
+use App\Billing\Enum\Stripe\DeclineMessage;
+use App\Billing\Exception\CardDeclinedException;
+use App\Billing\Exception\InvalidWebhookSignatureException;
+use App\Billing\Exception\PaymentGatewayUnreachableException;
+use App\Billing\Exception\PaymentRequestRejectedException;
+use App\Billing\Exception\PaymentSetupRejectedException;
+use App\Billing\Exception\UnsupportedPaymentMethodException;
 use App\Billing\Model\GatewayPaymentMethod;
 use App\Billing\Model\GatewayPaymentResult;
 use App\Billing\Model\GatewaySetup;
 use App\Entity\Company\Company;
 use App\Entity\Company\CompanyPaymentMethod;
-use App\Shared\Exception\BusinessRuleException;
 use NeoPHP\Component\Container\Attribute\Autowire;
 use NeoPHP\Component\HttpClient\HttpClientManagerInterface;
 use Throwable;
 
 class StripePaymentGateway implements PaymentGatewayInterface
 {
-    public const API_URL = 'https://api.stripe.com/v1/';
-
     public const WEBHOOK_TOLERANCE = 300;
-
-    public const DECLINE_MESSAGES = [
-        'insufficient_funds' => 'provision insuffisante',
-        'expired_card' => 'carte expirée',
-        'card_declined' => 'paiement refusé par la banque',
-        'authentication_required' => 'authentification 3D Secure non validée',
-        'incorrect_cvc' => 'code de sécurité incorrect',
-        'processing_error' => 'erreur de traitement chez la banque',
-        'card_velocity_exceeded' => 'plafond de paiement atteint',
-    ];
 
     public function __construct(
         private HttpClientManagerInterface $http,
+        #[Autowire(env: 'STRIPE_API_URL')]
+        private string $apiUrl,
         #[Autowire(env: 'STRIPE_SECRET_KEY')]
         private string $secretKey,
         #[Autowire(env: 'STRIPE_PUBLIC_KEY')]
@@ -47,20 +42,32 @@ class StripePaymentGateway implements PaymentGatewayInterface
         return $this->publicKey;
     }
 
-    public function createSetup(Company $company, PaymentMethodType $type, ?CompanyPaymentMethod $existing = null): GatewaySetup
-    {
+    public function createSetup(
+        Company $company,
+        PaymentMethodType $type,
+        ?CompanyPaymentMethod $existing = null
+    ): GatewaySetup {
+
         $customer = $existing !== null ? $this->customerOf((string) $existing->getProviderReference()) : null;
         $customer ??= $this->request('POST', 'customers', [
             'name' => $company->getLegalName() ?? $company->getName(),
             'email' => $company->getConfig()?->getBillingEmail(),
-            'metadata' => ['company_id' => $company->getId()],
+            'metadata' => [
+                'company_id' => $company->getId()
+            ],
         ])['id'];
 
         $intent = $this->request('POST', 'setup_intents', [
             'customer' => $customer,
             'usage' => 'off_session',
-            'automatic_payment_methods' => ['enabled' => 'true', 'allow_redirects' => 'never'],
-            'metadata' => ['company_id' => $company->getId(), 'type' => $type->value],
+            'automatic_payment_methods' => [
+                'enabled' => 'true',
+                'allow_redirects' => 'never'
+            ],
+            'metadata' => [
+                'company_id' => $company->getId(),
+                'type' => $type->value
+            ],
         ]);
 
         return new GatewaySetup((string) $intent['id'], (string) $intent['client_secret']);
@@ -68,14 +75,20 @@ class StripePaymentGateway implements PaymentGatewayInterface
 
     public function completeSetup(string $setupReference): GatewayPaymentMethod
     {
-        $intent = $this->request('GET', 'setup_intents/' . rawurlencode($setupReference), ['expand' => ['payment_method']]);
+        $intent = $this->request(
+            'GET',
+            'setup_intents/' . rawurlencode($setupReference),
+            [
+                'expand' => ['payment_method']
+            ]
+        );
 
         if (($intent['status'] ?? null) !== 'succeeded' || !is_array($intent['payment_method'] ?? null)) {
-            throw new BusinessRuleException('Votre banque n\'a pas validé l\'enregistrement de ce moyen de paiement.');
+            throw new PaymentSetupRejectedException();
         }
 
         $method = $intent['payment_method'];
-        $type = PaymentMethodType::tryFrom((string) $method['type']) ?? throw new BusinessRuleException('Ce moyen de paiement n\'est pas accepté.');
+        $type = PaymentMethodType::tryFrom((string) $method['type']) ?? throw new UnsupportedPaymentMethodException();
 
         if ($type === PaymentMethodType::CARD) {
             return new GatewayPaymentMethod(
@@ -101,15 +114,23 @@ class StripePaymentGateway implements PaymentGatewayInterface
         );
     }
 
-    public function charge(CompanyPaymentMethod $method, int $amount, string $description, string $idempotencyKey, bool $offSession): GatewayPaymentResult
-    {
+    public function charge(
+        CompanyPaymentMethod $method,
+        int $amount,
+        string $description,
+        string $idempotencyKey,
+        bool $offSession
+    ): GatewayPaymentResult {
         $reference = (string) $method->getProviderReference();
         $parameters = [
             'amount' => $amount,
             'currency' => 'eur',
             'customer' => $this->customerOf($reference),
             'payment_method' => $reference,
-            'automatic_payment_methods' => ['enabled' => 'true', 'allow_redirects' => 'never'],
+            'automatic_payment_methods' => [
+                'enabled' => 'true',
+                'allow_redirects' => 'never'
+            ],
             'confirm' => 'true',
             'description' => $description,
             'metadata' => ['type' => $method->getType()?->value ?? PaymentMethodType::CARD->value],
@@ -119,7 +140,12 @@ class StripePaymentGateway implements PaymentGatewayInterface
             $parameters['off_session'] = 'true';
         }
 
-        [$successful, $data] = $this->send('POST', 'payment_intents', $parameters, ['Idempotency-Key' => $idempotencyKey]);
+        [$successful, $data] = $this->send(
+            'POST',
+            'payment_intents',
+            $parameters,
+            ['Idempotency-Key' => $idempotencyKey]
+        );
 
         if ($successful) {
             return $this->toResult($data);
@@ -128,7 +154,7 @@ class StripePaymentGateway implements PaymentGatewayInterface
         $error = is_array($data['error'] ?? null) ? $data['error'] : [];
 
         if (($error['type'] ?? null) !== 'card_error') {
-            throw new PaymentGatewayException(sprintf('Le prestataire de paiement a refusé la requête : %s', $error['message'] ?? 'erreur inconnue'));
+            throw new PaymentRequestRejectedException($error['message'] ?? null);
         }
 
         if (is_array($error['payment_intent'] ?? null)) {
@@ -137,7 +163,12 @@ class StripePaymentGateway implements PaymentGatewayInterface
 
         $code = $error['decline_code'] ?? $error['code'] ?? 'card_declined';
 
-        return new GatewayPaymentResult(null, PaymentStatus::FAILED, null, $code, self::DECLINE_MESSAGES[$code] ?? self::DECLINE_MESSAGES['card_declined']);
+        return new GatewayPaymentResult(
+            null,
+            PaymentStatus::FAILED,
+            null, $code,
+            DeclineMessage::fromCode($code)->message()
+        );
     }
 
     public function retrieveCharge(string $reference): GatewayPaymentResult
@@ -148,11 +179,43 @@ class StripePaymentGateway implements PaymentGatewayInterface
     public function detach(CompanyPaymentMethod $method): void
     {
         if ($method->getProviderReference() !== null) {
-            $this->request('POST', sprintf('payment_methods/%s/detach', rawurlencode($method->getProviderReference())));
+            $this->request(
+                'POST',
+                sprintf('payment_methods/%s/detach', rawurlencode($method->getProviderReference()))
+            );
         }
     }
 
     public function parseWebhook(string $payload, string $signature): ?GatewayPaymentResult
+    {
+        $this->assertSignature($payload, $signature);
+
+        $intent = $this->paymentIntentOf($payload);
+
+        return $intent !== null ? $this->toResult($intent) : null;
+    }
+
+    private function assertSignature(string $payload, string $signature): void
+    {
+        $parts = $this->signatureParts($signature);
+        $timestamp = (int) ($parts['t'][0] ?? 0);
+
+        if (abs(time() - $timestamp) > self::WEBHOOK_TOLERANCE) {
+            throw new InvalidWebhookSignatureException();
+        }
+
+        $expected = hash_hmac('sha256', $timestamp . '.' . $payload, $this->webhookSecret);
+
+        foreach ($parts['v1'] ?? [] as $candidate) {
+            if (hash_equals($expected, $candidate)) {
+                return;
+            }
+        }
+
+        throw new InvalidWebhookSignatureException();
+    }
+
+    private function signatureParts(string $signature): array
     {
         $parts = [];
 
@@ -161,21 +224,24 @@ class StripePaymentGateway implements PaymentGatewayInterface
             $parts[$key][] = $value;
         }
 
-        $timestamp = (int) ($parts['t'][0] ?? 0);
-        $expected = hash_hmac('sha256', $timestamp . '.' . $payload, $this->webhookSecret);
-        $valid = array_filter($parts['v1'] ?? [], static fn (string $candidate): bool => hash_equals($expected, $candidate));
+        return $parts;
+    }
 
-        if ($valid === [] || abs(time() - $timestamp) > self::WEBHOOK_TOLERANCE) {
-            throw new BusinessRuleException('Signature de notification invalide.');
-        }
-
+    private function paymentIntentOf(string $payload): ?array
+    {
         $event = json_decode($payload, true);
 
-        if (!is_array($event) || !str_starts_with((string) ($event['type'] ?? ''), 'payment_intent.') || !is_array($event['data']['object'] ?? null)) {
+        if (!is_array($event)) {
             return null;
         }
 
-        return $this->toResult($event['data']['object']);
+        if (!str_starts_with((string) ($event['type'] ?? ''), 'payment_intent.')) {
+            return null;
+        }
+
+        $object = $event['data']['object'] ?? null;
+
+        return is_array($object) ? $object : null;
     }
 
     private function customerOf(string $paymentMethodReference): ?string
@@ -202,7 +268,7 @@ class StripePaymentGateway implements PaymentGatewayInterface
             $status,
             $status === PaymentStatus::REQUIRES_ACTION ? ($intent['client_secret'] ?? null) : null,
             $status === PaymentStatus::FAILED ? ($code ?? 'card_declined') : null,
-            $status === PaymentStatus::FAILED ? (self::DECLINE_MESSAGES[$code ?? 'card_declined'] ?? self::DECLINE_MESSAGES['card_declined']) : null,
+            $status === PaymentStatus::FAILED ? DeclineMessage::fromCode($code)->message() : null,
         );
     }
 
@@ -217,22 +283,26 @@ class StripePaymentGateway implements PaymentGatewayInterface
         $error = is_array($data['error'] ?? null) ? $data['error'] : [];
 
         if (($error['type'] ?? null) === 'card_error') {
-            throw new BusinessRuleException(self::DECLINE_MESSAGES[$error['decline_code'] ?? $error['code'] ?? 'card_declined'] ?? self::DECLINE_MESSAGES['card_declined']);
+            throw new CardDeclinedException($error['decline_code'] ?? $error['code'] ?? null);
         }
 
-        throw new PaymentGatewayException(sprintf('Le prestataire de paiement a refusé la requête : %s', $error['message'] ?? 'erreur inconnue'));
+        throw new PaymentRequestRejectedException($error['message'] ?? null);
     }
 
     private function send(string $method, string $path, array $parameters, array $headers): array
     {
         try {
-            $options = ['auth_bearer' => $this->secretKey, 'timeout' => 20, 'headers' => $headers];
+            $options = [
+                'auth_bearer' => $this->secretKey,
+                'timeout' => 20,
+                'headers' => $headers
+            ];
             $options[$method === 'GET' ? 'query' : 'body'] = $parameters;
-            $response = $this->http->request($method, self::API_URL . $path, $options);
+            $response = $this->http->request($method, $this->apiUrl . $path, $options);
 
             return [$response->isSuccessful(), $response->toArray(false)];
         } catch (Throwable $exception) {
-            throw new PaymentGatewayException(sprintf('Le prestataire de paiement est injoignable : %s', $exception->getMessage()));
+            throw new PaymentGatewayUnreachableException($exception);
         }
     }
 }

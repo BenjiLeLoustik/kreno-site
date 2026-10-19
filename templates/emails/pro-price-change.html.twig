@@ -5,20 +5,46 @@
 {% block mailContent %}
 
     {% if lower %}
-        <p>Bonne nouvelle : le prix de votre formule {{ newPlan }} baisse.</p>
+        <p>
+            {{ translate('Bonne nouvelle : le prix de votre formule {newPlan} baisse.', {newPlan: newPlan}, domain: 'email') }}
+        </p>
     {% else %}
-        <p>Le prix de votre formule {{ newPlan }} évolue.</p>
+        <p>
+            {{ translate('Le prix de votre formule {newPlan} évolue.', {newPlan: newPlan}, domain: 'email') }}
+        </p>
     {% endif %}
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">Prix actuel : {{ currentPrice }} HT ({{ subscription.period|lower }})</li>
-        <li style="{{ styles.item }}">Nouveau prix : {{ newPrice }} HT ({{ lower ? 'soit ' ~ difference ~ ' de moins' : 'soit ' ~ difference ~ ' de plus' }})</li>
-        <li style="{{ styles.item }}">Appliqué à partir du {{ effectiveAt }}, lors de votre prochaine échéance</li>
+        <li style="{{ styles.item }}">
+            {{ translate('Prix actuel: {price} HT ({period})', {
+                price: currentPrice,
+                period: subscription.period|lower
+            }, domain: 'email') }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('Nouveau prix : {newPrice} HT', {newPrice: newPrice}, domain: 'email') }}
+            {% if lower %}
+                {{ translate('(soit {difference} de moins)', {difference: difference}, domain: 'email') }}
+            {% else %}
+                {{ translate('(soit {difference} de plus)', {difference: difference}, domain: 'email') }}
+            {% endif %}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('Appliqué à partir du {effectiveAt}, lors de votre prochaine échéance', {effectiveAt: effectiveAt}, domain: 'email') }}
+        </li>
     </ul>
     {% if lower %}
-        <p>Vous n’avez rien à faire : la baisse s’appliquera automatiquement.</p>
+        <p>
+            {{ translate('Vous n\'avez rien à faire : la baisse s\'appliquera automatiquement.', domain: 'email') }}
+        </p>
     {% else %}
-        <p>Vous n’avez rien à faire pour conserver votre formule. Si ce nouveau tarif ne vous convient pas, vous pouvez changer de formule ou résilier avant cette date, sans frais.</p>
+        <p>
+            {{ translate('Vous n\'avez rien à faire pour conserver votre formule. Si ce nouveau tarif ne vous convient pas, vous pouvez changer de formule ou résilier avant cette date, sans frais.', domain: 'email') }}
+        </p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ subscription.url }}" style="{{ styles.button }}">Mon abonnement</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ subscription.url }}" style="{{ styles.button }}">
+            {{ translate('Mon abonnement', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

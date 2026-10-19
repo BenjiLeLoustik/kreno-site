@@ -1,42 +1,77 @@
 {% extends 'layouts/pro-signup.html.twig' %}
 
-{% block title %}Établissement · Inscription pro{% endblock %}
+{% block title %}
+    {{ translate('Établissement · Inscription pro') }}
+{% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('js/pages/pro/signup.js') }}" defer></script>
 {% endblock %}
 
-{% block heading %}Votre établissement{% endblock %}
+{% block heading %}
+    {{ translate('Votre établissement') }}
+{% endblock %}
 
-{% block lead %}Indiquez votre SIRET : nous retrouvons le nom et l'adresse pour vous.{% endblock %}
+{% block lead %}
+    {{ translate('Indiquez votre SIRET : nous retrouvons le nom et l\'adresse pour vous.') }}
+{% endblock %}
 
 {% block content %}
     <form method="post" action="{{ path('pro_signup_establishment') }}" class="signup-form" data-signup-siret="{{ path('pro_signup_siret', { siret: '00000000000000' }) }}">
         {{ csrf_field('pro')|raw }}
         <div class="signup-siret">
             <label class="pro-field signup-siret__field">
-                Numéro SIRET
+                {{ translate('Numéro SIRET') }}
                 <input type="text" name="siret" value="{{ form.siret }}" required inputmode="numeric" pattern="[0-9 ]{14,17}" maxlength="17" class="pro-input" placeholder="123 456 789 00012" data-signup-siret-input>
             </label>
-            <button type="button" class="pro-button signup-siret__button" data-signup-siret-search hidden>Rechercher</button>
+            <button type="button" class="pro-button signup-siret__button" data-signup-siret-search hidden>
+                {{ translate('Rechercher') }}
+            </button>
         </div>
-        <p class="pro-field__hint">14 chiffres, sur votre Kbis ou votre avis de situation INSEE.{% if website().contactEmail %} Pas encore de SIRET ? <a href="mailto:{{ website().contactEmail }}">Contactez-nous</a>.{% endif %}</p>
+        <p class="pro-field__hint">
+            {{ translate('14 chiffres, sur votre Kbis ou votre avis de situation INSEE.') }}
+            {% if website().contactEmail %}
+                {{ translate('Pas encore de SIRET ?') }}
+                <a href="mailto:{{ website().contactEmail }}">
+                    {{ translate('Contactez-nous') }}
+                </a>.
+            {% endif %}
+        </p>
         <p class="pro-flash pro-flash--error" data-signup-siret-error hidden></p>
 
         <div class="signup-registry" data-signup-registry hidden>
-            <span class="signup-registry__title"><i data-lucide="badge-check" class="pro-nav__icon"></i> Trouvé dans le registre public des entreprises</span>
+            <span class="signup-registry__title">
+                <i data-lucide="badge-check" class="pro-nav__icon"></i>
+                {{ translate('Trouvé dans le registre public des entreprises') }}
+            </span>
             <dl class="pro-facts">
-                <dt class="pro-facts__label">Dénomination</dt><dd class="pro-facts__value" data-registry="legalName"></dd>
-                <dt class="pro-facts__label">Enseigne</dt><dd class="pro-facts__value" data-registry="brandName"></dd>
-                <dt class="pro-facts__label">Adresse</dt><dd class="pro-facts__value" data-registry="fullAddress"></dd>
-                <dt class="pro-facts__label">Activité (APE)</dt><dd class="pro-facts__value" data-registry="ape"></dd>
+                <dt class="pro-facts__label">
+                    {{ translate('Dénomination') }}
+                </dt>
+                <dd class="pro-facts__value" data-registry="legalName"></dd>
+                <dt class="pro-facts__label">
+                    {{ translate('Enseigne') }}
+                </dt>
+                <dd class="pro-facts__value" data-registry="brandName"></dd>
+                <dt class="pro-facts__label">
+                    {{ translate('Adresse') }}
+                </dt>
+                <dd class="pro-facts__value" data-registry="fullAddress"></dd>
+                <dt class="pro-facts__label">
+                    {{ translate('Activité (APE)') }}
+                </dt>
+                <dd class="pro-facts__value" data-registry="ape"></dd>
             </dl>
         </div>
 
-        <label class="pro-field">Nom affiché aux clients<input type="text" name="name" value="{{ form.name }}" required minlength="2" maxlength="120" class="pro-input" data-signup-field="name"></label>
+        <label class="pro-field">
+            {{ translate('Nom affiché aux clients') }}
+            <input type="text" name="name" value="{{ form.name }}" required minlength="2" maxlength="120" class="pro-input" data-signup-field="name"></label>
 
         <fieldset class="signup-fieldset">
-            <legend class="signup-legend">Catégorie</legend>
+            <legend class="signup-legend">
+                {{ translate('Catégorie') }}
+            </legend>
             <div class="signup-chips">
                 {% for category in categories %}
                     <label class="signup-chip">
@@ -47,23 +82,42 @@
             </div>
         </fieldset>
 
-        <label class="pro-field">Adresse où se déroulent les rendez-vous<input type="text" name="addressLine1" value="{{ form.addressLine1 }}" required maxlength="160" autocomplete="address-line1" class="pro-input" data-signup-field="address"></label>
-        <label class="pro-field">Complément d'adresse<input type="text" name="addressLine2" value="{{ form.addressLine2 }}" maxlength="160" autocomplete="address-line2" class="pro-input"></label>
+        <label class="pro-field">
+            {{ translate('Adresse où se déroulent les rendez-vous') }}
+            <input type="text" name="addressLine1" value="{{ form.addressLine1 }}" required maxlength="160" autocomplete="address-line1" class="pro-input" data-signup-field="address">
+        </label>
+        <label class="pro-field">
+            {{ translate('Complément d\'adresse') }}
+            <input type="text" name="addressLine2" value="{{ form.addressLine2 }}" maxlength="160" autocomplete="address-line2" class="pro-input">
+        </label>
         <div class="pro-form__row settings-row--3">
-            <label class="pro-field">Code postal<input type="text" name="postalCode" value="{{ form.postalCode }}" required pattern="\d{5}" inputmode="numeric" class="pro-input" data-signup-field="postalCode"></label>
-            <label class="pro-field">Ville affichée<input type="text" name="locality" value="{{ form.locality }}" required maxlength="100" class="pro-input" placeholder="Lyon 3e" data-signup-field="locality"></label>
             <label class="pro-field">
-                Ville
+                {{ translate('Code postal') }}
+                <input type="text" name="postalCode" value="{{ form.postalCode }}" required pattern="\d{5}" inputmode="numeric" class="pro-input" data-signup-field="postalCode">
+            </label>
+            <label class="pro-field">
+                {{ translate('Ville affichée') }}
+                <input type="text" name="locality" value="{{ form.locality }}" required maxlength="100" class="pro-input" placeholder="Lyon 3e" data-signup-field="locality">
+            </label>
+            <label class="pro-field">
+                {{ translate('Ville') }}
                 <select name="citySlug" class="pro-input" required>
                     {% for city in cities %}
-                        <option value="{{ city.slug }}"{{ city.slug == form.citySlug ? ' selected' : '' }}>{{ city.name }}</option>
+                        <option value="{{ city.slug }}"{{ city.slug == form.citySlug ? ' selected' : '' }}>
+                            {{ city.name }}
+                        </option>
                     {% endfor %}
                 </select>
             </label>
         </div>
         <label class="pro-field">
-            <span class="pro-field__head">Téléphone de l'établissement<span class="pro-field__hint">transmis au client après réservation</span></span>
-            <input type="tel" name="phone" value="{{ form.phone }}" class="pro-input" placeholder="04 00 00 00 00">
+            <span class="pro-field__head">
+                {{ translate('Téléphone de l\'établissement') }}
+                <span class="pro-field__hint">
+                    {{ translate('transmis au client après réservation') }}
+                </span>
+            </span>
+            <input type="tel" name="phone" value="{{ form.phone }}" class="pro-input" placeholder="{{ translate('04 00 00 00 00') }}">
         </label>
         <input type="hidden" name="latitude" value="{{ form.latitude }}" data-signup-field="latitude">
         <input type="hidden" name="longitude" value="{{ form.longitude }}" data-signup-field="longitude">

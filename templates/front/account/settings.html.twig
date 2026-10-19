@@ -2,7 +2,9 @@
 
 {% set account_section = 'settings' %}
 
-{% block title %}Réglages · {{ website().siteName }}{% endblock %}
+{% block title %}
+    {{ translate('Réglages · {site}', {site: website().siteName}) }}
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -11,93 +13,131 @@
 
 {% block account_content %}
     <header class="account-head">
-        <h1 class="account-head__title">Réglages</h1>
+        <h1 class="account-head__title">
+            {{ translate('Réglages') }}
+        </h1>
     </header>
 
     <section id="informations" class="account-card">
-        <h2 class="account-section__title">Mes informations</h2>
+        <h2 class="account-section__title">
+            {{ translate('Mes informations') }}
+        </h2>
         <form method="post" action="{{ path('account_profile') }}" class="settings-form">
             {{ csrf_field('account')|raw }}
             <label for="profile-first" class="form-field">
-                Prénom
+                {{ translate('Prénom') }}
                 <input id="profile-first" type="text" name="firstName" value="{{ profile.firstName }}" required maxlength="80" autocomplete="given-name" class="form-input">
             </label>
             <label for="profile-last" class="form-field">
-                Nom
+                {{ translate('Nom') }}
                 <input id="profile-last" type="text" name="lastName" value="{{ profile.lastName }}" maxlength="80" autocomplete="family-name" class="form-input">
             </label>
             <label for="profile-email" class="form-field">
-                E-mail
+                {{ translate('E-mail') }}
                 <input id="profile-email" type="email" name="email" value="{{ profile.email }}" required maxlength="180" autocomplete="email" class="form-input">
-                {% if not profile.emailVerified %}<span class="settings-form__hint settings-form__hint--warning">Adresse non vérifiée.</span>{% endif %}
+                {% if not profile.emailVerified %}
+                    <span class="settings-form__hint settings-form__hint--warning">
+                        {{ translate('Adresse non vérifiée.') }}
+                    </span>
+                {% endif %}
             </label>
             <label for="profile-phone" class="form-field">
-                Téléphone
-                <input id="profile-phone" type="tel" name="phone" value="{{ profile.phone }}" maxlength="20" autocomplete="tel" placeholder="06 00 00 00 00" class="form-input">
+                {{ translate('Téléphone') }}
+                <input id="profile-phone" type="tel" name="phone" value="{{ profile.phone }}" maxlength="20" autocomplete="tel" placeholder="{{ translate('06 00 00 00 00') }}" class="form-input">
             </label>
             <div class="settings-form__actions">
-                <button type="submit" class="btn btn--ink btn--small">Enregistrer</button>
+                <button type="submit" class="btn btn--ink btn--small">
+                    {{ translate('Enregistrer') }}
+                </button>
             </div>
         </form>
     </section>
 
     <section id="mot-de-passe" class="account-card">
-        <h2 class="account-section__title">Mot de passe</h2>
+        <h2 class="account-section__title">
+            {{ translate('Mot de passe') }}
+        </h2>
         <form method="post" action="{{ path('account_password') }}" class="settings-form settings-form--single">
             {{ csrf_field('account')|raw }}
             <label for="password-current" class="form-field">
-                Mot de passe actuel
+                {{ translate('Mot de passe actuel') }}
                 <input id="password-current" type="password" name="currentPassword" required autocomplete="current-password" class="form-input">
             </label>
             <div class="settings-form__group">
-                {% include 'front/security/_password_field.html.twig' with { id: 'password-new', name: 'newPassword', label: 'Nouveau mot de passe' } %}
+                {% include 'front/security/_password_field.html.twig' with {
+                    id: 'password-new',
+                    name: 'newPassword',
+                    label: translate('Nouveau mot de passe')
+                } %}
             </div>
             <label for="password-confirm" class="form-field">
-                Confirmer le nouveau mot de passe
+                {{ translate('Confirmer le nouveau mot de passe') }}
                 <input id="password-confirm" type="password" name="confirmPassword" required autocomplete="new-password" class="form-input" data-password-confirmation>
             </label>
             <div class="settings-form__actions">
-                <button type="submit" class="btn btn--ink btn--small">Modifier le mot de passe</button>
+                <button type="submit" class="btn btn--ink btn--small">
+                    {{ translate('Modifier le mot de passe') }}
+                </button>
             </div>
         </form>
     </section>
 
     <section id="e-mails" class="account-card">
-        <h2 class="account-section__title">E-mails</h2>
+        <h2 class="account-section__title">
+            {{ translate('E-mails') }}
+        </h2>
         <form method="post" action="{{ path('account_settings_update') }}" class="settings-switch">
             {{ csrf_field('account')|raw }}
             <label class="form-check">
                 <input type="checkbox" name="emailNotifications" value="1" class="form-check__input"{{ profile.emailNotifications ? ' checked' : '' }}>
-                Recevoir les alertes de créneaux et les nouveautés des établissements suivis par e-mail
+                {{ translate('Recevoir les alertes de créneaux et les nouveautés des établissements suivis par e-mail') }}
             </label>
-            <span class="settings-switch__hint">Les e-mails liés à vos réservations (confirmation, rappel, annulation) sont toujours envoyés.</span>
+            <span class="settings-switch__hint">
+                {{ translate('Les e-mails liés à vos réservations (confirmation, rappel, annulation) sont toujours envoyés.') }}
+            </span>
             <div>
-                <button type="submit" class="btn btn--outline btn--small">Enregistrer</button>
+                <button type="submit" class="btn btn--outline btn--small">
+                    {{ translate('Enregistrer') }}
+                </button>
             </div>
         </form>
     </section>
 
     <section id="donnees" class="account-card">
-        <h2 class="account-section__title">Mes données</h2>
-        <p class="account-card__muted">Téléchargez une copie de vos informations, de vos réservations et de vos alertes.</p>
+        <h2 class="account-section__title">
+            {{ translate('Mes données') }}
+        </h2>
+        <p class="account-card__muted">
+            {{ translate('Téléchargez une copie de vos informations, de vos réservations et de vos alertes.') }}
+        </p>
         <div>
-            <a href="{{ path('account_export') }}" class="btn btn--outline btn--small">Télécharger mes données</a>
+            <a href="{{ path('account_export') }}" class="btn btn--outline btn--small">
+                {{ translate('Télécharger mes données') }}
+            </a>
         </div>
     </section>
 
     <section id="supprimer" class="account-card settings-danger">
-        <h2 class="account-section__title">Supprimer mon compte</h2>
-        <p class="account-card__muted">Vos réservations à venir seront annulées et vos données effacées. Cette action est définitive.</p>
+        <h2 class="account-section__title">
+            {{ translate('Supprimer mon compte') }}
+        </h2>
+        <p class="account-card__muted">
+            {{ translate('Vos réservations à venir seront annulées et vos données effacées. Cette action est définitive.') }}
+        </p>
         <details class="settings-danger__details">
-            <summary class="settings-danger__toggle">Supprimer mon compte</summary>
+            <summary class="settings-danger__toggle">
+                {{ translate('Supprimer mon compte') }}
+            </summary>
             <form method="post" action="{{ path('account_delete') }}" class="settings-danger__form">
                 {{ csrf_field('account')|raw }}
                 <label for="delete-confirmation" class="form-field">
-                    Tapez SUPPRIMER pour confirmer
+                    {{ translate('Tapez SUPPRIMER pour confirmer') }}
                     <input id="delete-confirmation" type="text" name="confirmation" required pattern="\s*[Ss][Uu][Pp][Pp][Rr][Ii][Mm][Ee][Rr]\s*" autocomplete="off" class="form-input">
                 </label>
                 <div>
-                    <button type="submit" class="btn btn--small settings-danger__submit">Supprimer définitivement</button>
+                    <button type="submit" class="btn btn--small settings-danger__submit">
+                        {{ translate('Supprimer définitivement') }}
+                    </button>
                 </div>
             </form>
         </details>

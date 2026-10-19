@@ -1,23 +1,11 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% set can = context.permissions.establishment %}
-{% set canCompany = context.permissions.company %}
 {% set section = pro_section|default('dashboard') %}
-{% set proNav = [
-    { key: 'dashboard', label: 'Tableau de bord', route: 'pro_dashboard', icon: 'layout-dashboard', allowed: can['planning.view'] ?? false },
-    { key: 'publish', label: 'Publier un créneau', route: 'pro_slot_new', icon: 'circle-plus', allowed: can['slots.manage'] ?? false },
-    { key: 'slots', label: 'Mes créneaux', route: 'pro_slots', icon: 'list', allowed: can['planning.view'] ?? false },
-    { key: 'agenda', label: 'Agenda', route: 'pro_agenda', icon: 'calendar-days', allowed: can['planning.view'] ?? false },
-    { key: 'bookings', label: 'Réservations', route: 'pro_bookings', icon: 'calendar-check', allowed: can['bookings.manage'] ?? false },
-    { key: 'stats', label: 'Statistiques', route: 'pro_stats', icon: 'chart-column', allowed: can['planning.view'] ?? false },
-    { key: 'establishment', label: 'Mon établissement', route: 'pro_establishment', icon: 'store', allowed: can['establishment.edit'] ?? false },
-    { key: 'reports', label: 'Signalements', route: 'pro_reports', icon: 'flag', allowed: can['bookings.manage'] ?? false },
-    { key: 'team', label: 'Équipe', route: 'pro_team', icon: 'users', allowed: (canCompany['members.manage'] ?? false) or (can['members.manage'] ?? false) },
-    { key: 'billing', label: 'Facturation', route: 'pro_billing', icon: 'receipt', allowed: canCompany['company.billing'] ?? false },
-    { key: 'company', label: 'Mon compte', route: 'pro_company', icon: 'building-2', allowed: true },
-] %}
+{% set hasSwitch = context.establishments|length > 1 %}
 
-{% block title %}Espace pro · {{ website().siteName }}{% endblock %}
+{% block title %}
+    {{ translate('Espace pro · {site}', {site: website().siteName}) }}
+{% endblock %}
 
 {% block body_class %}layout-pro{% endblock %}
 
@@ -27,58 +15,91 @@
 
 {% block body %}
     <div class="pro">
-        <aside class="pro-side">
-            <a href="{{ path('pro_dashboard') }}" class="pro-side__brand" aria-label="Espace pro, tableau de bord">
-                {% include 'components/logo.html.twig' with { size: 0, light: true, badge: 'pro' } %}
+        <aside class="pro-side{{ hasSwitch ? ' pro-side--switch' : '' }}">
+            <a href="{{ path('pro_dashboard') }}" class="pro-side__brand" aria-label="{{ translate('Espace pro, tableau de bord') }}">
+                {% include 'components/logo.html.twig' with {
+                    size: 0,
+                    light: true,
+                    badge: 'pro'
+                } %}
             </a>
 
-            {% if context.establishments|length > 1 %}
+            {% if hasSwitch %}
                 <form method="post" action="{{ path('pro_establishment_switch', { id: context.current.id }) }}" class="pro-switch" data-pro-switch>
                     {{ csrf_field('pro')|raw }}
                     <input type="hidden" name="_target" value="" data-pro-switch-target>
-                    <label class="pro-switch__label" for="pro-switch">Établissement</label>
+                    <label class="pro-switch__label" for="pro-switch">
+                        {{ translate('Établissement') }}
+                    </label>
                     <select id="pro-switch" class="pro-switch__select" data-pro-switch-select>
                         {% for establishment in context.establishments %}
-                            <option value="{{ path('pro_establishment_switch', { id: establishment.id }) }}"{{ establishment.current ? ' selected' : '' }}>{{ establishment.name }}</option>
+                            <option value="{{ path('pro_establishment_switch', { id: establishment.id }) }}"{{ establishment.current ? ' selected' : '' }}>
+                                {{ establishment.name }}
+                            </option>
                         {% endfor %}
                     </select>
-                    <button type="submit" class="pro-switch__apply" data-pro-apply>Changer</button>
+                    <button type="submit" class="pro-switch__apply" data-pro-apply>
+                        {{ translate('Changer') }}
+                    </button>
                 </form>
             {% endif %}
 
-            <nav class="pro-nav" aria-label="Espace pro">
-                {% for item in proNav|filter(item => item.allowed and route_exists(item.route)) %}
-                    <a href="{{ path(item.route) }}" class="pro-nav__link{{ item.key == section ? ' pro-nav__link--active' : '' }}"{{ item.key == section ? ' aria-current="page"' : '' }}>
-                        <i data-lucide="{{ item.icon }}" class="pro-nav__icon"></i>
-                        {{ item.label }}
-                    </a>
-                {% endfor %}
-            </nav>
+            <span class="pro-side__toggle">
+                {% include 'components/menu_toggle.html.twig' with {
+                    target: 'pro-panel',
+                    variant: 'dark'
+                } only %}
+            </span>
 
-            <div class="pro-side__footer">
-                {% if context.current %}
-                    <div class="pro-side__shop">
-                        <b>{{ context.current.name }}</b>
-                        {% if context.current.online and context.current.city %}
-                            <a href="{{ path('shop_show', { city: context.current.city, slug: context.current.slug }) }}" class="pro-side__shop-link" target="_blank" rel="noopener">Voir ma page publique</a>
-                        {% else %}
-                            <span class="pro-side__shop-status">{{ context.current.statusLabel }}</span>
-                        {% endif %}
+            <div id="pro-panel" class="pro-side__panel">
+                <nav class="pro-nav" aria-label="{{ translate('Espace pro') }}">
+                    {% for item in context.nav|filter(item => route_exists(item.route)) %}
+                        <a href="{{ path(item.route) }}" class="pro-nav__link{{ item.key == section ? ' pro-nav__link--active' : '' }}"{{ item.key == section ? ' aria-current="page"' : '' }}>
+                            <i data-lucide="{{ item.icon }}" class="pro-nav__icon"></i>
+                            {{ item.label }}
+                            {% if item.badge > 0 %}
+                                <span class="pro-nav__badge">
+                                    {{ item.badge }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    {% endfor %}
+                </nav>
+
+                <div class="pro-side__footer">
+                    {% if context.current %}
+                        <div class="pro-side__shop">
+                            <b>{{ context.current.name }}</b>
+                            {% if context.current.online and context.current.city %}
+                                <a href="{{ path('shop_show', { city: context.current.city, slug: context.current.slug }) }}" class="pro-side__shop-link" target="_blank" rel="noopener">
+                                    {{ translate('Voir ma page publique') }}
+                                </a>
+                            {% else %}
+                                <span class="pro-side__shop-status">
+                                    {{ context.current.statusLabel }}
+                                </span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    <div class="side-footer">
+                        {% include 'components/side_footer_user.html.twig' with {
+                            initials: context.user.initials,
+                            name: context.user.name,
+                            role: context.user.roleLabel,
+                        } only %}
+
+                        {% include 'components/locale_switcher.html.twig' with {
+                            variant: 'side'
+                        } only %}
+
+                        <form method="post" action="{{ logout_path() }}" class="side-footer__form">
+                            <button type="submit" class="side-footer__action side-footer__action--danger">
+                                <i data-lucide="log-out" class="side-footer__icon"></i>
+                                {{ translate('Déconnexion') }}
+                            </button>
+                        </form>
                     </div>
-                {% endif %}
-                <div class="pro-side__user">
-                    <span class="pro-side__avatar" aria-hidden="true">{{ context.user.initials }}</span>
-                    <span class="pro-side__identity">
-                        <b>{{ context.user.name }}</b>
-                        {% if context.user.roleLabel %}<span class="pro-side__role">{{ context.user.roleLabel }}</span>{% endif %}
-                    </span>
                 </div>
-                <form method="post" action="{{ logout_path() }}">
-                    <button type="submit" class="pro-side__logout">
-                        <i data-lucide="log-out" class="pro-nav__icon"></i>
-                        Déconnexion
-                    </button>
-                </form>
             </div>
         </aside>
 
@@ -86,13 +107,18 @@
             {% if context.current and not context.current.online %}
                 <div class="pro-banner">
                     <i data-lucide="info" class="pro-nav__icon"></i>
-                    {{ context.current.name }} est « {{ context.current.statusLabel|lower }} » : vos créneaux ne sont pas encore visibles des clients.
+                    {{ translate('{contextName} est « {contextStatus} » : vos créneaux ne sont pas encore visibles des clients.', {
+                        contextName: context.current.name,
+                        contextStatus: context.current.statusLabel
+                    }) }}
                 </div>
             {% endif %}
 
             {% for type, messages in flashes() %}
                 {% for message in messages %}
-                    <div class="pro-flash pro-flash--{{ type }}" role="status">{{ message }}</div>
+                    <div class="pro-flash pro-flash--{{ type }}" role="status">
+                        {{ message }}
+                    </div>
                 {% endfor %}
             {% endfor %}
 

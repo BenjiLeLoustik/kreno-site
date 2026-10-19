@@ -1,50 +1,80 @@
 {% extends 'layouts/pro-signup.html.twig' %}
 
-{% block title %}Votre compte · Inscription pro{% endblock %}
+{% block title %}
+    {{ translate('Votre compte · Inscription pro') }}
+{% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('js/pages/pro/signup.js') }}" defer></script>
 {% endblock %}
 
-{% block heading %}Commençons par vous{% endblock %}
+{% block heading %}
+    {{ translate('Commençons par vous') }}
+{% endblock %}
 
-{% block lead %}Ces informations servent à vous connecter et à vous joindre. Elles ne sont pas affichées aux clients.{% endblock %}
+{% block lead %}
+    {{ translate('Ces informations servent à vous connecter et à vous joindre. Elles ne sont pas affichées aux clients.') }}
+{% endblock %}
 
 {% block content %}
     <form method="post" action="{{ path('pro_signup_account') }}" class="signup-form">
         {{ csrf_field('pro')|raw }}
         <fieldset class="signup-fieldset">
-            <legend class="signup-legend">Vous êtes</legend>
+            <legend class="signup-legend">
+                {{ translate('Vous êtes') }}
+            </legend>
             <div class="signup-choices">
                 {% for kind in kinds %}
                     <label class="signup-choice">
                         <input type="radio" name="kind" value="{{ kind.value }}" class="signup-choice__input"{{ kind.value == form.kind ? ' checked' : '' }}>
-                        <b class="signup-choice__title">{{ kind.title }}</b>
-                        <span class="signup-choice__text">{{ kind.text }}</span>
+                        <b class="signup-choice__title">
+                            {{ kind.title }}
+                        </b>
+                        <span class="signup-choice__text">
+                            {{ kind.text }}
+                        </span>
                     </label>
                 {% endfor %}
             </div>
         </fieldset>
 
         <div class="pro-form__row">
-            <label class="pro-field">Prénom<input type="text" name="firstName" value="{{ form.firstName }}" required maxlength="80" autocomplete="given-name" class="pro-input"></label>
-            <label class="pro-field">Nom<input type="text" name="lastName" value="{{ form.lastName }}" required maxlength="80" autocomplete="family-name" class="pro-input"></label>
-            <label class="pro-field">E-mail professionnel<input type="email" name="email" value="{{ form.email }}" required maxlength="180" autocomplete="email" class="pro-input"{{ existing ? ' readonly' : '' }}></label>
-            <label class="pro-field">Téléphone portable<input type="tel" name="phone" value="{{ form.phone }}" required autocomplete="tel" class="pro-input" placeholder="06 00 00 00 00"></label>
+            <label class="pro-field">
+                {{ translate('Prénom') }}
+                <input type="text" name="firstName" value="{{ form.firstName }}" required maxlength="80" autocomplete="given-name" class="pro-input">
+            </label>
+            <label class="pro-field">
+                {{ translate('Nom') }}
+                <input type="text" name="lastName" value="{{ form.lastName }}" required maxlength="80" autocomplete="family-name" class="pro-input">
+            </label>
+            <label class="pro-field">
+                {{ translate('E-mail professionnel') }}
+                <input type="email" name="email" value="{{ form.email }}" required maxlength="180" autocomplete="email" class="pro-input"{{ existing ? ' readonly' : '' }}>
+            </label>
+            <label class="pro-field">
+                {{ translate('Téléphone portable') }}
+                <input type="tel" name="phone" value="{{ form.phone }}" required autocomplete="tel" class="pro-input" placeholder="{{ translate('06 00 00 00 00') }}">
+            </label>
         </div>
 
         {% if existing %}
-            <p class="pro-note">Vous êtes connecté avec {{ form.email }} : votre mot de passe actuel reste inchangé.</p>
+            <p class="pro-note">
+                {{ translate('Vous êtes connecté {email} : votre mot de passe actuel reste inchangé.', {email: form.email}) }}
+            </p>
         {% else %}
             <label class="pro-field">
-                Mot de passe
-                <input type="password" name="password" required minlength="12" autocomplete="new-password" class="pro-input" placeholder="12 caractères minimum" data-signup-password>
+                {{ translate('Mot de passe') }}
+                <input type="password" name="password" required minlength="12" autocomplete="new-password" class="pro-input" placeholder="{{ translate('12 caractères minimum') }}" data-signup-password>
             </label>
             <div class="signup-meter" data-signup-meter>
                 <span class="signup-meter__bars">
-                    {% for index in 1..4 %}<span class="signup-meter__bar" data-signup-meter-bar></span>{% endfor %}
+                    {% for index in 1..4 %}
+                        <span class="signup-meter__bar" data-signup-meter-bar></span>
+                    {% endfor %}
                 </span>
-                <span class="signup-meter__text" data-signup-meter-text>12 caractères minimum, avec des lettres et des chiffres.</span>
+                <span class="signup-meter__text" data-signup-meter-text>
+                    {{ translate('12 caractères minimum, avec des lettres et des chiffres.') }}
+                </span>
             </div>
         {% endif %}
 

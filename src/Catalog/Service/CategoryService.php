@@ -3,13 +3,14 @@
 namespace App\Catalog\Service;
 
 use App\Catalog\Dto\CategoryInput;
+use App\Catalog\Exception\CategoryNameRequiredException;
+use App\Catalog\Exception\CategoryNotEmptyException;
 use App\Entity\Category;
 use App\Entity\User\User;
 use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Repository\CategoryRepository;
 use App\Repository\Company\CompanyEstablishmentRepository;
-use App\Shared\Exception\BusinessRuleException;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class CategoryService
@@ -24,19 +25,19 @@ class CategoryService
 
     public function create(CategoryInput $input, ?User $actor = null): Category
     {
-        if ($input->name === null || trim($input->name) === '') {
-            throw new BusinessRuleException('Le nom de la catégorie est obligatoire.');
-        }
+        $name = $this->name($input->name) ?? throw new CategoryNameRequiredException();
 
         $category = (new Category())
-            ->setName(trim($input->name))
+            ->setName($name)
             ->setVisible($input->visible ?? false)
             ->setPosition($input->position ?? $this->categories->nextPosition());
 
         $this->apply($category, $input);
-
         $this->orm->persist($category);
-        $this->logger->log(ActivityType::CATALOG, sprintf('Catégorie %s ajoutée (%s)', $category->getName(), $category->isVisible() ? 'visible' : 'masquée'), $actor, null, $category);
+
+        $visibility = $this->visibility($category->isVisible());
+        $message = sprintf('Catégorie %s ajoutée (%s)', $category->getName(), $visibility);
+        $this->logger->log(ActivityType::CATALOG, $message, $actor, null, $category);
         $this->orm->flush();
 
         return $category;
@@ -44,8 +45,10 @@ class CategoryService
 
     public function update(Category $category, CategoryInput $input, ?User $actor = null): Category
     {
-        if ($input->name !== null && trim($input->name) !== '') {
-            $category->setName(trim($input->name));
+        $name = $this->name($input->name);
+
+        if ($name !== null) {
+            $category->setName($name);
         }
 
         $this->apply($category, $input);
@@ -54,7 +57,8 @@ class CategoryService
             return $this->setVisible($category, $input->visible, $actor);
         }
 
-        $this->logger->log(ActivityType::CATALOG, sprintf('Catégorie %s modifiée', $category->getName()), $actor, null, $category);
+        $message = sprintf('Catégorie %s modifiée', $category->getName());
+        $this->logger->log(ActivityType::CATALOG, $message, $actor, null, $category);
         $this->orm->flush();
 
         return $category;
@@ -67,7 +71,9 @@ class CategoryService
         }
 
         $category->setVisible($visible);
-        $this->logger->log(ActivityType::CATALOG, sprintf('Catégorie %s %s', $category->getName(), $visible ? 'affichée' : 'masquée'), $actor, null, $category);
+
+        $message = sprintf('Catégorie %s %s', $category->getName(), $this->visibilityChange($visible));
+        $this->logger->log(ActivityType::CATALOG, $message, $actor, null, $category);
         $this->orm->flush();
 
         return $category;
@@ -76,10 +82,14 @@ class CategoryService
     public function delete(Category $category, ?User $actor = null): void
     {
         if ($this->establishments->countByCategory($category) > 0) {
-            throw new BusinessRuleException('{category} contient des établissements : masquez-la plutôt que de la supprimer.', ['category' => $category->getName()]);
+            throw new CategoryNotEmptyException((string) $category->getName());
         }
 
-        $this->logger->log(ActivityType::CATALOG, sprintf('Catégorie %s supprimée', $category->getName()), $actor);
+        $this->logger->log(
+            ActivityType::CATALOG,
+            sprintf('Catégorie %s supprimée', $category->getName()),
+            $actor
+        );
         $this->orm->remove($category);
         $this->orm->flush();
     }
@@ -92,6 +102,35 @@ class CategoryService
 
         $this->logger->log(ActivityType::CATALOG, 'Ordre des catégories modifié', $actor);
         $this->orm->flush();
+    }
+
+    private function name(?string $name): ?string
+    {
+        $name = trim((string) $name);
+
+        if ($name === '') {
+            return null;
+        }
+
+        return $name;
+    }
+
+    private function visibility(bool $visible): string
+    {
+        if ($visible) {
+            return 'visible';
+        }
+
+        return 'masquée';
+    }
+
+    private function visibilityChange(bool $visible): string
+    {
+        if ($visible) {
+            return 'affichée';
+        }
+
+        return 'masquée';
     }
 
     private function apply(Category $category, CategoryInput $input): void

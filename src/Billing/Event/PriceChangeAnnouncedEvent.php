@@ -61,6 +61,14 @@ class PriceChangeAnnouncedEvent
 
     public function correct(int $previousNewPrice, DateTimeImmutable $previousEffectiveAt): self
     {
-        return new self($this->subscription, $this->newPlan, $this->currentPrice, $this->newPrice, $this->effectiveAt, $previousNewPrice, $previousEffectiveAt);
+        return new self(
+            $this->subscription,
+            $this->newPlan,
+            $this->currentPrice,
+            $this->newPrice,
+            $this->effectiveAt,
+            $previousNewPrice,
+            $previousEffectiveAt
+        );
     }
 }

@@ -3,10 +3,11 @@
 namespace App\Controller\Pro;
 
 use App\Company\Provider\CurrentCompanyProvider;
+use App\Company\Provider\ProContextProvider;
 use App\Company\Security\Permission;
 use App\Company\Security\PermissionResolver;
-use App\Establishment\Enum\EstablishmentStatus;
-use App\Establishment\Provider\ProDashboardProvider;
+use App\Establishment\Provider\ProDashboardPageProvider;
+use App\Establishment\Provider\ProEntryProvider;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
 
@@ -15,41 +16,25 @@ class DashboardController extends AbstractProController
     public function __construct(
         CurrentCompanyProvider $context,
         PermissionResolver $resolver,
-        private ProDashboardProvider $dashboard,
+        ProContextProvider $pro,
+        private ProEntryProvider $entry,
+        private ProDashboardPageProvider $pages,
     ) {
-        parent::__construct($context, $resolver);
+        parent::__construct($context, $resolver, $pro);
     }
 
     #[Route('/pro', name: 'pro_dashboard', methods: ['GET'])]
     public function index(): Response
     {
         $user = $this->currentUser();
-        $member = $this->context->getMembership($user);
-
-        if ($member === null || $user->getEmailVerifiedAt() === null) {
-            return $this->redirectToRoute('pro_signup');
-        }
-
-        $establishment = $this->context->getCurrentEstablishment($member);
+        $establishment = $this->entry->dashboardEstablishment($user);
 
         if ($establishment === null) {
             return $this->redirectToRoute('pro_signup');
         }
 
-        $this->requirePermission(Permission::PLANNING_VIEW, $establishment);
+        $member = $this->requirePermission(Permission::PLANNING_VIEW, $establishment);
 
-        return $this->render('pro/dashboard/index.html.twig', [
-            'context' => $this->proContext(),
-            'establishment' => [
-                'id' => $establishment->getId(),
-                'name' => $establishment->getName(),
-                'status' => $establishment->getStatus()->value,
-                'statusLabel' => $establishment->getStatus()->label(),
-                'online' => $establishment->getStatus() === EstablishmentStatus::ONLINE,
-                'rejectionReason' => $establishment->getRejectionReason(),
-            ],
-            'canPublish' => $this->resolver->memberCan($member, Permission::SLOTS_MANAGE, $establishment),
-            'dashboard' => $this->dashboard->build($establishment, $user),
-        ]);
+        return $this->renderPro('pro/dashboard/index.html.twig', $this->pages->index($member, $establishment, $user));
     }
 }

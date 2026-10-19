@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum InvoiceStatus: string
 {
     case DRAFT = 'draft';
@@ -15,11 +17,11 @@ enum InvoiceStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::DRAFT => 'Brouillon',
-            self::OPEN => 'À payer',
-            self::PAID => 'Payée',
-            self::FAILED => 'Échec',
-            self::VOID => 'Annulée',
+            self::DRAFT => Translation::translate('Brouillon'),
+            self::OPEN => Translation::translate('À payer'),
+            self::PAID => Translation::translate('Payée'),
+            self::FAILED => Translation::translate('Échec'),
+            self::VOID => Translation::translate('Annulée'),
         };
     }
 }

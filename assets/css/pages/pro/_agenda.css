@@ -28,7 +28,7 @@
     }
 
     .agenda {
-        @apply overflow-x-auto rounded-[20px] border border-sand bg-white;
+        @apply relative overflow-x-auto rounded-[20px] border border-sand bg-white;
     }
 
     .agenda__grid {

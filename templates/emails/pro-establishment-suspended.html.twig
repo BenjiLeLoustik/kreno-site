@@ -4,10 +4,26 @@
 
 {% block mailContent %}
 
-    <p>{{ establishment.name }} est suspendu sur Kréno.</p>
-    <p>Motif : {{ reason }}</p>
-    <p>Pendant la suspension, votre page n’est plus visible et vous ne pouvez plus publier de créneaux. Les réservations déjà confirmées sont maintenues.</p>
-    <p>Pour échanger avec notre équipe, écrivez-nous à {{ supportEmail }}.</p>
-    <p style="{{ styles.actions }}"><a href="{{ dashboardUrl }}" style="{{ styles.button }}">Ouvrir Kréno Pro</a></p>
+    <p>
+        {{ translate('{name} est suspendu sur Kréno.', {
+            name: establishment.name
+        }, domain: 'email') }}
+    </p>
+    <p>
+        {{ translate('Motif :', domain: 'email') }} {{ reason }}
+    </p>
+    <p>
+        {{ translate('Pendant la suspension, votre page n’est plus visible et vous ne pouvez plus publier de créneaux. Les réservations déjà confirmées sont maintenues.', domain: 'email') }}
+    </p>
+    <p>
+        {{ translate('Pour échanger avec notre équipe, écrivez-nous à {supportEmail}.', {
+            supportEmail: supportEmail
+        }, domain: 'email') }}
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ dashboardUrl }}" style="{{ styles.button }}">
+            {{ translate('Ouvrir Kréno Pro', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

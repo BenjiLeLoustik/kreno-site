@@ -4,14 +4,31 @@
 
 {% block mailContent %}
 
-    <p>Ta réservation est bien annulée :</p>
+    <p>
+        {{ translate('Ta réservation est bien annulée :', domain: 'email') }}
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ booking.service }}</li>
-        <li style="{{ styles.item }}">{{ booking.day }} à {{ booking.time }}</li>
-        <li style="{{ styles.item }}">{{ booking.establishment.name }}</li>
-        <li style="{{ styles.item }}">Référence : {{ booking.reference }}</li>
+        <li style="{{ styles.item }}">
+            {{ booking.service }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('{day} à {time}', {day: booking.day, time: booking.time}, domain: 'email') }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.establishment.name }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('Référence :', domain: 'email') }} {{ booking.reference }}
+        </li>
     </ul>
-    <p>L’établissement a été prévenu. Rien ne t’a été facturé.</p>
-    <p>D’autres créneaux t’attendent : <a href="{{ homeUrl }}" style="{{ styles.link }}">voir les créneaux du moment</a></p>
+    <p>
+        {{ translate('L’établissement a été prévenu. Rien ne t’a été facturé.', domain: 'email') }}
+    </p>
+    <p>
+        {{ translate('D’autres créneaux t’attendent : {open}voir les créneaux du moment{close}', {
+            open: '<a href="' ~ homeUrl|e('html_attr') ~ '" style="' ~ styles.link|e('html_attr') ~ '">',
+            close: '</a>'
+        }, domain: 'email')|raw }}
+    </p>
 
 {% endblock %}

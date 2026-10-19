@@ -2,7 +2,7 @@
 
 namespace App\Catalog\Dto;
 
-use App\Enum\City\CityStatus;
+use App\Catalog\Enum\CityStatus;
 use NeoPHP\Component\Validator\Constraint as Assert;
 
 class CityInput

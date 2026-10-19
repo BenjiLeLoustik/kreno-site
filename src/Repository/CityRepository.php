@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Catalog\Enum\CityStatus;
 use App\Entity\City;
-use App\Enum\City\CityStatus;
 use NeoPHP\Package\Orm\Contract\AbstractRepository;
 
 class CityRepository extends AbstractRepository

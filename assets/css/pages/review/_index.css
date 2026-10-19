@@ -1,0 +1,236 @@
+@layer components {
+    .review-stars {
+        @apply inline-flex items-center gap-0.5;
+    }
+
+    .review-stars__star {
+        @apply size-4 fill-current text-sand;
+    }
+
+    .review-stars__star--on {
+        @apply text-amber;
+    }
+
+    .review-summary {
+        @apply flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8;
+    }
+
+    .review-summary__score {
+        @apply flex flex-col items-start gap-1;
+    }
+
+    .review-summary__average {
+        @apply font-display text-4xl font-bold leading-none;
+    }
+
+    .review-summary__count {
+        @apply text-sm text-muted;
+    }
+
+    .review-bars {
+        @apply flex flex-1 flex-col gap-1.5;
+    }
+
+    .review-bars__row {
+        @apply flex items-center gap-2 text-sm;
+    }
+
+    .review-bars__label {
+        @apply inline-flex w-8 items-center gap-0.5 font-medium;
+    }
+
+    .review-bars__icon {
+        @apply size-3 fill-current text-amber;
+    }
+
+    .review-bars__track {
+        @apply h-2 flex-1 appearance-none overflow-hidden rounded-full border-0 bg-mist;
+    }
+
+    .review-bars__track::-webkit-progress-bar {
+        @apply bg-mist;
+    }
+
+    .review-bars__track::-webkit-progress-value {
+        @apply rounded-full bg-amber;
+    }
+
+    .review-bars__track::-moz-progress-bar {
+        @apply rounded-full bg-amber;
+    }
+
+    .review-bars__count {
+        @apply w-8 text-right text-muted;
+    }
+
+    .review-list {
+        @apply mt-4 flex flex-col gap-3;
+    }
+
+    .review-card {
+        @apply flex flex-col gap-2 rounded-xl border border-sand bg-white p-4;
+    }
+
+    .review-card__head {
+        @apply flex flex-wrap items-center gap-x-3 gap-y-1;
+    }
+
+    .review-card__author {
+        @apply font-semibold;
+    }
+
+    .review-card__meta {
+        @apply text-sm text-muted;
+    }
+
+    .review-card__comment {
+        @apply text-body;
+    }
+
+    .review-card__reply {
+        @apply flex flex-col gap-1 rounded-lg bg-cream p-3;
+    }
+
+    .review-card__reply-title {
+        @apply text-sm font-semibold;
+    }
+
+    .review-card__reply-text {
+        @apply text-sm text-body;
+    }
+
+    .review-note,
+    .review-empty {
+        @apply mt-3 text-sm text-muted;
+    }
+
+    .review-back {
+        @apply text-sm text-muted no-underline hover:text-ink;
+    }
+
+    .review-pending {
+        @apply flex flex-col gap-3;
+    }
+
+    .review-pending__item {
+        @apply flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+    }
+
+    .review-pending__text {
+        @apply flex flex-col gap-0.5;
+    }
+
+    .review-mine {
+        @apply flex flex-col gap-2;
+    }
+
+    .review-mine__head {
+        @apply flex items-center justify-between gap-2;
+    }
+
+    .review-mine__shop {
+        @apply font-semibold text-ink;
+    }
+
+    .review-mine__note {
+        @apply text-sm text-muted;
+    }
+
+    .review-status {
+        @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold;
+    }
+
+    .review-status--published {
+        @apply bg-mint/20 text-ink;
+    }
+
+    .review-status--reported {
+        @apply bg-amber/20 text-ink;
+    }
+
+    .review-status--hidden {
+        @apply bg-mist text-muted;
+    }
+
+    .review-form {
+        @apply flex flex-col gap-4;
+    }
+
+    .review-form__label {
+        @apply font-semibold;
+    }
+
+    .review-form__optional {
+        @apply font-normal text-muted;
+    }
+
+    .review-form__area {
+        @apply min-h-32;
+    }
+
+    .review-form__hint {
+        @apply text-sm text-muted;
+    }
+
+    .review-rating {
+        @apply flex flex-col gap-2 border-0 p-0;
+    }
+
+    .review-rating__stars {
+        @apply inline-flex flex-row-reverse justify-end gap-1;
+    }
+
+    .review-rating__input {
+        @apply sr-only;
+    }
+
+    .review-rating__star {
+        @apply cursor-pointer text-sand transition-colors;
+    }
+
+    .review-rating__icon {
+        @apply size-9 fill-current;
+    }
+
+    .review-rating__text {
+        @apply sr-only;
+    }
+
+    .review-rating__star:hover,
+    .review-rating__star:hover ~ .review-rating__star,
+    .review-rating__input:checked ~ .review-rating__star {
+        @apply text-amber;
+    }
+
+    .review-rating__input:focus-visible + .review-rating__star {
+        @apply rounded outline-2 outline-offset-2 outline-coral;
+    }
+
+    .shop-intro__rating {
+        @apply inline-flex items-center gap-2 text-sm text-ink no-underline hover:underline;
+    }
+
+    .shop-intro__rating-value {
+        @apply font-semibold;
+    }
+
+    .shop-intro__rating-count {
+        @apply text-muted;
+    }
+
+    .booking-list__review {
+        @apply inline-flex items-center gap-1 text-xs font-semibold text-coral-dark;
+    }
+
+    .booking-list__review-icon {
+        @apply size-3.5 fill-current;
+    }
+
+    .booking-review {
+        @apply flex flex-col items-start gap-2;
+    }
+
+    .booking-review__icon {
+        @apply size-4 fill-current;
+    }
+}

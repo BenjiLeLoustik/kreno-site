@@ -1,0 +1,41 @@
+@layer components {
+    .review-pro-list {
+        @apply flex flex-col gap-4;
+    }
+
+    .review-pro {
+        @apply flex flex-col gap-2 border-b border-sand pb-4 last:border-0 last:pb-0;
+    }
+
+    .review-pro__head {
+        @apply flex items-center justify-between gap-2;
+    }
+
+    .review-pro__actions {
+        @apply flex flex-col gap-2;
+    }
+
+    .review-pro__panel {
+        @apply flex flex-col gap-2;
+    }
+
+    .review-pro__panel > summary {
+        @apply w-fit list-none;
+    }
+
+    .review-pro__form {
+        @apply mt-2;
+    }
+
+    .dashboard-reviews__body {
+        @apply flex flex-wrap items-center gap-3;
+    }
+
+    .dashboard-reviews__average {
+        @apply font-display text-3xl font-bold leading-none;
+    }
+
+    .dashboard-reviews__pending {
+        @apply no-underline;
+    }
+}

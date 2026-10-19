@@ -1,0 +1,41 @@
+@layer components {
+    .side-footer {
+        @apply mt-auto flex flex-col gap-1 border-t border-white/10 pt-4;
+    }
+
+    .side-footer__user {
+        @apply mb-2 flex items-center gap-3 px-3;
+    }
+
+    .side-footer__avatar {
+        @apply grid size-9 flex-none place-items-center rounded-full bg-coral text-[13px] font-bold text-white;
+    }
+
+    .side-footer__identity {
+        @apply flex min-w-0 flex-col leading-tight;
+    }
+
+    .side-footer__name {
+        @apply truncate text-sm font-semibold text-white;
+    }
+
+    .side-footer__role {
+        @apply truncate text-xs text-mist;
+    }
+
+    .side-footer__form {
+        @apply m-0;
+    }
+
+    .side-footer__action {
+        @apply flex min-h-9 w-full cursor-pointer items-center gap-2.5 rounded-lg border-0 bg-transparent px-3 font-sans text-[13px] font-medium text-mist no-underline transition-colors hover:bg-white/5 hover:text-white;
+    }
+
+    .side-footer__action--danger {
+        @apply hover:bg-coral/10 hover:text-coral;
+    }
+
+    .side-footer__icon {
+        @apply size-4 shrink-0;
+    }
+}

@@ -9,6 +9,7 @@ use App\Entity\Company\CompanySubscription;
 use App\Entity\Website\WebsitePlan;
 use App\Entity\Website\WebsitePromoCode;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PlanBilling;
 use DateTimeImmutable;
 
@@ -25,21 +26,18 @@ class PriceCalculator
         return $plan->getYearlyPrice() ?? $plan->getPrice() * self::YEARLY_MONTHS_CHARGED;
     }
 
-    public function discounted(int $price, ?WebsitePromoCode $promo, int $monthIndex, BillingPeriod $period = BillingPeriod::MONTHLY): int
-    {
+    public function discounted(
+        int $price,
+        ?WebsitePromoCode $promo,
+        int $monthIndex,
+        BillingPeriod $period = BillingPeriod::MONTHLY,
+    ): int {
         if ($promo === null) {
             return $price;
         }
 
         if ($period === BillingPeriod::YEARLY) {
-            $monthly = $price / 12;
-            $total = 0.0;
-
-            for ($month = 0; $month < 12; ++$month) {
-                $total += $this->discounted((int) round($monthly), $promo, $month);
-            }
-
-            return (int) round($total);
+            return $this->discountedYear($price, $promo);
         }
 
         if ($monthIndex < $promo->getFreeMonths()) {
@@ -62,57 +60,72 @@ class PriceCalculator
             return $subscription->getUnitPrice();
         }
 
-        $diff = $endsAt->modify(sprintf('-%d months', max($promo->getDurationMonths(), $promo->getFreeMonths())))->diff($periodStart);
+        $promoStart = $endsAt->modify(sprintf('-%d months', $this->promoMonths($promo)));
+        $diff = $promoStart->diff($periodStart);
+        $monthIndex = max(0, $diff->y * 12 + $diff->m);
 
-        return $this->discounted($subscription->getUnitPrice(), $promo, max(0, $diff->y * 12 + $diff->m), $subscription->getPeriod());
+        return $this->discounted($subscription->getUnitPrice(), $promo, $monthIndex, $subscription->getPeriod());
     }
 
     public function quote(WebsitePlan $plan, BillingPeriod $period, ?WebsitePromoCode $promo = null): array
     {
         $vatRate = $plan->getVatRate();
         $price = $this->planPrice($plan, $period);
+        $priceIncludingTax = MoneyHelper::includingTax($price, $vatRate);
         $first = $this->discounted($price, $promo, 0, $period);
-        $perBooking = $plan->getBilling() === PlanBilling::PER_BOOKING;
 
         return [
             'plan' => $plan->getCode(),
             'period' => $period->value,
-            'perBooking' => $perBooking,
+            'perBooking' => $this->isPerBooking($plan),
             'price' => $price,
-            'priceLabel' => MoneyHelper::formatExact($price) . ' HT',
-            'priceIncludingTax' => MoneyHelper::includingTax($price, $vatRate),
-            'priceIncludingTaxLabel' => MoneyHelper::formatExact(MoneyHelper::includingTax($price, $vatRate)) . ' TTC',
-            'unit' => $perBooking ? 'par créneau réservé' : ($period === BillingPeriod::YEARLY ? 'par an' : 'par mois'),
-            'monthlyEquivalent' => $period === BillingPeriod::YEARLY && !$perBooking ? MoneyHelper::formatExact((int) round($price / 12)) . ' / mois' : null,
+            'priceLabel' => MoneyHelper::formatExact($price) . Translation::translate(' HT'),
+            'priceIncludingTax' => $priceIncludingTax,
+            'priceIncludingTaxLabel' => MoneyHelper::formatExact($priceIncludingTax) . Translation::translate(' TTC'),
+            'unit' => $this->unit($plan, $period),
+            'monthlyEquivalent' => $this->monthlyEquivalent($plan, $period, $price),
             'vatRate' => $vatRate,
             'first' => $first,
             'firstIncludingTax' => MoneyHelper::includingTax($first, $vatRate),
-            'firstLabel' => $perBooking
-                ? 'Facturé en fin de mois selon les créneaux réservés'
-                : ($promo !== null && $first !== $price
-                    ? sprintf('%s TTC (puis %s dès le %de mois)', MoneyHelper::formatExact(MoneyHelper::includingTax($first, $vatRate)), MoneyHelper::formatExact(MoneyHelper::includingTax($price, $vatRate)), max($promo->getDurationMonths(), $promo->getFreeMonths()) + 1)
-                    : MoneyHelper::formatExact(MoneyHelper::includingTax($price, $vatRate)) . ' TTC'),
+            'firstLabel' => $this->firstLabel($plan, $promo, $price, $first),
             'trialDays' => $plan->getTrialDays(),
         ];
     }
 
-    public function prorata(CompanySubscription $current, WebsitePlan $plan, BillingPeriod $period, ?WebsitePromoCode $promo, DateTimeImmutable $now): array
-    {
+    public function prorata(
+        CompanySubscription $current,
+        WebsitePlan $plan,
+        BillingPeriod $period,
+        ?WebsitePromoCode $promo,
+        DateTimeImmutable $now,
+    ): array {
         $start = $current->getCurrentPeriodStart() ?? $now;
         $end = $current->getCurrentPeriodEnd() ?? $now;
         $ratio = PeriodHelper::remainingRatio($start, $end, $now);
-        $currentIsSubscription = $current->getPlan()?->getBilling() === PlanBilling::SUBSCRIPTION && $current->getStatus() !== SubscriptionStatus::PAUSED;
-        $credit = $currentIsSubscription ? (int) round($this->amountFor($current, $start) * $ratio) : 0;
-        $samePeriod = $currentIsSubscription && $current->getPeriod() === $period;
-        $newPrice = $this->discounted($this->planPrice($plan, $period), $promo, 0, $period);
-        $charge = $samePeriod ? (int) round($newPrice * $ratio) : $newPrice;
+        $isSubscription = $this->isRunningSubscription($current);
+        $samePeriod = $isSubscription && $current->getPeriod() === $period;
+        $charge = $this->discounted($this->planPrice($plan, $period), $promo, 0, $period);
+        $credit = 0;
+        $periodStart = $now;
+        $periodEnd = PeriodHelper::end($now, $period);
+
+        if ($isSubscription) {
+            $credit = (int) round($this->amountFor($current, $start) * $ratio);
+        }
+
+        if ($samePeriod) {
+            $charge = (int) round($charge * $ratio);
+            $periodStart = $start;
+            $periodEnd = $end;
+        }
+
         $due = max(0, $charge - $credit);
         $vatRate = $plan->getVatRate();
 
         return [
             'keepsPeriodEnd' => $samePeriod,
-            'periodStart' => $samePeriod ? $start : $now,
-            'periodEnd' => $samePeriod ? $end : PeriodHelper::end($now, $period),
+            'periodStart' => $periodStart,
+            'periodEnd' => $periodEnd,
             'charge' => $charge,
             'credit' => $credit,
             'due' => $due,
@@ -121,5 +134,81 @@ class PriceCalculator
             'dueIncludingTax' => MoneyHelper::includingTax($due, $vatRate),
             'dueLabel' => MoneyHelper::formatExact(MoneyHelper::includingTax($due, $vatRate)),
         ];
+    }
+
+    private function discountedYear(int $price, WebsitePromoCode $promo): int
+    {
+        $monthly = (int) round($price / 12);
+        $total = 0;
+
+        for ($month = 0; $month < 12; ++$month) {
+            $total += $this->discounted($monthly, $promo, $month);
+        }
+
+        return $total;
+    }
+
+    private function promoMonths(WebsitePromoCode $promo): int
+    {
+        return max($promo->getDurationMonths(), $promo->getFreeMonths());
+    }
+
+    private function isPerBooking(WebsitePlan $plan): bool
+    {
+        return $plan->getBilling() === PlanBilling::PER_BOOKING;
+    }
+
+    private function isRunningSubscription(CompanySubscription $subscription): bool
+    {
+        if ($subscription->getPlan()?->getBilling() !== PlanBilling::SUBSCRIPTION) {
+            return false;
+        }
+
+        return $subscription->getStatus() !== SubscriptionStatus::PAUSED;
+    }
+
+    private function unit(WebsitePlan $plan, BillingPeriod $period): string
+    {
+        if ($this->isPerBooking($plan)) {
+            return Translation::translate('par créneau réservé');
+        }
+
+        if ($period === BillingPeriod::YEARLY) {
+            return Translation::translate('par an');
+        }
+
+        return Translation::translate('par mois');
+    }
+
+    private function monthlyEquivalent(WebsitePlan $plan, BillingPeriod $period, int $price): ?string
+    {
+        if ($period !== BillingPeriod::YEARLY || $this->isPerBooking($plan)) {
+            return null;
+        }
+
+        return MoneyHelper::formatExact((int) round($price / 12)) . Translation::translate(' / mois');
+    }
+
+    private function firstLabel(WebsitePlan $plan, ?WebsitePromoCode $promo, int $price, int $first): string
+    {
+        if ($this->isPerBooking($plan)) {
+            return Translation::translate('Facturé en fin de mois selon les créneaux réservés');
+        }
+
+        $vatRate = $plan->getVatRate();
+        $priceLabel = MoneyHelper::formatExact(MoneyHelper::includingTax($price, $vatRate));
+
+        if ($promo === null || $first === $price) {
+            return $priceLabel . Translation::translate(' TTC');
+        }
+
+        $firstLabel = MoneyHelper::formatExact(MoneyHelper::includingTax($first, $vatRate));
+
+        return sprintf(
+            Translation::translate('%s TTC (puis %s dès le %de mois)'),
+            $firstLabel,
+            $priceLabel,
+            $this->promoMonths($promo) + 1
+        );
     }
 }

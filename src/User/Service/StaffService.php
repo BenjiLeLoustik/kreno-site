@@ -6,12 +6,17 @@ use App\Entity\User\User;
 use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Repository\User\UserRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\User\Dto\StaffInviteInput;
 use App\User\Enum\UserRole;
 use App\User\Enum\UserStatus;
 use App\User\Enum\UserTokenType;
 use App\User\Event\StaffInvitedEvent;
+use App\User\Exception\AlreadyStaffException;
+use App\User\Exception\InactiveAccountException;
+use App\User\Exception\InvalidStaffRoleException;
+use App\User\Exception\LastAdminException;
+use App\User\Exception\NotStaffMemberException;
+use App\User\Exception\SelfAccessChangeException;
 use App\User\Helper\StaffRoleHelper;
 use App\User\Helper\UserNameHelper;
 use NeoPHP\Component\Event\EventManagerInterface;
@@ -32,7 +37,15 @@ class StaffService
 
     public function members(): array
     {
-        return array_values(array_filter($this->users->findStaff(), static fn (User $user): bool => StaffRoleHelper::role($user) !== null && $user->getStatus() !== UserStatus::DELETED));
+        $members = [];
+
+        foreach ($this->users->findStaff() as $user) {
+            if (StaffRoleHelper::role($user) !== null && $user->getStatus() !== UserStatus::DELETED) {
+                $members[] = $user;
+            }
+        }
+
+        return $members;
     }
 
     public function invite(StaffInviteInput $input, User $actor): User
@@ -42,29 +55,18 @@ class StaffService
         $user = $this->users->findOneByEmail($email);
         $token = null;
 
-        if ($user !== null && StaffRoleHelper::role($user) !== null) {
-            throw new BusinessRuleException('{email} fait déjà partie de l\'équipe Kréno.', ['email' => $email]);
-        }
-
-        if ($user !== null && $user->getStatus() !== UserStatus::ACTIVE) {
-            throw new BusinessRuleException('Le compte {email} n\'est pas actif : il ne peut pas rejoindre l\'équipe.', ['email' => $email]);
+        if ($user !== null) {
+            $this->assertInvitable($user, $email);
         }
 
         if ($user === null) {
-            $lastName = trim((string) $input->lastName);
-            $user = (new User())
-                ->setEmail($email)
-                ->setFirstName(trim((string) $input->firstName))
-                ->setLastName($lastName !== '' ? $lastName : null)
-                ->setRoles([UserRole::USER->value]);
-
-            $user->setPassword($this->hasher->hashPassword($user, bin2hex(random_bytes(24))));
-            $this->orm->persist($user);
+            $user = $this->createUser($email, $input);
             $token = $this->tokens->create($user, UserTokenType::ACCOUNT_SETUP);
         }
 
         $user->setRoles(StaffRoleHelper::withRole($user, $role));
-        $this->logger->log(ActivityType::TEAM, sprintf('%s invité(e) dans l\'équipe (%s)', UserNameHelper::shortName($user), $role->label()), $actor, null, $user, ['role' => ['from' => null, 'to' => $role->value]]);
+        $message = sprintf('%s invité(e) dans l\'équipe (%s)', UserNameHelper::shortName($user), $role->label());
+        $this->log($user, $actor, $message, null, $role);
         $this->orm->flush();
 
         $this->events->dispatch(new StaffInvitedEvent($user, $role, $actor, $token));
@@ -77,8 +79,8 @@ class StaffService
         $current = $this->assertMember($member);
         $this->assertNotSelf($member, $actor);
 
-        if (!in_array($role, StaffRoleHelper::ROLES, true)) {
-            throw new BusinessRuleException('Ce rôle n\'existe pas pour l\'équipe Kréno.');
+        if (!$role->isStaff()) {
+            throw new InvalidStaffRoleException();
         }
 
         if ($current === $role) {
@@ -90,7 +92,8 @@ class StaffService
         }
 
         $member->setRoles(StaffRoleHelper::withRole($member, $role));
-        $this->logger->log(ActivityType::TEAM, sprintf('%s : %s → %s', UserNameHelper::shortName($member), $current->label(), $role->label()), $actor, null, $member, ['role' => ['from' => $current->value, 'to' => $role->value]]);
+        $message = sprintf('%s : %s → %s', UserNameHelper::shortName($member), $current->label(), $role->label());
+        $this->log($member, $actor, $message, $current, $role);
         $this->orm->flush();
 
         return $member;
@@ -106,30 +109,86 @@ class StaffService
         }
 
         $member->setRoles(StaffRoleHelper::withRole($member, null));
-        $this->logger->log(ActivityType::TEAM, sprintf('%s retiré(e) de l\'équipe', UserNameHelper::shortName($member)), $actor, null, $member, ['role' => ['from' => $current->value, 'to' => null]]);
+        $message = sprintf('%s retiré(e) de l\'équipe', UserNameHelper::shortName($member));
+        $this->log($member, $actor, $message, $current, null);
         $this->orm->flush();
 
         return $member;
     }
 
+    private function assertInvitable(User $user, string $email): void
+    {
+        if (StaffRoleHelper::role($user) !== null) {
+            throw new AlreadyStaffException($email);
+        }
+
+        if ($user->getStatus() !== UserStatus::ACTIVE) {
+            throw new InactiveAccountException($email);
+        }
+    }
+
+    private function createUser(string $email, StaffInviteInput $input): User
+    {
+        $user = (new User())
+            ->setEmail($email)
+            ->setFirstName(trim((string) $input->firstName))
+            ->setLastName($this->optional($input->lastName))
+            ->setRoles([UserRole::USER->value]);
+
+        $user->setPassword($this->hasher->hashPassword($user, bin2hex(random_bytes(24))));
+        $this->orm->persist($user);
+
+        return $user;
+    }
+
+    private function optional(?string $value): ?string
+    {
+        $value = trim((string) $value);
+
+        if ($value === '') {
+            return null;
+        }
+
+        return $value;
+    }
+
+    private function log(User $member, User $actor, string $message, ?UserRole $from, ?UserRole $to): void
+    {
+        $context = ['role' => ['from' => $from?->value, 'to' => $to?->value]];
+
+        $this->logger->log(ActivityType::TEAM, $message, $actor, null, $member, $context);
+    }
+
     private function assertMember(User $member): UserRole
     {
-        return StaffRoleHelper::role($member) ?? throw new BusinessRuleException('Cette personne ne fait pas partie de l\'équipe Kréno.');
+        $role = StaffRoleHelper::role($member);
+
+        if ($role === null) {
+            throw new NotStaffMemberException();
+        }
+
+        return $role;
     }
 
     private function assertNotSelf(User $member, User $actor): void
     {
         if ($member === $actor) {
-            throw new BusinessRuleException('Vous ne pouvez pas modifier votre propre accès.');
+            throw new SelfAccessChangeException();
         }
     }
 
     private function assertNotLastAdmin(): void
     {
-        $admins = array_filter($this->members(), static fn (User $user): bool => StaffRoleHelper::role($user) === UserRole::ADMIN && $user->getStatus() === UserStatus::ACTIVE);
+        $admins = 0;
 
-        if (count($admins) <= 1) {
-            throw new BusinessRuleException('L\'équipe doit garder au moins un administrateur.');
+        foreach ($this->members() as $user) {
+            if (StaffRoleHelper::role($user) === UserRole::ADMIN && $user->getStatus() === UserStatus::ACTIVE) {
+                $admins++;
+            }
+        }
+
+        if ($admins <= 1) {
+            throw new LastAdminException();
         }
     }
 }

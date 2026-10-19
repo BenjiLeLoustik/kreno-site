@@ -8,11 +8,23 @@
     }
 
     .admin-side {
-        @apply flex flex-col gap-6 bg-night px-4 py-6 text-frost lg:sticky lg:top-0 lg:h-screen lg:w-[260px] lg:shrink-0 lg:overflow-y-auto;
+        @apply sticky top-0 z-30 flex flex-row flex-wrap items-center justify-between gap-3 bg-night px-4 py-3 text-frost lg:h-screen lg:w-[260px] lg:shrink-0 lg:flex-col lg:flex-nowrap lg:items-stretch lg:justify-start lg:gap-6 lg:overflow-y-auto lg:py-6;
     }
 
     .admin-side__brand {
-        @apply self-start px-2 no-underline;
+        @apply px-2 no-underline lg:self-start;
+    }
+
+    .admin-side__toggle {
+        @apply lg:hidden;
+    }
+
+    .admin-side__panel {
+        @apply hidden max-h-[calc(100vh-4.5rem)] w-full flex-col gap-4 overflow-y-auto pb-2 lg:flex lg:max-h-none lg:flex-1 lg:overflow-visible lg:pb-0;
+    }
+
+    .admin-side__panel.is-open {
+        @apply flex;
     }
 
     .admin-side__brand .logo__word {
@@ -20,7 +32,7 @@
     }
 
     .admin-nav {
-        @apply flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible;
+        @apply flex flex-col gap-1;
     }
 
     .admin-nav__link {
@@ -45,30 +57,6 @@
 
     .admin-nav__badge {
         @apply rounded-full bg-coral px-2 py-0.5 text-xs font-bold text-white;
-    }
-
-    .admin-side__footer {
-        @apply mt-auto flex flex-wrap items-center justify-between gap-3 px-2 lg:flex-col lg:items-start;
-    }
-
-    .admin-side__user {
-        @apply text-[13px] text-mist;
-    }
-
-    .admin-side__actions {
-        @apply flex gap-4 lg:flex-col lg:gap-1;
-    }
-
-    .admin-side__logout {
-        @apply m-0;
-    }
-
-    .admin-side__action {
-        @apply inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-sans text-[13px] font-medium text-mist no-underline;
-    }
-
-    .admin-side__action:hover {
-        @apply text-white;
     }
 
     .admin-main {

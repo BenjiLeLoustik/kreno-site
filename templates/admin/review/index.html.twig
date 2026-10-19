@@ -1,0 +1,219 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set admin_section = 'reviews' %}
+{% set query = {
+    status: filter
+} %}
+
+{% block title %}
+    Avis · Administration Kréno
+{% endblock %}
+
+{% block content %}
+    {% import 'front/review/_stars.html.twig' as stars %}
+
+    <div class="admin-head">
+        <h1 class="admin-title">
+            Avis
+        </h1>
+    </div>
+
+    <nav class="admin-tabs" aria-label="Statut">
+        {% for item in filters %}
+            <a href="{{ path('admin_reviews', { status: item.key }) }}" class="admin-tabs__link{{ item.selected ? ' admin-tabs__link--active' : '' }}"{{ item.selected ? ' aria-current="page"' : '' }}>
+                {{ item.label }}
+                {% if item.count is not null %}
+                    · {{ item.count }}
+                {% endif %}
+            </a>
+        {% endfor %}
+    </nav>
+
+    <div class="admin-split">
+        <div class="admin-split__list">
+            {% for review in rows %}
+                {% set current = selected and selected.id == review.id %}
+                <a href="{{ path('admin_review_show', { id: review.id }|merge(query)) }}" class="admin-list__item{{ current ? ' admin-list__item--active' : '' }}"{{ current ? ' aria-current="page"' : '' }}>
+                    <span class="admin-list__text">
+                        <b class="admin-list__name">
+                            {{ review.establishment }}
+                        </b>
+                        <span class="admin-list__meta review-admin__line">
+                            {{ stars.show(review.rating) }} {{ review.author }}
+                        </span>
+                        {% if review.comment %}
+                            <span class="admin-list__meta">
+                                {{ review.comment|length > 90 ? review.comment|slice(0, 90) ~ '…' : review.comment }}
+                            </span>
+                        {% endif %}
+                        <span class="admin-list__meta">
+                            {{ review.createdAt|date('d/m à H:i') }}
+                        </span>
+                    </span>
+                    <span class="admin-badge admin-badge--{{ review.tone }}">
+                        {{ review.statusLabel }}
+                    </span>
+                </a>
+            {% else %}
+                <p class="admin-list__empty">
+                    {% if filter == 'reported' %}
+                        Aucun avis signalé. Tout est traité.
+                    {% else %}
+                        Aucun avis pour ce filtre.
+                    {% endif %}
+                </p>
+            {% endfor %}
+        </div>
+
+        {% if selected %}
+            <section class="admin-card admin-split__detail">
+                <div class="admin-card__head">
+                    <div class="review-admin__heading">
+                        <h2 class="admin-detail__title">
+                            {{ selected.establishment }}
+                        </h2>
+                        <span class="admin-card__subtitle">
+                            Avis du {{ selected.createdAt|date('d/m/Y à H:i') }}
+                        </span>
+                    </div>
+                    <span class="admin-badge admin-badge--{{ selected.tone }}">
+                        {{ selected.statusLabel }}
+                    </span>
+                </div>
+
+                <div class="review-admin__rating">
+                    {{ stars.show(selected.rating) }}
+                    <b>
+                        {{ selected.rating }}/5
+                    </b>
+                    <span class="admin-card__subtitle">
+                        {{ selected.ratingLabel }}
+                    </span>
+                </div>
+
+                {% if selected.comment %}
+                    <blockquote class="review-admin__quote">
+                        {{ selected.comment|nl2br }}
+                    </blockquote>
+                {% else %}
+                    <p class="admin-card__subtitle">
+                        Note sans commentaire.
+                    </p>
+                {% endif %}
+
+                <dl class="admin-facts">
+                    <dt class="admin-facts__label">
+                        Client</dt>
+                    <dd class="admin-facts__value">
+                        {{ selected.author }}
+                        {% if selected.customerEmail %}
+                            ·
+                            <a href="mailto:{{ selected.customerEmail }}">
+                                {{ selected.customerEmail }}
+                            </a>
+                        {% endif %}
+                    </dd>
+                    <dt class="admin-facts__label">
+                        Réservation
+                    </dt>
+                    <dd class="admin-facts__value">
+                        {{ selected.reference ?: '-' }}
+                        {% if selected.service %}
+                            · {{ selected.service }}
+                        {% endif %}
+                    </dd>
+                    {% if selected.moderatedAt %}
+                        <dt class="admin-facts__label">
+                            Modération
+                        </dt>
+                        <dd class="admin-facts__value">
+                            {{ selected.moderatedAt|date('d/m/Y à H:i') }}
+                            {% if selected.moderatedBy %}
+                                par {{ selected.moderatedBy }}
+                            {% endif %}
+                        </dd>
+                    {% endif %}
+                </dl>
+
+                {% if selected.reply %}
+                    <div class="thread">
+                        <article class="thread__message thread__message--team">
+                            <div class="thread__head">
+                                <b class="thread__author">
+                                    Réponse de l'établissement
+                                </b>
+                                {% if selected.repliedAt %}
+                                    <span class="thread__date">
+                                        {{ selected.repliedAt|date('d/m/Y à H:i') }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <p class="thread__body">
+                                {{ selected.reply|nl2br }}
+                            </p>
+                        </article>
+                    </div>
+                {% endif %}
+
+                {% if selected.status == 'reported' and selected.reportReason %}
+                    <div class="admin-note">
+                        <b>
+                            Signalé
+                            {% if selected.reportedBy %}
+                                par {{ selected.reportedBy }}
+                            {% endif %}
+                            {% if selected.reportedAt %}
+                                le {{ selected.reportedAt|date('d/m/Y à H:i') }}
+                            {% endif %}
+                        </b>
+                        <br>
+                        {{ selected.reportReason }}
+                    </div>
+                {% endif %}
+
+                {% if selected.status == 'hidden' and selected.moderationNote %}
+                    <div class="admin-note admin-note--danger">
+                        <b>
+                            Motif du masquage
+                        </b>
+                        <br>
+                        {{ selected.moderationNote }}
+                    </div>
+                {% endif %}
+
+                {% if selected.status != 'hidden' %}
+                    <form method="post" action="{{ path('admin_review_hide', { id: selected.id }) }}" class="admin-form">
+                        {{ csrf_field('admin_review')|raw }}
+                        <input type="hidden" name="status" value="{{ filter }}">
+                        <label class="admin-field">
+                            Masquer l'avis
+                            <span class="admin-field__hint">
+                                le motif est envoyé au client
+                            </span>
+                            <textarea name="reason" rows="3" required maxlength="500" class="admin-input admin-input--area" placeholder="Propos injurieux, informations personnelles, avis sans rapport avec la prestation…"></textarea>
+                        </label>
+                        <div class="admin-actions">
+                            <button type="submit" class="admin-button admin-button--primary">
+                                Masquer l'avis
+                            </button>
+                        </div>
+                    </form>
+                {% endif %}
+
+                {% if selected.status != 'published' %}
+                    <form method="post" action="{{ path('admin_review_publish', { id: selected.id }) }}" class="admin-form--inline">
+                        {{ csrf_field('admin_review')|raw }}
+                        <input type="hidden" name="status" value="{{ filter }}">
+                        <button type="submit" class="admin-button">
+                            {% if selected.status == 'reported' %}
+                                Garder en ligne
+                            {% else %}
+                                Remettre en ligne
+                            {% endif %}
+                        </button>
+                    </form>
+                {% endif %}
+            </section>
+        {% endif %}
+    </div>
+{% endblock %}

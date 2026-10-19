@@ -3,12 +3,16 @@
 namespace App\Establishment\Helper;
 
 use App\Entity\Establishment\EstablishmentOpeningHour;
-use App\Enum\Calendar\Weekday;
+use App\Establishment\Enum\OpeningState;
+use App\Shared\Enum\Weekday;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class OpeningHoursHelper
 {
-    public const CLOSED = 'Fermé';
+    public const DEFAULT_START_HOUR = 8;
+
+    public const DEFAULT_END_HOUR = 20;
 
     public static function byWeekday(array $hours): array
     {
@@ -19,67 +23,80 @@ class OpeningHoursHelper
         }
 
         foreach ($hours as $hour) {
-            if ($hour instanceof EstablishmentOpeningHour && $hour->getOpensAt() !== null && $hour->getClosesAt() !== null) {
-                $week[$hour->getWeekday()->value][] = [$hour->getOpensAt()->format('H:i'), $hour->getClosesAt()->format('H:i')];
+            $range = self::range($hour);
+
+            if ($range !== null) {
+                $week[$hour->getWeekday()->value][] = $range;
             }
         }
 
-        return array_map(static function (array $ranges): array {
+        foreach ($week as &$ranges) {
             usort($ranges, static fn (array $a, array $b): int => strcmp($a[0], $b[0]));
+        }
 
-            return $ranges;
-        }, $week);
+        unset($ranges);
+
+        return $week;
     }
 
     public static function rangesLabel(array $ranges): string
     {
         if ($ranges === []) {
-            return self::CLOSED;
+            return OpeningState::CLOSED->label();
         }
 
-        return implode(' / ', array_map(static fn (array $range): string => self::time($range[0]) . ' – ' . self::time($range[1]), $ranges));
+        $labels = [];
+
+        foreach ($ranges as [$opensAt, $closesAt]) {
+            $labels[] = self::time($opensAt) . ' – ' . self::time($closesAt);
+        }
+
+        return implode(' / ', $labels);
     }
 
     public static function group(array $hours): array
     {
-        $groups = [];
+        $groups = self::mergeWrappingGroup(self::groupBySchedule($hours));
+        $result = [];
 
-        foreach (self::byWeekday($hours) as $weekday => $ranges) {
-            $label = self::rangesLabel($ranges);
-            $last = array_key_last($groups);
-
-            if ($last !== null && $groups[$last]['time'] === $label) {
-                $groups[$last]['days'][] = $weekday;
-                continue;
-            }
-
-            $groups[] = ['days' => [$weekday], 'time' => $label];
+        foreach ($groups as $group) {
+            $result[] = [
+                'day' => self::daysLabel($group['days']),
+                'time' => $group['time'],
+                'closed' => $group['time'] === OpeningState::CLOSED->label(),
+            ];
         }
 
-        if (count($groups) > 1 && $groups[0]['time'] === $groups[array_key_last($groups)]['time']) {
-            $first = array_shift($groups);
-            $groups[array_key_last($groups)]['days'] = array_merge($groups[array_key_last($groups)]['days'], $first['days']);
-        }
-
-        return array_map(static fn (array $group): array => ['day' => self::daysLabel($group['days']), 'time' => $group['time'], 'closed' => $group['time'] === self::CLOSED], $groups);
+        return $result;
     }
 
     public static function daysLabel(array $weekdays): string
     {
-        $names = array_map(static fn (int $weekday): string => Weekday::from($weekday)->label(), $weekdays);
+        $names = [];
 
-        return match (count($names)) {
-            1 => $names[0],
-            2 => $names[0] . ' et ' . mb_strtolower($names[1]),
-            default => $names[0] . ' au ' . mb_strtolower($names[array_key_last($names)]),
-        };
+        foreach ($weekdays as $weekday) {
+            $names[] = Weekday::from($weekday)->label();
+        }
+
+        $first = $names[0];
+        $last = mb_strtolower($names[array_key_last($names)]);
+
+        if (count($names) === 1) {
+            return $first;
+        }
+
+        if (count($names) === 2) {
+            return sprintf(Translation::translate('%s et %s'), $first, $last);
+        }
+
+        return sprintf(Translation::translate('%s au %s'), $first, $last);
     }
 
     public static function isOpenAt(array $hours, DateTimeImmutable $at): bool
     {
         $time = $at->format('H:i');
 
-        foreach (self::byWeekday($hours)[(int) $at->format('N')] as [$opensAt, $closesAt]) {
+        foreach (self::byWeekday($hours)[Weekday::of($at)->value] as [$opensAt, $closesAt]) {
             if ($time >= $opensAt && $time < $closesAt) {
                 return true;
             }
@@ -93,21 +110,24 @@ class OpeningHoursHelper
         $now ??= new DateTimeImmutable();
         $time = $now->format('H:i');
 
-        foreach (self::byWeekday($hours)[(int) $now->format('N')] as [$opensAt, $closesAt]) {
+        foreach (self::byWeekday($hours)[Weekday::of($now)->value] as [$opensAt, $closesAt]) {
             if ($time >= $opensAt && $time < $closesAt) {
-                return 'Ouvert jusqu\'à ' . self::time($closesAt);
+                return OpeningState::OPEN_UNTIL->label(self::time($closesAt));
             }
 
             if ($time < $opensAt) {
-                return 'Ouvre à ' . self::time($opensAt);
+                return OpeningState::OPENS_AT->label(self::time($opensAt));
             }
         }
 
-        return 'Fermé';
+        return OpeningState::CLOSED->label();
     }
 
-    public static function bounds(array $hours, int $defaultStart = 8, int $defaultEnd = 20): array
-    {
+    public static function bounds(
+        array $hours,
+        int $defaultStart = self::DEFAULT_START_HOUR,
+        int $defaultEnd = self::DEFAULT_END_HOUR,
+    ): array {
         $start = null;
         $end = null;
 
@@ -129,5 +149,63 @@ class OpeningHoursHelper
     public static function minutes(string $time): int
     {
         return (int) substr($time, 0, 2) * 60 + (int) substr($time, 3, 2);
+    }
+
+    private static function range(mixed $hour): ?array
+    {
+        if (!$hour instanceof EstablishmentOpeningHour) {
+            return null;
+        }
+
+        $opensAt = $hour->getOpensAt();
+        $closesAt = $hour->getClosesAt();
+
+        if ($opensAt === null || $closesAt === null) {
+            return null;
+        }
+
+        return [$opensAt->format('H:i'), $closesAt->format('H:i')];
+    }
+
+    private static function groupBySchedule(array $hours): array
+    {
+        $groups = [];
+
+        foreach (self::byWeekday($hours) as $weekday => $ranges) {
+            $label = self::rangesLabel($ranges);
+            $last = array_key_last($groups);
+
+            if ($last !== null && $groups[$last]['time'] === $label) {
+                $groups[$last]['days'][] = $weekday;
+                continue;
+            }
+
+            $groups[] = [
+                'days' => [
+                    $weekday
+                ],
+                'time' => $label
+            ];
+        }
+
+        return $groups;
+    }
+
+    private static function mergeWrappingGroup(array $groups): array
+    {
+        $last = array_key_last($groups);
+
+        if (count($groups) <= 1 || $groups[0]['time'] !== $groups[$last]['time']) {
+            return $groups;
+        }
+
+        $first = array_shift($groups);
+        $last = array_key_last($groups);
+        $groups[$last]['days'] = [
+            ...$groups[$last]['days'],
+            ...$first['days']
+        ];
+
+        return $groups;
     }
 }

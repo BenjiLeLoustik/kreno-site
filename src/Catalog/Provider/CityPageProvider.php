@@ -7,7 +7,6 @@ use App\Entity\City;
 use App\Entity\Company\CompanyEstablishment;
 use App\Establishment\Dto\SlotSearchInput;
 use App\Establishment\Enum\EstablishmentStatus;
-use App\Establishment\Model\SlotMatch;
 use App\Establishment\Presenter\SlotPresenter;
 use App\Establishment\Service\SlotSearchService;
 use App\Repository\Company\CompanyEstablishmentRepository;
@@ -31,15 +30,66 @@ class CityPageProvider
     public function build(City $city, ?Category $category, ?string $district, ?DateTimeImmutable $now = null): array
     {
         $now ??= new DateTimeImmutable();
+        $matches = $this->search->search($this->searchInput($city, $category), $now)->getMatches();
+        $establishments = $this->establishments->findForAdmin(
+            $category,
+            $city,
+            [EstablishmentStatus::ONLINE],
+            null,
+            self::SHOPS,
+        );
+        $districts = $this->districts($establishments);
+        $district = $this->selectedDistrict($district, $districts);
+        $filtered = $this->inDistrict($matches, $district);
+        $free = $this->freeSlots($matches);
+
+        return [
+            'count' => count($filtered),
+            'slots' => $this->slotPresenter->cards(array_slice($filtered, 0, self::SLOTS), $now),
+            'district' => $district,
+            'districts' => $districts,
+            'shops' => $this->shops($establishments, $free),
+        ];
+    }
+
+    private function searchInput(City $city, ?Category $category): SlotSearchInput
+    {
         $input = new SlotSearchInput();
         $input->where = $city->getSlug();
         $input->what = $category?->getSlug();
         $input->limit = self::SCAN;
 
-        $matches = $this->search->search($input, $now)->getMatches();
-        $establishments = $this->establishments->findForAdmin($category, $city, [EstablishmentStatus::ONLINE], null, self::SHOPS);
-        $districts = $this->districts($establishments);
-        $district = $district !== null && in_array($district, $districts, true) ? $district : null;
+        return $input;
+    }
+
+    private function selectedDistrict(?string $district, array $districts): ?string
+    {
+        if ($district === null || !in_array($district, $districts, true)) {
+            return null;
+        }
+
+        return $district;
+    }
+
+    private function inDistrict(array $matches, ?string $district): array
+    {
+        if ($district === null) {
+            return $matches;
+        }
+
+        $filtered = [];
+
+        foreach ($matches as $match) {
+            if ($match->getSlot()->getEstablishment()?->getLocality() === $district) {
+                $filtered[] = $match;
+            }
+        }
+
+        return $filtered;
+    }
+
+    private function freeSlots(array $matches): array
+    {
         $free = [];
 
         foreach ($matches as $match) {
@@ -47,27 +97,44 @@ class CityPageProvider
             $free[$id] = ($free[$id] ?? 0) + 1;
         }
 
-        $filtered = $district === null ? $matches : array_values(array_filter($matches, static fn (SlotMatch $match): bool => $match->getSlot()->getEstablishment()?->getLocality() === $district));
+        return $free;
+    }
 
+    private function shops(array $establishments, array $free): array
+    {
+        $shops = [];
+
+        foreach ($establishments as $establishment) {
+            $shops[] = $this->shop($establishment, $free[$establishment->getId()] ?? 0);
+        }
+
+        return $shops;
+    }
+
+    private function shop(CompanyEstablishment $establishment, int $free): array
+    {
         return [
-            'count' => count($filtered),
-            'slots' => $this->slotPresenter->cards(array_slice($filtered, 0, self::SLOTS), $now),
-            'district' => $district,
-            'districts' => $districts,
-            'shops' => array_map(static fn (CompanyEstablishment $establishment): array => [
-                'name' => $establishment->getName(),
-                'locality' => $establishment->getLocality(),
-                'category' => $establishment->getCategory()?->getName(),
-                'city' => $establishment->getCity()?->getSlug(),
-                'slug' => $establishment->getSlug(),
-                'free' => $free[$establishment->getId()] ?? 0,
-            ], $establishments),
+            'name' => $establishment->getName(),
+            'locality' => $establishment->getLocality(),
+            'category' => $establishment->getCategory()?->getName(),
+            'city' => $establishment->getCity()?->getSlug(),
+            'slug' => $establishment->getSlug(),
+            'free' => $free,
         ];
     }
 
     private function districts(array $establishments): array
     {
-        $districts = array_values(array_unique(array_filter(array_map(static fn (CompanyEstablishment $establishment): ?string => $establishment->getLocality(), $establishments))));
+        $districts = [];
+
+        foreach ($establishments as $establishment) {
+            $locality = $establishment->getLocality();
+
+            if ($locality !== null && $locality !== '') {
+                $districts[$locality] = $locality;
+            }
+        }
+
         natcasesort($districts);
 
         return array_values($districts);

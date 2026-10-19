@@ -1,6 +1,8 @@
 {% extends 'layouts/front.html.twig' %}
 
-{% block title %}{{ title }} · Kréno{% endblock %}
+{% block title %}
+    {{ translate('{title} · Kréno', {title: title}) }}
+{% endblock %}
 
 {% block header_class %}site-header--compact{% endblock %}
 
@@ -13,9 +15,11 @@
     {% set distances = [0.5, 1, 2, 5, 10] %}
 
     <form action="{{ path('search_index') }}" method="get" class="search-page" data-search-form>
-        <aside class="search-filters" aria-label="Filtres">
+        <aside class="search-filters" aria-label="{{ translate('Filtres') }}">
             <fieldset class="search-filters__group">
-                <legend class="search-filters__legend">Catégorie</legend>
+                <legend class="search-filters__legend">
+                    {{ translate('Catégorie') }}
+                </legend>
                 {% for category in filters.categories %}
                     <label class="search-filters__check">
                         <input type="checkbox" name="categories[]" value="{{ category.slug }}" class="search-filters__checkbox" data-search-auto{{ category.selected ? ' checked' : '' }}>
@@ -25,56 +29,86 @@
             </fieldset>
 
             <fieldset class="search-filters__group">
-                <legend class="search-filters__legend">Quand ?</legend>
+                <legend class="search-filters__legend">
+                    {{ translate('Quand ?') }}
+                </legend>
                 <div class="search-filters__chips">
                     {% for window in filters.when %}
                         <label class="search-chip">
                             <input type="radio" name="when" value="{{ window.key }}" class="search-chip__input" data-search-auto{{ window.selected ? ' checked' : '' }}>
-                            <span class="search-chip__label">{{ window.label }}</span>
+                            <span class="search-chip__label">
+                                {{ window.label }}
+                            </span>
                         </label>
                     {% endfor %}
                 </div>
             </fieldset>
 
             <label for="search-distance" class="search-filters__group">
-                <span class="search-filters__legend">Distance</span>
+                <span class="search-filters__legend">
+                    {{ translate('Distance') }}
+                </span>
                 <select id="search-distance" name="distance" class="field-select" data-search-auto>
-                    <option value="">Toute la ville</option>
+                    <option value="">
+                        {{ translate('Toute la ville') }}
+                    </option>
                     {% for km in distances %}
-                        <option value="{{ km }}"{{ filters.distance == km ? ' selected' : '' }}>Moins de {{ km < 1 ? (km * 1000) ~ ' m' : km ~ ' km' }}</option>
+                        <option value="{{ km }}"{{ filters.distance == km ? ' selected' : '' }}>
+                            {% if km < 1 %}
+                                {{ translate('Moins de {meters} m', {meters: km * 1000}) }}
+                            {% else %}
+                                {{ translate('Moins de {km} km', {km: km}) }}
+                            {% endif %}
+                        </option>
                     {% endfor %}
                 </select>
             </label>
 
-            <button type="submit" class="btn btn--ink search-filters__apply" data-search-apply>Appliquer les filtres</button>
+            <button type="submit" class="btn btn--ink search-filters__apply" data-search-apply>
+                {{ translate('Appliquer les filtres') }}
+            </button>
         </aside>
 
         <div class="search-results">
             <div class="search-bar">
                 <label for="search-where" class="search-bar__field">
                     <i data-lucide="map-pin" class="search-bar__icon" aria-hidden="true"></i>
-                    <select id="search-where" name="where" class="search-bar__input" aria-label="Ville" data-search-city>
+                    <select id="search-where" name="where" class="search-bar__input" aria-label="{{ translate('Ville') }}" data-search-city>
                         {% for item in nav.cities %}
-                            <option value="{{ item.slug }}"{{ city and city.slug == item.slug ? ' selected' : '' }}>{{ item.name }}</option>
+                            <option value="{{ item.slug }}"{{ city and city.slug == item.slug ? ' selected' : '' }}>
+                                {{ item.name }}
+                            </option>
                         {% endfor %}
                     </select>
                 </label>
                 <button type="button" class="search-bar__locate{{ located ? ' search-bar__locate--active' : '' }}" data-search-locate hidden>
                     <i data-lucide="locate-fixed" class="search-bar__icon" aria-hidden="true"></i>
-                    <span data-search-locate-label>{{ located ? 'Autour de moi' : 'Me localiser' }}</span>
+                    <span data-search-locate-label>
+                        {% if located %}
+                            {{ translate('Autour de moi') }}
+                        {% else %}
+                            {{ translate('Me localiser') }}
+                        {% endif %}
+                    </span>
                 </button>
                 <input type="hidden" value="{{ located ? filters.latitude : '' }}" data-search-latitude{% if located %} name="latitude"{% endif %}>
                 <input type="hidden" value="{{ located ? filters.longitude : '' }}" data-search-longitude{% if located %} name="longitude"{% endif %}>
-                <button type="submit" class="btn btn--primary search-bar__submit">Rechercher</button>
+                <button type="submit" class="btn btn--primary search-bar__submit">
+                    {{ translate('Rechercher') }}
+                </button>
             </div>
 
             <div class="search-results__head">
-                <h1 class="search-results__title">{{ title }}</h1>
+                <h1 class="search-results__title">
+                    {{ title }}
+                </h1>
                 <label for="search-sort" class="search-results__sort">
-                    Trier par
+                    {{ translate('Trier par') }}
                     <select id="search-sort" name="sort" class="field-select field-select--inline" data-search-auto>
                         {% for sort in filters.sort %}
-                            <option value="{{ sort.key }}"{{ sort.selected ? ' selected' : '' }}>{{ sort.label }}</option>
+                            <option value="{{ sort.key }}"{{ sort.selected ? ' selected' : '' }}>
+                                {{ sort.label }}
+                            </option>
                         {% endfor %}
                     </select>
                 </label>
@@ -88,8 +122,15 @@
                 </div>
             {% else %}
                 <div class="search-results__empty">
-                    <b>Aucun créneau avec ces filtres</b>
-                    <span class="search-results__empty-text">Élargis la distance ou <a href="{{ path('account_alerts') }}">crée une alerte</a> pour être prévenu dès qu'un créneau se libère.</span>
+                    <b>
+                        {{ translate('Aucun créneau avec ces filtres') }}
+                    </b>
+                    <span class="search-results__empty-text">
+                        {{ translate("Élargis la distance ou {open}crée une alerte{close} pour être prévenu dès qu'un créneau se libère.", {
+                            open: '<a href="' ~ path('account_alerts')|e('html_attr') ~ '">',
+                            close: '</a>'
+                        })|raw }}
+                    </span>
                 </div>
             {% endif %}
         </div>

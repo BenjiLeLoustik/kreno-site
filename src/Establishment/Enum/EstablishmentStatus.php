@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Establishment\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum EstablishmentStatus: string
 {
     case DRAFT = 'draft';
@@ -15,11 +17,11 @@ enum EstablishmentStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::DRAFT => 'Brouillon',
-            self::PENDING_REVIEW => 'En vérification',
-            self::ONLINE => 'En ligne',
-            self::PAUSED => 'En pause',
-            self::REJECTED => 'Refusé',
+            self::DRAFT => Translation::translate('Brouillon'),
+            self::PENDING_REVIEW => Translation::translate('En vérification'),
+            self::ONLINE => Translation::translate('En ligne'),
+            self::PAUSED => Translation::translate('En pause'),
+            self::REJECTED => Translation::translate('Refusé'),
         };
     }
 }

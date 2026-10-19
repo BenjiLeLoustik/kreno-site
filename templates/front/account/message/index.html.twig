@@ -1,0 +1,59 @@
+{% extends 'layouts/account.html.twig' %}
+
+{% set account_section = 'messages' %}
+
+{% block title %}
+    {{ translate('Mes messages · {site}', {site: website().siteName}) }}
+{% endblock %}
+
+{% block account_content %}
+    <header class="account-head">
+        <h1 class="account-head__title">
+            {{ translate('Mes messages') }}
+        </h1>
+        <p class="account-head__subtitle">
+            {{ translate('Vos échanges avec l\'équipe {site}.', {site: website().siteName}) }}
+        </p>
+    </header>
+
+    {% if contacts is not empty %}
+        <div class="message-list">
+            {% for contact in contacts %}
+                <a href="{{ path('page_contact_show', { token: contact.token }) }}" class="message-list__item">
+                    <span class="message-list__text">
+                        <b class="message-list__title">
+                            {{ contact.topic }}
+                            {% if contact.reference %}
+                                · {{ contact.reference }}
+                            {% endif %}
+                        </b>
+                        {% if contact.excerpt %}
+                            <span class="message-list__excerpt">
+                                {{ contact.excerpt }}
+                            </span>
+                        {% endif %}
+                        <span class="message-list__date">
+                            {{ translate('{count, plural, one {# message} other {# messages}} · dernier le {date} à {time}', {
+                                count: contact.messagesCount,
+                                date: contact.lastMessageAt|date('d/m/Y'),
+                                time: contact.lastMessageAt|date('H:i')
+                            }) }}
+                        </span>
+                    </span>
+                    <span class="contact-status contact-status--{{ contact.status }}">
+                        {{ contact.customerStatus }}
+                    </span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="account-empty">
+            <p class="account-empty__text">
+                {{ translate('Aucun message pour le moment. Une question ? Écrivez-nous depuis la page d\'aide.') }}
+            </p>
+            <a href="{{ path('page_help') }}#contact" class="btn btn--primary btn--small">
+                {{ translate('Nous écrire') }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

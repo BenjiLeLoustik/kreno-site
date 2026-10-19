@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Billing\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum PaymentStatus: string
 {
     case PENDING = 'pending';
@@ -15,11 +17,11 @@ enum PaymentStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::PENDING => 'En cours',
-            self::REQUIRES_ACTION => 'Validation bancaire requise',
-            self::SUCCEEDED => 'Réussi',
-            self::FAILED => 'Refusé',
-            self::CANCELED => 'Annulé',
+            self::PENDING => Translation::translate('En cours'),
+            self::REQUIRES_ACTION => Translation::translate('Validation bancaire requise'),
+            self::SUCCEEDED => Translation::translate('Réussi'),
+            self::FAILED => Translation::translate('Refusé'),
+            self::CANCELED => Translation::translate('Annulé'),
         };
     }
 }

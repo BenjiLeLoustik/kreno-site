@@ -2,27 +2,44 @@
 
 {% set pro_section = 'agenda' %}
 
-{% block title %}Agenda · Espace pro{% endblock %}
+{% block title %}
+    {{ translate('Agenda · Espace pro') }}
+{% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
-            <h1 class="pro-title">Agenda</h1>
+            <h1 class="pro-title">
+                {{ translate('Agenda') }}
+            </h1>
             <div class="agenda-week">
-                <a href="{{ path('pro_agenda', { week: agenda.previousWeek }) }}" class="pro-button pro-button--small" aria-label="Semaine précédente"><i data-lucide="chevron-left" class="pro-nav__icon"></i></a>
-                <span class="agenda-week__label">{{ agenda.weekLabel }}</span>
-                <a href="{{ path('pro_agenda', { week: agenda.nextWeek }) }}" class="pro-button pro-button--small" aria-label="Semaine suivante"><i data-lucide="chevron-right" class="pro-nav__icon"></i></a>
+                <a href="{{ path('pro_agenda', { week: agenda.previousWeek }) }}" class="pro-button pro-button--small" aria-label="{{ translate('Semaine précédente') }}">
+                    <i data-lucide="chevron-left" class="pro-nav__icon"></i>
+                </a>
+                <span class="agenda-week__label">
+                    {{ agenda.weekLabel }}
+                </span>
+                <a href="{{ path('pro_agenda', { week: agenda.nextWeek }) }}" class="pro-button pro-button--small" aria-label="{{ translate('Semaine suivante') }}">
+                    <i data-lucide="chevron-right" class="pro-nav__icon"></i>
+                </a>
                 {% if agenda.week != agenda.currentWeek %}
-                    <a href="{{ path('pro_agenda') }}" class="pro-button pro-button--small">Cette semaine</a>
+                    <a href="{{ path('pro_agenda') }}" class="pro-button pro-button--small">
+                        {{ translate('Cette semaine') }}
+                    </a>
                 {% endif %}
             </div>
         </div>
         <div class="agenda-legend">
             {% for item in agenda.legend %}
-                <span class="agenda-legend__item"><span class="agenda-legend__dot agenda-legend__dot--{{ item.kind }}"></span>{{ item.label }}</span>
+                <span class="agenda-legend__item">
+                    <span class="agenda-legend__dot agenda-legend__dot--{{ item.kind }}"></span>
+                    {{ item.label }}
+                </span>
             {% endfor %}
             {% if canPublish %}
-                <a href="{{ path('pro_slot_new') }}" class="pro-button pro-button--primary">Publier un créneau</a>
+                <a href="{{ path('pro_slot_new') }}" class="pro-button pro-button--primary">
+                    {{ translate('Publier un créneau') }}
+                </a>
             {% endif %}
         </div>
     </div>
@@ -32,13 +49,20 @@
             <div class="agenda__corner"></div>
             {% for day in agenda.days %}
                 <div class="agenda__day{{ day.today ? ' agenda__day--today' : '' }}{{ day.closed ? ' agenda__day--closed' : '' }}">
-                    <b>{{ day.name }}</b> <span>{{ day.date }}</span>
+                    <b>
+                        {{ day.name }}
+                    </b>
+                    <span>
+                        {{ day.date }}
+                    </span>
                 </div>
             {% endfor %}
 
             <div class="agenda__hours">
                 {% for hour in agenda.hours %}
-                    <span class="agenda__hour" style="--top: {{ hour.top }};">{{ hour.label }}</span>
+                    <span class="agenda__hour" style="--top: {{ hour.top }};">
+                        {{ hour.label }}
+                    </span>
                 {% endfor %}
             </div>
 
@@ -49,12 +73,17 @@
                             ? path('pro_booking_show', { id: slot.bookingId })
                             : (slot.action == 'republish' and canPublish ? path('pro_slot_new', { from: slot.id, day: day.iso }) : path('pro_slots', { filter: slot.kind == 'online' ? 'online' : 'all' })) %}
                         <a href="{{ url }}" class="agenda__slot agenda__slot--{{ slot.kind }}" style="--top: {{ slot.top }}; --height: {{ slot.height }};" title="{{ slot.time }} · {{ slot.what }} · {{ slot.price }} · {{ slot.statusText }} — {{ slot.cta }}">
-                            <b>{{ slot.time }}</b> {{ slot.what }}
+                            <b>
+                                {{ slot.time }}
+                            </b>
+                            {{ slot.what }}
                         </a>
                     {% endfor %}
                 </div>
             {% endfor %}
         </div>
     </div>
-    <p class="pro-subtitle">Cliquez sur un créneau pour voir la réservation, le gérer ou le republier.</p>
+    <p class="pro-subtitle">
+        {{ translate('Cliquez sur un créneau pour voir la réservation, le gérer ou le republier.') }}
+    </p>
 {% endblock %}

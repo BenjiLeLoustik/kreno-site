@@ -1,0 +1,147 @@
+{% extends 'layouts/pro.html.twig' %}
+
+{% set pro_section = 'establishment' %}
+{% set ids = services|map(service => service.id) %}
+
+{% macro move(ids, index, step, label, icon) %}
+    {% set target = index + step %}
+    {% if target >= 0 and target < ids|length %}
+        {% set reordered = [] %}
+        {% for position, id in ids %}
+            {% set reordered = reordered|merge([position == index ? ids[target] : (position == target ? ids[index] : id)]) %}
+        {% endfor %}
+        <form method="post" action="{{ path('pro_service_reorder') }}">
+            {{ csrf_field('pro')|raw }}
+            {% for id in reordered %}
+                <input type="hidden" name="ids[]" value="{{ id }}">
+            {% endfor %}
+            <button type="submit" class="pro-button pro-button--small" aria-label="{{ label }}">
+                <i data-lucide="{{ icon }}" class="pro-nav__icon"></i>
+            </button>
+        </form>
+    {% endif %}
+{% endmacro %}
+
+{% block title %}
+    {{ translate('Prestations · Espace pro') }}
+{% endblock %}
+
+{% block content %}
+    {% import _self as ui %}
+
+    <div class="pro-head">
+        <div class="pro-head__text">
+            <a href="{{ path('pro_establishment') }}" class="pro-back">
+                {{ translate('← Mon établissement') }}
+            </a>
+            <h1 class="pro-title">
+                {{ translate('Prestations') }}
+            </h1>
+            <span class="pro-subtitle">
+                {{ translate('Ce que vous proposez, avec la durée et le prix habituel. La remise s\'applique sur ce prix.') }}
+            </span>
+        </div>
+    </div>
+
+    <section class="pro-card">
+        {% for service in services %}
+            <div class="service-row{{ service.active ? '' : ' service-row--inactive' }}">
+                <span class="service-row__main">
+                    <b>
+                        {{ service.name }}
+                    </b>
+                    <span class="pro-row__meta">
+                        {{ service.durationLabel }}
+                        {% if service.discountLabel %}
+                            {{ translate('· remise auto {discountLabel}', {discoutLabel: service.discountLabel}) }}
+                        {% endif %}
+                        {% if service.description %}
+                            · {{ service.description }}
+                        {% endif %}
+                    </span>
+                </span>
+                <span class="pro-price service-row__price">
+                    {{ service.priceLabel }}
+                </span>
+                {% if not service.active %}
+                    <span class="pro-badge">
+                        {{ translate('Désactivée') }}
+                    </span>
+                {% endif %}
+                {% if canManage %}
+                    <span class="service-row__actions">
+                        {{ ui.move(
+                            ids,
+                            loop.index0,
+                            -1,
+                            translate('Monter {serviceName}', {serviceName: service.name}),
+                            'arrow-up'
+                        ) }}
+
+                        {{ ui.move(
+                            ids,
+                            loop.index0,
+                            1,
+                            translate('Descendre {serviceName}', {serviceName: service.name}),
+                            'arrow-down'
+                        ) }}
+
+                        <form method="post" action="{{ path('pro_service_toggle', { id: service.id }) }}">
+                            {{ csrf_field('pro')|raw }}
+                            <button type="submit" class="pro-button pro-button--small">
+                                {% if service.active %}
+                                    {{ translate('Désactiver') }}
+                                {% else %}
+                                    {{ translate('Réactiver') }}
+                                {% endif %}
+                            </button>
+                        </form>
+                        <form method="post" action="{{ path('pro_service_delete', { id: service.id }) }}">
+                            {{ csrf_field('pro')|raw }}
+                            <button type="submit" class="pro-button pro-button--small pro-button--danger" data-pro-confirm="{{ translate('Supprimer « {serviceName} » ? Si elle a déjà des créneaux, elle sera seulement désactivée.', {serviceName: service.name }) }}">
+                                {{ translate('Supprimer') }}
+                            </button>
+                        </form>
+                    </span>
+                    <details class="service-row__edit">
+                        <summary class="service-row__summary">
+                            {{ translate('Modifier') }}
+                        </summary>
+                        <form method="post" action="{{ path('pro_service_update', { id: service.id }) }}" class="pro-form service-row__form">
+                            {{ csrf_field('pro')|raw }}
+                            {% include 'pro/service/_fields.html.twig' with {
+                                service: service
+                            } %}
+                            <div>
+                                <button type="submit" class="pro-button pro-button--primary">
+                                    {{ translate('Enregistrer') }}
+                                </button>
+                            </div>
+                        </form>
+                    </details>
+                {% endif %}
+            </div>
+        {% else %}
+            <p class="pro-subtitle">
+                {{ translate('Aucune prestation pour le moment.') }}
+            </p>
+        {% endfor %}
+    </section>
+
+    {% if canManage %}
+        <section class="pro-card">
+            <h2 class="pro-card__title">
+                {{ translate('Ajouter une prestation') }}
+            </h2>
+            <form method="post" action="{{ path('pro_service_create') }}" class="pro-form">
+                {{ csrf_field('pro')|raw }}
+                {% include 'pro/service/_fields.html.twig' %}
+                <div>
+                    <button type="submit" class="pro-button pro-button--primary">
+                        {{ translate('Ajouter') }}
+                    </button>
+                </div>
+            </form>
+        </section>
+    {% endif %}
+{% endblock %}

@@ -2,13 +2,26 @@
 
 namespace App\Company\Service;
 
-use App\Company\Enum\CompanyStatus;
 use App\Company\Dto\EstablishmentInput;
+use App\Company\Enum\CompanyStatus;
+use App\Company\Enum\EstablishmentRequirement;
 use App\Company\Event\EstablishmentSubmittedEvent;
+use App\Company\Exception\CityLockedException;
+use App\Company\Exception\CityUnavailableException;
+use App\Company\Exception\CompanyMemberNotFoundException;
+use App\Company\Exception\DiscountOutOfRangeException;
+use App\Company\Exception\EstablishmentCityRequiredException;
+use App\Company\Exception\EstablishmentLimitReachedException;
+use App\Company\Exception\EstablishmentNameRequiredException;
+use App\Company\Exception\MissingEstablishmentFieldException;
+use App\Company\Exception\SiretLockedException;
+use App\Company\Exception\UnknownCategoryException;
 use App\Company\Helper\SiretHelper;
 use App\Entity\Company\Company;
 use App\Entity\Company\CompanyEstablishment;
+use App\Entity\Company\CompanyMember;
 use App\Entity\Establishment\EstablishmentMember;
+use App\Entity\Website\WebsitePlan;
 use App\Establishment\Enum\EstablishmentRole;
 use App\Establishment\Enum\EstablishmentStatus;
 use App\Repository\CategoryRepository;
@@ -16,13 +29,28 @@ use App\Repository\CityRepository;
 use App\Repository\Company\CompanyEstablishmentRepository;
 use App\Repository\Company\CompanyMemberRepository;
 use App\Repository\Establishment\EstablishmentMemberRepository;
-use App\Shared\Exception\BusinessRuleException;
+use App\Shared\Helper\CoordinateHelper;
 use App\Website\Provider\WebsiteProvider;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class EstablishmentRegistrationService
 {
+    public const TEXT_FIELDS = [
+        'addressLine1',
+        'addressLine2',
+        'postalCode',
+        'locality',
+        'phone',
+        'website',
+        'description',
+    ];
+
+    public const SUBMITTABLE_STATUSES = [
+        EstablishmentStatus::DRAFT,
+        EstablishmentStatus::REJECTED
+    ];
+
     public function __construct(
         private OrmManagerInterface $orm,
         private CityRepository $cities,
@@ -38,26 +66,14 @@ class EstablishmentRegistrationService
 
     public function create(Company $company, EstablishmentInput $input): CompanyEstablishment
     {
-        if ($input->name === null || trim($input->name) === '') {
-            throw new BusinessRuleException('Le nom de l\'établissement est obligatoire.');
-        }
+        $name = $this->text($input->name) ?? throw new EstablishmentNameRequiredException();
+        $this->assertWithinPlan($company);
 
-        $plan = null;
-
-        foreach ($company->getSubscriptions() as $subscription) {
-            $plan = $subscription->getPlan();
-            break;
-        }
-
-        if ($plan !== null && $plan->getMaxEstablishments() !== null && $company->getEstablishments()->count() >= $plan->getMaxEstablishments()) {
-            throw new BusinessRuleException('Votre formule {plan} est limitée à {max} établissement(s). Passez à une formule supérieure pour en ajouter.', ['plan' => $plan->getName(), 'max' => $plan->getMaxEstablishments()]);
-        }
-
-        $establishment = (new CompanyEstablishment())->setName(trim($input->name))->setStatus(EstablishmentStatus::DRAFT);
+        $establishment = (new CompanyEstablishment())->setName($name)->setStatus(EstablishmentStatus::DRAFT);
         $this->apply($establishment, $input);
 
         if ($establishment->getCity() === null) {
-            throw new BusinessRuleException('Choisissez la ville de l\'établissement.');
+            throw new EstablishmentCityRequiredException();
         }
 
         $company->addEstablishment($establishment);
@@ -82,14 +98,18 @@ class EstablishmentRegistrationService
 
     public function update(CompanyEstablishment $establishment, EstablishmentInput $input): CompanyEstablishment
     {
-        if ($input->name !== null && trim($input->name) !== '') {
-            $establishment->setName(trim($input->name));
+        $name = $this->text($input->name);
+
+        if ($name !== null) {
+            $establishment->setName($name);
         }
 
         $this->apply($establishment, $input);
 
-        if ($input->managerMemberId !== null && $establishment->getCompany() !== null) {
-            $this->assignManager($establishment->getCompany(), $establishment, $input->managerMemberId);
+        $company = $establishment->getCompany();
+
+        if ($input->managerMemberId !== null && $company !== null) {
+            $this->assignManager($company, $establishment, $input->managerMemberId);
         }
 
         $this->orm->flush();
@@ -99,13 +119,13 @@ class EstablishmentRegistrationService
 
     public function submit(CompanyEstablishment $establishment): CompanyEstablishment
     {
-        if (!in_array($establishment->getStatus(), [EstablishmentStatus::DRAFT, EstablishmentStatus::REJECTED], true)) {
+        if (!in_array($establishment->getStatus(), self::SUBMITTABLE_STATUSES, true)) {
             return $establishment;
         }
 
-        foreach (['getSiret' => 'le SIRET', 'getCity' => 'la ville', 'getCategory' => 'la catégorie', 'getAddressLine1' => 'l\'adresse'] as $getter => $label) {
-            if ($establishment->{$getter}() === null) {
-                throw new BusinessRuleException('Il manque {field} de l\'établissement.', ['field' => $label]);
+        foreach (EstablishmentRequirement::cases() as $requirement) {
+            if ($requirement->isMissing($establishment)) {
+                throw new MissingEstablishmentFieldException($requirement->label());
             }
         }
 
@@ -117,69 +137,128 @@ class EstablishmentRegistrationService
         return $establishment;
     }
 
+    private function assertWithinPlan(Company $company): void
+    {
+        $plan = $this->currentPlan($company);
+        $max = $plan?->getMaxEstablishments();
+
+        if ($max === null || $company->getEstablishments()->count() < $max) {
+            return;
+        }
+
+        throw new EstablishmentLimitReachedException((string) $plan->getName(), $max);
+    }
+
+    private function currentPlan(Company $company): ?WebsitePlan
+    {
+        foreach ($company->getSubscriptions() as $subscription) {
+            return $subscription->getPlan();
+        }
+
+        return null;
+    }
+
     private function apply(CompanyEstablishment $establishment, EstablishmentInput $input): void
     {
-        if ($input->siret !== null && SiretHelper::normalize($input->siret) !== $establishment->getSiret()) {
-            if ($establishment->getStatus() === EstablishmentStatus::ONLINE) {
-                throw new BusinessRuleException('Le SIRET d\'un établissement en ligne ne peut pas être modifié. Contactez pro@kreno.fr.');
-            }
-
-            $registry = $this->signup->lookupSiret($input->siret);
-            $establishment->setSiret($registry->siret)->setApeCode($registry->apeCode);
-        }
-
-        if ($input->citySlug !== null) {
-            $city = $this->cities->findOneBySlug($input->citySlug);
-
-            if ($city === null || !in_array($city, $this->cities->findAvailableForPros(), true)) {
-                throw new BusinessRuleException('Kréno n\'est pas encore disponible dans cette ville.');
-            }
-
-            if ($establishment->getStatus() === EstablishmentStatus::ONLINE && $establishment->getCity() !== $city) {
-                throw new BusinessRuleException('Un établissement en ligne ne peut pas changer de ville.');
-            }
-
-            $establishment->setCity($city);
-        }
-
-        if ($input->categorySlug !== null) {
-            $establishment->setCategory($this->categories->findOneVisibleBySlug($input->categorySlug) ?? throw new BusinessRuleException('Catégorie inconnue.'));
-        }
-
-        foreach (['addressLine1', 'addressLine2', 'postalCode', 'locality', 'phone', 'website', 'description'] as $field) {
-            if ($input->{$field} !== null) {
-                $establishment->{'set' . ucfirst($field)}(trim($input->{$field}) ?: null);
-            }
-        }
+        $this->applySiret($establishment, $input->siret);
+        $this->applyCity($establishment, $input->citySlug);
+        $this->applyCategory($establishment, $input->categorySlug);
+        $this->applyTexts($establishment, $input);
+        $this->applyCoordinates($establishment, $input->latitude, $input->longitude);
+        $this->applyDiscount($establishment, $input->defaultDiscount);
 
         if ($input->email !== null) {
             $establishment->setEmail(mb_strtolower(trim($input->email)) ?: null);
         }
+    }
 
-        if ($input->latitude !== null && $input->longitude !== null) {
-            $establishment->setLatitude(number_format($input->latitude, 7, '.', ''))->setLongitude(number_format($input->longitude, 7, '.', ''));
+    private function applySiret(CompanyEstablishment $establishment, ?string $siret): void
+    {
+        if ($siret === null || SiretHelper::normalize($siret) === $establishment->getSiret()) {
+            return;
         }
 
-        if ($input->defaultDiscount !== null) {
-            $rule = $this->website->getRule();
+        if ($establishment->getStatus() === EstablishmentStatus::ONLINE) {
+            throw new SiretLockedException();
+        }
 
-            if ($input->defaultDiscount < $rule->getMinDiscount() || $input->defaultDiscount > $rule->getMaxDiscount()) {
-                throw new BusinessRuleException('La remise doit être comprise entre {min} et {max} %.', ['min' => $rule->getMinDiscount(), 'max' => $rule->getMaxDiscount()]);
+        $registry = $this->signup->lookupSiret($siret);
+        $establishment->setSiret($registry->siret)->setApeCode($registry->apeCode);
+    }
+
+    private function applyCity(CompanyEstablishment $establishment, ?string $slug): void
+    {
+        if ($slug === null) {
+            return;
+        }
+
+        $city = $this->cities->findOneBySlug($slug);
+
+        if ($city === null || !in_array($city, $this->cities->findAvailableForPros(), true)) {
+            throw new CityUnavailableException();
+        }
+
+        if ($establishment->getStatus() === EstablishmentStatus::ONLINE && $establishment->getCity() !== $city) {
+            throw new CityLockedException();
+        }
+
+        $establishment->setCity($city);
+    }
+
+    private function applyCategory(CompanyEstablishment $establishment, ?string $slug): void
+    {
+        if ($slug === null) {
+            return;
+        }
+
+        $category = $this->categories->findOneVisibleBySlug($slug) ?? throw new UnknownCategoryException();
+        $establishment->setCategory($category);
+    }
+
+    private function applyTexts(CompanyEstablishment $establishment, EstablishmentInput $input): void
+    {
+        foreach (self::TEXT_FIELDS as $field) {
+            if ($input->{$field} !== null) {
+                $establishment->{'set' . ucfirst($field)}(trim($input->{$field}) ?: null);
             }
-
-            $establishment->setDefaultDiscount($input->defaultDiscount);
         }
+    }
+
+    private function applyCoordinates(CompanyEstablishment $establishment, ?float $latitude, ?float $longitude): void
+    {
+        if ($latitude === null || $longitude === null) {
+            return;
+        }
+
+        $establishment
+            ->setLatitude(CoordinateHelper::format($latitude))
+            ->setLongitude(CoordinateHelper::format($longitude));
+    }
+
+    private function applyDiscount(CompanyEstablishment $establishment, ?int $discount): void
+    {
+        if ($discount === null) {
+            return;
+        }
+
+        $rule = $this->website->getRule();
+
+        if ($discount < $rule->getMinDiscount() || $discount > $rule->getMaxDiscount()) {
+            throw new DiscountOutOfRangeException($rule->getMinDiscount(), $rule->getMaxDiscount());
+        }
+
+        $establishment->setDefaultDiscount($discount);
     }
 
     private function assignManager(Company $company, CompanyEstablishment $establishment, int $memberId): void
     {
-        $member = $this->members->findOneInCompany($company, $memberId) ?? throw new BusinessRuleException('Ce membre ne fait pas partie de l\'entreprise.');
+        $member = $this->members->findOneInCompany($company, $memberId) ?? throw new CompanyMemberNotFoundException();
 
         if ($member->getRole() !== null) {
             return;
         }
 
-        $role = $establishment->getId() !== null ? $this->establishmentMembers->findOneByEstablishmentAndMember($establishment, $member) : null;
+        $role = $this->findEstablishmentRole($establishment, $member);
 
         if ($role === null) {
             $role = new EstablishmentMember();
@@ -189,5 +268,27 @@ class EstablishmentRegistrationService
         }
 
         $role->setRole(EstablishmentRole::MANAGER)->setCanManageBookings(true);
+    }
+
+    private function findEstablishmentRole(
+        CompanyEstablishment $establishment,
+        CompanyMember $member,
+    ): ?EstablishmentMember {
+        if ($establishment->getId() === null) {
+            return null;
+        }
+
+        return $this->establishmentMembers->findOneByEstablishmentAndMember($establishment, $member);
+    }
+
+    private function text(?string $value): ?string
+    {
+        $value = trim((string) $value);
+
+        if ($value === '') {
+            return null;
+        }
+
+        return $value;
     }
 }

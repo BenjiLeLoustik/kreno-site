@@ -8,6 +8,7 @@ use App\Entity\Company\Company;
 use App\Repository\BookingRepository;
 use App\Repository\Company\CompanyInvoiceRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
+use App\Shared\Helper\Translation;
 use DateTimeImmutable;
 
 class CommissionBillingService
@@ -49,8 +50,12 @@ class CommissionBillingService
         return $count;
     }
 
-    private function invoiceCompany(Company $company, array $groups, DateTimeImmutable $from, DateTimeImmutable $to): bool
-    {
+    private function invoiceCompany(
+        Company $company,
+        array $groups,
+        DateTimeImmutable $from,
+        DateTimeImmutable $to
+    ): bool {
         if ($this->invoices->commissionInvoiceExists($company, $from)) {
             return false;
         }
@@ -66,7 +71,7 @@ class CommissionBillingService
 
             $establishment = $first->getSlot()?->getEstablishment();
             $lines[] = [
-                'label' => sprintf('Créneaux réservés · %s', $establishment?->getName()),
+                'label' => sprintf(Translation::translate('Créneaux réservés · %s'), $establishment?->getName()),
                 'quantity' => count($bookings),
                 'unitPrice' => $first->getFee(),
                 'establishment' => $establishment,

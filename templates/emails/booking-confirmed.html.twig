@@ -4,24 +4,60 @@
 
 {% block mailContent %}
 
-    <p>C’est réservé ! Voici ton rendez-vous :</p>
+    <p>
+        {{ translate('C’est réservé ! Voici ton rendez-vous :', domain: 'email') }}
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ booking.service }} ({{ booking.duration }})</li>
-        <li style="{{ styles.item }}">{{ booking.day }} à {{ booking.time }}</li>
-        <li style="{{ styles.item }}">{{ booking.establishment.name }}, {{ booking.establishment.address }}</li>
-        <li style="{{ styles.item }}">{{ booking.price }} au lieu de {{ booking.originalPrice }} (tu économises {{ booking.saved }})</li>
-        <li style="{{ styles.item }}">Référence : {{ booking.reference }}</li>
+        <li style="{{ styles.item }}">
+            {{ booking.service }} ({{ booking.duration }})
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('{day} à {time}', {day: booking.day, time: booking.time}, domain: 'email') }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.establishment.name }}, {{ booking.establishment.address }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('{price} au lieu de {originalPrice} (tu économises {saved})', {
+                price: booking.price,
+                originalPrice: booking.originalPrice,
+                saved: booking.saved
+            }, domain: 'email') }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('Référence :', domain: 'email') }} {{ booking.reference }}
+        </li>
     </ul>
     {% if booking.note %}
-        <p>Ta note pour l’établissement : « {{ booking.note }} »</p>
+        <p>
+            {{ translate('Ta note pour l\'établissement :', domain: 'email') }} « {{ booking.note }} »
+        </p>
     {% endif %}
-    <p>Tu règles directement sur place.</p>
+    <p>
+        {{ translate('Tu règles directement sur place.', domain: 'email') }}
+    </p>
     {% if freeCancellationUntil %}
-        <p>Annulation gratuite jusqu’au {{ freeCancellationUntil }}.</p>
+        <p>
+            {{ translate('Annulation gratuit jusqu\'au {cancellationUntil}.', {
+                cancellationUntil: freeCancellationUntil
+            }, domain: 'email') }}
+        </p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ booking.url }}" style="{{ styles.button }}">Voir ma réservation</a><a href="{{ booking.calendarUrl }}" style="{{ styles.buttonSecondary }}">Ajouter à mon agenda</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ booking.url }}" style="{{ styles.button }}">
+            {{ translate('Voir ma réservation', domain: 'email') }}
+        </a>
+        <a href="{{ booking.calendarUrl }}" style="{{ styles.buttonSecondary }}">
+            {{ translate('Ajouter à mon agenda', domain: 'email') }}
+        </a>
+    </p>
     {% if booking.establishment.phone %}
-        <p>Un imprévu ? Tu peux joindre l’établissement au {{ booking.establishment.phone }}.</p>
+        <p>
+            Un imprévu ? Tu peux joindre l’établissement au {{ booking.establishment.phone }}.
+            {{ translate('Un imprévu ? Tu peux joindre l\'établissement au {phone}', {
+                phone: booking.establishment.phone
+            }, domain: 'email') }}
+        </p>
     {% endif %}
 
 {% endblock %}

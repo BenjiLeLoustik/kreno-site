@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum CompanyKind: string
 {
     case SOLO = 'solo';
@@ -12,8 +14,8 @@ enum CompanyKind: string
     public function label(): string
     {
         return match ($this) {
-            self::SOLO => 'Indépendant',
-            self::TEAM => 'Avec une équipe',
+            self::SOLO => Translation::translate('Indépendant'),
+            self::TEAM => Translation::translate('Avec une équipe'),
         };
     }
 }

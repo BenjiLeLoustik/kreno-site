@@ -1,38 +1,82 @@
 {% extends 'layouts/auth.html.twig' %}
 
-{% block title %}Créer un compte · {{ website().siteName }}{% endblock %}
+{% block title %}
+    {{ translate('Créer un compte · {site}', {site: website().siteName}) }}
+{% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('js/pages/security/password.js') }}" defer></script>
 {% endblock %}
 
-{% block heading %}Créer un compte{% endblock %}
+{% block heading %}
+    {{ translate('Créer un compte') }}
+{% endblock %}
 
-{% block lead %}Gratuit, en moins d'une minute. Tu pourras réserver et suivre les salons qui t'intéressent.{% endblock %}
+{% block lead %}
+    {{ translate('Gratuit, en moins d\'une minute. Tu pourras réserver et suivre les salons qui t\'intéressent.') }}
+{% endblock %}
 
 {% block content %}
     <form method="post" action="{{ path('app_signup_submit') }}" class="form">
         {{ csrf_field('account')|raw }}
         <div class="auth-row">
-            <label for="signup-first" class="form-field">Prénom<input id="signup-first" type="text" name="firstName" value="{{ form.firstName }}" required maxlength="80" autocomplete="given-name" class="form-input"></label>
+            <label for="signup-first" class="form-field">
+                {{ translate('Prénom') }}
+                <input id="signup-first" type="text" name="firstName" value="{{ form.firstName }}" required maxlength="80" autocomplete="given-name" class="form-input">
+            </label>
             <label for="signup-last" class="form-field">
-                <span class="form-field__head">Nom<span class="auth-optional">facultatif</span></span>
+                <span class="form-field__head">
+                    {{ translate('Nom') }}
+                    <span class="auth-optional">
+                        {{ translate('facultatif') }}
+                    </span>
+                </span>
                 <input id="signup-last" type="text" name="lastName" value="{{ form.lastName }}" maxlength="80" autocomplete="family-name" class="form-input">
             </label>
         </div>
-        <label for="signup-email" class="form-field">Adresse e-mail<input id="signup-email" type="email" name="email" value="{{ form.email }}" required maxlength="180" autocomplete="email" placeholder="toi@exemple.fr" class="form-input"></label>
-        <label for="signup-phone" class="form-field">
-            <span class="form-field__head">Téléphone<span class="auth-optional">transmis au salon quand tu réserves</span></span>
-            <input id="signup-phone" type="tel" name="phone" value="{{ form.phone }}" autocomplete="tel" placeholder="06 00 00 00 00" class="form-input">
+        <label for="signup-email" class="form-field">
+            {{ translate('Adresse e-mail') }}
+            <input id="signup-email" type="email" name="email" value="{{ form.email }}" required maxlength="180" autocomplete="email" placeholder="{{ translate('toi@exemple.fr') }}" class="form-input">
         </label>
-        {% include 'front/security/_password_field.html.twig' with { id: 'signup-password', name: 'password', label: 'Mot de passe' } %}
+        <label for="signup-phone" class="form-field">
+            <span class="form-field__head">
+                {{ translate('Téléphone') }}
+                <span class="auth-optional">
+                    {{ translate('transmis au salon quand tu réserves') }}
+                </span>
+            </span>
+            <input id="signup-phone" type="tel" name="phone" value="{{ form.phone }}" autocomplete="tel" placeholder="{{ translate('06 00 00 00 00') }}" class="form-input">
+        </label>
+        {% include 'front/security/_password_field.html.twig' with {
+            id: 'signup-password',
+            name: 'password',
+            label: translate('Mot de passe')
+        } %}
         <label class="form-check auth-terms">
             <input type="hidden" name="acceptTerms" value="0">
             <input type="checkbox" name="acceptTerms" value="1" required class="form-check__input">
-            <span>J'accepte les {% if route_exists('page_legal') %}<a href="{{ path('page_legal', { document: 'cgu' }) }}" target="_blank" rel="noopener">conditions d'utilisation</a> et la <a href="{{ path('page_legal', { document: 'privacy' }) }}" target="_blank" rel="noopener">politique de confidentialité</a>{% else %}conditions d'utilisation{% endif %}.</span>
+            <span>
+                {% if route_exists('page_legal') %}
+                    {{ translate("J'accepte les {termsOpen}conditions d'utilisation{termsClose} et la {privacyOpen}politique de confidentialité{privacyClose}.", {
+                        termsOpen: '<a href="' ~ path('page_legal', { document: 'cgu' })|e('html_attr') ~ '" target="_blank" rel="noopener">',
+                        termsClose: '</a>',
+                        privacyOpen: '<a href="' ~ path('page_legal', { document: 'privacy' })|e('html_attr') ~ '" target="_blank" rel="noopener">',
+                        privacyClose: '</a>'
+                    })|raw }}
+                {% else %}
+                    {{ translate("J'accepte les conditions d'utilisation.") }}
+                {% endif %}
+            </span>
         </label>
-        <button type="submit" class="btn btn--primary form-submit">Créer mon compte</button>
+        <button type="submit" class="btn btn--primary form-submit">
+            {{ translate('Créer mon compte') }}
+        </button>
     </form>
 
-    <span class="login-main__signup">Déjà un compte ? <a href="{{ path('app_login') }}" class="login-main__signup-link">Se connecter</a></span>
+    <span class="login-main__signup">
+        {{ translate('Déjà un compte ?') }}
+        <a href="{{ path('app_login') }}" class="login-main__signup-link">
+            {{ translate('Se connecter') }}
+        </a>
+    </span>
 {% endblock %}

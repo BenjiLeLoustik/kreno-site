@@ -1,0 +1,89 @@
+{% extends "emails/layouts/_base.html.twig" %}
+
+{% set mailType = 'moderation' %}
+
+{% block preheader %}
+    {{ topic }} · {{ email }}
+{% endblock %}
+
+{% block mailContent %}
+
+    {% if followUp|default(false) %}
+        <p>
+            {{ translate('Le client a répondu à sa demande le {sentAt}', {sentAt: sentAt}, domain: 'email') }}
+        </p>
+    {% else %}
+        <p>
+            {{ translate('Nouveau message reçu depuis le formulaire d\'aide le {sentAt}', {sentAt: sentAt}, domain: 'email') }}
+        </p>
+    {% endif %}
+    <ul style="{{ styles.list }}">
+        <li style="{{ styles.item }}">
+            {{ translate('Sujet :', domain: 'email') }}
+            <strong style="{{ styles.strong }}">
+                {{ topic }}
+            </strong>
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('E-mail :', domain: 'email') }}
+            <a href="mailto:{{ email }}" style="{{ styles.link }}">
+                {{ email }}
+            </a>
+        </li>
+        {% if user %}
+            <li style="{{ styles.item }}">
+                {{ translate('Compte :', domain: 'email') }} {{ user.name }} (#{{ user.id }})
+                {% if user.email != email %}
+                    · {{ user.email }}
+                {% endif %}
+            </li>
+        {% else %}
+            <li style="{{ styles.item }}">
+                {{ translate('Compte : visiteur non connecté', domain: 'email') }}
+            </li>
+        {% endif %}
+        {% if reference %}
+            <li style="{{ styles.item }}">
+                {{ translate('Réservation :', domain: 'email') }}
+                <strong style="{{ styles.strong }}">
+                    {{ reference }}
+                </strong>
+                {% if not booking %}
+                    {{ translate('(introuvable)', domain: 'email') }}
+                {% endif %}
+            </li>
+        {% endif %}
+        {% if booking %}
+            <li style="{{ styles.item }}">
+                {{ translate('Établissement :', domain: 'email') }}
+                {{ booking.establishment ?: '-' }}
+                {{ translate('· statut :', domain: 'email') }} {{ booking.status }}
+            </li>
+            {% if booking.customerEmail and booking.customerEmail != email %}
+                <li style="{{ styles.item }}">
+                    {{ translate('Attention : la réservation appartient à {customer}', {customer: booking.customerEmail}, domain: 'email') }}
+                </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+
+    <blockquote style="{{ styles.quote }}">
+        {{ message|nl2br }}
+    </blockquote>
+
+    {% if adminUrl|default(null) %}
+        <p style="{{ styles.actions }}">
+            <a href="{{ adminUrl }}" style="{{ styles.button }}">
+                {{ translate('Répondre depuis l\'administration', domain: 'email') }}
+            </a>
+        </p>
+        <p>
+            {{ translate('Une réponse envoyée depuis l\'administration reste dans l\'historique de la demande. Répondre à cet e-mail écrit directement à {email}, sans garder de trace.', {email: email}, domain: 'email') }}
+        </p>
+    {% else %}
+        <p>
+            {{ translate('Réponse à cet e-mail écrit directement à {email}', {email: email}, domain: 'email') }}
+        </p>
+    {% endif %}
+
+{% endblock %}

@@ -6,9 +6,9 @@ use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Establishment\EstablishmentService;
 use App\Establishment\Dto\ServiceInput;
 use App\Establishment\Dto\ServicesInput;
+use App\Establishment\Exception\DiscountOutOfRangeException;
 use App\Repository\Establishment\EstablishmentServiceRepository;
 use App\Repository\Establishment\EstablishmentSlotRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\Website\Provider\WebsiteProvider;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
@@ -22,8 +22,11 @@ class ServiceCatalogService
     ) {
     }
 
-    public function create(CompanyEstablishment $establishment, ServiceInput $input, bool $flush = true): EstablishmentService
-    {
+    public function create(
+        CompanyEstablishment $establishment,
+        ServiceInput $input,
+        bool $flush = true,
+    ): EstablishmentService {
         $service = new EstablishmentService();
         $service->setPosition($this->services->nextPosition($establishment));
         $this->apply($service, $input);
@@ -83,25 +86,13 @@ class ServiceCatalogService
     public function replaceAll(CompanyEstablishment $establishment, ServicesInput $input): array
     {
         return $this->orm->transactional(function () use ($establishment, $input): array {
-            $existing = [];
-
-            foreach ($this->services->findForEstablishment($establishment) as $service) {
-                $existing[mb_strtolower((string) $service->getName())] = $service;
-            }
-
+            $existing = $this->indexByName($establishment);
             $kept = [];
 
             foreach (array_values($input->services) as $position => $serviceInput) {
-                $key = mb_strtolower(trim((string) $serviceInput->name));
-                $service = $existing[$key] ?? null;
+                $key = $this->key($serviceInput->name);
+                $service = $this->keep($establishment, $existing[$key] ?? null, $serviceInput);
                 unset($existing[$key]);
-
-                if ($service === null) {
-                    $service = $this->create($establishment, $serviceInput, false);
-                } else {
-                    $this->apply($service, $serviceInput);
-                    $service->setActive(true);
-                }
 
                 $service->setPosition($position);
                 $kept[] = $service;
@@ -122,16 +113,45 @@ class ServiceCatalogService
         });
     }
 
+    private function indexByName(CompanyEstablishment $establishment): array
+    {
+        $services = [];
+
+        foreach ($this->services->findForEstablishment($establishment) as $service) {
+            $services[$this->key($service->getName())] = $service;
+        }
+
+        return $services;
+    }
+
+    private function key(?string $name): string
+    {
+        return mb_strtolower(trim((string) $name));
+    }
+
+    private function keep(
+        CompanyEstablishment $establishment,
+        ?EstablishmentService $service,
+        ServiceInput $input,
+    ): EstablishmentService {
+        if ($service === null) {
+            return $this->create($establishment, $input, false);
+        }
+
+        $this->apply($service, $input);
+        $service->setActive(true);
+
+        return $service;
+    }
+
     private function apply(EstablishmentService $service, ServiceInput $input): void
     {
         if ($input->defaultDiscount !== null) {
             $this->assertDiscount($input->defaultDiscount);
         }
 
-        $description = trim((string) $input->description);
-
         $service->setName(trim((string) $input->name));
-        $service->setDescription($description !== '' ? $description : null);
+        $service->setDescription($this->description($input->description));
         $service->setPrice((int) $input->price);
         $service->setDuration((int) $input->duration);
         $service->setDefaultDiscount($input->defaultDiscount);
@@ -141,12 +161,23 @@ class ServiceCatalogService
         }
     }
 
+    private function description(?string $description): ?string
+    {
+        $description = trim((string) $description);
+
+        if ($description === '') {
+            return null;
+        }
+
+        return $description;
+    }
+
     private function assertDiscount(int $discount): void
     {
         $rule = $this->website->getRule();
 
         if ($discount < $rule->getMinDiscount() || $discount > $rule->getMaxDiscount()) {
-            throw new BusinessRuleException('La remise doit être comprise entre {min} et {max} %.', ['min' => $rule->getMinDiscount(), 'max' => $rule->getMaxDiscount()]);
+            throw new DiscountOutOfRangeException($rule->getMinDiscount(), $rule->getMaxDiscount());
         }
     }
 }

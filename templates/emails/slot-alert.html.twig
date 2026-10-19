@@ -5,18 +5,48 @@
 {% block mailContent %}
 
     {% if alert %}
-        <p>Un créneau correspond à ton alerte « {{ alert.label }} » ({{ alert.description }}) :</p>
+        <p>
+            Un créneau correspond à ton alerte « {{ alert.label }} » ({{ alert.description }}) :
+            {{ translate('Un créneau correspond à ton alerte « {label} » ({description}) :', {label: alert.label, description: alert.description}, domain: 'email') }}
+        </p>
     {% else %}
-        <p>{{ slot.establishment.name }}, que tu suis, vient de libérer un créneau :</p>
+        <p>
+            {{ translate('{establishment}, que tu suis, vient de libérer un créneau :', {establishment: slot.establishment.name}, domain: 'email') }}
+        </p>
     {% endif %}
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ slot.establishment.name }}, {{ slot.establishment.address }}</li>
-        <li style="{{ styles.item }}">{{ slot.service }} ({{ slot.duration }})</li>
-        <li style="{{ styles.item }}">{{ slot.day }} à {{ slot.time }}</li>
-        <li style="{{ styles.item }}">{{ slot.price }} au lieu de {{ slot.originalPrice }} ({{ slot.discount }})</li>
+        <li style="{{ styles.item }}">
+            {{ slot.establishment.name }}, {{ slot.establishment.address }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ slot.service }} ({{ slot.duration }})
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('{day} à {time}', {day: slot.day, time: slot.time}, domain: 'email') }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('{price} au lieu de {originalPrice} ({discount})', {
+                price: slot.price,
+                originalPrice: slot.originalPrice,
+                discount: slot.discount
+            }, domain: 'email') }}
+        </li>
     </ul>
-    <p style="{{ styles.actions }}"><a href="{{ slot.url }}" style="{{ styles.button }}">Réserver ce créneau</a></p>
-    <p>Les créneaux partent vite : premier arrivé, premier servi.</p>
-    <p style="{{ styles.actions }}"><a href="{{ alertsUrl }}" style="{{ styles.button }}">Gérer mes alertes</a><a href="{{ settingsUrl }}" style="{{ styles.buttonSecondary }}">Ne plus recevoir ces e-mails</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ slot.url }}" style="{{ styles.button }}">
+            {{ translate('Réserver ce créneau', domain: 'email') }}
+        </a>
+    </p>
+    <p>
+        {{ translate('Les créneaux partent vite : premier arrivé, premier servi.', domain: 'email') }}
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ alertsUrl }}" style="{{ styles.button }}">
+            {{ translate('Gérer mes alertes', domain: 'email') }}
+        </a>
+        <a href="{{ settingsUrl }}" style="{{ styles.buttonSecondary }}">
+            {{ translate('Ne plus recevoir ces e-mails', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

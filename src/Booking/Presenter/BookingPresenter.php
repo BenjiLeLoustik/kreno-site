@@ -8,21 +8,25 @@ use App\Booking\Service\AttendanceService;
 use App\Booking\Service\BookingService;
 use App\Booking\Service\ReminderService;
 use App\Entity\Booking;
+use App\Entity\Company\CompanyEstablishment;
+use App\Entity\User\User;
 use App\Establishment\Helper\CalendarHelper;
 use App\Repository\BookingRepository;
+use App\Review\Service\ReviewService;
+use App\Shared\Enum\Weekday;
 use App\Shared\Helper\DateHelper;
 use App\Shared\Helper\DurationHelper;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Helper\Translation;
 use App\User\Helper\UserNameHelper;
 use DateTimeImmutable;
 
 class BookingPresenter
 {
-    public const PRO_CLOSED_TEXTS = [
-        'done' => 'Rendez-vous marqué comme honoré.',
-        'noshow' => 'Absence enregistrée et signalée à Kréno.',
-        'cancelled' => 'Le client a annulé ce rendez-vous.',
-        'cancelled_by_establishment' => 'Rendez-vous annulé. %s est prévenu(e) par e-mail et d’autres créneaux lui sont proposés.',
+    public const REPORTABLE_STATUSES = [
+        BookingStatus::CONFIRMED,
+        BookingStatus::HONORED,
+        BookingStatus::CANCELLED_BY_ESTABLISHMENT,
     ];
 
     public function __construct(
@@ -30,6 +34,7 @@ class BookingPresenter
         private AttendanceService $attendance,
         private ReminderService $reminders,
         private BookingRepository $bookings,
+        private ReviewService $reviewService,
     ) {
     }
 
@@ -37,8 +42,8 @@ class BookingPresenter
     {
         $now ??= new DateTimeImmutable();
         $slot = $booking->getSlot();
-        $establishment = $slot?->getEstablishment();
         $startsAt = $slot?->getStartsAt();
+        $originalPrice = $slot?->getOriginalPrice();
 
         return [
             'id' => $booking->getId(),
@@ -47,28 +52,18 @@ class BookingPresenter
             'kind' => BookingStatusHelper::kind($booking, $now),
             'price' => MoneyHelper::format($booking->getPrice()),
             'priceCents' => $booking->getPrice(),
-            'old' => MoneyHelper::format($slot?->getOriginalPrice() ?? $booking->getPrice()),
-            'discountLabel' => $slot !== null ? sprintf('-%d %%', $slot->getDiscount()) : null,
-            'saved' => MoneyHelper::format(max(0, ($slot?->getOriginalPrice() ?? 0) - $booking->getPrice())),
+            'old' => MoneyHelper::format($originalPrice ?? $booking->getPrice()),
+            'discountLabel' => $this->discountLabel($booking),
+            'saved' => MoneyHelper::format(max(0, ($originalPrice ?? 0) - $booking->getPrice())),
             'createdAt' => DateHelper::iso($booking->getCreatedAt()),
             'startsAt' => DateHelper::iso($startsAt),
-            'day' => $startsAt !== null ? CalendarHelper::dayLabel($startsAt, $now) : null,
-            'date' => $startsAt !== null ? CalendarHelper::shortDate($startsAt) : null,
-            'when' => $startsAt !== null ? sprintf('%s %d · %s', CalendarHelper::SHORT_WEEKDAYS[(int) $startsAt->format('N')], (int) $startsAt->format('j'), $startsAt->format('H:i')) : null,
+            'day' => $this->day($startsAt, $now),
+            'date' => $this->date($startsAt),
+            'when' => $this->when($startsAt),
             'time' => DateHelper::time($startsAt),
             'duration' => DurationHelper::format($slot?->getService()?->getDuration() ?? 0),
             'what' => $slot?->getService()?->getName(),
-            'establishment' => $establishment === null ? null : [
-                'id' => $establishment->getId(),
-                'name' => $establishment->getName(),
-                'slug' => $establishment->getSlug(),
-                'city' => $establishment->getCity()?->getSlug(),
-                'address' => trim(sprintf('%s, %s %s', $establishment->getAddressLine1(), $establishment->getPostalCode(), $establishment->getLocality()), ', '),
-                'phone' => $establishment->getPhone(),
-                'directions' => $establishment->getLatitude() !== null && $establishment->getLongitude() !== null
-                    ? sprintf('https://www.google.com/maps/dir/?api=1&destination=%s,%s', $establishment->getLatitude(), $establishment->getLongitude())
-                    : null,
-            ],
+            'establishment' => $this->establishment($slot?->getEstablishment()),
             'staff' => $slot?->getStaff()?->getMember()?->getUser()?->getFirstName(),
         ];
     }
@@ -76,15 +71,15 @@ class BookingPresenter
     public function forCustomer(Booking $booking, ?DateTimeImmutable $now = null): array
     {
         $now ??= new DateTimeImmutable();
-        $until = $this->bookingService->freeCancellationUntil($booking);
 
         return $this->base($booking, $now) + [
                 'statusLabel' => BookingStatusHelper::customerLabel($booking, $now),
-                'in' => $booking->getStatus() === BookingStatus::CONFIRMED ? $this->in($booking->getSlot()?->getStartsAt(), $now) : null,
+                'in' => $this->customerIn($booking, $now),
                 'canCancel' => $this->bookingService->canCustomerCancel($booking, $now),
-                'freeCancellationUntil' => DateHelper::time($until),
+                'freeCancellationUntil' => DateHelper::time($this->bookingService->freeCancellationUntil($booking)),
                 'cancellationReason' => $booking->getCancellationReason(),
                 'note' => $booking->getNote(),
+                'canReview' => $this->reviewService->canReview($booking, $now),
             ];
     }
 
@@ -94,9 +89,9 @@ class BookingPresenter
 
         return $this->forCustomer($booking, $now) + [
                 'timeline' => $this->customerTimeline($booking, $now),
-                'canReport' => in_array($booking->getStatus(), [BookingStatus::CONFIRMED, BookingStatus::HONORED, BookingStatus::CANCELLED_BY_ESTABLISHMENT], true)
-                    && $booking->getSlot()?->getStartsAt() !== null
-                    && $booking->getSlot()->getStartsAt()->modify(sprintf('+%d hours', AttendanceService::CLOSING_HOURS)) > $now,
+                'canReport' => $this->canReport($booking, $now),
+                'reviewed' => $this->reviewService->isReviewed($booking),
+                'reviewDeadline' => DateHelper::iso($this->reviewService->deadline($booking)),
             ];
     }
 
@@ -108,11 +103,10 @@ class BookingPresenter
     public function forPro(Booking $booking, ?DateTimeImmutable $now = null): array
     {
         $now ??= new DateTimeImmutable();
-        $customer = $booking->getCustomer();
 
         return $this->base($booking, $now) + [
                 'statusLabel' => BookingStatusHelper::proLabel($booking, $now),
-                'client' => $customer !== null ? UserNameHelper::shortName($customer) : '—',
+                'client' => $this->clientName($booking->getCustomer()),
             ];
     }
 
@@ -125,23 +119,16 @@ class BookingPresenter
     {
         $now ??= new DateTimeImmutable();
         $row = $this->forPro($booking, $now);
-        $customer = $booking->getCustomer();
-        $establishment = $booking->getSlot()?->getEstablishment();
-        $count = $customer !== null && $establishment !== null ? $this->bookings->countForCustomerAtEstablishment($customer, $establishment) : 0;
-        $noShows = $customer !== null && $establishment !== null ? $this->bookings->countForCustomerAtEstablishment($customer, $establishment, BookingStatus::NO_SHOW) : 0;
-        $closedText = self::PRO_CLOSED_TEXTS[$row['kind']] ?? null;
+        $status = $booking->getStatus();
+        $confirmed = $status === BookingStatus::CONFIRMED;
 
         return $row + [
-                'customer' => $customer === null ? null : [
-                    'name' => UserNameHelper::shortName($customer),
-                    'phone' => $customer->getPhone(),
-                    'history' => sprintf('%s · %s', $count <= 1 ? '1re réservation' : $count . 'e réservation', $noShows === 0 ? 'aucune absence' : sprintf('%d absence%s', $noShows, $noShows > 1 ? 's' : '')),
-                ],
+                'customer' => $this->proCustomer($booking),
                 'note' => $booking->getNote(),
                 'canMark' => $this->attendance->canMark($booking, $now),
-                'canCancel' => $booking->getStatus() === BookingStatus::CONFIRMED && $booking->getSlot()?->getStartsAt() > $now,
-                'closed' => $booking->getStatus() !== BookingStatus::CONFIRMED,
-                'closedText' => $closedText !== null ? sprintf($closedText, $row['client']) : null,
+                'canCancel' => $confirmed && $booking->getSlot()?->getStartsAt() > $now,
+                'closed' => !$confirmed,
+                'closedText' => $status->proClosedText($row['client']),
                 'cancellationReason' => $booking->getCancellationReason(),
             ];
     }
@@ -149,37 +136,34 @@ class BookingPresenter
     public function forAdmin(Booking $booking, ?DateTimeImmutable $now = null): array
     {
         $now ??= new DateTimeImmutable();
-        $customer = $booking->getCustomer();
 
         return $this->base($booking, $now) + [
                 'statusLabel' => BookingStatusHelper::adminLabel($booking, $now),
-                'client' => $customer !== null ? UserNameHelper::shortName($customer) : '—',
+                'client' => $this->clientName($booking->getCustomer()),
                 'shop' => $booking->getSlot()?->getEstablishment()?->getName(),
             ];
     }
 
     public function forAdminList(array $bookings, ?DateTimeImmutable $now = null): array
     {
-        return array_values(array_map(fn (Booking $booking): array => $this->forAdmin($booking, $now), $bookings));
+        return array_values(
+            array_map(
+                fn (Booking $booking): array => $this->forAdmin($booking, $now)
+                , $bookings
+            )
+        );
     }
 
     public function forAdminDetail(Booking $booking, ?DateTimeImmutable $now = null): array
     {
         $now ??= new DateTimeImmutable();
-        $customer = $booking->getCustomer();
 
         return $this->forAdmin($booking, $now) + [
-                'customer' => $customer === null ? null : [
-                    'id' => $customer->getId(),
-                    'name' => UserNameHelper::fullName($customer),
-                    'email' => $customer->getEmail(),
-                    'phone' => $customer->getPhone(),
-                    'status' => $customer->getStatus()->value,
-                ],
+                'customer' => $this->adminCustomer($booking->getCustomer()),
                 'fee' => MoneyHelper::format($booking->getFee()),
                 'note' => $booking->getNote(),
                 'cancelledAt' => DateHelper::iso($booking->getCancelledAt()),
-                'cancelledBy' => $booking->getCancelledBy() !== null ? UserNameHelper::fullName($booking->getCancelledBy()) : null,
+                'cancelledBy' => $this->fullName($booking->getCancelledBy()),
                 'cancellationReason' => $booking->getCancellationReason(),
                 'honoredAt' => DateHelper::iso($booking->getHonoredAt()),
                 'noShowAt' => DateHelper::iso($booking->getNoShowAt()),
@@ -190,12 +174,13 @@ class BookingPresenter
     public function confirmation(Booking $booking, ?DateTimeImmutable $now = null): array
     {
         $data = $this->forCustomer($booking, $now);
-        $establishment = $data['establishment']['name'] ?? 'L\'établissement';
+        $establishment = $data['establishment']['name'] ?? Translation::translate('L\'établissement');
+        $message = Translation::translate('%s est prévenu. Un e-mail de confirmation vient de partir, avec le ticket et l\'adresse. Présente-toi 5 minutes avant.');
 
         return $data + [
-                'title' => 'C\'est réservé.',
-                'message' => sprintf('%s est prévenu. Un e-mail de confirmation vient de partir, avec le ticket et l\'adresse. Présente-toi 5 minutes avant.', $establishment),
-                'cancellationNotice' => $data['freeCancellationUntil'] !== null ? sprintf('Empêché ? Annulation gratuite jusqu\'à %s depuis ton compte.', $data['freeCancellationUntil']) : null,
+                'title' => Translation::translate('C\'est réservé.'),
+                'message' => sprintf($message, $establishment),
+                'cancellationNotice' => $this->cancellationNotice($data['freeCancellationUntil']),
             ];
     }
 
@@ -207,52 +192,293 @@ class BookingPresenter
 
         $minutes = intdiv($startsAt->getTimestamp() - $now->getTimestamp(), 60);
 
-        if ($minutes >= 1440) {
-            $days = intdiv($minutes, 1440);
-
-            return sprintf('dans %d jour%s', $days, $days > 1 ? 's' : '');
+        if ($minutes < 1440) {
+            return Translation::translate('dans {duration}', [
+                'duration' => DurationHelper::format(max(1, $minutes))
+            ]);
         }
 
-        return 'dans ' . DurationHelper::format(max(1, $minutes));
+        $days = intdiv($minutes, 1440);
+
+        if ($days > 1) {
+            return sprintf(Translation::translate('dans %d jours'), $days);
+        }
+
+        return sprintf(Translation::translate('dans %d jour'), $days);
+    }
+
+    private function discountLabel(Booking $booking): ?string
+    {
+        $slot = $booking->getSlot();
+
+        if ($slot === null) {
+            return null;
+        }
+
+        return sprintf('-%d %%', $slot->getDiscount());
+    }
+
+    private function day(?DateTimeImmutable $startsAt, DateTimeImmutable $now): ?string
+    {
+        if ($startsAt === null) {
+            return null;
+        }
+
+        return CalendarHelper::dayLabel($startsAt, $now);
+    }
+
+    private function date(?DateTimeImmutable $startsAt): ?string
+    {
+        if ($startsAt === null) {
+            return null;
+        }
+
+        return CalendarHelper::shortDate($startsAt);
+    }
+
+    private function when(?DateTimeImmutable $startsAt): ?string
+    {
+        if ($startsAt === null) {
+            return null;
+        }
+
+        $weekday = Weekday::of($startsAt)->short();
+
+        return sprintf(
+            '%s %d · %s',
+            $weekday,
+            (int) $startsAt->format('j'),
+            $startsAt->format('H:i')
+        );
+    }
+
+    private function establishment(?CompanyEstablishment $establishment): ?array
+    {
+        if ($establishment === null) {
+            return null;
+        }
+
+        $address = sprintf(
+            '%s, %s %s',
+            $establishment->getAddressLine1(),
+            $establishment->getPostalCode(),
+            $establishment->getLocality(),
+        );
+
+        return [
+            'id' => $establishment->getId(),
+            'name' => $establishment->getName(),
+            'slug' => $establishment->getSlug(),
+            'city' => $establishment->getCity()?->getSlug(),
+            'address' => trim($address, ', '),
+            'phone' => $establishment->getPhone(),
+            'directions' => $this->directions($establishment),
+        ];
+    }
+
+    private function directions(CompanyEstablishment $establishment): ?string
+    {
+        $latitude = $establishment->getLatitude();
+        $longitude = $establishment->getLongitude();
+
+        if ($latitude === null || $longitude === null) {
+            return null;
+        }
+
+        return sprintf('https://www.google.com/maps/dir/?api=1&destination=%s,%s', $latitude, $longitude);
+    }
+
+    private function customerIn(Booking $booking, DateTimeImmutable $now): ?string
+    {
+        if ($booking->getStatus() !== BookingStatus::CONFIRMED) {
+            return null;
+        }
+
+        return $this->in($booking->getSlot()?->getStartsAt(), $now);
+    }
+
+    private function canReport(Booking $booking, DateTimeImmutable $now): bool
+    {
+        $startsAt = $booking->getSlot()?->getStartsAt();
+
+        if ($startsAt === null || !in_array($booking->getStatus(), self::REPORTABLE_STATUSES, true)) {
+            return false;
+        }
+
+        return $startsAt->modify(sprintf('+%d hours', AttendanceService::CLOSING_HOURS)) > $now;
+    }
+
+    private function clientName(?User $customer): string
+    {
+        if ($customer === null) {
+            return '-';
+        }
+
+        return UserNameHelper::shortName($customer);
+    }
+
+    private function fullName(?User $user): ?string
+    {
+        if ($user === null) {
+            return null;
+        }
+
+        return UserNameHelper::fullName($user);
+    }
+
+    private function proCustomer(Booking $booking): ?array
+    {
+        $customer = $booking->getCustomer();
+
+        if ($customer === null) {
+            return null;
+        }
+
+        return [
+            'name' => UserNameHelper::shortName($customer),
+            'phone' => $customer->getPhone(),
+            'history' => $this->customerHistory($customer, $booking->getSlot()?->getEstablishment()),
+        ];
+    }
+
+    private function customerHistory(User $customer, ?CompanyEstablishment $establishment): string
+    {
+        $count = 0;
+        $noShows = 0;
+
+        if ($establishment !== null) {
+            $count = $this->bookings->countForCustomerAtEstablishment($customer, $establishment);
+            $noShows = $this->bookings->countForCustomerAtEstablishment(
+                $customer,
+                $establishment,
+                BookingStatus::NO_SHOW,
+            );
+        }
+
+        return sprintf('%s · %s', $this->bookingRank($count), $this->noShows($noShows));
+    }
+
+    private function bookingRank(int $count): string
+    {
+        if ($count <= 1) {
+            return Translation::translate('1re réservation');
+        }
+
+        return sprintf(Translation::translate('%de réservation'), $count);
+    }
+
+    private function noShows(int $count): string
+    {
+        if ($count === 0) {
+            return Translation::translate('aucune absence');
+        }
+
+        if ($count > 1) {
+            return sprintf(Translation::translate('%d absences'), $count);
+        }
+
+        return sprintf(Translation::translate('%d absence'), $count);
+    }
+
+    private function adminCustomer(?User $customer): ?array
+    {
+        if ($customer === null) {
+            return null;
+        }
+
+        return [
+            'id' => $customer->getId(),
+            'name' => UserNameHelper::fullName($customer),
+            'email' => $customer->getEmail(),
+            'phone' => $customer->getPhone(),
+            'status' => $customer->getStatus()->value,
+        ];
+    }
+
+    private function cancellationNotice(?string $freeCancellationUntil): ?string
+    {
+        if ($freeCancellationUntil === null) {
+            return null;
+        }
+
+        return sprintf(Translation::translate('Empêché ? Annulation gratuite jusqu\'à %s depuis ton compte.'), $freeCancellationUntil);
     }
 
     private function customerTimeline(Booking $booking, DateTimeImmutable $now): array
     {
         $slot = $booking->getSlot();
-        $name = $slot?->getEstablishment()?->getName() ?? 'L\'établissement';
-        $timeline = [];
-        $add = static function (?DateTimeImmutable $at, string $label, bool $done, string $tone = 'success') use (&$timeline): void {
-            $timeline[] = ['at' => DateHelper::iso($at), 'time' => DateHelper::time($at), 'label' => $label, 'done' => $done, 'tone' => $done ? $tone : 'pending'];
-        };
-
-        $add($booking->getCreatedAt(), sprintf('Réservation confirmée, %s prévenu', $name), true);
-        $add($booking->getCreatedAt(), 'E-mail de confirmation envoyé', true);
+        $name = $slot?->getEstablishment()?->getName() ?? Translation::translate('L\'établissement');
+        $createdAt = $booking->getCreatedAt();
+        $timeline = [
+            $this->step($createdAt, sprintf(Translation::translate('Réservation confirmée, %s prévenu'), $name), true),
+            $this->step($createdAt, Translation::translate('E-mail de confirmation envoyé'), true),
+        ];
 
         if ($booking->getCancelledAt() !== null) {
-            $label = $booking->getStatus() === BookingStatus::CANCELLED_BY_ESTABLISHMENT ? 'Réservation annulée par l\'établissement' : 'Réservation annulée par vous, sans frais';
-            $add($booking->getCancelledAt(), $label, true, 'danger');
+            $timeline[] = $this->step(
+                $booking->getCancelledAt(),
+                $this->cancellationLabel($booking),
+                true,
+                'danger'
+            );
 
             return $timeline;
         }
 
-        if ($slot?->getStartsAt() !== null) {
-            $reminder = $this->reminders->remindedAt($slot->getStartsAt());
+        $startsAt = $slot?->getStartsAt();
 
-            if ($reminder > $booking->getCreatedAt()) {
-                $add($reminder, $reminder <= $now ? 'Rappel par e-mail' : 'Rappel par e-mail (à venir)', $reminder <= $now);
+        if ($startsAt !== null) {
+            $reminder = $this->reminders->remindedAt($startsAt);
+
+            if ($reminder > $createdAt) {
+                $timeline[] = $this->reminderStep($reminder, $now);
             }
 
-            $add($slot->getStartsAt(), 'Rendez-vous', $slot->getStartsAt() <= $now);
+            $timeline[] = $this->step($startsAt, Translation::translate('Rendez-vous'), $startsAt <= $now);
         }
 
         if ($booking->getHonoredAt() !== null) {
-            $add($booking->getHonoredAt(), 'Rendez-vous honoré', true);
+            $timeline[] = $this->step($booking->getHonoredAt(), Translation::translate('Rendez-vous honoré'), true);
         }
 
         if ($booking->getNoShowAt() !== null) {
-            $add($booking->getNoShowAt(), 'Absence signalée par l\'établissement', true, 'danger');
+            $label = Translation::translate('Absence signalée par l\'établissement');
+            $timeline[] = $this->step($booking->getNoShowAt(), $label, true, 'danger');
         }
 
         return $timeline;
+    }
+
+    private function cancellationLabel(Booking $booking): string
+    {
+        if ($booking->getStatus() === BookingStatus::CANCELLED_BY_ESTABLISHMENT) {
+            return Translation::translate('Réservation annulée par l\'établissement');
+        }
+
+        return Translation::translate('Réservation annulée par vous, sans frais');
+    }
+
+    private function reminderStep(DateTimeImmutable $reminder, DateTimeImmutable $now): array
+    {
+        if ($reminder <= $now) {
+            return $this->step($reminder, Translation::translate('Rappel par e-mail'), true);
+        }
+
+        return $this->step($reminder, Translation::translate('Rappel par e-mail (à venir)'), false);
+    }
+
+    private function step(?DateTimeImmutable $at, string $label, bool $done, string $tone = 'success'): array
+    {
+        if (!$done) {
+            $tone = 'pending';
+        }
+
+        return [
+            'at' => DateHelper::iso($at),
+            'time' => DateHelper::time($at),
+            'label' => $label,
+            'done' => $done,
+            'tone' => $tone,
+        ];
     }
 }

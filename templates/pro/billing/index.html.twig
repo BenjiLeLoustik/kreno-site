@@ -1,9 +1,17 @@
 {% extends 'layouts/pro.html.twig' %}
 
 {% set pro_section = 'billing' %}
-{% set tones = { paid: 'online', failed: 'noshow', open: 'pending', refunded: 'default', void: 'default' } %}
+{% set tones = {
+    paid: 'online',
+    failed: 'noshow',
+    open: 'pending',
+    refunded: 'default',
+    void: 'default'
+} %}
 
-{% block title %}Facturation · Espace pro{% endblock %}
+{% block title %}
+    {{ translate('Facturation · Espace pro') }}
+{% endblock %}
 
 {% block javascripts %}
     <script src="https://js.stripe.com/v3/" defer></script>
@@ -13,21 +21,52 @@
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
-            <h1 class="pro-title">Facturation</h1>
-            <span class="pro-subtitle">{{ company.name }} · {{ company.establishmentsCount }} établissement{{ company.establishmentsCount > 1 ? 's' : '' }}</span>
+            <h1 class="pro-title">
+                {{ translate('Facturation') }}
+            </h1>
+            <span class="pro-subtitle">
+                {{ company.name }} · {{ '{count, plural, one {# établissement} other {# établissements}}'|trans({ count: company.establishmentsCount }) }}
+            </span>
         </div>
-        <a href="{{ path('pro_subscription') }}" class="pro-button">{{ subscription ? 'Changer de formule' : 'Choisir une formule' }}</a>
+        <a href="{{ path('pro_subscription') }}" class="pro-button">
+            {% if subscription %}
+                {{ translate('Changer de formule') }}
+            {% else %}
+                {{ translate('Choisir une formule') }}
+            {% endif %}
+        </a>
     </div>
 
     {% if alert %}
         <div class="billing-alert" role="alert">
             <span class="billing-alert__text">
-                <b>{{ alert.suspended ? 'Vos créneaux ne sont plus publiés' : 'Le dernier paiement a échoué' }}</b>
-                Facture {{ alert.invoice }} de {{ alert.amountIncludingTax }}{% if alert.method %}, {{ alert.method }}{% endif %}{% if alert.failedAt %}, le {{ alert.failedAt }}{% endif %}{% if alert.reason %} : {{ alert.reason }}{% endif %}.
-                {% if alert.nextRetry %}Nouvelle tentative le {{ alert.nextRetry }}.{% endif %}
-                {% if alert.graceUntil and not alert.suspended %}Sans règlement avant le {{ alert.graceUntil }}, vos créneaux ne seront plus publiés.{% endif %}
+                <b>
+                    {% if alert.suspended %}
+                        {{ translate('Vos créneaux ne sont plus publiés') }}
+                    {% else %}
+                        {{ translate('Le dernier paiment a échoué') }}
+                    {% endif %}
+                </b>
+                Facture {{ alert.invoice }} de {{ alert.amountIncludingTax }}
+                {% if alert.method %}
+                    , {{ alert.method }}
+                {% endif %}
+                {% if alert.failedAt %}
+                    {{ translate(', le {failed}', {failed: alert.failedAt}) }}
+                {% endif %}
+                {% if alert.reason %}
+                    : {{ alert.reason }}
+                {% endif %}.
+                {% if alert.nextRetry %}
+                    {{ translate('Nouvelle tentative le {date}', {date: alert.nextRetry}) }}
+                {% endif %}
+                {% if alert.graceUntil and not alert.suspended %}
+                    {{ translate('Sans règlement avant le {date}, vos créneaux ne sont plus publiés.', {date: alert.graceUntil}) }}
+                {% endif %}
             </span>
-            <a href="{{ path('pro_billing_invoice', { number: alert.invoice }) }}" class="pro-button pro-button--primary">Régler maintenant</a>
+            <a href="{{ path('pro_billing_invoice', { number: alert.invoice }) }}" class="pro-button pro-button--primary">
+                {{ translate('Régler maintenant') }}
+            </a>
         </div>
     {% endif %}
 
@@ -37,52 +76,106 @@
                 {% if subscription %}
                     {% include 'pro/subscription/_summary.html.twig' %}
                     <div class="settings-line__actions">
-                        <a href="{{ path('pro_subscription') }}" class="pro-button pro-button--small">Voir les formules</a>
+                        <a href="{{ path('pro_subscription') }}" class="pro-button pro-button--small">
+                            {{ translate('Voir les formules') }}
+                        </a>
                         {% if subscription.canCancel %}
-                            <a href="{{ path('pro_subscription_cancel_form') }}" class="pro-button pro-button--small pro-button--danger">Résilier</a>
+                            <a href="{{ path('pro_subscription_cancel_form') }}" class="pro-button pro-button--small pro-button--danger">
+                                {{ translate('Résilier') }}
+                            </a>
                         {% endif %}
                         {% if subscription.canRevoke %}
                             <form method="post" action="{{ path('pro_subscription_cancel_revoke') }}">
                                 {{ csrf_field('pro')|raw }}
-                                <button type="submit" class="pro-button pro-button--small pro-button--success">Annuler la résiliation</button>
+                                <button type="submit" class="pro-button pro-button--small pro-button--success">
+                                    {{ translate('Annuler la résiliation') }}
+                                </button>
                             </form>
                         {% endif %}
                     </div>
                 {% else %}
-                    <h2 class="pro-card__title">Formule</h2>
-                    <p class="pro-subtitle">Aucune formule active.</p>
+                    <h2 class="pro-card__title">
+                        {{ translate('Formule') }}
+                    </h2>
+                    <p class="pro-subtitle">
+                        {{ translate('Aucune formule active.') }}
+                    </p>
                 {% endif %}
             </section>
 
             <section class="pro-card" id="factures">
-                <h2 class="pro-card__title">Factures</h2>
+                <h2 class="pro-card__title">
+                    {{ translate('Factures') }}
+                </h2>
                 <div class="pro-table billing-table">
                     <table class="pro-table__table">
                         <thead>
                         <tr>
-                            <th scope="col" class="pro-table__th">Numéro</th>
-                            <th scope="col" class="pro-table__th">Date</th>
-                            <th scope="col" class="pro-table__th">Détail</th>
-                            <th scope="col" class="pro-table__th">Montant TTC</th>
-                            <th scope="col" class="pro-table__th">Statut</th>
-                            <th scope="col" class="pro-table__th"><span class="sr-only">Actions</span></th>
+                            <th scope="col" class="pro-table__th">
+                                {{ translate('Numéro') }}
+                            </th>
+                            <th scope="col" class="pro-table__th">
+                                {{ translate('Date') }}
+                            </th>
+                            <th scope="col" class="pro-table__th">
+                                {{ translate('Détail') }}
+                            </th>
+                            <th scope="col" class="pro-table__th">
+                                {{ translate('Montant TTC') }}
+                            </th>
+                            <th scope="col" class="pro-table__th">
+                                {{ translate('Statut') }}
+                            </th>
+                            <th scope="col" class="pro-table__th">
+                                <span class="sr-only">
+                                    {{ translate('Actions') }}
+                                </span>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for invoice in invoices %}
                             <tr class="pro-table__row">
-                                <td class="pro-table__td pro-table__td--nowrap"><a href="{{ path('pro_billing_invoice', { number: invoice.number }) }}">{{ invoice.number }}</a></td>
-                                <td class="pro-table__td pro-table__td--nowrap">{{ invoice.date }}</td>
-                                <td class="pro-table__td pro-table__td--muted">{{ invoice.detail }}</td>
-                                <td class="pro-table__td pro-table__td--nowrap"><span class="pro-price">{{ invoice.amount }}</span></td>
-                                <td class="pro-table__td"><span class="pro-badge pro-badge--{{ tones[invoice.kind] ?? 'default' }}">{{ invoice.status }}</span></td>
+                                <td class="pro-table__td pro-table__td--nowrap">
+                                    <a href="{{ path('pro_billing_invoice', { number: invoice.number }) }}">
+                                        {{ invoice.number }}
+                                    </a>
+                                </td>
+                                <td class="pro-table__td pro-table__td--nowrap">
+                                    {{ invoice.date }}
+                                </td>
+                                <td class="pro-table__td pro-table__td--muted">
+                                    {{ invoice.detail }}
+                                </td>
+                                <td class="pro-table__td pro-table__td--nowrap">
+                                    <span class="pro-price">
+                                        {{ invoice.amount }}
+                                    </span>
+                                </td>
+                                <td class="pro-table__td">
+                                    <span class="pro-badge pro-badge--{{ tones[invoice.kind] ?? 'default' }}">
+                                        {{ invoice.status }}
+                                    </span>
+                                </td>
                                 <td class="pro-table__td pro-table__td--end pro-table__td--nowrap">
-                                    {% if invoice.canPay %}<a href="{{ path('pro_billing_invoice', { number: invoice.number }) }}" class="pro-button pro-button--small pro-button--primary">Régler</a>{% endif %}
-                                    {% if route_exists('pro_billing_invoice_pdf') %}<a href="{{ path('pro_billing_invoice_pdf', { number: invoice.number }) }}" class="pro-button pro-button--small">PDF</a>{% endif %}
+                                    {% if invoice.canPay %}
+                                    <a href="{{ path('pro_billing_invoice', { number: invoice.number }) }}" class="pro-button pro-button--small pro-button--primary">
+                                        {{ translate('Régler') }}
+                                    </a>
+                                    {% endif %}
+                                    {% if route_exists('pro_billing_invoice_pdf') %}
+                                    <a href="{{ path('pro_billing_invoice_pdf', { number: invoice.number }) }}" class="pro-button pro-button--small">
+                                        {{ translate('PDF') }}
+                                    </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% else %}
-                            <tr><td colspan="6" class="pro-table__empty">Aucune facture pour le moment.</td></tr>
+                            <tr>
+                                <td colspan="6" class="pro-table__empty">
+                                    {{ translate('Aucune facture pour le moment.') }}
+                                </td>
+                            </tr>
                         {% endfor %}
                         </tbody>
                     </table>
@@ -92,65 +185,120 @@
 
         <div class="pro-columns__aside pro-form">
             <section class="pro-card" id="moyens">
-                <h2 class="pro-card__title">Moyens de paiement</h2>
+                <h2 class="pro-card__title">
+                    {{ translate('Moyens de paiement') }}
+                </h2>
                 {% for method in paymentMethods %}
                     <div class="settings-line{{ method.expired ? ' settings-line--muted' : '' }}">
                         <span class="billing-method">
                             <i data-lucide="{{ method.type == 'sepa_debit' ? 'landmark' : 'credit-card' }}" class="pro-nav__icon"></i>
                             <span class="billing-method__text">
-                                <b>{{ method.label }}</b>
-                                <span class="pro-row__meta">{{ method.note }}{% if method.holderName %} · {{ method.holderName }}{% endif %}</span>
+                                <b>
+                                    {{ method.label }}
+                                </b>
+                                <span class="pro-row__meta">
+                                    {{ method.note }}
+                                    {% if method.holderName %}
+                                        · {{ method.holderName }}
+                                    {% endif %}
+                                </span>
                             </span>
                         </span>
                         <span class="settings-line__actions">
-                            {% if method.isDefault %}<span class="pro-badge pro-badge--online">Par défaut</span>{% endif %}
+                            {% if method.isDefault %}
+                                <span class="pro-badge pro-badge--online">
+                                    {{ translate('Par défaut') }}
+                                </span>
+                            {% endif %}
                             {% if method.canDefault %}
                                 <form method="post" action="{{ path('pro_billing_method_default', { id: method.id }) }}">
                                     {{ csrf_field('pro')|raw }}
-                                    <button type="submit" class="pro-button pro-button--small">Par défaut</button>
+                                    <button type="submit" class="pro-button pro-button--small">
+                                        {{ translate('Par défaut') }}
+                                    </button>
                                 </form>
                             {% endif %}
                             <form method="post" action="{{ path('pro_billing_method_delete', { id: method.id }) }}">
                                 {{ csrf_field('pro')|raw }}
-                                <button type="submit" class="pro-button pro-button--small pro-button--danger" aria-label="Supprimer {{ method.label }}" data-pro-confirm="Supprimer {{ method.label }} ?"><i data-lucide="trash-2" class="pro-nav__icon"></i></button>
+                                <button type="submit" class="pro-button pro-button--small pro-button--danger" aria-label="{{ translate('Supprimer {label}', {label: method.label}) }}" data-pro-confirm="{{ translate('Supprimer {label} ?', {label: method.label}) }}">
+                                    <i data-lucide="trash-2" class="pro-nav__icon"></i>
+                                </button>
                             </form>
                         </span>
                     </div>
                 {% else %}
-                    <p class="pro-subtitle">Aucun moyen de paiement enregistré.</p>
+                    <p class="pro-subtitle">
+                        {{ translate('Aucun moyen de paiement enregistré.') }}
+                    </p>
                 {% endfor %}
 
                 <details class="service-row__edit"{{ paymentMethods is empty ? ' open' : '' }}>
-                    <summary class="service-row__summary">Ajouter un moyen de paiement</summary>
+                    <summary class="service-row__summary">
+                        {{ translate('Ajouter un moyen de paiement') }}
+                    </summary>
                     <form method="post" action="{{ path('pro_billing_method_add') }}" class="pro-form service-row__form" data-stripe-form data-stripe-key="{{ gatewayKey }}" data-stripe-setup="{{ path('pro_billing_method_setup') }}">
                         {{ csrf_field('pro')|raw }}
-                        <label class="pro-field">Titulaire<input type="text" value="{{ billing.billingName }}" maxlength="160" class="pro-input" data-stripe-name></label>
+                        <label class="pro-field">
+                            {{ translate('Titulaire') }}
+                            <input type="text" value="{{ billing.billingName }}" maxlength="160" class="pro-input" data-stripe-name>
+                        </label>
                         <input type="hidden" value="{{ billing.billingEmail }}" data-stripe-email>
                         {% include 'pro/billing/_stripe_fields.html.twig' %}
                         <label class="settings-check">
                             <input type="hidden" name="makeDefault" value="0">
                             <input type="checkbox" name="makeDefault" value="1" class="settings-check__input"{{ paymentMethods is empty ? ' checked' : '' }}>
-                            Utiliser par défaut
+                            {{ translate('Utiliser par défaut') }}
                         </label>
-                        <div><button type="submit" class="pro-button pro-button--primary" data-stripe-submit>Enregistrer</button></div>
+                        <div>
+                            <button type="submit" class="pro-button pro-button--primary" data-stripe-submit>
+                                {{ translate('Enregistrer') }}
+                            </button>
+                        </div>
                     </form>
                 </details>
             </section>
 
             <section class="pro-card" id="informations">
-                <h2 class="pro-card__title">Informations de facturation</h2>
+                <h2 class="pro-card__title">
+                    {{ translate('Informations de facturation') }}
+                </h2>
                 <form method="post" action="{{ path('pro_billing_info') }}" class="pro-form">
                     {{ csrf_field('pro')|raw }}
-                    <label class="pro-field">Raison sociale<input type="text" name="billingName" value="{{ billing.billingName }}" required maxlength="160" class="pro-input"></label>
-                    <label class="pro-field">E-mail des factures<input type="email" name="billingEmail" value="{{ billing.billingEmail }}" required maxlength="180" class="pro-input"></label>
-                    <label class="pro-field">Adresse<input type="text" name="addressLine1" value="{{ billing.addressLine1 }}" required maxlength="160" class="pro-input"></label>
-                    <label class="pro-field">Complément<input type="text" name="addressLine2" value="{{ billing.addressLine2 }}" maxlength="160" class="pro-input"></label>
+                    <label class="pro-field">
+                        {{ translate('Raison sociale') }}
+                        <input type="text" name="billingName" value="{{ billing.billingName }}" required maxlength="160" class="pro-input">
+                    </label>
+                    <label class="pro-field">
+                        {{ translate('E-mail des factures') }}
+                        <input type="email" name="billingEmail" value="{{ billing.billingEmail }}" required maxlength="180" class="pro-input">
+                    </label>
+                    <label class="pro-field">
+                        {{ translate('Adresse') }}
+                        <input type="text" name="addressLine1" value="{{ billing.addressLine1 }}" required maxlength="160" class="pro-input">
+                    </label>
+                    <label class="pro-field">
+                        {{ translate('Complément') }}
+                        <input type="text" name="addressLine2" value="{{ billing.addressLine2 }}" maxlength="160" class="pro-input">
+                    </label>
                     <div class="pro-form__row">
-                        <label class="pro-field">Code postal<input type="text" name="postalCode" value="{{ billing.postalCode }}" required pattern="\d{5}" inputmode="numeric" class="pro-input"></label>
-                        <label class="pro-field">Ville<input type="text" name="locality" value="{{ billing.locality }}" required maxlength="100" class="pro-input"></label>
+                        <label class="pro-field">
+                            {{ translate('Code postal') }}
+                            <input type="text" name="postalCode" value="{{ billing.postalCode }}" required pattern="\d{5}" inputmode="numeric" class="pro-input">
+                        </label>
+                        <label class="pro-field">
+                            {{ translate('Ville') }}
+                            <input type="text" name="locality" value="{{ billing.locality }}" required maxlength="100" class="pro-input">
+                        </label>
                     </div>
-                    <label class="pro-field">N° TVA intracommunautaire<input type="text" name="vatNumber" value="{{ billing.vatNumber }}" class="pro-input" placeholder="FR00123456789"></label>
-                    <div><button type="submit" class="pro-button pro-button--primary">Enregistrer</button></div>
+                    <label class="pro-field">
+                        {{ translate('N° TVA intracommunautaire') }}
+                        <input type="text" name="vatNumber" value="{{ billing.vatNumber }}" class="pro-input" placeholder="FR00123456789">
+                    </label>
+                    <div>
+                        <button type="submit" class="pro-button pro-button--primary">
+                            {{ translate('Enregistrer') }}
+                        </button>
+                    </div>
                 </form>
             </section>
         </div>

@@ -22,16 +22,11 @@ class SendEmailHandler
 
     public function __invoke(SendEmailMessage $message): void
     {
-        $html = $this->views->render(sprintf('emails/%s.html.twig', $message->getTemplate()), $message->getContext() + [
-                'subject' => $message->getSubject(),
-                'footer' => $this->footer,
-            ]);
-
         $email = (new Email())
             ->from($message->getFrom())
             ->to(...$message->getTo())
             ->subject($message->getSubject())
-            ->html($html)
+            ->html($this->render($message))
             ->addHeader('X-Kreno-Template', $message->getTemplate());
 
         if ($message->getReplyTo() !== null) {
@@ -39,5 +34,15 @@ class SendEmailHandler
         }
 
         $this->mailer->send($email);
+    }
+
+    private function render(SendEmailMessage $message): string
+    {
+        $context = $message->getContext() + [
+                'subject' => $message->getSubject(),
+                'footer' => $this->footer,
+            ];
+
+        return $this->views->render(sprintf('emails/%s.html.twig', $message->getTemplate()), $context);
     }
 }

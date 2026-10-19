@@ -1,0 +1,17 @@
+@layer components {
+    .review-admin__heading {
+        @apply min-w-0;
+    }
+
+    .review-admin__line {
+        @apply inline-flex items-center gap-2;
+    }
+
+    .review-admin__rating {
+        @apply flex items-center gap-2;
+    }
+
+    .review-admin__quote {
+        @apply m-0 rounded-lg border-l-4 border-amber bg-cream px-4 py-3 text-sm text-body;
+    }
+}

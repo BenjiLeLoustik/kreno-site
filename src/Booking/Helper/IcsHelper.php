@@ -7,8 +7,14 @@ use DateTimeZone;
 
 class IcsHelper
 {
-    public static function event(string $uid, DateTimeImmutable $startsAt, DateTimeImmutable $endsAt, string $summary, ?string $location = null, ?string $description = null): string
-    {
+    public static function event(
+        string $uid,
+        DateTimeImmutable $startsAt,
+        DateTimeImmutable $endsAt,
+        string $summary,
+        ?string $location = null,
+        ?string $description = null
+    ): string {
         $utc = new DateTimeZone('UTC');
         $lines = [
             'BEGIN:VCALENDAR',

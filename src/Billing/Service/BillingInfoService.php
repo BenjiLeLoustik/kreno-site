@@ -17,7 +17,6 @@ class BillingInfoService
     public function update(Company $company, BillingInfoInput $input, bool $flush = true): Company
     {
         $config = $this->config($company);
-        $vat = mb_strtoupper(str_replace(' ', '', trim((string) $input->vatNumber)));
 
         $config->setBillingName(trim((string) $input->billingName));
         $config->setBillingEmail(mb_strtolower(trim((string) $input->billingEmail)));
@@ -25,7 +24,7 @@ class BillingInfoService
         $config->setAddressLine2(trim((string) $input->addressLine2) ?: null);
         $config->setPostalCode(trim((string) $input->postalCode));
         $config->setLocality(trim((string) $input->locality));
-        $company->setVatNumber($vat !== '' ? $vat : null);
+        $company->setVatNumber($this->vatNumber($input->vatNumber));
 
         if ($flush) {
             $this->orm->flush();
@@ -60,11 +59,28 @@ class BillingInfoService
             return null;
         }
 
-        return implode("\n", array_filter([$config->getAddressLine1(), $config->getAddressLine2(), trim($config->getPostalCode() . ' ' . $config->getLocality())]));
+        $lines = [
+            $config->getAddressLine1(),
+            $config->getAddressLine2(),
+            trim($config->getPostalCode() . ' ' . $config->getLocality()),
+        ];
+
+        return implode("\n", array_filter($lines));
     }
 
     public function billingEmail(Company $company): ?string
     {
         return $company->getConfig()?->getBillingEmail();
+    }
+
+    private function vatNumber(?string $vatNumber): ?string
+    {
+        $vat = mb_strtoupper(str_replace(' ', '', trim((string) $vatNumber)));
+
+        if ($vat === '') {
+            return null;
+        }
+
+        return $vat;
     }
 }

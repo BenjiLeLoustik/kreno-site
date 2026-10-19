@@ -1,3 +1,5 @@
 {% if firstName|default('') %}
-    <p style="margin: 0 0 16px; font-size: 18px; font-weight: 700; color: #1B1F3B;">Bonjour {{ firstName }},</p>
+    <p style="margin: 0 0 16px; font-size: 18px; font-weight: 700; color: #1B1F3B;">
+        {{ translate('Bonjour {firstname},', {firstname: firstName}, domain: 'email') }}
+    </p>
 {% endif %}

@@ -4,18 +4,44 @@
 
 {% block mailContent %}
 
-    <p>{{ booking.establishment.name }} nous a signalé ton absence au rendez-vous suivant :</p>
+    <p>
+        {{ translate('{name} nous a signalé ton absence au rendez-vous suivant :', {name: booking.establishment.name}, domain: 'email') }}
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ booking.service }}</li>
-        <li style="{{ styles.item }}">{{ booking.day }} à {{ booking.time }}</li>
-        <li style="{{ styles.item }}">Référence : {{ booking.reference }}</li>
+        <li style="{{ styles.item }}">
+            {{ booking.service }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('{day} à {time}', {day: booking.day, time: booking.time}, domain: 'email') }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('Référence :', domain: 'email') }} {{ booking.reference }}
+        </li>
     </ul>
-    <p>Les créneaux Kréno sont libérés à la dernière minute : une absence fait perdre ce créneau à l’établissement et aux autres clients.</p>
+    <p>
+        {{ translate('Les créneaux Kréno sont libérés à la dernière minute : une absence fait perdre ce créneau à l\'établissement et aux autres clients.', domain: 'email') }}
+    </p>
     {% if suspended %}
-        <p>Comme ce n’est pas la première fois, ton compte est suspendu{% if suspendedUntil %} jusqu’au {{ suspendedUntil }}{% endif %}. Tu ne peux pas réserver pendant cette période.</p>
+        <p>
+            {% if suspendedUntil %}
+                {{ translate('Comme ce n’est pas la première fois, ton compte est suspendu jusqu’au {date}. Tu ne peux pas réserver pendant cette période.', {
+                    date: suspendedUntil
+                }, domain: 'email') }}
+            {% else %}
+                {{ translate('Comme ce n’est pas la première fois, ton compte est suspendu. Tu ne peux pas réserver pendant cette période.', domain: 'email') }}
+            {% endif %}
+        </p>
     {% else %}
-        <p>Attention : en cas de nouvelle absence, ton compte pourra être suspendu.</p>
+        <p>
+            {{ translate('Attention : en cas de nouvelle absence, ton compte pourra être suspendu.', domain: 'email') }}
+        </p>
     {% endif %}
-    <p>Tu étais bien présent ou tu avais prévenu ? Tu peux contester depuis <a href="{{ reportsUrl }}" style="{{ styles.link }}">tes signalements</a> ou nous écrire à {{ supportEmail }}.</p>
+    <p>
+        {{ translate('Tu étais bien présent ou tu avais prévenu ? Tu peux contester depuis {open}tes signalements{close} ou nous écrire à {email}.', {
+            open: '<a href="' ~ reportsUrl|e('html_attr') ~ '" style="' ~ styles.link|e('html_attr') ~ '">',
+            close: '</a>',
+            email: supportEmail|e
+        }, domain: 'email')|raw }}
+    </p>
 
 {% endblock %}

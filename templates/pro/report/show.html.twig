@@ -2,24 +2,38 @@
 
 {% set pro_section = 'reports' %}
 
-{% block title %}Signalement {{ report.reference }} · Espace pro{% endblock %}
+{% block title %}
+    {{ translate('Signalement {reference} · Espace pro', {reference: report.reference}) }}
+{% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
-            <a href="{{ path('pro_reports', { tab: received ? 'received' : 'mine' }) }}" class="pro-back">← Signalements · {{ report.reference }}</a>
-            <h1 class="pro-title">{{ report.title }}</h1>
+            <a href="{{ path('pro_reports', { tab: received ? 'received' : 'mine' }) }}" class="pro-back">
+                {{ translate('← Signalements') }} · {{ report.reference }}
+            </a>
+            <h1 class="pro-title">
+                {{ report.title }}
+            </h1>
         </div>
-        <span class="pro-badge{{ report.open ? ' pro-badge--pending' : '' }}">{{ report.status }}</span>
+        <span class="pro-badge{{ report.open ? ' pro-badge--pending' : '' }}">
+            {{ report.status }}
+        </span>
     </div>
 
     <div class="pro-columns">
         <section class="pro-card pro-columns__main">
-            <p class="report-item__detail">{{ report.detail }}</p>
+            <p class="report-item__detail">
+                {{ report.detail }}
+            </p>
             {% if report.booking %}
                 <dl class="pro-facts">
-                    <dt class="pro-facts__label">Réservation</dt>
-                    <dd class="pro-facts__value">{{ report.booking.reference }} · {{ report.booking.label }} · {{ report.booking.price }}</dd>
+                    <dt class="pro-facts__label">
+                        {{ translate('Réservation') }}
+                    </dt>
+                    <dd class="pro-facts__value">
+                        {{ report.booking.reference }} · {{ report.booking.label }} · {{ report.booking.price }}
+                    </dd>
                 </dl>
             {% endif %}
             {% if report.attachment and route_exists('pro_report_attachment') %}
@@ -29,39 +43,75 @@
                 </a>
             {% endif %}
             {% if report.resolution %}
-                <div class="pro-note"><b>Décision :</b> {{ report.resolution }}</div>
+                <div class="pro-note">
+                    <b>
+                        {{ translate('Décision :') }}
+                    </b>
+                    {{ report.resolution }}
+                </div>
             {% endif %}
 
-            <h2 class="settings-subtitle">Échanges</h2>
+            <h2 class="settings-subtitle">
+                {{ translate('Échanges') }}
+            </h2>
             {% for message in report.messages %}
                 <div class="report-message">
-                    <span class="report-message__head"><b>{{ message.author }}</b>{% if message.createdAt %}<span class="pro-row__meta">{{ message.createdAt|date('d/m/Y H:i') }}</span>{% endif %}</span>
-                    <p class="report-message__body">{{ message.body|nl2br }}</p>
+                    <span class="report-message__head">
+                        <b>
+                            {{ message.author }}
+                        </b>
+                        {% if message.createdAt %}
+                            <span class="pro-row__meta">
+                                {{ message.createdAt|date('d/m/Y H:i') }}
+                            </span>
+                        {% endif %}
+                    </span>
+                    <p class="report-message__body">
+                        {{ message.body|nl2br }}
+                    </p>
                 </div>
             {% else %}
-                <p class="pro-subtitle">Pas encore d'échange.</p>
+                <p class="pro-subtitle">
+                    {{ translate('Pas encore d\'échange.') }}
+                </p>
             {% endfor %}
         </section>
 
         <aside class="pro-card pro-columns__aside">
             {% if received and report.canAnswer %}
-                <h2 class="pro-card__title">Votre réponse</h2>
-                {% if report.replyRemaining %}<p class="pro-subtitle">Réponse attendue sous {{ report.replyRemaining }}. Sans réponse, l'équipe Kréno décide sur la base du signalement.</p>{% endif %}
+                <h2 class="pro-card__title">
+                    {{ translate('Votre réponse') }}
+                </h2>
+                {% if report.replyRemaining %}
+                    <p class="pro-subtitle">
+                        {{ translate('Réponse attendue sous {replyRemaining}. Sans réponse, l\'équipe Kréno décide sur la base du signalement.', {replyRemaining: report.replyRemaining}) }}
+                    </p>
+                {% endif %}
             {% elseif report.open %}
-                <h2 class="pro-card__title">Ajouter une précision</h2>
+                <h2 class="pro-card__title">
+                    {{ translate('Ajouter une précision') }}
+                </h2>
             {% else %}
-                <h2 class="pro-card__title">Signalement clos</h2>
-                <p class="pro-subtitle">Ce signalement est traité. Contactez l'équipe Kréno pour toute question.</p>
+                <h2 class="pro-card__title">
+                    {{ translate('Signalement clos') }}
+                </h2>
+                <p class="pro-subtitle">
+                    {{ translate('Ce signalement est traité. Contactez l\'équipe Kréno pour toute question.') }}
+                </p>
             {% endif %}
 
             {% if report.open %}
                 <form method="post" action="{{ path('pro_report_message', { id: report.id }) }}" class="pro-form">
                     {{ csrf_field('pro')|raw }}
                     <label class="pro-field">
-                        Message à l'équipe Kréno
+                        {{ translate('Message à l\'équipe Kréno') }}
                         <textarea name="body" rows="5" required minlength="2" maxlength="2000" class="pro-input pro-input--area"></textarea>
                     </label>
-                    <div><button type="submit" class="pro-button pro-button--primary">Envoyer</button></div>
+                    <div>
+                        <button type="submit" class="pro-button pro-button--primary">
+                            {{ translate('Envoyer') }}
+                        </button>
+                    </div>
                 </form>
             {% endif %}
         </aside>

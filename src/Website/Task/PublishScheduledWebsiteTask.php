@@ -7,7 +7,12 @@ use App\Website\Service\WebsiteVersionService;
 use DateTimeImmutable;
 use NeoPHP\Package\Scheduler\Attribute\AsScheduledTask;
 
-#[AsScheduledTask(cron: '* * * * *', name: 'website-publish-scheduled', withoutOverlapping: true, description: 'Met en ligne les versions du site planifiées')]
+#[AsScheduledTask(
+    cron: '* * * * *',
+    name: 'website-publish-scheduled',
+    withoutOverlapping: true,
+    description: 'Met en ligne les versions du site planifiées'
+)]
 final class PublishScheduledWebsiteTask
 {
     public function __invoke(WebsiteVersionService $versions): string

@@ -3,3 +3,7 @@ issuer:
     address: '%env(BILLING_ISSUER_ADDRESS)%'
     siren: '%env(BILLING_ISSUER_SIREN)%'
     vatNumber: '%env(BILLING_ISSUER_VAT)%'
+
+numbering:
+    invoice: '%env(BILLING_INVOICE_PREFIX)%'
+    credit_note: '%env(BILLING_CREDIT_NOTE_PREFIX)%'

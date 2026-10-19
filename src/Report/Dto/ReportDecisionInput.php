@@ -2,12 +2,13 @@
 
 namespace App\Report\Dto;
 
+use App\Report\Enum\ReportDecision;
 use NeoPHP\Component\Validator\Constraint as Assert;
 
 class ReportDecisionInput
 {
     #[Assert\NotBlank]
-    #[Assert\Choice(choices: ['dismiss', 'warn', 'suspend', 'resolve'])]
+    #[Assert\Choice(callback: [ReportDecision::class, 'values'])]
     public ?string $decision = null;
 
     #[Assert\NotBlank(message: 'Expliquez la décision : elle est envoyée aux deux parties.')]

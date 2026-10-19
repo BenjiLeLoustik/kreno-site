@@ -5,6 +5,7 @@ namespace App\Billing\Service;
 use App\Billing\Enum\SubscriptionStatus;
 use App\Billing\Event\PriceChangeAnnouncedEvent;
 use App\Billing\Event\PriceChangeCancelledEvent;
+use App\Billing\Exception\PriceChangeNoticeTooShortException;
 use App\Billing\Helper\PeriodHelper;
 use App\Entity\Company\CompanyPriceNotice;
 use App\Entity\Company\CompanySubscription;
@@ -14,7 +15,7 @@ use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Repository\Company\CompanyPriceNoticeRepository;
 use App\Repository\Company\CompanySubscriptionRepository;
-use App\Shared\Exception\BusinessRuleException;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PriceChangePolicy;
 use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
@@ -38,12 +39,7 @@ class PriceChangeNotifier
 
     public function changes(WebsiteConfig $version, DateTimeImmutable $goLiveAt): array
     {
-        $plans = [];
-
-        foreach ($version->getPlans() as $plan) {
-            $plans[$plan->getCode()] = $plan;
-        }
-
+        $plans = $this->plansByCode($version);
         $changes = [];
         $offset = 0;
 
@@ -52,7 +48,8 @@ class PriceChangeNotifier
             $offset += self::BATCH_SIZE;
 
             foreach ($batch as $subscription) {
-                $change = $this->changeFor($subscription, $plans[$subscription->getPlan()?->getCode()] ?? null, $version, $goLiveAt);
+                $plan = $plans[$subscription->getPlan()?->getCode()] ?? null;
+                $change = $this->changeFor($subscription, $plan, $version, $goLiveAt);
 
                 if ($change !== null) {
                     $changes[] = $change;
@@ -63,8 +60,11 @@ class PriceChangeNotifier
         return $changes;
     }
 
-    public function assertNotice(WebsiteConfig $version, DateTimeImmutable $goLiveAt, ?DateTimeImmutable $now = null): void
-    {
+    public function assertNotice(
+        WebsiteConfig $version,
+        DateTimeImmutable $goLiveAt,
+        ?DateTimeImmutable $now = null,
+    ): void {
         $now ??= new DateTimeImmutable();
         $days = $version->getPriceChangeNoticeDays();
 
@@ -72,35 +72,38 @@ class PriceChangeNotifier
             return;
         }
 
-        $increases = array_filter($this->changes($version, $goLiveAt), static fn (PriceChangeAnnouncedEvent $change): bool => $change->getNewPrice() > $change->getCurrentPrice());
+        $increases = $this->countIncreases($this->changes($version, $goLiveAt));
 
-        if ($increases !== []) {
-            throw new BusinessRuleException('La {code} augmente le prix de {count} abonnement(s) : sa mise en ligne doit être planifiée au moins {days} jours à l\'avance pour respecter le préavis.', [
-                'code' => $version->getCode(),
-                'count' => count($increases),
-                'days' => $days,
-            ]);
+        if ($increases > 0) {
+            throw new PriceChangeNoticeTooShortException((string) $version->getCode(), $increases, $days);
         }
     }
 
-    public function announce(WebsiteConfig $version, ?DateTimeImmutable $goLiveAt = null, ?DateTimeImmutable $now = null): int
-    {
+    public function announce(
+        WebsiteConfig $version,
+        ?DateTimeImmutable $goLiveAt = null,
+        ?DateTimeImmutable $now = null,
+    ): int {
         $now ??= new DateTimeImmutable();
         $pending = $this->pendingBySubscription($version, $now);
         $dispatch = [];
-        $counts = ['new' => 0, 'corrected' => 0, 'cancelled' => 0];
+        $counts = [
+            'new' => 0,
+            'corrected' => 0,
+            'cancelled' => 0
+        ];
 
         foreach ($this->changes($version, $goLiveAt ?? $version->getScheduledAt() ?? $now) as $change) {
-            $subscription = $change->getSubscription();
-            $notices = $pending[$subscription->getId()] ?? [];
-            unset($pending[$subscription->getId()]);
+            $subscriptionId = $change->getSubscription()->getId();
+            $notices = $pending[$subscriptionId] ?? [];
+            unset($pending[$subscriptionId]);
 
-            $reference = $notices !== [] ? $notices[array_key_last($notices)] : null;
+            $reference = $this->lastNotice($notices);
 
             if ($reference === null) {
                 $dispatch[] = $change;
                 ++$counts['new'];
-            } elseif ($reference->getNewPrice() !== $change->getNewPrice() || $reference->getEffectiveAt() != $change->getEffectiveAt()) {
+            } elseif ($this->differs($reference, $change)) {
                 $dispatch[] = $change->correct($reference->getNewPrice(), $reference->getEffectiveAt());
                 ++$counts['corrected'];
             }
@@ -114,14 +117,11 @@ class PriceChangeNotifier
         }
 
         if ($dispatch !== []) {
-            $this->logger->log(ActivityType::PRICING, sprintf('Annonce tarifaire : %d nouvelle(s), %d correction(s), %d annulation(s)', $counts['new'], $counts['corrected'], $counts['cancelled']), null, $version, $version, $counts);
+            $this->logAnnouncement($version, $counts);
         }
 
         $this->orm->flush();
-
-        foreach ($dispatch as $event) {
-            $this->events->dispatch($event);
-        }
+        $this->dispatchAll($dispatch);
 
         return count($dispatch);
     }
@@ -145,12 +145,70 @@ class PriceChangeNotifier
         }
 
         $this->orm->flush();
-
-        foreach ($dispatch as $event) {
-            $this->events->dispatch($event);
-        }
+        $this->dispatchAll($dispatch);
 
         return count($dispatch);
+    }
+
+    private function plansByCode(WebsiteConfig $version): array
+    {
+        $plans = [];
+
+        foreach ($version->getPlans() as $plan) {
+            $plans[$plan->getCode()] = $plan;
+        }
+
+        return $plans;
+    }
+
+    private function countIncreases(array $changes): int
+    {
+        $count = 0;
+
+        foreach ($changes as $change) {
+            if ($change->getNewPrice() > $change->getCurrentPrice()) {
+                ++$count;
+            }
+        }
+
+        return $count;
+    }
+
+    private function lastNotice(array $notices): ?CompanyPriceNotice
+    {
+        if ($notices === []) {
+            return null;
+        }
+
+        return $notices[array_key_last($notices)];
+    }
+
+    private function differs(CompanyPriceNotice $notice, PriceChangeAnnouncedEvent $change): bool
+    {
+        if ($notice->getNewPrice() !== $change->getNewPrice()) {
+            return true;
+        }
+
+        return $notice->getEffectiveAt() != $change->getEffectiveAt();
+    }
+
+    private function logAnnouncement(WebsiteConfig $version, array $counts): void
+    {
+        $message = sprintf(
+            Translation::translate('Annonce tarifaire : %d nouvelle(s), %d correction(s), %d annulation(s)'),
+            $counts['new'],
+            $counts['corrected'],
+            $counts['cancelled'],
+        );
+
+        $this->logger->log(ActivityType::PRICING, $message, null, $version, $version, $counts);
+    }
+
+    private function dispatchAll(array $events): void
+    {
+        foreach ($events as $event) {
+            $this->events->dispatch($event);
+        }
     }
 
     private function pendingBySubscription(WebsiteConfig $version, DateTimeImmutable $now): array
@@ -192,7 +250,11 @@ class PriceChangeNotifier
     private function cancel(array $notices): PriceChangeCancelledEvent
     {
         $reference = $notices[array_key_last($notices)];
-        $event = new PriceChangeCancelledEvent($reference->getSubscription(), $reference->getNewPrice(), $reference->getEffectiveAt());
+        $event = new PriceChangeCancelledEvent(
+            $reference->getSubscription(),
+            $reference->getNewPrice(),
+            $reference->getEffectiveAt(),
+        );
 
         foreach ($notices as $notice) {
             $this->orm->remove($notice);
@@ -201,29 +263,48 @@ class PriceChangeNotifier
         return $event;
     }
 
-    private function changeFor(CompanySubscription $subscription, ?WebsitePlan $plan, WebsiteConfig $version, DateTimeImmutable $goLiveAt): ?PriceChangeAnnouncedEvent
-    {
-        if ($plan === null || $plan === $subscription->getPlan() || $subscription->getStatus() === SubscriptionStatus::PENDING) {
+    private function changeFor(
+        CompanySubscription $subscription,
+        ?WebsitePlan $plan,
+        WebsiteConfig $version,
+        DateTimeImmutable $goLiveAt,
+    ): ?PriceChangeAnnouncedEvent {
+        if ($plan === null || $plan === $subscription->getPlan()) {
             return null;
         }
 
+        if ($subscription->getStatus() === SubscriptionStatus::PENDING) {
+            return null;
+        }
+
+        $currentPrice = $subscription->getUnitPrice();
         $newPrice = $this->prices->planPrice($plan, $subscription->getPeriod());
 
-        if ($newPrice === $subscription->getUnitPrice()) {
+        if ($newPrice === $currentPrice) {
             return null;
         }
 
         $effectiveAt = $this->effectiveAt($subscription, $version, $goLiveAt);
 
-        if ($effectiveAt === null || ($subscription->getCancelAt() !== null && $subscription->getCancelAt() <= $effectiveAt)) {
+        if ($effectiveAt === null || $this->endsBefore($subscription, $effectiveAt)) {
             return null;
         }
 
-        return new PriceChangeAnnouncedEvent($subscription, $plan, $subscription->getUnitPrice(), $newPrice, $effectiveAt);
+        return new PriceChangeAnnouncedEvent($subscription, $plan, $currentPrice, $newPrice, $effectiveAt);
     }
 
-    private function effectiveAt(CompanySubscription $subscription, WebsiteConfig $version, DateTimeImmutable $goLiveAt): ?DateTimeImmutable
+    private function endsBefore(CompanySubscription $subscription, DateTimeImmutable $date): bool
     {
+        $cancelAt = $subscription->getCancelAt();
+
+        return $cancelAt !== null && $cancelAt <= $date;
+    }
+
+    private function effectiveAt(
+        CompanySubscription $subscription,
+        WebsiteConfig $version,
+        DateTimeImmutable $goLiveAt,
+    ): ?DateTimeImmutable {
         $end = $subscription->getCurrentPeriodEnd();
 
         if ($end === null) {
@@ -231,9 +312,10 @@ class PriceChangeNotifier
         }
 
         $threshold = $goLiveAt;
+        $startedAt = $subscription->getStartedAt();
 
-        if ($version->getPriceChangePolicy() === PriceChangePolicy::KEEP_TWELVE_MONTHS && $subscription->getStartedAt() !== null) {
-            $threshold = max($threshold, $subscription->getStartedAt()->modify('+12 months'));
+        if ($version->getPriceChangePolicy() === PriceChangePolicy::KEEP_TWELVE_MONTHS && $startedAt !== null) {
+            $threshold = max($threshold, $startedAt->modify('+12 months'));
         }
 
         while ($end < $threshold) {

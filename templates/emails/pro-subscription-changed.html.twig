@@ -4,20 +4,48 @@
 
 {% block mailContent %}
 
-    <p>Votre nouvelle formule est active pour {{ company }}.</p>
+    <p>
+        Votre nouvelle formule est active pour {{ company }}.
+        {{ translate('Votre nouvelle formule est active pour {company}', {company: company}, domain: 'email') }}
+    </p>
     <ul style="{{ styles.list }}">
         {% if previous %}
-            <li style="{{ styles.item }}">Ancienne formule : {{ previous.plan }} ({{ previous.price }} HT, {{ previous.period|lower }})</li>
+            <li style="{{ styles.item }}">
+                {{ translate('Ancienne formule : {plan} ({price} HT, {period}', {
+                    plan: previous.plan
+                    price: previous.price,
+                    period: previous.period|lower
+                }, domain: 'email') }}
+            </li>
         {% endif %}
-        <li style="{{ styles.item }}">Nouvelle formule : {{ subscription.plan }} ({{ subscription.price }} HT, {{ subscription.period|lower }})</li>
+        <li style="{{ styles.item }}">
+            {{ translate('Nouvelle formule : {plan} ({price}) HT, {period}', {
+                plan: subscription.plan,
+                price: subscription.price,
+                period: subscription.period|lower
+            }, domain: 'email') }}
+        </li>
         {% if subscription.periodEnd %}
-            <li style="{{ styles.item }}">Prochaine échéance : {{ subscription.periodEnd }}</li>
+            <li style="{{ styles.item }}">
+                {{ translate('Prochaine échéance :', domain: 'email') }} {{ subscription.periodEnd }}
+            </li>
         {% endif %}
     </ul>
     {% if changedBy %}
-        <p>Changement effectué par {{ changedBy }}.</p>
+        <p>
+            {{ translate('Changement effectué par {changedBy}.', {changedBy: changedBy}, domain: 'email') }}
+        </p>
     {% endif %}
-    <p>Un éventuel ajustement au prorata apparaîtra sur votre prochaine facture.</p>
-    <p style="{{ styles.actions }}"><a href="{{ subscription.url }}" style="{{ styles.button }}">Mon abonnement</a><a href="{{ billingUrl }}" style="{{ styles.buttonSecondary }}">Facturation</a></p>
+    <p>
+        {{ translate('Un éventuel ajustement au prorata apparaîtra sur votre prochaine facture.', domain: 'email') }}
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ subscription.url }}" style="{{ styles.button }}">
+            {{ translate('Mon abonnement', domain: 'email') }}
+        </a>
+        <a href="{{ billingUrl }}" style="{{ styles.buttonSecondary }}">
+            {{ translate('Facturation', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

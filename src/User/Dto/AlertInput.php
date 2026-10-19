@@ -2,6 +2,7 @@
 
 namespace App\User\Dto;
 
+use App\Shared\Helper\ValidationPattern;
 use NeoPHP\Component\Validator\Constraint as Assert;
 
 class AlertInput
@@ -20,10 +21,10 @@ class AlertInput
     #[Assert\Range(min: 1, max: 30)]
     public ?int $radiusKm = null;
 
-    #[Assert\Regex(pattern: '/^([01]\d|2[0-3]):[0-5]\d$/')]
+    #[Assert\Regex(pattern: ValidationPattern::TIME)]
     public ?string $startTime = null;
 
-    #[Assert\Regex(pattern: '/^([01]\d|2[0-3]):[0-5]\d$/')]
+    #[Assert\Regex(pattern: ValidationPattern::TIME)]
     public ?string $endTime = null;
 
     #[Assert\PositiveOrZero]

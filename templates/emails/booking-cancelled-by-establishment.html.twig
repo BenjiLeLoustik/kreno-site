@@ -4,24 +4,53 @@
 
 {% block mailContent %}
 
-    <p>Désolés : {{ booking.establishment.name }} a dû annuler ton rendez-vous.</p>
+    <p>
+        {{ translate('Désolés : {name} a dû annuler ton rendez-vous.', {name: booking.establishment.name}, domain: 'email') }}
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">{{ booking.service }}</li>
-        <li style="{{ styles.item }}">{{ booking.day }} à {{ booking.time }}</li>
-        <li style="{{ styles.item }}">Référence : {{ booking.reference }}</li>
+        <li style="{{ styles.item }}">
+            {{ booking.service }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ booking.day }} à {{ booking.time }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('Référence :', domain: 'email') }} {{ booking.reference }}
+        </li>
     </ul>
     {% if booking.cancellationReason %}
-        <p>Message de l’établissement : « {{ booking.cancellationReason }} »</p>
+        <p>
+            {{ translate('Message de l’établissement :', domain: 'email') }} « {{ booking.cancellationReason }} »
+        </p>
     {% endif %}
-    <p>Rien ne t’a été facturé.</p>
+    <p>
+        {{ translate('Rien ne t’a été facturé.', domain: 'email') }}
+    </p>
     {% if alternatives is not empty %}
-        <p>Ces créneaux pourraient te plaire :</p>
+        <p>
+            {{ translate('Ces créneaux pourraient te plaire :', domain: 'email') }}
+        </p>
         <ul style="{{ styles.list }}">
             {% for slot in alternatives %}
-                <li style="{{ styles.item }}"><a href="{{ slot.url }}" style="{{ styles.link }}">{{ slot.establishment.name }} · {{ slot.service }}, {{ slot.day }} à {{ slot.time }}, {{ slot.price }} ({{ slot.discount }})</a></li>
+                <li style="{{ styles.item }}">
+                    <a href="{{ slot.url }}" style="{{ styles.link }}">
+                        {{ translate('{establishment} · {service}, {day} à {time}, {price} ({discount})', {
+                            establishment: slot.establishment.name,
+                            service: slot.service,
+                            day: slot.day,
+                            time: slot.time,
+                            price: slot.price,
+                            discount: slot.discount
+                        }, domain: 'email') }}
+                    </a>
+                </li>
             {% endfor %}
         </ul>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ homeUrl }}" style="{{ styles.button }}">Voir tous les créneaux du moment</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ homeUrl }}" style="{{ styles.button }}">
+            {{ translate('Voir tous les créneaux du moment', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

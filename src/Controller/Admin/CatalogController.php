@@ -5,16 +5,12 @@ namespace App\Controller\Admin;
 use App\Catalog\Dto\CategoryInput;
 use App\Catalog\Dto\CityInput;
 use App\Catalog\Dto\PositionsInput;
-use App\Catalog\Presenter\CategoryPresenter;
-use App\Catalog\Presenter\CityPresenter;
+use App\Catalog\Dto\ServiceSuggestionInput;
+use App\Catalog\Enum\CatalogFlash;
+use App\Catalog\Provider\AdminCatalogPageProvider;
 use App\Catalog\Service\CategoryService;
 use App\Catalog\Service\CityService;
-use App\Entity\Category;
-use App\Entity\City;
-use App\Enum\City\CityStatus;
-use App\Repository\CategoryRepository;
-use App\Repository\CityRepository;
-use App\Repository\Company\CompanyEstablishmentRepository;
+use App\Catalog\Service\ServiceSuggestionService;
 use NeoPHP\Component\Csrf\Attribute\Csrf;
 use NeoPHP\Component\Http\Response\RedirectResponse;
 use NeoPHP\Component\Http\Response\Response;
@@ -24,13 +20,10 @@ use NeoPHP\Component\Serializer\Attribute\MapRequestPayload;
 class CatalogController extends AbstractAdminController
 {
     public function __construct(
-        private CityRepository $cities,
-        private CategoryRepository $categories,
-        private CompanyEstablishmentRepository $establishments,
         private CityService $cityService,
         private CategoryService $categoryService,
-        private CityPresenter $cityPresenter,
-        private CategoryPresenter $categoryPresenter,
+        private ServiceSuggestionService $suggestionService,
+        private AdminCatalogPageProvider $pages,
     ) {
     }
 
@@ -39,15 +32,7 @@ class CatalogController extends AbstractAdminController
     {
         $this->currentAdmin();
 
-        return $this->render('admin/catalog/index.html.twig', [
-            'categories' => array_map(fn (Category $category): array => $this->categoryPresenter->detail($category) + [
-                    'establishmentsCount' => $this->establishments->countByCategory($category),
-                ], $this->categories->findAllForAdmin()),
-            'cities' => array_map(fn (City $city): array => $this->cityPresenter->detail($city) + [
-                    'establishmentsCount' => $this->establishments->countByCity($city),
-                ], $this->cities->findAllForAdmin()),
-            'cityStatuses' => array_map(static fn (CityStatus $status): array => ['value' => $status->value, 'label' => $status->label()], CityStatus::cases()),
-        ]);
+        return $this->render('admin/catalog/index.html.twig', $this->pages->index());
     }
 
     #[Csrf('admin_catalog')]
@@ -57,10 +42,13 @@ class CatalogController extends AbstractAdminController
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->categoryService->create($input, $admin), sprintf('Catégorie « %s » ajoutée.', $input->name));
+            $this->attempt(
+                fn () => $this->categoryService->create($input, $admin),
+                CatalogFlash::CATEGORY_CREATED->text($input->name),
+            );
         }
 
-        return $this->back();
+        return $this->redirectToRoute('admin_catalog_index');
     }
 
     #[Csrf('admin_catalog')]
@@ -70,36 +58,51 @@ class CatalogController extends AbstractAdminController
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->categoryService->reorder($input->slugs, $admin), 'Ordre des catégories enregistré.');
+            $this->attempt(
+                fn () => $this->categoryService->reorder($input->slugs, $admin),
+                CatalogFlash::CATEGORIES_REORDERED->text(),
+            );
         }
 
-        return $this->back();
+        return $this->redirectToRoute('admin_catalog_index');
     }
 
     #[Csrf('admin_catalog')]
     #[Route('/admin/catalog/categories/{slug}', name: 'admin_catalog_category_update', methods: ['POST'])]
-    public function updateCategory(string $slug, #[MapRequestPayload(validate: false)] CategoryInput $input): RedirectResponse
-    {
+    public function updateCategory(
+        string $slug,
+        #[MapRequestPayload(validate: false)] CategoryInput $input,
+    ): RedirectResponse {
         $admin = $this->currentAdmin();
-        $category = $this->findCategory($slug);
+        $category = $this->pages->category($slug);
 
         if (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->categoryService->update($category, $input, $admin), sprintf('Catégorie « %s » modifiée.', $category->getName()));
+            $this->attempt(
+                fn () => $this->categoryService->update($category, $input, $admin),
+                CatalogFlash::CATEGORY_UPDATED->text($category->getName()),
+            );
         }
 
-        return $this->back();
+        return $this->redirectToRoute('admin_catalog_index');
     }
 
     #[Csrf('admin_catalog')]
-    #[Route('/admin/catalog/categories/{slug}/visibility', name: 'admin_catalog_category_visibility', methods: ['POST'])]
+    #[Route(
+        '/admin/catalog/categories/{slug}/visibility',
+        name: 'admin_catalog_category_visibility',
+        methods: ['POST'],
+    )]
     public function toggleCategory(string $slug): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $category = $this->findCategory($slug);
+        $category = $this->pages->category($slug);
         $visible = !$category->isVisible();
-        $this->attempt(fn () => $this->categoryService->setVisible($category, $visible, $admin), sprintf('Catégorie « %s » %s.', $category->getName(), $visible ? 'visible' : 'masquée'));
+        $this->attempt(
+            fn () => $this->categoryService->setVisible($category, $visible, $admin),
+            CatalogFlash::categoryVisibility($visible)->text($category->getName()),
+        );
 
-        return $this->back();
+        return $this->redirectToRoute('admin_catalog_index');
     }
 
     #[Csrf('admin_catalog')]
@@ -107,11 +110,79 @@ class CatalogController extends AbstractAdminController
     public function deleteCategory(string $slug): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $category = $this->findCategory($slug);
-        $name = $category->getName();
-        $this->attempt(fn () => $this->categoryService->delete($category, $admin), sprintf('Catégorie « %s » supprimée.', $name));
+        $category = $this->pages->category($slug);
+        $this->attempt(
+            fn () => $this->categoryService->delete($category, $admin),
+            CatalogFlash::CATEGORY_DELETED->text($category->getName()),
+        );
 
-        return $this->back();
+        return $this->redirectToRoute('admin_catalog_index');
+    }
+
+    #[Csrf('admin_catalog')]
+    #[Route(
+        '/admin/catalog/categories/{slug}/suggestions',
+        name: 'admin_catalog_suggestion_create',
+        methods: ['POST'],
+    )]
+    public function createSuggestion(
+        string $slug,
+        #[MapRequestPayload(validate: false)] ServiceSuggestionInput $input,
+    ): RedirectResponse {
+        $admin = $this->currentAdmin();
+        $category = $this->pages->category($slug);
+
+        if (!$this->invalid($input)) {
+            $this->attempt(
+                fn () => $this->suggestionService->add($category, $input, $admin),
+                CatalogFlash::SUGGESTION_CREATED->text($input->name),
+            );
+        }
+
+        return $this->redirectToRoute('admin_catalog_index');
+    }
+
+    #[Csrf('admin_catalog')]
+    #[Route(
+        '/admin/catalog/suggestions/{id}',
+        name: 'admin_catalog_suggestion_update',
+        methods: ['POST'],
+        requirements: ['id' => '\d+'],
+    )]
+    public function updateSuggestion(
+        int $id,
+        #[MapRequestPayload(validate: false)] ServiceSuggestionInput $input,
+    ): RedirectResponse {
+        $admin = $this->currentAdmin();
+        $suggestion = $this->pages->suggestion($id);
+
+        if (!$this->invalid($input)) {
+            $this->attempt(
+                fn () => $this->suggestionService->update($suggestion, $input, $admin),
+                CatalogFlash::SUGGESTION_UPDATED->text($input->name),
+            );
+        }
+
+        return $this->redirectToRoute('admin_catalog_index');
+    }
+
+    #[Csrf('admin_catalog')]
+    #[Route(
+        '/admin/catalog/suggestions/{id}/delete',
+        name: 'admin_catalog_suggestion_delete',
+        methods: ['POST'],
+        requirements: ['id' => '\d+'],
+    )]
+    public function deleteSuggestion(int $id): RedirectResponse
+    {
+        $admin = $this->currentAdmin();
+        $suggestion = $this->pages->suggestion($id);
+        $this->attempt(
+            fn () => $this->suggestionService->delete($suggestion, $admin),
+            CatalogFlash::SUGGESTION_DELETED->text($suggestion->getName()),
+        );
+
+        return $this->redirectToRoute('admin_catalog_index');
     }
 
     #[Csrf('admin_catalog')]
@@ -121,10 +192,13 @@ class CatalogController extends AbstractAdminController
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->cityService->create($input, $admin), sprintf('Ville « %s » ajoutée.', $input->name));
+            $this->attempt(
+                fn () => $this->cityService->create($input, $admin),
+                CatalogFlash::CITY_CREATED->text($input->name),
+            );
         }
 
-        return $this->back();
+        return $this->redirectToRoute('admin_catalog_index');
     }
 
     #[Csrf('admin_catalog')]
@@ -134,10 +208,13 @@ class CatalogController extends AbstractAdminController
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->cityService->reorder($input->slugs, $admin), 'Ordre des villes enregistré.');
+            $this->attempt(
+                fn () => $this->cityService->reorder($input->slugs, $admin),
+                CatalogFlash::CITIES_REORDERED->text(),
+            );
         }
 
-        return $this->back();
+        return $this->redirectToRoute('admin_catalog_index');
     }
 
     #[Csrf('admin_catalog')]
@@ -145,13 +222,16 @@ class CatalogController extends AbstractAdminController
     public function updateCity(string $slug, #[MapRequestPayload(validate: false)] CityInput $input): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $city = $this->findCity($slug);
+        $city = $this->pages->city($slug);
 
         if (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->cityService->update($city, $input, $admin), sprintf('Ville « %s » modifiée.', $city->getName()));
+            $this->attempt(
+                fn () => $this->cityService->update($city, $input, $admin),
+                CatalogFlash::CITY_UPDATED->text($city->getName()),
+            );
         }
 
-        return $this->back();
+        return $this->redirectToRoute('admin_catalog_index');
     }
 
     #[Csrf('admin_catalog')]
@@ -159,11 +239,14 @@ class CatalogController extends AbstractAdminController
     public function updateCityStatus(string $slug, string $status): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $city = $this->findCity($slug);
-        $newStatus = CityStatus::tryFrom($status) ?? throw $this->createNotFoundException('Statut {status} inconnu.', ['status' => $status]);
-        $this->attempt(fn () => $this->cityService->updateStatus($city, $newStatus, $admin), sprintf('%s : %s.', $city->getName(), mb_strtolower($newStatus->label())));
+        $city = $this->pages->city($slug);
+        $newStatus = $this->pages->cityStatus($status);
+        $this->attempt(
+            fn () => $this->cityService->updateStatus($city, $newStatus, $admin),
+            CatalogFlash::cityStatus($city->getName(), $newStatus),
+        );
 
-        return $this->back();
+        return $this->redirectToRoute('admin_catalog_index');
     }
 
     #[Csrf('admin_catalog')]
@@ -171,25 +254,12 @@ class CatalogController extends AbstractAdminController
     public function deleteCity(string $slug): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $city = $this->findCity($slug);
-        $name = $city->getName();
-        $this->attempt(fn () => $this->cityService->delete($city, $admin), sprintf('Ville « %s » supprimée.', $name));
+        $city = $this->pages->city($slug);
+        $this->attempt(
+            fn () => $this->cityService->delete($city, $admin),
+            CatalogFlash::CITY_DELETED->text($city->getName()),
+        );
 
-        return $this->back();
-    }
-
-    private function back(): RedirectResponse
-    {
         return $this->redirectToRoute('admin_catalog_index');
-    }
-
-    private function findCategory(string $slug): Category
-    {
-        return $this->categories->findOneBySlug($slug) ?? throw $this->createNotFoundException('La catégorie {slug} n\'existe pas.', ['slug' => $slug]);
-    }
-
-    private function findCity(string $slug): City
-    {
-        return $this->cities->findOneBySlug($slug) ?? throw $this->createNotFoundException('La ville {slug} n\'existe pas.', ['slug' => $slug]);
     }
 }

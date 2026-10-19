@@ -91,6 +91,10 @@
         @apply flex flex-col gap-1 rounded-[14px] bg-[#DDF7EC] p-[18px] text-mint-ink;
     }
 
+    .help-contact__follow {
+        @apply mt-1 font-semibold text-mint-ink;
+    }
+
     .help-form {
         @apply flex flex-col gap-3;
     }

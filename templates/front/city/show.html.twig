@@ -1,39 +1,72 @@
 {% extends 'layouts/front.html.twig' %}
 
-{% set label = category ? category.name ~ ' à ' ~ city.name : 'Créneaux libérés à ' ~ city.name %}
+{% if category %}
+    {% set label = translate('{category} à {city}', {category: category.name, city: city.name}) %}
+{% else %}
+    {% set label = translate('Créneaux libérés à {city}', {city: city.name}) %}
+{% endif %}
+
 {% set route = category ? 'city_category_show' : 'city_show' %}
 {% set parameters = category ? { city: city.slug, category: category.slug } : { slug: city.slug } %}
 
-{% block title %}{{ label }} : les créneaux libérés du jour · Kréno{% endblock %}
+{% block title %}
+    {{ translate('{label} : les créneaux libérés du jour · Kréno', {label: label}) }}
+{% endblock %}
 
-{% block meta_description %}{{ category ? category.name ~ ' à ' ~ city.name : 'Coiffeurs, esthéticiennes, ostéos, garages à ' ~ city.name }} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.{% endblock %}
+{% block meta_description %}
+    {% if category %}
+        {% set description = translate('{categoryName} à {cityName} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.', {
+            categoryName: category.name,
+            cityName: city.name
+        }) %}
+    {% else %}
+        {% set description = translate('Coiffeurs, esthéticiennes, ostéos, garages… à {cityName} : les rendez-vous annulés remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.', {
+            cityName: city.name
+        }) %}
+    {% endif %}
+{% endblock %}
 
 {% block header_class %}site-header--compact{% endblock %}
 
 {% block content %}
     <section class="city-hero">
-        {% include 'components/breadcrumb.html.twig' with { items: breadcrumb } %}
-        <h1 class="city-hero__title">{{ label }} : les créneaux libérés du jour</h1>
+        {% include 'components/breadcrumb.html.twig' with {
+            items: breadcrumb
+        } %}
+        <h1 class="city-hero__title">
+            {{ translate('{label} : les créneaux libérés du jour', {label: label}) }}
+        </h1>
         <p class="city-hero__lead">
             {% if category %}
-                Des rendez-vous annulés en {{ category.name|lower }} à {{ city.name }}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.
+                {{ translate('Des rendez-vous annulés en {category} à {city}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.', {
+                    category: category.name|lower,
+                    city: city.name
+                }) }}
             {% else %}
-                Coiffeurs, esthéticiennes, ostéos, garages : les rendez-vous annulés à {{ city.name }}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.
+                {{ translate('Coiffeurs, esthéticiennes, ostéos, garages : les rendez-vous annulés à {city}, remis en ligne à prix réduit. Réservation en deux clics, paiement sur place.', {
+                    city: city.name
+                }) }}
             {% endif %}
         </p>
 
         {% if page.districts|length > 1 %}
             <nav class="chip-list" aria-label="Quartiers">
-                <a href="{{ path(route, parameters) }}" class="chip{{ page.district is null ? ' chip--active' : '' }}"{{ page.district is null ? ' aria-current="true"' : '' }}>Tout {{ city.name }}</a>
+                <a href="{{ path(route, parameters) }}" class="chip{{ page.district is null ? ' chip--active' : '' }}"{{ page.district is null ? ' aria-current="true"' : '' }}>
+                    Tout {{ city.name }}
+                </a>
                 {% for district in page.districts %}
-                    <a href="{{ path(route, parameters|merge({ district: district })) }}" class="chip{{ page.district == district ? ' chip--active' : '' }}"{{ page.district == district ? ' aria-current="true"' : '' }}>{{ district }}</a>
+                    <a href="{{ path(route, parameters|merge({ district: district })) }}" class="chip{{ page.district == district ? ' chip--active' : '' }}"{{ page.district == district ? ' aria-current="true"' : '' }}>
+                        {{ district }}
+                    </a>
                 {% endfor %}
             </nav>
         {% endif %}
     </section>
 
     <section class="city-slots">
-        <h2 class="city-section-title">{{ page.count }} créneau{{ page.count > 1 ? 'x' : '' }} libre{{ page.count > 1 ? 's' : '' }} en ce moment</h2>
+        <h2 class="city-section-title">
+            {{ translate('{count, plural, one {# créneau libre en ce moment} other {# créneaux libres en ce moment}}', {count: page.count}) }}
+        </h2>
         {% if page.slots is not empty %}
             <div class="city-slots__grid">
                 {% for slot in page.slots %}
@@ -41,12 +74,22 @@
                 {% endfor %}
             </div>
             {% if page.count > page.slots|length %}
-                <a href="{{ path('search_index', { where: city.slug, what: category ? category.slug : null }|filter(value => value is not null)) }}" class="btn btn--outline city-slots__more">Voir les {{ page.count }} créneaux</a>
+                <a href="{{ path('search_index', { where: city.slug, what: category ? category.slug : null }|filter(value => value is not null)) }}" class="btn btn--outline city-slots__more">
+                    {{ translate('Voir les {count} créneaux', {count: page.count}) }}
+                </a>
             {% endif %}
         {% else %}
             <div class="city-slots__empty">
-                <b>Aucun créneau libre pour le moment</b>
-                <span class="city-slots__empty-text">Les créneaux partent vite. <a href="{{ path('account_alerts') }}">Crée une alerte</a> pour être prévenu dès qu'un pro en libère un.</span>
+                <b>
+                    {{ translate('Aucun créneau libre pour le moment') }}
+                </b>
+                <span class="city-slots__empty-text">
+                    Les créneaux partent vite.
+                    <a href="{{ path('account_alerts') }}">
+                        {{ translate('Crée une alerte') }}
+                    </a>
+                    {{ translate('pour être prévenu dès qu\'un pro en libère un.') }}
+                </span>
             </div>
         {% endif %}
     </section>
@@ -54,10 +97,22 @@
     {% if page.shops is not empty %}
         <section class="city-shops">
             <div class="city-shops__inner">
-                <h2 class="city-section-title">Partenaires{{ category ? ' ' ~ category.name|lower : '' }} à {{ city.name }}</h2>
+                <h2 class="city-section-title">
+                    {% if category %}
+                        {{ translate('Partenaires {category} à {city}', {
+                            category: category.name|lower,
+                            city: city.name
+                        }) }}
+                    {% else %}
+                        {{ translate('Partenaires à {city}', {city: city.name}) }}
+                    {% endif %}
+                </h2>
                 <div class="city-shops__grid">
                     {% for shop in page.shops %}
-                        {% include 'components/shop_tile.html.twig' with { shop: shop, showCategory: category is null } %}
+                        {% include 'components/shop_tile.html.twig' with {
+                            shop: shop,
+                            showCategory: category is null
+                        } %}
                     {% endfor %}
                 </div>
             </div>
@@ -66,21 +121,38 @@
 
     <section class="city-more">
         <div class="city-more__block">
-            <h2 class="city-section-title">Pourquoi des créneaux moins chers ?</h2>
-            <p class="city-more__text">Quand un client annule, le professionnel préfère accueillir quelqu'un à prix réduit plutôt que de perdre l'heure. Tu profites du même service, au même endroit, moins cher.</p>
+            <h2 class="city-section-title">
+                {{ translate('Pourquoi des créneaux moins chers ?') }}
+            </h2>
+            <p class="city-more__text">
+                {{ translate('Quand un client annule, le professionnel préfère accueillir quelqu\'un à prix réduit plutôt que de perdre l\'heure. Tu profites du même service, au même endroit, moins cher.') }}
+            </p>
         </div>
         <div class="city-more__block">
-            <h2 class="city-section-title">{{ category ? 'Autres catégories' : 'Catégories' }} à {{ city.name }}</h2>
+            <h2 class="city-section-title">
+                {% if category %}
+                    {{ translate('Autres catégories') }}
+                {% else %}
+                    {{ translate('Catégories') }}
+                {% endif %}
+                à {{ city.name }}
+            </h2>
             <div class="chip-list">
                 {% for item in categories|filter(item => not item.current) %}
-                    <a href="{{ path('city_category_show', { city: city.slug, category: item.slug }) }}" class="chip">{{ item.name }}</a>
+                    <a href="{{ path('city_category_show', { city: city.slug, category: item.slug }) }}" class="chip">
+                        {{ item.name }}
+                    </a>
                 {% endfor %}
             </div>
             {% if otherCities is not empty %}
-                <h2 class="city-section-title city-more__subtitle">Autres villes</h2>
+                <h2 class="city-section-title city-more__subtitle">
+                    {{ translate('Autres villes') }}
+                </h2>
                 <div class="chip-list">
                     {% for other in otherCities %}
-                        <a href="{{ category ? path('city_category_show', { city: other.slug, category: category.slug }) : path('city_show', { slug: other.slug }) }}" class="chip">{{ other.name }}</a>
+                        <a href="{{ category ? path('city_category_show', { city: other.slug, category: category.slug }) : path('city_show', { slug: other.slug }) }}" class="chip">
+                            {{ other.name }}
+                        </a>
                     {% endfor %}
                 </div>
             {% endif %}

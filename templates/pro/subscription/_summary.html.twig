@@ -1,40 +1,89 @@
-{% set tones = { active: 'online', pending: 'pending', past_due: 'noshow', paused: 'pending', canceled: 'default' } %}
+{% set tones = {
+    active: 'online',
+    pending: 'pending',
+    past_due: 'noshow',
+    paused: 'pending',
+    canceled: 'default'
+} %}
+
 <div class="pro-card__head">
     <span class="billing-plan">
-        <span class="pro-stat__label">Formule actuelle</span>
-        <b class="billing-plan__name">{{ subscription.plan.name ?? '—' }}</b>
-        <span class="pro-row__meta">{{ subscription.priceLine }}{% if not subscription.plan.perBooking %} · {{ subscription.periodLabel|lower }} · {{ subscription.commitment }}{% endif %}</span>
+        <span class="pro-stat__label">
+            {{ translate('Formule actuelle') }}
+        </span>
+        <b class="billing-plan__name">
+            {{ subscription.plan.name ?? '-' }}
+        </b>
+        <span class="pro-row__meta">
+            {{ subscription.priceLine }}
+            {% if not subscription.plan.perBooking %}
+                · {{ subscription.periodLabel|lower }} · {{ subscription.commitment }}
+            {% endif %}
+        </span>
     </span>
-    <span class="pro-badge pro-badge--{{ tones[subscription.status] ?? 'default' }}">{{ subscription.statusLabel }}</span>
+    <span class="pro-badge pro-badge--{{ tones[subscription.status] ?? 'default' }}">
+        {{ subscription.statusLabel }}
+    </span>
 </div>
 <dl class="pro-facts">
     {% if subscription.nextInvoice %}
-        <dt class="pro-facts__label">Prochaine facture</dt>
-        <dd class="pro-facts__value">{{ subscription.nextInvoice.amount }} le {{ subscription.nextInvoice.date }}</dd>
+        <dt class="pro-facts__label">
+            {{ translate('Prochaine facture') }}
+        </dt>
+        <dd class="pro-facts__value">
+            {{ translate('{amount} le {date}', { amount: subscription.nextInvoice.amount, date: subscription.nextInvoice.date }) }}
+        </dd>
     {% elseif subscription.nextDate and not subscription.plan.perBooking %}
-        <dt class="pro-facts__label">Fin de période</dt>
-        <dd class="pro-facts__value">{{ subscription.nextDate }}</dd>
+        <dt class="pro-facts__label">
+            {{ translate('Fin de période') }}
+        </dt>
+        <dd class="pro-facts__value">
+            {{ subscription.nextDate }}
+        </dd>
     {% endif %}
     {% if subscription.plan.perBooking %}
-        <dt class="pro-facts__label">Facturation</dt>
-        <dd class="pro-facts__value">En fin de mois, selon les créneaux réservés</dd>
+        <dt class="pro-facts__label">
+            {{ translate('Facturation') }}
+        </dt>
+        <dd class="pro-facts__value">
+            {{ translate('En fin de mois, selon les créneaux réservés') }}
+        </dd>
     {% endif %}
-    <dt class="pro-facts__label">Établissements</dt>
-    <dd class="pro-facts__value">{{ subscription.establishments.total }}{% if subscription.establishments.uncovered > 0 %} · {{ subscription.establishments.uncovered }} hors formule{% endif %}</dd>
+    <dt class="pro-facts__label">
+        {{ translate('Établissements') }}
+    </dt>
+    <dd class="pro-facts__value">
+        {{ subscription.establishments.total }}
+        {% if subscription.establishments.uncovered > 0 %}
+            · {{ translate('{count} hors formule', { count: subscription.establishments.uncovered }) }}
+        {% endif %}
+    </dd>
     {% if subscription.promo %}
-        <dt class="pro-facts__label">Promotion</dt>
-        <dd class="pro-facts__value">{{ subscription.promo }}</dd>
+        <dt class="pro-facts__label">
+            {{ translate('Promotion') }}
+        </dt>
+        <dd class="pro-facts__value">
+            {{ subscription.promo }}
+        </dd>
     {% endif %}
 </dl>
 {% if subscription.scheduled %}
-    <p class="pro-note">Passage à « {{ subscription.scheduled.plan }} » le {{ subscription.scheduled.date }}.</p>
+    <p class="pro-note">
+        {{ translate('Passage à « {plan} » le {date}.', { plan: subscription.scheduled.plan, date: subscription.scheduled.date }) }}
+    </p>
 {% endif %}
 {% if subscription.cancelAt %}
-    <p class="pro-note">Résiliation programmée : la formule s'arrête le {{ subscription.cancelAt }}.</p>
+    <p class="pro-note">
+        {{ translate('Résiliation programmée : la formule s\'arrête le {date}.', { date: subscription.cancelAt }) }}
+    </p>
 {% endif %}
 {% if subscription.pausedUntil %}
-    <p class="pro-note">En pause jusqu'au {{ subscription.pausedUntil }}.</p>
+    <p class="pro-note">
+        {{ translate('En pause jusqu\'au {date}.', { date: subscription.pausedUntil }) }}
+    </p>
 {% endif %}
 {% if subscription.blockingReason %}
-    <p class="pro-flash pro-flash--error">{{ subscription.blockingReason }}</p>
+    <p class="pro-flash pro-flash--error">
+        {{ subscription.blockingReason }}
+    </p>
 {% endif %}

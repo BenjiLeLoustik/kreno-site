@@ -12,35 +12,62 @@
 
     <div class="admin">
         <aside class="admin-side">
-            <a href="{{ path('admin_dashboard') }}" class="admin-side__brand" aria-label="Kréno, administration">
-                {% include 'components/logo.html.twig' with { size: 0, light: true, badge: 'admin' } %}
+            <a href="{{ path('admin_dashboard') }}" class="admin-side__brand" aria-label="{{ translate('Kréno, administration') }}">
+                {% include 'components/logo.html.twig' with {
+                    size: 0,
+                    light: true,
+                    badge: 'admin'
+                } %}
             </a>
-            <nav class="admin-nav" aria-label="Administration">
-                {% for item in admin_nav() %}
-                    {% if is_granted(item.role) and route_exists(item.route) %}
-                        <a href="{{ path(item.route) }}" class="admin-nav__link{{ item.key == section ? ' admin-nav__link--active' : '' }}"{{ item.key == section ? ' aria-current="page"' : '' }}>
-                            <i data-lucide="{{ item.icon }}" class="admin-nav__icon"></i>
-                            <span class="admin-nav__label">{{ item.label }}</span>
-                            {% if item.badge > 0 %}
-                                <span class="admin-nav__badge">{{ item.badge }}</span>
-                            {% endif %}
-                        </a>
+
+            <span class="admin-side__toggle">
+                {% include 'components/menu_toggle.html.twig' with {
+                    target: 'admin-panel',
+                    variant: 'dark'
+                } only %}
+            </span>
+
+            <div id="admin-panel" class="admin-side__panel">
+                <nav class="admin-nav" aria-label="Administration">
+                    {% for item in admin_nav() %}
+                        {% if is_granted(item.role) and route_exists(item.route) %}
+                            <a href="{{ path(item.route) }}" class="admin-nav__link{{ item.key == section ? ' admin-nav__link--active' : '' }}"{{ item.key == section ? ' aria-current="page"' : '' }}>
+                                <i data-lucide="{{ item.icon }}" class="admin-nav__icon"></i>
+                                <span class="admin-nav__label">
+                                    {{ item.label }}
+                                </span>
+                                {% if item.badge > 0 %}
+                                    <span class="admin-nav__badge">
+                                        {{ item.badge }}
+                                    </span>
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </nav>
+
+                <div class="side-footer">
+                    {% if user %}
+                        {% include 'components/side_footer_user.html.twig' with {
+                            initials: (user.firstName|first ~ user.lastName|first)|upper,
+                            name: user.firstName ~ ' ' ~ user.lastName|first ~ '.',
+                            role: admin_role(),
+                        } only %}
                     {% endif %}
-                {% endfor %}
-            </nav>
-            <div class="admin-side__footer">
-                {% if user %}
-                    <span class="admin-side__user">Connecté : {{ user.firstName }} {{ user.lastName|first }}.</span>
-                {% endif %}
-                <div class="admin-side__actions">
-                    <a href="{{ path('home_index') }}" class="admin-side__action">
-                        <i data-lucide="external-link" class="admin-nav__icon"></i>
-                        Voir le site
+
+                    {% include 'components/locale_switcher.html.twig' with {
+                        variant: 'side'
+                    } only %}
+
+                    <a href="{{ path('home_index') }}" class="side-footer__action">
+                        <i data-lucide="external-link" class="side-footer__icon"></i>
+                        {{ translate('Voir le site') }}
                     </a>
-                    <form method="post" action="{{ logout_path() }}" class="admin-side__logout">
-                        <button type="submit" class="admin-side__action">
-                            <i data-lucide="log-out" class="admin-nav__icon"></i>
-                            Déconnexion
+
+                    <form method="post" action="{{ logout_path() }}" class="side-footer__form">
+                        <button type="submit" class="side-footer__action side-footer__action--danger">
+                            <i data-lucide="log-out" class="side-footer__icon"></i>
+                            {{ translate('Déconnexion') }}
                         </button>
                     </form>
                 </div>
@@ -50,7 +77,9 @@
         <main class="admin-main">
             {% for type, messages in flashes() %}
                 {% for message in messages %}
-                    <div class="admin-flash admin-flash--{{ type }}" role="status">{{ message }}</div>
+                    <div class="admin-flash admin-flash--{{ type }}" role="status">
+                        {{ message }}
+                    </div>
                 {% endfor %}
             {% endfor %}
 

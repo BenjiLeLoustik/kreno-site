@@ -5,18 +5,44 @@
 {% block mailContent %}
 
     {% if audience == 'reporter' %}
-        <p>Notre équipe a traité votre signalement {{ report.reference }}.</p>
+        <p>
+            {{ translate('Notre équipe a traité votre signalement {reference}.', {
+                reference: report.reference
+            }, domain: 'email') }}
+        </p>
     {% else %}
-        <p>Notre équipe a rendu sa décision sur le signalement {{ report.reference }} concernant {{ report.establishment.name }}.</p>
+        <p>
+            {{ translate('Notre équipe a rendu sa décision sur le signalement {reference} concernant {establishment}.', {
+                reference: report.reference,
+                establishment: report.establishment.name
+            }, domain: 'email') }}
+        </p>
     {% endif %}
-    <p>Décision : {{ decision == 'dismiss' ? 'classé sans suite' : report.resolution|lower }}.</p>
+    <p>
+        {{ translate('Décision :', domain: 'email') }}
+        {% if decision == 'dismiss' %}
+            {{ translate('classé sans suite.', domain: 'email') }}
+        {% else %}
+            {{ report.resolution|lower }}.
+        {% endif %}
+    </p>
     {% if message %}
-        <p>Message de l’équipe Kréno :</p>
-        <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
+        <p>
+            {{ translate('Message de l’équipe Kréno :', domain: 'email') }}
+        </p>
+        <blockquote style="{{ styles.quote }}">
+            {{ message|nl2br }}
+        </blockquote>
     {% endif %}
     {% if audience == 'establishment' and decision in ['warn', 'suspend'] %}
-        <p>Nous comptons sur vous pour que les prochains rendez-vous se passent au mieux. Les signalements répétés peuvent entraîner la suspension de l’établissement.</p>
+        <p>
+            {{ translate('Nous comptons sur vous pour que les prochains rendez-vous se passent au mieux. Les signalements répétés peuvent entraîner la suspension de l\'établissement.', domain: 'email') }}
+        </p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ report.proUrl }}" style="{{ styles.button }}">Voir le signalement</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ report.proUrl }}" style="{{ styles.button }}">
+            {{ translate('Voir le signalement', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

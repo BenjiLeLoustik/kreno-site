@@ -1,0 +1,65 @@
+@layer components {
+    .faq-admin {
+        @apply flex flex-col gap-4;
+    }
+
+    .faq-admin__page {
+        @apply ml-2 text-sm font-normal text-muted;
+    }
+
+    .faq-switch {
+        @apply relative h-6 w-11 cursor-pointer rounded-full border-0 bg-mist p-0 transition-colors;
+    }
+
+    .faq-switch--on {
+        @apply bg-mint;
+    }
+
+    .faq-switch__knob {
+        @apply absolute top-0.5 left-0.5 size-5 rounded-full bg-white shadow transition-transform;
+    }
+
+    .faq-switch--on .faq-switch__knob {
+        @apply translate-x-5;
+    }
+
+    .faq-questions {
+        @apply flex flex-col gap-2 border-t border-sand pt-3;
+    }
+
+    .faq-questions__title {
+        @apply text-sm font-semibold;
+    }
+
+    .faq-question {
+        @apply flex flex-col gap-1 rounded-lg border border-sand p-3;
+    }
+
+    .faq-question__head {
+        @apply flex items-start justify-between gap-2;
+    }
+
+    .faq-question__label {
+        @apply min-w-0 text-sm font-medium;
+    }
+
+    .faq-question__label--hidden {
+        @apply text-muted line-through;
+    }
+
+    .faq-placeholders {
+        @apply grid gap-2 sm:grid-cols-2;
+    }
+
+    .faq-placeholders__item {
+        @apply flex items-baseline gap-2;
+    }
+
+    .faq-placeholders__token {
+        @apply font-mono text-sm;
+    }
+
+    .faq-placeholders__label {
+        @apply text-sm text-muted;
+    }
+}

@@ -9,15 +9,6 @@ use App\Establishment\Enum\EstablishmentRole;
 
 class RoleHelper
 {
-    public const LABELS = [
-        'owner' => 'Propriétaire',
-        'admin' => 'Administrateur',
-        'manager' => 'Gérant',
-        'planner' => 'Planificateur',
-        'receptionist' => 'Réceptionniste',
-        'employee' => 'Employé',
-    ];
-
     public static function isCompanyRole(string $role): bool
     {
         return CompanyRole::tryFrom($role) !== null;
@@ -30,7 +21,7 @@ class RoleHelper
 
     public static function label(string $role): string
     {
-        return self::LABELS[$role] ?? $role;
+        return CompanyRole::tryFrom($role)?->label() ?? EstablishmentRole::tryFrom($role)?->label() ?? $role;
     }
 
     public static function describe(CompanyMember $member, ?EstablishmentMember $establishmentRole = null): string
@@ -39,6 +30,6 @@ class RoleHelper
             return $member->getRole()->value;
         }
 
-        return $establishmentRole?->getRole()->value ?? 'employee';
+        return $establishmentRole?->getRole()->value ?? EstablishmentRole::EMPLOYEE->value;
     }
 }

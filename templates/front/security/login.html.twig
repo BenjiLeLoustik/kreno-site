@@ -1,71 +1,115 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% block title %}Se connecter · Kréno{% endblock %}
+{% block title %}
+    {{ translate('Se connecter · Kréno') }}
+{% endblock %}
 
 {% block body_class %}layout-auth{% endblock %}
 
 {% block body %}
     <div class="login">
         <section class="login-side">
-            <a href="{{ path('home_index') }}" class="login-side__brand" aria-label="Kréno, accueil">
-                {% include 'components/logo.html.twig' with { light: true } %}
+            <a href="{{ path('home_index') }}" class="login-side__brand" aria-label="{{ translate('Kréno, accueil') }}">
+                {% include 'components/logo.html.twig' with {
+                    light: true
+                } %}
             </a>
             <div class="login-side__pitch">
-                <h2 class="login-side__title">Le bon moment, <span class="login-side__accent">au bon prix.</span></h2>
+                <h2 class="login-side__title">
+                    {{ translate('Le bon moment, {open}au bon prix.{close}', {
+                        open: '<span class="login-side__accent">',
+                        close: '</span>'
+                    })|raw }}
+                </h2>
                 <div class="login-ticket" aria-hidden="true">
                     <div class="login-ticket__when">
-                        <strong class="login-ticket__time">14:30</strong>
-                        <span class="login-ticket__duration">45 min</span>
+                        <strong class="login-ticket__time">
+                            14:30
+                        </strong>
+                        <span class="login-ticket__duration">
+                            45 min
+                        </span>
                     </div>
                     <div class="login-ticket__body">
-                        <b>Léa Coiffure</b>
-                        <span class="login-ticket__prices"><s class="login-ticket__old">38 €</s> <b class="login-ticket__price">26 €</b></span>
+                        <b>
+                            Léa Coiffure
+                        </b>
+                        <span class="login-ticket__prices">
+                            <s class="login-ticket__old">
+                                38 €
+                            </s>
+                            <b class="login-ticket__price">
+                                26 €
+                            </b>
+                        </span>
                     </div>
                     <span class="login-ticket__notch login-ticket__notch--top"></span>
                     <span class="login-ticket__notch login-ticket__notch--bottom"></span>
                 </div>
             </div>
-            <span class="login-side__pro">Vous êtes un professionnel ? <a href="{{ path('pro_login') }}" class="login-side__pro-link">Espace pro</a></span>
+            <span class="login-side__pro">
+                {{ translate('Vous êtes un professionnel ?') }}
+                <a href="{{ path('pro_login') }}" class="login-side__pro-link">
+                    {{ translate('Espace pro') }}
+                </a>
+            </span>
         </section>
 
         <main class="login-main">
             <div class="login-main__inner">
                 <div class="login-main__head">
-                    <h1 class="login-main__title">Se connecter</h1>
-                    <p class="login-main__lead">Content de te revoir. Connecte-toi pour réserver et suivre tes créneaux.</p>
+                    <h1 class="login-main__title">
+                        {{ translate('Se connecter') }}
+                    </h1>
+                    <p class="login-main__lead">
+                        {{ translate('Content de te revoir. Connecte-toi pour réserver et suivre tes créneaux.') }}
+                    </p>
                 </div>
 
                 {% for type, messages in flashes() %}
                     {% for message in messages %}
-                        <div class="form-alert form-alert--{{ type == 'success' ? 'success' : 'error' }}" role="status">{{ message }}</div>
+                        <div class="form-alert form-alert--{{ type == 'success' ? 'success' : 'error' }}" role="status">
+                            {{ message }}
+                        </div>
                     {% endfor %}
                 {% endfor %}
 
                 {% if error %}
-                    <div class="form-alert form-alert--error" role="alert">{{ error }}</div>
+                    <div class="form-alert form-alert--error" role="alert">
+                        {{ error }}
+                    </div>
                 {% endif %}
 
                 <form method="post" action="{{ path('app_login') }}" class="form">
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <label for="login-email" class="form-field">
-                        Adresse e-mail
+                        {{ translate('Adresse e-mail') }}
                         <input id="login-email" type="email" name="email" value="{{ lastUsername }}" required autofocus autocomplete="email" placeholder="toi@exemple.fr" class="form-input">
                     </label>
                     <label for="login-password" class="form-field">
                         <span class="form-field__head">
-                            Mot de passe
-                            <a href="{{ path('app_forgot_password') }}" class="form-field__aside">Mot de passe oublié ?</a>
+                            {{ translate('Mot de passe') }}
+                            <a href="{{ path('app_forgot_password') }}" class="form-field__aside">
+                                {{ translate('Mot de passe oublié ?') }}
+                            </a>
                         </span>
                         <input id="login-password" type="password" name="password" required autocomplete="current-password" class="form-input">
                     </label>
                     <label class="form-check">
                         <input type="checkbox" name="_remember_me" value="1" class="form-check__input">
-                        Rester connecté
+                        {{ translate('Rester connecté') }}
                     </label>
-                    <button type="submit" class="btn btn--primary form-submit">Se connecter</button>
+                    <button type="submit" class="btn btn--primary form-submit">
+                        {{ translate('Se connecter') }}
+                    </button>
                 </form>
 
-                <span class="login-main__signup">Pas encore de compte ? <a href="{{ path('app_signup') }}" class="login-main__signup-link">Créer un compte</a></span>
+                <span class="login-main__signup">
+                    {{ translate('Pas encore de compte ?') }}
+                    <a href="{{ path('app_signup') }}" class="login-main__signup-link">
+                        {{ translate('Créer un compte') }}
+                    </a>
+                </span>
             </div>
         </main>
     </div>

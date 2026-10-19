@@ -10,26 +10,51 @@
                 {% include 'components/logo.html.twig' with { light: true } %}
             </a>
             <div class="login-side__pitch">
-                <h2 class="login-side__title">Le bon moment, <span class="login-side__accent">au bon prix.</span></h2>
+                <h2 class="login-side__title">
+                    {{ translate('Le bon moment, {open}au bon prix.{close}', {
+                        open: '<span class="login-side__accent">',
+                        close: '</span>'
+                    })|raw }}
+                </h2>
                 <ul class="auth-perks">
-                    <li class="auth-perks__item"><i data-lucide="bell-ring" class="auth-perks__icon"></i>Alertes dès qu'un créneau se libère près de chez toi</li>
-                    <li class="auth-perks__item"><i data-lucide="badge-percent" class="auth-perks__icon"></i>Jusqu'à -50 % sur les rendez-vous annulés</li>
-                    <li class="auth-perks__item"><i data-lucide="wallet" class="auth-perks__icon"></i>Réservation en deux clics, paiement sur place</li>
+                    <li class="auth-perks__item">
+                        <i data-lucide="bell-ring" class="auth-perks__icon"></i>
+                        {{ translate('Alertes dès qu\'un créneau se libère près de chez toi') }}
+                    </li>
+                    <li class="auth-perks__item">
+                        <i data-lucide="badge-percent" class="auth-perks__icon"></i>
+                        {{ translate('Jusqu\'à -50 % sur les rendez-vous annulés') }}
+                    </li>
+                    <li class="auth-perks__item">
+                        <i data-lucide="wallet" class="auth-perks__icon"></i>
+                        {{ translate('Réservation en deux clics, paiement sur place') }}
+                    </li>
                 </ul>
             </div>
-            <span class="login-side__pro">Vous êtes un professionnel ? <a href="{{ path('pro_login') }}" class="login-side__pro-link">Espace pro</a></span>
+            <span class="login-side__pro">
+                {{ translate('Vous êtes un professionnel ?') }}
+                <a href="{{ path('pro_login') }}" class="login-side__pro-link">
+                    {{ translate('Espace pro') }}
+                </a>
+            </span>
         </section>
 
         <main class="login-main">
             <div class="login-main__inner">
                 <div class="login-main__head">
-                    <h1 class="login-main__title">{% block heading %}{% endblock %}</h1>
-                    <p class="login-main__lead">{% block lead %}{% endblock %}</p>
+                    <h1 class="login-main__title">
+                        {% block heading %}{% endblock %}
+                    </h1>
+                    <p class="login-main__lead">
+                        {% block lead %}{% endblock %}
+                    </p>
                 </div>
 
                 {% for type, messages in flashes() %}
                     {% for message in messages %}
-                        <div class="form-alert form-alert--{{ type == 'success' ? 'success' : 'error' }}" role="status">{{ message }}</div>
+                        <div class="form-alert form-alert--{{ type == 'success' ? 'success' : 'error' }}" role="status">
+                            {{ message }}
+                        </div>
                     {% endfor %}
                 {% endfor %}
 

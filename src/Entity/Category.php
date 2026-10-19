@@ -35,9 +35,13 @@ class Category extends AbstractBaseEntity
     #[ORM\OneToMany(CompanyEstablishment::class, mappedBy: 'category')]
     private CollectionInterface $establishments;
 
+    #[ORM\OneToMany(CategoryServiceSuggestion::class, mappedBy: 'category', cascade: ['persist', 'remove'], orphanRemoval: true, orderBy: ['position' => 'ASC'])]
+    private CollectionInterface $serviceSuggestions;
+
     public function __construct()
     {
         $this->establishments = new ArrayCollection();
+        $this->serviceSuggestions = new ArrayCollection();
     }
 
     public function getName(): ?string
@@ -107,6 +111,30 @@ class Category extends AbstractBaseEntity
     {
         if ($this->establishments->removeElement($establishment) && $establishment->getCategory() === $this) {
             $establishment->setCategory(null);
+        }
+
+        return $this;
+    }
+
+    public function getServiceSuggestions(): CollectionInterface
+    {
+        return $this->serviceSuggestions;
+    }
+
+    public function addServiceSuggestion(CategoryServiceSuggestion $suggestion): static
+    {
+        if (!$this->serviceSuggestions->contains($suggestion)) {
+            $this->serviceSuggestions->add($suggestion);
+            $suggestion->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServiceSuggestion(CategoryServiceSuggestion $suggestion): static
+    {
+        if ($this->serviceSuggestions->removeElement($suggestion) && $suggestion->getCategory() === $this) {
+            $suggestion->setCategory(null);
         }
 
         return $this;

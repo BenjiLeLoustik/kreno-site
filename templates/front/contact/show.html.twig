@@ -1,0 +1,84 @@
+{% extends 'layouts/front.html.twig' %}
+
+{% block title %}
+    {{ translate('Votre demande · {site}', {site: website().siteName}) }}
+{% endblock %}
+
+{% block header_class %}site-header--compact{% endblock %}
+
+{% block content %}
+    <div class="contact-page">
+        <a href="{{ app_user() ? path('account_messages') : path('page_help') }}" class="contact-page__back">
+            {% if app_user() %}
+                {{ translate('← Mes messages') }}
+            {% else %}
+                {{ translate('← Aide et contact') }}
+            {% endif %}
+        </a>
+
+        <header class="contact-page__head">
+            <div class="contact-page__heading">
+                <h1 class="contact-page__title">
+                    {{ contact.topic }}
+                </h1>
+                <span class="contact-page__meta">
+                    Envoyée le {{ contact.createdAt|date('d/m/Y à H:i') }}
+                    {% if contact.reference %}
+                        {{ translate('· réservation {reference}', {reference: contact.reference}) }}
+                    {% endif %}
+                </span>
+            </div>
+            <span class="contact-status contact-status--{{ contact.status }}">
+                {{ contact.customerStatus }}
+            </span>
+        </header>
+
+        <section class="contact-page__card">
+            <div class="thread">
+                {% for message in contact.messages %}
+                    <article class="thread__message{{ message.team ? ' thread__message--team' : '' }}">
+                        <div class="thread__head">
+                            <b class="thread__author">
+                                {{ message.author }}
+                            </b>
+                            {% if message.createdAt %}
+                                <span class="thread__date">
+                                    {{ message.createdAt|date('d/m/Y à H:i') }}
+                                </span>
+                            {% endif %}
+                        </div>
+                        <p class="thread__body">
+                            {{ message.body|nl2br }}
+                        </p>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        {% if contact.open %}
+            <section id="repondre" class="contact-page__card">
+                <form method="post" action="{{ path('page_contact_reply', { token: contact.token }) }}" class="form">
+                    {{ csrf_field('contact')|raw }}
+                    <label for="contact-reply" class="form-field">
+                        {{ translate('Votre message') }}
+                        <textarea id="contact-reply" name="body" rows="4" required minlength="2" maxlength="3000" class="form-input contact-page__area"></textarea>
+                    </label>
+                    <div>
+                        <button type="submit" class="btn btn--primary">
+                            {{ translate('Envoyer') }}
+                        </button>
+                    </div>
+                </form>
+            </section>
+        {% else %}
+            <div class="contact-page__closed">
+                <p>
+                    {{ translate('Cette demande est fermée. Pour une nouvelle question, écrivez-nous depuis la page d\'aide.') }}
+                </p>
+                <a href="{{ path('page_help') }}#contact" class="btn btn--outline btn--small">
+                    {{ translate('Nous écrire') }}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

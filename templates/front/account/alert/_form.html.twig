@@ -4,48 +4,65 @@
 <form method="post" action="{{ alert ? path('account_alert_update', { id: alert.id }) : path('account_alert_create') }}" class="alert-form">
     {{ csrf_field('account')|raw }}
     <label for="{{ prefix }}-label" class="form-field alert-form__wide">
-        Nom de l'alerte
-        <input id="{{ prefix }}-label" type="text" name="label" value="{{ alert ? alert.label : '' }}" required minlength="2" maxlength="120" placeholder="Ex. Lyon 3e, près du bureau" class="form-input">
+        {{ translate('Nom de l\'alerte') }}
+        <input id="{{ prefix }}-label" type="text" name="label" value="{{ alert ? alert.label : '' }}" required minlength="2" maxlength="120" placeholder="{{ translate('Ex. Lyon 3e, près du bureau') }}" class="form-input">
     </label>
     <label for="{{ prefix }}-city" class="form-field">
-        Ville
+        {{ translate('Ville') }}
         <select id="{{ prefix }}-city" name="citySlug" class="form-input">
-            <option value="">Toutes les villes</option>
+            <option value="">
+                {{ translate('Toutes les villes') }}
+            </option>
             {% for city in cities %}
-                <option value="{{ city.slug }}"{{ alert and alert.city and alert.city.slug == city.slug ? ' selected' : '' }}>{{ city.name }}</option>
+                <option value="{{ city.slug }}"{{ alert and alert.city and alert.city.slug == city.slug ? ' selected' : '' }}>
+                    {{ city.name }}
+                </option>
             {% endfor %}
         </select>
     </label>
     <label for="{{ prefix }}-radius" class="form-field">
-        Distance maximale (km)
+        {{ translate('Distance maximale (km)') }}
         <input id="{{ prefix }}-radius" type="number" name="radiusKm" value="{{ alert ? alert.radiusKm : 3 }}" min="1" max="30" required class="form-input">
     </label>
     <label for="{{ prefix }}-start" class="form-field">
-        À partir de
+        {{ translate('À partir de') }}
         <input id="{{ prefix }}-start" type="time" name="startTime" value="{{ alert ? alert.startTime : '' }}" class="form-input">
     </label>
     <label for="{{ prefix }}-end" class="form-field">
-        Jusqu'à
+        {{ translate('Jusqu\'à') }}
         <input id="{{ prefix }}-end" type="time" name="endTime" value="{{ alert ? alert.endTime : '' }}" class="form-input">
     </label>
     <label for="{{ prefix }}-price" class="form-field">
-        Prix maximum (€)
-        <input id="{{ prefix }}-price" type="number" name="maxPrice" value="{{ alert and alert.maxPrice ? alert.maxPrice / 100 : '' }}" min="0" step="1" placeholder="Sans limite" class="form-input">
+        {{ translate('Prix maximum (€)') }}
+        <input id="{{ prefix }}-price" type="number" name="maxPrice" value="{{ alert and alert.maxPrice ? alert.maxPrice / 100 : '' }}" min="0" step="1" placeholder="{{ translate('Sans limite') }}" class="form-input">
     </label>
     <fieldset class="alert-form__categories">
-        <legend class="alert-form__legend">Catégories <span class="alert-form__muted">(aucune = toutes)</span></legend>
+        <legend class="alert-form__legend">
+            {{ translate('Catégories') }}
+            <span class="alert-form__muted">
+                {{ translate('(aucune = toutes)') }}
+            </span>
+        </legend>
         {% for category in categories %}
             <label class="alert-chip">
                 <input type="checkbox" name="categorySlugs[]" value="{{ category.slug }}" class="alert-chip__input"{{ category.slug in selectedCategories ? ' checked' : '' }}>
-                <span class="alert-chip__label">{{ category.name }}</span>
+                <span class="alert-chip__label">
+                    {{ category.name }}
+                </span>
             </label>
         {% endfor %}
     </fieldset>
     <label class="form-check alert-form__wide">
         <input type="checkbox" name="enabled" value="1" class="form-check__input"{{ not alert or alert.enabled ? ' checked' : '' }}>
-        Alerte active
+        {{ translate('Alerte active') }}
     </label>
     <div class="alert-form__actions">
-        <button type="submit" class="btn btn--ink btn--small">{{ alert ? 'Enregistrer' : 'Créer l\'alerte' }}</button>
+        <button type="submit" class="btn btn--ink btn--small">
+            {% if alert %}
+                {{ translate('Enregistrer') }}
+            {% else %}
+                {{ translate('Créer l\'alerte') }}
+            {% endif %}
+        </button>
     </div>
 </form>

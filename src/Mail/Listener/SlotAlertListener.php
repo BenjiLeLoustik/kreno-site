@@ -2,17 +2,21 @@
 
 namespace App\Mail\Listener;
 
+use App\Entity\Company\CompanyEstablishment;
+use App\Entity\Establishment\EstablishmentSlot;
 use App\Entity\User\User;
 use App\Entity\User\UserAlert;
 use App\Establishment\Event\SlotPublishedEvent;
 use App\Establishment\Service\AlertMatchService;
+use App\Mail\Enum\MailSubject;
+use App\Mail\Enum\MailText;
 use App\Mail\Presenter\MailContextPresenter;
 use App\Mail\Service\MailService;
 use App\Repository\Establishment\EstablishmentFollowerRepository;
 use App\Repository\User\UserAlertRepository;
-use App\User\Service\NotificationService;
 use App\User\Enum\NotificationType;
 use App\User\Enum\UserStatus;
+use App\User\Service\NotificationService;
 use NeoPHP\Component\Event\Attribute\AsListener;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
@@ -39,6 +43,30 @@ class SlotAlertListener
             return;
         }
 
+        $recipients = $this->addAlertMatches($this->followerRecipients($establishment), $establishment, $slot);
+        $publisher = $slot->getPublishedBy();
+        $context = $this->context->slot($slot);
+        $sent = 0;
+
+        foreach ($recipients as $recipient) {
+            $user = $recipient['user'];
+
+            if ($user === $publisher || $user->getStatus() !== UserStatus::ACTIVE) {
+                continue;
+            }
+
+            $this->notify($user, $establishment, $context);
+            $this->notifyByEmail($user, $recipient['alert'], $recipient['follower'], $context);
+            ++$sent;
+        }
+
+        if ($sent > 0) {
+            $this->orm->flush();
+        }
+    }
+
+    private function followerRecipients(CompanyEstablishment $establishment): array
+    {
         $recipients = [];
 
         foreach ($this->followers->findByEstablishment($establishment) as $follower) {
@@ -49,48 +77,76 @@ class SlotAlertListener
             }
         }
 
-        if ($establishment->getCity() !== null) {
-            foreach ($this->alerts->findEnabledInCity($establishment->getCity()) as $alert) {
-                $user = $alert->getUser();
+        return $recipients;
+    }
 
-                if ($user === null || isset($recipients[$user->getId()]['alert']) || !$this->matcher->matches($alert, $slot)) {
-                    continue;
-                }
-
-                $recipients[$user->getId()] = ['user' => $user, 'follower' => $recipients[$user->getId()]['follower'] ?? false, 'alert' => $alert];
-            }
+    private function addAlertMatches(
+        array $recipients,
+        CompanyEstablishment $establishment,
+        EstablishmentSlot $slot,
+    ): array {
+        if ($establishment->getCity() === null) {
+            return $recipients;
         }
 
-        $publisher = $slot->getPublishedBy();
-        $context = $this->context->slot($slot);
-        $title = sprintf('%s · %s à %s, %s', $establishment->getName(), $context['day'], $context['time'], $context['price']);
-        $sent = 0;
+        foreach ($this->alerts->findEnabledInCity($establishment->getCity()) as $alert) {
+            $user = $alert->getUser();
 
-        foreach ($recipients as $recipient) {
-            $user = $recipient['user'];
-
-            if ($user === $publisher || $user->getStatus() !== UserStatus::ACTIVE) {
+            if ($user === null || isset($recipients[$user->getId()]['alert'])) {
                 continue;
             }
 
-            $this->notifications->notify($user, NotificationType::SLOT_ALERT, $title, sprintf('%s · %s au lieu de %s', $context['service'], $context['price'], $context['originalPrice']), $context['url'], false);
-            $this->notifyByEmail($user, $recipient['alert'], $recipient['follower'], $context);
-            ++$sent;
+            if (!$this->matcher->matches($alert, $slot)) {
+                continue;
+            }
+
+            $recipients[$user->getId()] = [
+                'user' => $user,
+                'follower' => $recipients[$user->getId()]['follower'] ?? false,
+                'alert' => $alert,
+            ];
         }
 
-        if ($sent > 0) {
-            $this->orm->flush();
-        }
+        return $recipients;
+    }
+
+    private function notify(User $user, CompanyEstablishment $establishment, array $context): void
+    {
+        $title = MailText::SLOT_ALERT_TITLE->text(
+            $establishment->getName(),
+            $context['day'],
+            $context['time'],
+            $context['price'],
+        );
+        $body = MailText::SLOT_ALERT_BODY->text($context['service'], $context['price'], $context['originalPrice']);
+
+        $this->notifications->notify($user, NotificationType::SLOT_ALERT, $title, $body, $context['url'], false);
     }
 
     private function notifyByEmail(User $user, ?UserAlert $alert, bool $follower, array $context): void
     {
-        $this->mail->toUser(MailService::CLIENT, $user, sprintf('%s : créneau %s à %s (%s)', $context['establishment']['name'] ?? '', $context['day'], $context['time'], $context['discount']), 'slot-alert', [
+        $subject = MailSubject::SLOT_ALERT->text(
+            $context['establishment']['name'] ?? '',
+            $context['day'],
+            $context['time'],
+            $context['discount'],
+        );
+
+        $this->mail->toUser(MailService::CLIENT, $user, $subject, 'slot-alert', [
             'slot' => $context,
             'follower' => $follower,
-            'alert' => $alert !== null ? ['label' => $alert->getLabel(), 'description' => $this->matcher->describe($alert)] : null,
+            'alert' => $this->alertContext($alert),
             'alertsUrl' => $this->mail->url('account_alerts'),
             'settingsUrl' => $this->mail->url('account_settings'),
         ], true);
+    }
+
+    private function alertContext(?UserAlert $alert): ?array
+    {
+        if ($alert === null) {
+            return null;
+        }
+
+        return ['label' => $alert->getLabel(), 'description' => $this->matcher->describe($alert)];
     }
 }

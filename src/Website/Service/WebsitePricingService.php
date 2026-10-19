@@ -10,7 +10,6 @@ use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
 use App\Repository\Website\WebsitePlanRepository;
 use App\Repository\Website\WebsitePromoCodeRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\Shared\Helper\DateHelper;
 use App\Shared\Helper\MoneyHelper;
 use App\Website\Dto\PriceChangePolicyInput;
@@ -18,6 +17,15 @@ use App\Website\Dto\WebsitePlanInput;
 use App\Website\Dto\WebsitePromoCodeInput;
 use App\Website\Enum\PlanBilling;
 use App\Website\Enum\WebsiteStatus;
+use App\Website\Exception\ForeignVersionItemException;
+use App\Website\Exception\PlanAlreadyExistsException;
+use App\Website\Exception\PlanIdentityRequiredException;
+use App\Website\Exception\PlanNotFoundException;
+use App\Website\Exception\PromoCodeAlreadyExistsException;
+use App\Website\Exception\PromoCodePeriodException;
+use App\Website\Exception\PromoCodeRequiredException;
+use App\Website\Exception\PromoCodeWithoutBenefitException;
+use App\Website\Exception\ScheduledPricesLockedException;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class WebsitePricingService
@@ -36,11 +44,11 @@ class WebsitePricingService
         $this->assertPricesEditable($website);
 
         if ($input->code === null || $input->name === null) {
-            throw new BusinessRuleException('Le code et le nom de la formule sont obligatoires.');
+            throw new PlanIdentityRequiredException();
         }
 
         if ($this->plans->findOneByWebsiteAndCode($website, $input->code) !== null) {
-            throw new BusinessRuleException('La formule « {code} » existe déjà dans la {version}.', ['code' => $input->code, 'version' => $website->getCode()]);
+            throw new PlanAlreadyExistsException($input->code, (string) $website->getCode());
         }
 
         $plan = (new WebsitePlan())
@@ -53,42 +61,44 @@ class WebsitePricingService
         $website->addPlan($plan);
 
         $this->orm->persist($plan);
-        $this->logger->log(ActivityType::PRICING, sprintf('Formule %s créée (%s)', $plan->getName(), $this->priceLabel($plan)), $actor, $website, $plan);
+        $message = sprintf('Formule %s créée (%s)', $plan->getName(), $this->priceLabel($plan));
+        $this->logger->log(ActivityType::PRICING, $message, $actor, $website, $plan);
         $this->orm->flush();
 
         return $plan;
     }
 
-    public function updatePlan(WebsiteConfig $website, WebsitePlan $plan, WebsitePlanInput $input, ?User $actor = null): WebsitePlan
-    {
+    public function updatePlan(
+        WebsiteConfig $website,
+        WebsitePlan $plan,
+        WebsitePlanInput $input,
+        ?User $actor = null,
+    ): WebsitePlan {
         $this->assertPricesEditable($website);
         $this->assertBelongsTo($website, $plan->getWebsite());
 
         $before = $this->priceLabel($plan);
         $this->apply($plan, $input);
-        $after = $this->priceLabel($plan);
 
-        if ($before !== $after) {
-            $this->logger->log(ActivityType::PRICING, sprintf('%s : %s → %s', $plan->getName(), $before, $after), $actor, $website, $plan, ['price' => ['from' => $before, 'to' => $after]]);
-        } else {
-            $this->logger->log(ActivityType::PRICING, sprintf('%s modifiée', $plan->getName()), $actor, $website, $plan);
-        }
-
+        $this->logPlanUpdate($website, $plan, $before, $actor);
         $this->orm->flush();
 
         return $plan;
     }
 
-    public function createPromoCode(WebsiteConfig $website, WebsitePromoCodeInput $input, ?User $actor = null): WebsitePromoCode
-    {
+    public function createPromoCode(
+        WebsiteConfig $website,
+        WebsitePromoCodeInput $input,
+        ?User $actor = null,
+    ): WebsitePromoCode {
         $this->versions->assertEditable($website);
 
         if ($input->code === null) {
-            throw new BusinessRuleException('Le code promo est obligatoire.');
+            throw new PromoCodeRequiredException();
         }
 
         if ($this->promoCodes->findOneByWebsiteAndCode($website, $input->code) !== null) {
-            throw new BusinessRuleException('Le code {code} existe déjà dans la {version}.', ['code' => strtoupper($input->code), 'version' => $website->getCode()]);
+            throw new PromoCodeAlreadyExistsException(strtoupper($input->code), (string) $website->getCode());
         }
 
         $promoCode = (new WebsitePromoCode())->setCode(strtoupper(trim($input->code)))->setActive(false);
@@ -96,35 +106,50 @@ class WebsitePricingService
         $website->addPromoCode($promoCode);
 
         $this->orm->persist($promoCode);
-        $this->logger->log(ActivityType::PRICING, sprintf('Code promo %s créé', $promoCode->getCode()), $actor, $website, $promoCode);
+        $message = sprintf('Code promo %s créé', $promoCode->getCode());
+        $this->logger->log(ActivityType::PRICING, $message, $actor, $website, $promoCode);
         $this->orm->flush();
 
         return $promoCode;
     }
 
-    public function updatePromoCode(WebsiteConfig $website, WebsitePromoCode $promoCode, WebsitePromoCodeInput $input, ?User $actor = null): WebsitePromoCode
-    {
+    public function updatePromoCode(
+        WebsiteConfig $website,
+        WebsitePromoCode $promoCode,
+        WebsitePromoCodeInput $input,
+        ?User $actor = null,
+    ): WebsitePromoCode {
         $this->versions->assertEditable($website);
         $this->assertBelongsTo($website, $promoCode->getWebsite());
 
         $this->applyPromoCode($website, $promoCode, $input);
-        $this->logger->log(ActivityType::PRICING, sprintf('Code promo %s modifié', $promoCode->getCode()), $actor, $website, $promoCode);
+        $message = sprintf('Code promo %s modifié', $promoCode->getCode());
+        $this->logger->log(ActivityType::PRICING, $message, $actor, $website, $promoCode);
         $this->orm->flush();
 
         return $promoCode;
     }
 
-    public function updatePolicy(WebsiteConfig $website, PriceChangePolicyInput $input, ?User $actor = null): WebsiteConfig
-    {
+    public function updatePolicy(
+        WebsiteConfig $website,
+        PriceChangePolicyInput $input,
+        ?User $actor = null,
+    ): WebsiteConfig {
         $this->assertPricesEditable($website);
 
         if ($input->policy !== null && $input->policy !== $website->getPriceChangePolicy()) {
             $website->setPriceChangePolicy($input->policy);
-            $this->logger->log(ActivityType::PRICING, sprintf('Abonnés existants : %s', mb_strtolower($input->policy->label())), $actor, $website, $website);
+            $message = sprintf('Abonnés existants : %s', mb_strtolower($input->policy->label()));
+            $this->logger->log(ActivityType::PRICING, $message, $actor, $website, $website);
         }
 
         if ($input->noticeDays !== null && $input->noticeDays !== $website->getPriceChangeNoticeDays()) {
-            $this->logger->log(ActivityType::PRICING, sprintf('Préavis de changement de prix : %d → %d jours', $website->getPriceChangeNoticeDays(), $input->noticeDays), $actor, $website, $website);
+            $message = sprintf(
+                'Préavis de changement de prix : %d → %d jours',
+                $website->getPriceChangeNoticeDays(),
+                $input->noticeDays,
+            );
+            $this->logger->log(ActivityType::PRICING, $message, $actor, $website, $website);
             $website->setPriceChangeNoticeDays($input->noticeDays);
         }
 
@@ -135,6 +160,22 @@ class WebsitePricingService
         $this->orm->flush();
 
         return $website;
+    }
+
+    private function logPlanUpdate(WebsiteConfig $website, WebsitePlan $plan, string $before, ?User $actor): void
+    {
+        $after = $this->priceLabel($plan);
+
+        if ($before === $after) {
+            $message = sprintf('%s modifiée', $plan->getName());
+            $this->logger->log(ActivityType::PRICING, $message, $actor, $website, $plan);
+
+            return;
+        }
+
+        $message = sprintf('%s : %s → %s', $plan->getName(), $before, $after);
+        $context = ['price' => ['from' => $before, 'to' => $after]];
+        $this->logger->log(ActivityType::PRICING, $message, $actor, $website, $plan, $context);
     }
 
     private function apply(WebsitePlan $plan, WebsitePlanInput $input): void
@@ -171,12 +212,33 @@ class WebsitePricingService
             $plan->setCommitmentMonths($input->commitmentMonths);
         }
 
-        if ($input->unlimitedEstablishments === true) {
-            $plan->setMaxEstablishments(null);
-        } elseif ($input->maxEstablishments !== null) {
-            $plan->setMaxEstablishments($input->maxEstablishments);
+        $this->applyEstablishments($plan, $input);
+        $this->applyFlags($plan, $input);
+
+        if ($input->position !== null) {
+            $plan->setPosition($input->position);
         }
 
+        if ($plan->getBilling() === PlanBilling::PER_BOOKING) {
+            $plan->setYearlyPrice(null)->setCommissionFree(false);
+        }
+    }
+
+    private function applyEstablishments(WebsitePlan $plan, WebsitePlanInput $input): void
+    {
+        if ($input->unlimitedEstablishments === true) {
+            $plan->setMaxEstablishments(null);
+
+            return;
+        }
+
+        if ($input->maxEstablishments !== null) {
+            $plan->setMaxEstablishments($input->maxEstablishments);
+        }
+    }
+
+    private function applyFlags(WebsitePlan $plan, WebsitePlanInput $input): void
+    {
         if ($input->commissionFree !== null) {
             $plan->setCommissionFree($input->commissionFree);
         }
@@ -192,30 +254,19 @@ class WebsitePricingService
         if ($input->active !== null) {
             $plan->setActive($input->active);
         }
-
-        if ($input->position !== null) {
-            $plan->setPosition($input->position);
-        }
-
-        if ($plan->getBilling() === PlanBilling::PER_BOOKING) {
-            $plan->setYearlyPrice(null)->setCommissionFree(false);
-        }
     }
 
-    private function applyPromoCode(WebsiteConfig $website, WebsitePromoCode $promoCode, WebsitePromoCodeInput $input): void
-    {
+    private function applyPromoCode(
+        WebsiteConfig $website,
+        WebsitePromoCode $promoCode,
+        WebsitePromoCodeInput $input,
+    ): void {
         if ($input->description !== null) {
             $promoCode->setDescription(trim($input->description) ?: null);
         }
 
         if ($input->planCode !== null) {
-            $plan = $input->planCode === '' ? null : $this->plans->findOneByWebsiteAndCode($website, $input->planCode);
-
-            if ($input->planCode !== '' && $plan === null) {
-                throw new BusinessRuleException('La formule « {code} » n\'existe pas dans la {version}.', ['code' => $input->planCode, 'version' => $website->getCode()]);
-            }
-
-            $promoCode->setPlan($plan);
+            $promoCode->setPlan($this->promoPlan($website, $input->planCode));
         }
 
         if ($input->discountPercent !== null) {
@@ -234,6 +285,32 @@ class WebsitePricingService
             $promoCode->setMaxUses($input->maxUses);
         }
 
+        $this->applyPromoPeriod($promoCode, $input);
+
+        if ($input->active !== null) {
+            $promoCode->setActive($input->active);
+        }
+
+        $this->assertPromoCodeValid($promoCode);
+    }
+
+    private function promoPlan(WebsiteConfig $website, string $planCode): ?WebsitePlan
+    {
+        if ($planCode === '') {
+            return null;
+        }
+
+        $plan = $this->plans->findOneByWebsiteAndCode($website, $planCode);
+
+        if ($plan === null) {
+            throw new PlanNotFoundException($planCode, (string) $website->getCode());
+        }
+
+        return $plan;
+    }
+
+    private function applyPromoPeriod(WebsitePromoCode $promoCode, WebsitePromoCodeInput $input): void
+    {
         if ($input->startsAt !== null) {
             $promoCode->setStartsAt(DateHelper::parse($input->startsAt));
         }
@@ -241,23 +318,31 @@ class WebsitePricingService
         if ($input->endsAt !== null) {
             $promoCode->setEndsAt(DateHelper::parse($input->endsAt));
         }
+    }
 
-        if ($input->active !== null) {
-            $promoCode->setActive($input->active);
-        }
-
+    private function assertPromoCodeValid(WebsitePromoCode $promoCode): void
+    {
         if ($promoCode->getDiscountPercent() === 0 && $promoCode->getFreeMonths() === 0) {
-            throw new BusinessRuleException('Un code promo doit donner une remise ou des mois offerts.');
+            throw new PromoCodeWithoutBenefitException();
         }
 
-        if ($promoCode->getStartsAt() !== null && $promoCode->getEndsAt() !== null && $promoCode->getEndsAt() <= $promoCode->getStartsAt()) {
-            throw new BusinessRuleException('La fin de validité du code doit être après son début.');
+        $startsAt = $promoCode->getStartsAt();
+        $endsAt = $promoCode->getEndsAt();
+
+        if ($startsAt !== null && $endsAt !== null && $endsAt <= $startsAt) {
+            throw new PromoCodePeriodException();
         }
     }
 
     private function priceLabel(WebsitePlan $plan): string
     {
-        return MoneyHelper::format($plan->getPrice()) . ($plan->getBilling() === PlanBilling::PER_BOOKING ? ' HT par réservation' : ' HT');
+        $price = MoneyHelper::format($plan->getPrice());
+
+        if ($plan->getBilling() === PlanBilling::PER_BOOKING) {
+            return $price . ' HT par réservation';
+        }
+
+        return $price . ' HT';
     }
 
     private function assertPricesEditable(WebsiteConfig $website): void
@@ -265,14 +350,14 @@ class WebsitePricingService
         $this->versions->assertEditable($website);
 
         if ($website->getStatus() === WebsiteStatus::SCHEDULED) {
-            throw new BusinessRuleException('La {code} est planifiée et ses changements de prix ont déjà été annoncés aux abonnés. Annulez la planification pour modifier les formules, puis replanifiez-la : seules les différences seront envoyées.', ['code' => $website->getCode()]);
+            throw new ScheduledPricesLockedException((string) $website->getCode());
         }
     }
 
     private function assertBelongsTo(WebsiteConfig $website, ?WebsiteConfig $owner): void
     {
         if ($owner !== $website) {
-            throw new BusinessRuleException('Cet élément n\'appartient pas à la {version}.', ['version' => $website->getCode()]);
+            throw new ForeignVersionItemException((string) $website->getCode());
         }
     }
 }

@@ -4,13 +4,33 @@
 
 {% block mailContent %}
 
-    <p>Nous n’avons pas pu valider l’inscription de {{ establishment.name }} sur Kréno.</p>
-    <p>Motif : {{ reason }}</p>
+    <p>
+        Nous n’avons pas pu valider l’inscription de {{ establishment.name }} sur Kréno.
+        {{ translate('Nous n\'avons pas pu valider l\'inscription de {establishment} sur Kréno.', {
+            establishment: establishment.name,
+        }, domain: 'email') }}
+    </p>
+    <p>
+        {{ translate('Motif :', domain: 'email' )}} {{ reason }}
+    </p>
     {% if message %}
-        <p>Précisions de notre équipe :</p>
-        <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
+        <p>
+            {{ translate('Précisions de notre équipe :', domain: 'email') }}
+        </p>
+        <blockquote style="{{ styles.quote }}">
+            {{ message|nl2br }}
+        </blockquote>
     {% endif %}
-    <p>Si vous pouvez corriger ce point, reprenez votre inscription : <a href="{{ signupUrl }}" style="{{ styles.link }}">modifier mon inscription</a></p>
-    <p>Une question ? Répondez à cet e-mail ou écrivez-nous à {{ supportEmail }}.</p>
+    <p>
+        {{ translate('Si vous pouvez corriger ce point, reprenez votre inscription :', domain: 'email') }}
+        <a href="{{ signupUrl }}" style="{{ styles.link }}">
+            {{ translate('modifier mon inscription', domain: 'email') }}
+        </a>
+    </p>
+    <p>
+        {{ translate('Une question ? Répondez à cet e-mail ou écrivez-nous à {supportEmail}.', {
+            supportEmail: supportEmail
+        }, domain: 'email') }}
+    </p>
 
 {% endblock %}

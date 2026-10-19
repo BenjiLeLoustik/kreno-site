@@ -2,12 +2,13 @@
 
 namespace App\Billing\Service;
 
+use App\Billing\Exception\InvalidPromoCodeException;
 use App\Entity\Website\WebsitePlan;
 use App\Entity\Website\WebsitePromoCode;
 use App\Repository\Website\WebsitePromoCodeRepository;
-use App\Shared\Exception\BusinessRuleException;
-use App\Website\Provider\WebsiteProvider;
+use App\Shared\Helper\Translation;
 use App\Website\Enum\PlanBilling;
+use App\Website\Provider\WebsiteProvider;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
@@ -24,7 +25,11 @@ class PromoCodeService
     {
         $code = mb_strtoupper(trim((string) $code));
 
-        return $code !== '' ? $this->promoCodes->findOneByWebsiteAndCode($this->website->getLive(), $code) : null;
+        if ($code === '') {
+            return null;
+        }
+
+        return $this->promoCodes->findOneByWebsiteAndCode($this->website->getLive(), $code);
     }
 
     public function resolve(?string $code, WebsitePlan $plan, ?DateTimeImmutable $now = null): ?WebsitePromoCode
@@ -36,7 +41,7 @@ class PromoCodeService
         $promo = $this->find($code);
 
         if ($promo === null || !$this->isUsable($promo, $plan, $now)) {
-            throw new BusinessRuleException('Ce code n\'existe pas ou a expiré.');
+            throw new InvalidPromoCodeException();
         }
 
         return $promo;
@@ -70,13 +75,36 @@ class PromoCodeService
         $parts = [];
 
         if ($promo->getFreeMonths() > 0) {
-            $parts[] = sprintf('%d mois offert%s', $promo->getFreeMonths(), $promo->getFreeMonths() > 1 ? 's' : '');
+            $parts[] = $this->freeMonths($promo->getFreeMonths());
         }
 
         if ($promo->getDiscountPercent() > 0) {
-            $parts[] = sprintf('-%d %% pendant %d mois', $promo->getDiscountPercent(), $promo->getDurationMonths());
+            $parts[] = sprintf(
+                Translation::translate('-%d %% pendant %d mois'),
+                $promo->getDiscountPercent(),
+                $promo->getDurationMonths()
+            );
         }
 
-        return implode(', puis ', $parts);
+        return array_reduce(
+            array_slice($parts, 1),
+            static fn (string $previous, string $next): string => Translation::translate(
+                '{previous}, puis {next}',
+                [
+                    'previous' => $previous,
+                    'next' => $next
+                ],
+            ),
+            $parts[0] ?? '',
+        );
+    }
+
+    private function freeMonths(int $months): string
+    {
+        if ($months > 1) {
+            return sprintf(Translation::translate('%d mois offerts'), $months);
+        }
+
+        return sprintf(Translation::translate('%d mois offert'), $months);
     }
 }

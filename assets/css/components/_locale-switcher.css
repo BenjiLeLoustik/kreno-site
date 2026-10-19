@@ -1,0 +1,74 @@
+@layer components {
+    .locale-switcher {
+        @apply relative text-sm;
+    }
+
+    .locale-switcher__toggle {
+        @apply flex cursor-pointer list-none items-center gap-2.5 font-medium transition-colors;
+    }
+
+    .locale-switcher__toggle::-webkit-details-marker {
+        @apply hidden;
+    }
+
+    .locale-switcher__icon,
+    .locale-switcher__check {
+        @apply size-4 shrink-0;
+    }
+
+    .locale-switcher__chevron {
+        @apply ml-auto size-3.5 shrink-0 opacity-60 transition-transform;
+    }
+
+    .locale-switcher:not([open]) .locale-switcher__chevron {
+        @apply rotate-180;
+    }
+
+    .locale-switcher__menu {
+        @apply absolute bottom-full left-0 z-20 mb-1.5 min-w-44 rounded-xl border p-1 shadow-lg;
+    }
+
+    .locale-switcher__link {
+        @apply flex items-center justify-between gap-3 rounded-lg px-3 py-2 no-underline transition-colors;
+    }
+
+    .locale-switcher__link--active {
+        @apply font-semibold;
+    }
+
+    .locale-switcher--light {
+        @apply inline-block;
+    }
+
+    .locale-switcher--light .locale-switcher__toggle {
+        @apply rounded-full px-3 py-1.5 text-body hover:bg-cream;
+    }
+
+    .locale-switcher--light .locale-switcher__menu {
+        @apply border-sand bg-white text-ink;
+    }
+
+    .locale-switcher--light .locale-switcher__link {
+        @apply text-ink hover:bg-cream;
+    }
+
+    .locale-switcher--side .locale-switcher__toggle {
+        @apply min-h-9 rounded-lg px-3 text-[13px] text-mist hover:bg-white/5 hover:text-white;
+    }
+
+    .locale-switcher--side[open] .locale-switcher__toggle {
+        @apply bg-white/5 text-white;
+    }
+
+    .locale-switcher--side .locale-switcher__menu {
+        @apply right-0 border-white/10 bg-ink-soft text-white;
+    }
+
+    .locale-switcher--side .locale-switcher__link {
+        @apply text-[13px] text-mist hover:bg-white/10 hover:text-white;
+    }
+
+    .locale-switcher--side .locale-switcher__link--active {
+        @apply text-white;
+    }
+}

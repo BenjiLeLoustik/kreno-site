@@ -27,11 +27,30 @@ class Permission
     ];
 
     public const ESTABLISHMENT_ROLES = [
-        'manager' => [self::ESTABLISHMENT_EDIT, self::MEMBERS_MANAGE, self::SERVICES_MANAGE, self::SLOTS_MANAGE, self::BOOKINGS_MANAGE, self::PLANNING_VIEW],
-        'planner' => [self::SERVICES_MANAGE, self::SLOTS_MANAGE, self::PLANNING_VIEW],
-        'receptionist' => [self::BOOKINGS_MANAGE, self::PLANNING_VIEW],
-        'employee' => [self::PLANNING_VIEW],
+        'manager' => [
+            self::ESTABLISHMENT_EDIT,
+            self::MEMBERS_MANAGE,
+            self::SERVICES_MANAGE,
+            self::SLOTS_MANAGE,
+            self::BOOKINGS_MANAGE,
+            self::PLANNING_VIEW
+        ],
+        'planner' => [
+            self::SERVICES_MANAGE,
+            self::SLOTS_MANAGE,
+            self::PLANNING_VIEW
+        ],
+        'receptionist' => [
+            self::BOOKINGS_MANAGE,
+            self::PLANNING_VIEW
+        ],
+        'employee' => [
+            self::PLANNING_VIEW
+        ],
     ];
 
-    public const ON_DEMAND = ['planner' => self::BOOKINGS_MANAGE, 'employee' => self::BOOKINGS_MANAGE];
+    public const ON_DEMAND = [
+        'planner' => self::BOOKINGS_MANAGE,
+        'employee' => self::BOOKINGS_MANAGE
+    ];
 }

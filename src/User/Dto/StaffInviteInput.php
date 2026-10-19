@@ -2,6 +2,7 @@
 
 namespace App\User\Dto;
 
+use App\User\Enum\UserRole;
 use NeoPHP\Component\Validator\Constraint as Assert;
 
 class StaffInviteInput
@@ -19,6 +20,6 @@ class StaffInviteInput
     public ?string $lastName = null;
 
     #[Assert\NotBlank]
-    #[Assert\Choice(choices: ['ROLE_SUPPORT', 'ROLE_MODERATOR', 'ROLE_ADMIN'])]
+    #[Assert\Choice(callback: [UserRole::class, 'staffValues'])]
     public ?string $role = null;
 }

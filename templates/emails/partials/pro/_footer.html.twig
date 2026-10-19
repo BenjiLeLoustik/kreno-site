@@ -1,2 +1,6 @@
-<p style="margin: 0 0 6px;">Cet e-mail vous a été envoyé par Kréno Pro dans le cadre de votre activité professionnelle.</p>
-<p style="margin: 0;">{{ [footer.legalName ?? null, footer.address ?? null]|filter(value => value)|join(' · ') }}</p>
+<p style="margin: 0 0 6px;">
+    {{ translate('Cet e-mail vous a été envoyé par Kréno Pro dans le cadre de votre activité professionnelle.', domain: 'email') }}
+</p>
+<p style="margin: 0;">
+    {{ [footer.legalName ?? null, footer.address ?? null]|filter(value => value)|join(' · ') }}
+</p>

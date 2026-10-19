@@ -4,14 +4,33 @@
 
 {% block mailContent %}
 
-    <p>{{ inviter }} vous a ajouté à l’équipe Kréno avec le rôle « {{ role }} ».</p>
+    <p>
+        {{ translate('{inviter} vous a ajouté à l\'équipe Kréno avec le rôle « {role} ».', {inviter: inviter, role: role}, domain: 'email') }}
+    </p>
     {% if passwordUrl %}
-        <p>Pour accéder à l’administration, choisissez d’abord votre mot de passe :</p>
-        <p style="{{ styles.actions }}"><a href="{{ passwordUrl }}" style="{{ styles.button }}">Choisir mon mot de passe</a></p>
-        <p>Ce lien est valable {{ expiresIn }}. Passé ce délai, utilisez <a href="{{ forgotUrl }}" style="{{ styles.link }}">mot de passe oublié</a>.</p>
+        <p>
+            {{ translate('Pour accéder à l\'administration, choisissez d’abord votre mot de passe :', domain: 'email') }}
+        </p>
+        <p style="{{ styles.actions }}">
+            <a href="{{ passwordUrl }}" style="{{ styles.button }}">
+                {{ translate('Choisir mon mot de passe', domain: 'email') }}
+            </a>
+        </p>
+        <p>
+            {{ translate('Ce lien est valable {expiresIn}. Passé ce délai, utilisez', {expiresIn: expiresIn}, , domain: 'email') }}
+            <a href="{{ forgotUrl }}" style="{{ styles.link }}">
+                {{ translate('mot de passe oublié', domain: 'email') }}
+            </a>.
+        </p>
     {% else %}
-        <p>Connectez-vous avec votre compte habituel pour accéder à l’administration.</p>
+        <p>
+            {{ translate('Connectez-vous avec votre compte habituel pour accéder à l\'administration.', domain: 'email') }}
+        </p>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ adminUrl }}" style="{{ styles.button }}">Ouvrir l’administration</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ adminUrl }}" style="{{ styles.button }}">
+            {{ translate('Ouvrir l’administration', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

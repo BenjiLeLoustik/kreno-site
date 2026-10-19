@@ -4,15 +4,33 @@
 
 {% block mailContent %}
 
-    <p>Nous avons bien reçu ton signalement {{ report.reference }}.</p>
+    <p>
+        {{ translate('Nous avons bien reçu ton signalement {reference}.', {reference: report.reference}, domain: 'email') }}
+    </p>
     <ul style="{{ styles.list }}">
-        <li style="{{ styles.item }}">Motif : {{ report.reason }}</li>
-        <li style="{{ styles.item }}">Établissement : {{ report.establishment.name }}</li>
+        <li style="{{ styles.item }}">
+            {{ translate('Motif :', domain: 'email') }} {{ report.reason }}
+        </li>
+        <li style="{{ styles.item }}">
+            {{ translate('Établissement :', domain: 'email') }} {{ report.establishment.name }}
+        </li>
         {% if report.booking %}
-            <li style="{{ styles.item }}">Rendez-vous : {{ report.booking.service }}, {{ report.booking.day }} à {{ report.booking.time }}</li>
+            <li style="{{ styles.item }}">
+                {{ translate('Rendez-vous : {service}, {day} à {time}', {
+                    service: report.booking.service,
+                    day: report.booking.day,
+                    time: report.booking.time
+                }, domain: 'email') }}
+            </li>
         {% endif %}
     </ul>
-    <p>L’établissement a 72 h pour te répondre. Notre équipe suit l’échange et prendra une décision si besoin. Tu seras prévenu par e-mail à chaque étape.</p>
-    <p style="{{ styles.actions }}"><a href="{{ report.url }}" style="{{ styles.button }}">Suivre mon signalement</a></p>
+    <p>
+        {{ translate('L\'établissement a 72 h pour te répondre. Notre équipe suit l\'échange et prendra une décision si besoin. Tu seras prévenu par e-mail à chaque étape.', domain: 'email') }}
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ report.url }}" style="{{ styles.button }}">
+            {{ translate('Suivre mon signalement', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

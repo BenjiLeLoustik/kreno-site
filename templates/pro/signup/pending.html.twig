@@ -1,26 +1,84 @@
 {% extends 'layouts/pro-signup.html.twig' %}
 
-{% block title %}Inscription envoyée · Espace pro{% endblock %}
+{% block title %}
+    {{ translate('Inscription envoyée · Espace pro') }}
+{% endblock %}
 
-{% block heading %}Merci{% if firstName %} {{ firstName }}{% endif %}, c'est envoyé !{% endblock %}
+{% block heading %}
+    {% if firstName %}
+        {{ translate('Merci {firstName}, c\'est envoyé !', { firstName: firstName }) }}
+    {% else %}
+        {{ translate('Merci, c\'est envoyé !') }}
+    {% endif %}
+{% endblock %}
 
-{% block lead %}Nous vérifions {{ establishmentName }} avant la mise en ligne. Vous recevrez un e-mail à <b>{{ email }}</b> dès que c'est fait.{% endblock %}
+{% block lead %}
+    {% set emailTag = '<b>' ~ email ~ '</b>' %}
+    {{ translate('Nous vérifions {establishment} avant la mise en ligne. Vous recevrez un e-mail à {email} dès que c\'est fait.', {
+        establishment: establishmentName,
+        email: emailTag,
+    })|raw }}
+{% endblock %}
 
 {% block content %}
     <ol class="signup-timeline">
-        <li class="signup-timeline__item signup-timeline__item--done"><span class="signup-timeline__mark">✓</span><span><b>Inscription envoyée</b><span class="pro-row__meta">Votre moyen de paiement est enregistré.</span></span></li>
-        <li class="signup-timeline__item signup-timeline__item--current"><span class="signup-timeline__mark">2</span><span><b>Vérification par l'équipe</b><span class="pro-row__meta">{{ statusLabel }} · sous 48 h ouvrées en général.</span></span></li>
-        <li class="signup-timeline__item"><span class="signup-timeline__mark">3</span><span><b>Mise en ligne</b><span class="pro-row__meta">Vos créneaux deviennent visibles des clients du quartier.</span></span></li>
+        <li class="signup-timeline__item signup-timeline__item--done">
+            <span class="signup-timeline__mark">
+                ✓
+            </span>
+            <span>
+                <b>
+                    {{ translate('Inscription envoyée') }}
+                </b>
+                <span class="pro-row__meta">
+                    {{ translate('Votre moyen de paiement est enregistré.') }}
+                </span>
+            </span>
+        </li>
+        <li class="signup-timeline__item signup-timeline__item--current">
+            <span class="signup-timeline__mark">
+                2
+            </span>
+            <span>
+                <b>
+                    {{ translate('Vérification par l\'équipe') }}
+                </b>
+                <span class="pro-row__meta">
+                    {{ translate('{status} · sous 48 h ouvrées en général.', {status: statusLabel}) }}
+                </span>
+            </span>
+        </li>
+        <li class="signup-timeline__item">
+            <span class="signup-timeline__mark">
+                3
+            </span>
+            <span>
+                <b>
+                    {{ translate('Mise en ligne') }}
+                </b>
+                <span class="pro-row__meta">
+                    {{ translate('Vos créneaux deviennent visibles des clients du quartier.') }}
+                </span>
+            </span>
+        </li>
     </ol>
 
     <div class="signup-next">
         <a href="{{ path('pro_establishment') }}" class="signup-next__card">
-            <b>Compléter ma page en attendant</b>
-            <span class="pro-row__meta">Ajoutez des photos et précisez vos prestations.</span>
+            <b>
+                {{ translate('Compléter ma page en attendant') }}
+            </b>
+            <span class="pro-row__meta">
+                {{ translate('Ajoutez des photos et précisez vos prestations.') }}
+            </span>
         </a>
         <a href="{{ path('pro_dashboard') }}" class="signup-next__card">
-            <b>Découvrir mon espace</b>
-            <span class="pro-row__meta">Vous pouvez préparer vos créneaux, ils seront publiés à la validation.</span>
+            <b>
+                {{ translate('Découvrir mon espace') }}
+            </b>
+            <span class="pro-row__meta">
+                {{ translate('Vous pouvez préparer vos créneaux, ils seront publiés à la validation.') }}
+            </span>
         </a>
     </div>
 
@@ -28,12 +86,21 @@
         <section class="signup-recap">
             {% for item in recap %}
                 <div class="signup-recap__row">
-                    <span class="signup-recap__label">{{ item.label }}</span>
-                    <span class="signup-recap__value">{{ item.value ?? '—' }}</span>
+                    <span class="signup-recap__label">
+                        {{ item.label }}
+                    </span>
+                    <span class="signup-recap__value">
+                        {{ item.value ?? '-' }}
+                    </span>
                 </div>
             {% endfor %}
         </section>
     {% endif %}
 
-    <p class="pro-field__hint">Un document vous sera peut-être demandé (Kbis ou avis de situation INSEE).{% if website().contactEmail %} Une question ? Écrivez à {{ website().contactEmail }}.{% endif %}</p>
+    <p class="pro-field__hint">
+        {{ translate('Un document vous sera peut-être demandé (Kbis ou avis de situation INSEE).') }}
+        {% if website().contactEmail %}
+            {{ translate('Une question ? Écrivez à {contactEmail}.', {contactEmail: website().contactEmail}) }}
+        {% endif %}
+    </p>
 {% endblock %}

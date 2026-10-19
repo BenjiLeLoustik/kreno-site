@@ -24,6 +24,11 @@ class CitySlugListener
             return;
         }
 
-        $city->setSlug(StringHelper::uniqueSlug((string) $city->getName(), fn (string $slug): bool => $this->cities->slugExists($slug)));
+        $city->setSlug(
+            StringHelper::uniqueSlug(
+                (string) $city->getName(),
+                fn (string $slug): bool => $this->cities->slugExists($slug)
+            )
+        );
     }
 }

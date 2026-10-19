@@ -1,0 +1,49 @@
+@layer components {
+    .contact-page {
+        @apply mx-auto flex max-w-[760px] flex-col gap-5 px-6 pt-8 pb-16;
+    }
+
+    .contact-page__back {
+        @apply self-start text-sm font-semibold;
+    }
+
+    .contact-page__head {
+        @apply flex flex-wrap items-start justify-between gap-3;
+    }
+
+    .contact-page__heading {
+        @apply flex flex-col gap-1;
+    }
+
+    .contact-page__title {
+        @apply font-display text-[32px] leading-tight font-extrabold tracking-[-0.03em];
+    }
+
+    .contact-page__meta {
+        @apply text-sm text-muted;
+    }
+
+    .contact-page__card {
+        @apply rounded-[18px] border border-sand bg-white p-5;
+    }
+
+    .contact-page__area {
+        @apply min-h-0 resize-y py-2.5;
+    }
+
+    .contact-page__closed {
+        @apply flex flex-wrap items-center justify-between gap-3 rounded-[18px] bg-frost px-5 py-4 text-sm text-body;
+    }
+
+    .contact-status {
+        @apply flex-none rounded-full bg-frost px-[10px] py-1 text-xs font-bold whitespace-nowrap text-muted;
+    }
+
+    .contact-status--new {
+        @apply bg-[#FFF3D6] text-[#5C3D00];
+    }
+
+    .contact-status--answered {
+        @apply bg-[#DDF7EC] text-[#0F5B43];
+    }
+}

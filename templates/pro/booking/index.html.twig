@@ -2,17 +2,24 @@
 
 {% set pro_section = 'bookings' %}
 
-{% block title %}Réservations · Espace pro{% endblock %}
+{% block title %}
+    {{ translate('Réservations · Espace pro') }}
+{% endblock %}
 
 {% block content %}
     <div class="pro-head">
-        <h1 class="pro-title">Réservations</h1>
+        <h1 class="pro-title">
+            {{ translate('Réservations') }}
+        </h1>
     </div>
 
     <nav class="pro-tabs" aria-label="Période">
         {% for item in tabs %}
             <a href="{{ path('pro_bookings', item.key != 'upcoming' ? { tab: item.key } : {}) }}" class="pro-tabs__link{{ item.key == tab ? ' pro-tabs__link--active' : '' }}"{{ item.key == tab ? ' aria-current="page"' : '' }}>
-                {{ item.label }} <span class="pro-tabs__count">{{ item.count }}</span>
+                {{ item.label }}
+                <span class="pro-tabs__count">
+                    {{ item.count }}
+                </span>
             </a>
         {% endfor %}
     </nav>
@@ -21,27 +28,65 @@
         <table class="pro-table__table">
             <thead>
             <tr>
-                <th scope="col" class="pro-table__th">Client</th>
-                <th scope="col" class="pro-table__th">Créneau</th>
-                <th scope="col" class="pro-table__th">Prestation</th>
-                <th scope="col" class="pro-table__th">Prix</th>
-                <th scope="col" class="pro-table__th">Statut</th>
-                <th scope="col" class="pro-table__th"><span class="sr-only">Action</span></th>
+                <th scope="col" class="pro-table__th">
+                    {{ translate('Client') }}
+                </th>
+                <th scope="col" class="pro-table__th">
+                    {{ translate('Créneau') }}
+                </th>
+                <th scope="col" class="pro-table__th">
+                    {{ translate('Prestation') }}
+                </th>
+                <th scope="col" class="pro-table__th">
+                    {{ translate('Prix') }}
+                </th>
+                <th scope="col" class="pro-table__th">
+                    {{ translate('Statut') }}
+                </th>
+                <th scope="col" class="pro-table__th">
+                    <span class="sr-only">
+                        {{ translate('Action') }}
+                    </span>
+                </th>
             </tr>
             </thead>
             <tbody>
             {% for booking in bookings %}
                 <tr class="pro-table__row">
-                    <td class="pro-table__td"><b>{{ booking.client }}</b><br><span class="pro-table__td--muted">{{ booking.reference }}</span></td>
-                    <td class="pro-table__td pro-table__td--nowrap">{{ booking.when ?: '—' }}</td>
-                    <td class="pro-table__td">{{ booking.what ?: '—' }}</td>
-                    <td class="pro-table__td pro-price">{{ booking.price }}</td>
-                    <td class="pro-table__td"><span class="pro-badge pro-badge--{{ booking.kind }}">{{ booking.statusLabel }}</span></td>
-                    <td class="pro-table__td pro-table__td--end"><a href="{{ path('pro_booking_show', { id: booking.id }) }}" class="pro-button pro-button--small">Voir</a></td>
+                    <td class="pro-table__td">
+                        <b>
+                            {{ booking.client }}
+                        </b>
+                        <br>
+                        <span class="pro-table__td--muted">
+                            {{ booking.reference }}
+                        </span>
+                    </td>
+                    <td class="pro-table__td pro-table__td--nowrap">
+                        {{ booking.when ?: '—' }}
+                    </td>
+                    <td class="pro-table__td">
+                        {{ booking.what ?: '—' }}
+                    </td>
+                    <td class="pro-table__td pro-price">
+                        {{ booking.price }}
+                    </td>
+                    <td class="pro-table__td">
+                        <span class="pro-badge pro-badge--{{ booking.kind }}">
+                            {{ booking.statusLabel }}
+                        </span>
+                    </td>
+                    <td class="pro-table__td pro-table__td--end">
+                        <a href="{{ path('pro_booking_show', { id: booking.id }) }}" class="pro-button pro-button--small">
+                            {{ translate('Voir') }}
+                        </a>
+                    </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6" class="pro-table__empty">Aucune réservation pour le moment.</td>
+                    <td colspan="6" class="pro-table__empty">
+                        {{ translate('Aucune réservation pour le moment.') }}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

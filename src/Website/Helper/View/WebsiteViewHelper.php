@@ -2,21 +2,13 @@
 
 namespace App\Website\Helper\View;
 
+use App\Website\Enum\WebsiteDefault;
 use App\Website\Exception\NoLiveWebsiteException;
 use App\Website\Provider\WebsiteProvider;
 use NeoPHP\Component\View\Contract\ViewFunctionInterface;
 
 class WebsiteViewHelper implements ViewFunctionInterface
 {
-    private const DEFAULTS = [
-        'siteName' => 'Kréno',
-        'domain' => null,
-        'tagline' => 'Un créneau vient de se libérer. Il est pour toi.',
-        'siteDescription' => 'Les créneaux libérés de ton quartier, à prix réduit. Tu réserves en deux clics, tu paies sur place.',
-        'seoTitle' => null,
-        'contactEmail' => null,
-    ];
-
     private ?array $identity = null;
 
     public function __construct(
@@ -39,16 +31,28 @@ class WebsiteViewHelper implements ViewFunctionInterface
         try {
             $live = $this->provider->getLive();
         } catch (NoLiveWebsiteException) {
-            return self::DEFAULTS;
+            return $this->defaults();
         }
 
         return [
-            'siteName' => $live->getSiteName() ?: self::DEFAULTS['siteName'],
+            'siteName' => $live->getSiteName() ?: WebsiteDefault::SITE_NAME->text(),
             'domain' => $live->getDomain(),
-            'tagline' => $live->getTagline() ?: self::DEFAULTS['tagline'],
-            'siteDescription' => $live->getSiteDescription() ?: self::DEFAULTS['siteDescription'],
+            'tagline' => $live->getTagline() ?: WebsiteDefault::TAGLINE->text(),
+            'siteDescription' => $live->getSiteDescription() ?: WebsiteDefault::SITE_DESCRIPTION->text(),
             'seoTitle' => $live->getSeoTitle() ?: null,
             'contactEmail' => $live->getContactEmail() ?: null,
+        ];
+    }
+
+    private function defaults(): array
+    {
+        return [
+            'siteName' => WebsiteDefault::SITE_NAME->text(),
+            'domain' => null,
+            'tagline' => WebsiteDefault::TAGLINE->text(),
+            'siteDescription' => WebsiteDefault::SITE_DESCRIPTION->text(),
+            'seoTitle' => null,
+            'contactEmail' => null,
         ];
     }
 }

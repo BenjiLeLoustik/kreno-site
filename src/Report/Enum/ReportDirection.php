@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Report\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum ReportDirection: string
 {
     case FROM_CUSTOMER = 'from_customer';
@@ -12,8 +14,8 @@ enum ReportDirection: string
     public function label(): string
     {
         return match ($this) {
-            self::FROM_CUSTOMER => 'Signalé par un client',
-            self::FROM_ESTABLISHMENT => 'Signalé par un établissement',
+            self::FROM_CUSTOMER => Translation::translate('Signalé par un client'),
+            self::FROM_ESTABLISHMENT => Translation::translate('Signalé par un établissement'),
         };
     }
 }

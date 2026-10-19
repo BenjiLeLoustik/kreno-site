@@ -1,0 +1,33 @@
+@layer components {
+    .thread {
+        @apply flex flex-col gap-3;
+    }
+
+    .thread__message {
+        @apply flex max-w-[85%] flex-col gap-1 self-start rounded-[16px] rounded-tl-[4px] border border-sand bg-white px-4 py-3;
+    }
+
+    .thread__message--team {
+        @apply self-end rounded-tl-[16px] rounded-tr-[4px] border-ink bg-ink text-white;
+    }
+
+    .thread__head {
+        @apply flex flex-wrap items-baseline gap-x-2 text-xs;
+    }
+
+    .thread__author {
+        @apply font-bold;
+    }
+
+    .thread__date {
+        @apply text-muted;
+    }
+
+    .thread__message--team .thread__date {
+        @apply text-mist;
+    }
+
+    .thread__body {
+        @apply text-[15px] break-words;
+    }
+}

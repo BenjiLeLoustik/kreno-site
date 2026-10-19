@@ -22,7 +22,7 @@ class StaffPresenter
             'roleLabel' => $role?->label(),
             'status' => $user->getStatus()->value,
             'pending' => $user->getLastLoginAt() === null,
-            'lastLogin' => $user->getLastLoginAt() !== null ? CalendarHelper::relative($user->getLastLoginAt()) : null,
+            'lastLogin' => $this->lastLogin($user),
             'isMe' => $viewer !== null && $viewer === $user,
         ];
     }
@@ -30,5 +30,14 @@ class StaffPresenter
     public function presentAll(array $users, ?User $viewer = null): array
     {
         return array_map(fn (User $user): array => $this->present($user, $viewer), $users);
+    }
+
+    private function lastLogin(User $user): ?string
+    {
+        if ($user->getLastLoginAt() === null) {
+            return null;
+        }
+
+        return CalendarHelper::relative($user->getLastLoginAt());
     }
 }

@@ -1,0 +1,120 @@
+{% extends 'layouts/pro.html.twig' %}
+
+{% set pro_section = 'reviews' %}
+
+{% block title %}
+    {{ translate('Avis clients · Espace pro') }}
+{% endblock %}
+
+{% block content %}
+    <div class="pro-head">
+        <div class="pro-head__text">
+            <h1 class="pro-title">
+                {{ translate('Avis clients') }}
+            </h1>
+            <span class="pro-subtitle">
+                {{ translate('Seuls les clients venus à leur rendez-vous peuvent laisser un avis. Une réponse courtoise rassure vos futurs clients.') }}
+            </span>
+        </div>
+    </div>
+
+    <section class="pro-card">
+        {% if summary.count > 0 %}
+            {% include 'front/review/_summary.html.twig' with { summary: summary } only %}
+        {% else %}
+            <p class="pro-subtitle">
+                {{ translate('Vous n\'avez pas encore reçu d\'avis.') }}
+            </p>
+        {% endif %}
+    </section>
+
+    <nav class="pro-tabs" aria-label="Filtrer les avis">
+        {% for item in tabs %}
+            <a href="{{ path('pro_reviews', item.key != 'all' ? { tab: item.key } : {}) }}" class="pro-tabs__link{{ item.selected ? ' pro-tabs__link--active' : '' }}"{{ item.selected ? ' aria-current="page"' : '' }}>
+                {{ item.label }}
+            </a>
+        {% endfor %}
+    </nav>
+
+    <section class="pro-card review-pro-list">
+        {% for review in reviews %}
+            <div class="review-pro">
+                <div class="review-pro__head">
+                    <span class="pro-row__meta">
+                        {{ translate('Réservation {reference}', {reference: review.reference}) }}
+                    </span>
+                    {% if review.status != 'published' %}
+                        <span class="pro-badge">
+                            {{ review.statusLabel }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                {% include 'front/review/_card.html.twig' with { review: review } only %}
+
+                {% if review.status == 'reported' and review.reportReason %}
+                    <p class="pro-note">
+                        {{ translate('Votre signalement : {reportReason}', {reportReason: review.reportReason}) }}
+                    </p>
+                {% endif %}
+                {% if review.status == 'hidden' and review.moderationNote %}
+                    <p class="pro-note">
+                        Masqué par l'équipe : {{ review.moderationNote }}
+                        {{ translate('Masqué par l\'équipe : {moderationNote}', {moderationNote: review.moderationNote}) }}
+                    </p>
+                {% endif %}
+
+                {% if canManage and review.visible %}
+                    <div class="review-pro__actions">
+                        <details class="review-pro__panel">
+                            <summary class="pro-button pro-button--small">
+                                {% if review.reply %}
+                                    {{ translate('Modifier ma réponse') }}
+                                {% else %}
+                                    {{ translate('Répondre') }}
+                                {% endif %}
+                            </summary>
+                            <form method="post" action="{{ path('pro_review_reply', { id: review.id }) }}" class="pro-form review-pro__form">
+                                {{ csrf_field('pro')|raw }}
+                                <input type="hidden" name="tab" value="{{ tab }}">
+                                <label class="pro-field">
+                                    {{ translate('Votre réponse publique') }}
+                                    <textarea name="body" rows="4" required minlength="2" maxlength="1000" class="pro-input pro-input--area">{{ review.reply }}</textarea>
+                                </label>
+                                <button type="submit" class="pro-button pro-button--primary">
+                                    {{ translate('Publier la réponse') }}
+                                </button>
+                            </form>
+                        </details>
+
+                        {% if review.status == 'published' %}
+                            <details class="review-pro__panel">
+                                <summary class="pro-button pro-button--small">
+                                    {{ translate('Signaler') }}
+                                </summary>
+                                <form method="post" action="{{ path('pro_review_report', { id: review.id }) }}" class="pro-form review-pro__form">
+                                    {{ csrf_field('pro')|raw }}
+                                    <input type="hidden" name="tab" value="{{ tab }}">
+                                    <label class="pro-field">
+                                        {{ translate('Pourquoi cet avis pose-t-il problème ?') }}
+                                        <textarea name="reason" rows="3" required minlength="10" maxlength="500" class="pro-input pro-input--area" placeholder="{{ translate('Propos injurieux, avis sans rapport avec la prestation…') }}"></textarea>
+                                        <span class="pro-field__hint">
+                                            {{ translate('Notre équipe examine votre signalement. L\'avis reste visible en attendant.') }}
+                                        </span>
+                                    </label>
+                                    <button type="submit" class="pro-button pro-button--danger">
+                                        {{ translate('Envoyer le signalement') }}
+                                    </button>
+                                </form>
+                            </details>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <p class="pro-subtitle">
+                {{ translate('Aucun avis dans cette liste.') }}
+            </p>
+        {% endfor %}
+    </section>
+{% endblock %}

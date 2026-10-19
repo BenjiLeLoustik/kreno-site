@@ -5,8 +5,11 @@ namespace App\Establishment\Service;
 use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Establishment\EstablishmentClosure;
 use App\Establishment\Dto\ClosureInput;
+use App\Establishment\Exception\ClosureEndBeforeStartException;
+use App\Establishment\Exception\ClosureOverlapException;
+use App\Establishment\Exception\InvalidClosureDatesException;
+use App\Establishment\Exception\PastClosureException;
 use App\Repository\Establishment\EstablishmentClosureRepository;
-use App\Shared\Exception\BusinessRuleException;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
@@ -20,31 +23,25 @@ class ClosureService
 
     public function create(CompanyEstablishment $establishment, ClosureInput $input): EstablishmentClosure
     {
-        $startsOn = DateTimeImmutable::createFromFormat('!Y-m-d', (string) $input->startsOn);
-        $endsOn = DateTimeImmutable::createFromFormat('!Y-m-d', (string) $input->endsOn);
-
-        if ($startsOn === false || $endsOn === false) {
-            throw new BusinessRuleException('Les dates de fermeture sont invalides.');
-        }
+        $startsOn = $this->date($input->startsOn);
+        $endsOn = $this->date($input->endsOn);
 
         if ($endsOn < $startsOn) {
-            throw new BusinessRuleException('La date de fin doit suivre la date de début.');
+            throw new ClosureEndBeforeStartException();
         }
 
         if ($endsOn < (new DateTimeImmutable())->setTime(0, 0)) {
-            throw new BusinessRuleException('Cette fermeture est déjà passée.');
+            throw new PastClosureException();
         }
 
         if ($this->closures->overlaps($establishment, $startsOn, $endsOn)) {
-            throw new BusinessRuleException('Une fermeture existe déjà sur cette période.');
+            throw new ClosureOverlapException();
         }
-
-        $reason = trim((string) $input->reason);
 
         $closure = new EstablishmentClosure();
         $closure->setStartsOn($startsOn);
         $closure->setEndsOn($endsOn);
-        $closure->setReason($reason !== '' ? $reason : null);
+        $closure->setReason($this->reason($input->reason));
 
         $establishment->addClosure($closure);
         $this->orm->persist($closure);
@@ -58,5 +55,27 @@ class ClosureService
         $closure->getEstablishment()?->removeClosure($closure);
         $this->orm->remove($closure);
         $this->orm->flush();
+    }
+
+    private function date(?string $value): DateTimeImmutable
+    {
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', (string) $value);
+
+        if ($date === false) {
+            throw new InvalidClosureDatesException();
+        }
+
+        return $date;
+    }
+
+    private function reason(?string $reason): ?string
+    {
+        $reason = trim((string) $reason);
+
+        if ($reason === '') {
+            return null;
+        }
+
+        return $reason;
     }
 }

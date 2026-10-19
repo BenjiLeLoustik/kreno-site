@@ -3,11 +3,13 @@
 namespace App\Company\Service;
 
 use App\Company\Dto\CompanyInput;
+use App\Company\Exception\DefaultDiscountOutOfRangeException;
+use App\Company\Exception\InvalidSirenException;
+use App\Company\Exception\SirenAlreadyUsedException;
 use App\Company\Helper\SiretHelper;
 use App\Entity\Company\Company;
 use App\Entity\Company\CompanyConfig;
 use App\Repository\Company\CompanyRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\Website\Provider\WebsiteProvider;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
@@ -24,6 +26,20 @@ class CompanyService
     {
         $config = $company->getConfig() ?? (new CompanyConfig())->setCompany($company);
 
+        $this->applyIdentity($company, $input);
+        $this->applySiren($company, $input->siren);
+        $this->applyAddress($company, $input);
+        $this->applyDiscount($config, $input->defaultDiscount);
+        $this->applyConfig($config, $input);
+
+        $this->orm->persist($config);
+        $this->orm->flush();
+
+        return $company;
+    }
+
+    private function applyIdentity(Company $company, CompanyInput $input): void
+    {
         if ($input->name !== null && trim($input->name) !== '') {
             $company->setName(trim($input->name));
         }
@@ -32,24 +48,34 @@ class CompanyService
             $company->setLegalName(trim($input->legalName) ?: null);
         }
 
-        if ($input->siren !== null) {
-            $siren = SiretHelper::normalize($input->siren);
-
-            if (!SiretHelper::isValidSiren($siren)) {
-                throw new BusinessRuleException('Ce numéro SIREN n\'est pas valide.');
-            }
-
-            if ($this->companies->sirenExists($siren, $company)) {
-                throw new BusinessRuleException('Une autre entreprise utilise déjà ce SIREN.');
-            }
-
-            $company->setSiren($siren);
-        }
-
         if ($input->vatNumber !== null) {
-            $company->setVatNumber(strtoupper(str_replace(' ', '', $input->vatNumber)) ?: null);
+            $company->setVatNumber(
+                strtoupper(str_replace(' ', '', $input->vatNumber)) ?: null
+            );
+        }
+    }
+
+    private function applySiren(Company $company, ?string $siren): void
+    {
+        if ($siren === null) {
+            return;
         }
 
+        $siren = SiretHelper::normalize($siren);
+
+        if (!SiretHelper::isValidSiren($siren)) {
+            throw new InvalidSirenException();
+        }
+
+        if ($this->companies->sirenExists($siren, $company)) {
+            throw new SirenAlreadyUsedException();
+        }
+
+        $company->setSiren($siren);
+    }
+
+    private function applyAddress(Company $company, CompanyInput $input): void
+    {
         if ($input->addressLine1 !== null) {
             $company->setAddressLine1(trim($input->addressLine1) ?: null);
         }
@@ -61,17 +87,25 @@ class CompanyService
         if ($input->locality !== null) {
             $company->setLocality(trim($input->locality) ?: null);
         }
+    }
 
-        if ($input->defaultDiscount !== null) {
-            $rule = $this->website->getRule();
-
-            if ($input->defaultDiscount < $rule->getMinDiscount() || $input->defaultDiscount > $rule->getMaxDiscount()) {
-                throw new BusinessRuleException('La remise par défaut doit être comprise entre {min} et {max} %.', ['min' => $rule->getMinDiscount(), 'max' => $rule->getMaxDiscount()]);
-            }
-
-            $config->setDefaultDiscount($input->defaultDiscount);
+    private function applyDiscount(CompanyConfig $config, ?int $discount): void
+    {
+        if ($discount === null) {
+            return;
         }
 
+        $rule = $this->website->getRule();
+
+        if ($discount < $rule->getMinDiscount() || $discount > $rule->getMaxDiscount()) {
+            throw new DefaultDiscountOutOfRangeException($rule->getMinDiscount(), $rule->getMaxDiscount());
+        }
+
+        $config->setDefaultDiscount($discount);
+    }
+
+    private function applyConfig(CompanyConfig $config, CompanyInput $input): void
+    {
         if ($input->billingName !== null) {
             $config->setBillingName(trim($input->billingName) ?: null);
         }
@@ -87,10 +121,5 @@ class CompanyService
         if ($input->monthlyTips !== null) {
             $config->setMonthlyTips($input->monthlyTips);
         }
-
-        $this->orm->persist($config);
-        $this->orm->flush();
-
-        return $company;
     }
 }

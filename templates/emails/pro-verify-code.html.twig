@@ -4,9 +4,19 @@
 
 {% block mailContent %}
 
-    <p>Voici votre code de vérification pour finaliser l’inscription de {{ company }} sur Kréno Pro :</p>
+    <p>
+        {{ translate('Voici votre code de vérification pour finaliser l\'inscription de {company} sur Kréno Pro', {company: company}, domain: 'email') }}
+    </p>
     <p style="{{ styles.code }}">{{ code }}</p>
-    <p>Ce code est valable {{ expiresIn }}. Saisissez-le sur la page d’inscription : <a href="{{ signupUrl }}" style="{{ styles.link }}">reprendre mon inscription</a></p>
-    <p>Si vous n’êtes pas à l’origine de cette demande, ignorez cet e-mail.</p>
+    <p>
+        {{ translate('Ce code est valable {expiresIn}. Saisissez-le sur la page d\'inscription : {open}reprendre mon inscription{close}', {
+            expiresIn: expiresIn,
+            open: '<a href="' ~ signupUrl|e('html_attr') ~ '" style="' ~ styles.link|e('html_attr') ~ '">',
+            close: '</a>'
+        }, 'email')|raw }}
+    </p>
+    <p>
+        {{ translate('Si vous n\'êtes pas à l\'origine de cette demande, ignorez cet e-mail.', domain: 'email') }}
+    </p>
 
 {% endblock %}

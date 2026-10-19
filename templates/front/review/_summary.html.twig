@@ -1,0 +1,29 @@
+{% import 'front/review/_stars.html.twig' as stars %}
+
+<div class="review-summary">
+    <div class="review-summary__score">
+        <span class="review-summary__average">
+            {{ summary.averageLabel }}
+        </span>
+        {{ stars.show(summary.average) }}
+        <span class="review-summary__count">
+            {{ summary.countLabel }}
+        </span>
+    </div>
+    <ul class="review-bars">
+        {% for bar in summary.bars %}
+            <li class="review-bars__row">
+                <span class="review-bars__label">
+                    {{ bar.rating }}
+                    <i data-lucide="star" class="review-bars__icon"></i>
+                </span>
+                <progress class="review-bars__track" max="100" value="{{ bar.percent }}" aria-label="{{ translate('{barRating} étoiles : {count}', {barRating: bar.rating, count: bar.count}) }}">
+                    {{ bar.percent }} %
+                </progress>
+                <span class="review-bars__count">
+                    {{ bar.count }}
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

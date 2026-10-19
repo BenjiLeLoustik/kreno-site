@@ -1,25 +1,67 @@
 <section class="legal-section">
-    <h2 class="legal-section__title">1. Éditeur</h2>
-    <p class="legal-section__text">{{ issuer.name ?: site.siteName }}</p>
-    {% if issuer.address %}<p class="legal-section__text">{{ issuer.address }}</p>{% endif %}
+    <h2 class="legal-section__title">
+        1. Éditeur
+    </h2>
     <p class="legal-section__text">
-        {% if issuer.siren %}SIREN {{ issuer.siren }}{% else %}<mark class="legal-todo">À compléter : SIREN.</mark>{% endif %}
-        {% if issuer.vatNumber %} · TVA intracommunautaire {{ issuer.vatNumber }}{% endif %}
+        {{ issuer.name ?: site.siteName }}
     </p>
-    <p class="legal-section__text"><mark class="legal-todo">À compléter : forme juridique et capital social.</mark></p>
+    {% if issuer.address %}
+        <p class="legal-section__text">
+            {{ issuer.address }}
+        </p>
+    {% endif %}
+    <p class="legal-section__text">
+        {% if issuer.siren %}
+            SIREN {{ issuer.siren }}
+        {% else %}
+            <mark class="legal-todo">
+                À compléter : SIREN.
+            </mark>
+        {% endif %}
+        {% if issuer.vatNumber %}
+            · TVA intracommunautaire {{ issuer.vatNumber }}
+        {% endif %}
+    </p>
+    <p class="legal-section__text">
+        <mark class="legal-todo">
+            À compléter : forme juridique et capital social.
+        </mark>
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">2. Directeur de la publication</h2>
-    <p class="legal-section__text"><mark class="legal-todo">À compléter : nom du directeur de la publication.</mark></p>
+    <h2 class="legal-section__title">
+        2. Directeur de la publication
+    </h2>
+    <p class="legal-section__text">
+        <mark class="legal-todo">
+            À compléter : nom du directeur de la publication.
+        </mark>
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">3. Hébergeur</h2>
-    <p class="legal-section__text"><mark class="legal-todo">À compléter : nom, adresse et téléphone de l'hébergeur.</mark></p>
+    <h2 class="legal-section__title">
+        3. Hébergeur
+    </h2>
+    <p class="legal-section__text">
+        <mark class="legal-todo">
+            À compléter : nom, adresse et téléphone de l'hébergeur.
+        </mark>
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">4. Contact</h2>
-    <p class="legal-section__text"><a href="mailto:{{ supportEmail }}">{{ supportEmail }}</a> · <a href="{{ path('page_help') }}">Aide et contact</a></p>
+    <h2 class="legal-section__title">
+        4. Contact
+    </h2>
+    <p class="legal-section__text">
+        <a href="mailto:{{ supportEmail }}">
+            {{ supportEmail }}
+        </a>
+        ·
+        <a href="{{ path('page_help') }}">
+            Aide et contact
+        </a>
+    </p>
 </section>

@@ -1,74 +1,166 @@
 @layer components {
-    .account-next {
-        @apply grid items-center gap-5 rounded-[18px] border border-sand bg-white p-4 md:grid-cols-[minmax(0,1fr)_minmax(0,260px)];
+    .account {
+        @apply mx-auto flex max-w-[1200px] flex-col gap-5 px-6 pt-6 pb-16 lg:flex-row lg:items-start lg:gap-7 lg:pt-7;
     }
 
-    .account-next__side {
-        @apply flex flex-col items-start gap-2;
+    .account-side {
+        @apply flex flex-col gap-2 lg:sticky lg:top-6 lg:w-[240px] lg:shrink-0;
     }
 
-    .account-next__in {
-        @apply rounded-full bg-mint/15 px-3 py-1 text-sm font-bold text-mint-ink;
+    .account-side__toggle {
+        @apply flex min-h-12 w-full cursor-pointer items-center gap-2.5 rounded-xl border-[1.5px] border-sand bg-white px-3.5 font-sans text-[15px] font-semibold text-ink lg:hidden;
     }
 
-    .account-next__notice {
-        @apply text-sm text-muted;
+    .account-side__current {
+        @apply flex-1 text-left;
     }
 
-    .account-next__actions {
-        @apply flex flex-wrap gap-2;
+    .account-side__chevron {
+        @apply size-4 text-muted transition-transform;
     }
 
-    .account-columns {
-        @apply grid items-start gap-4 md:grid-cols-2;
+    .account-side__toggle[aria-expanded='true'] .account-side__chevron {
+        @apply rotate-180;
     }
 
-    .account-notification {
-        @apply flex flex-col gap-0.5 border-t border-[#F1E8DE] pt-2.5 text-ink no-underline;
+    .account-nav {
+        @apply hidden flex-col gap-1 rounded-2xl border border-sand bg-white p-2 lg:flex lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0;
     }
 
-    .account-notification--unread .account-notification__title {
-        @apply before:mr-2 before:inline-block before:size-2 before:rounded-full before:bg-coral before:align-middle before:content-[''];
+    .account-nav.is-open {
+        @apply flex;
     }
 
-    .account-notification__title {
-        @apply font-semibold;
+    .account-nav__title {
+        @apply hidden font-display text-[30px] font-extrabold tracking-[-0.03em] lg:mb-3 lg:block;
     }
 
-    .account-notification__body {
+    .account-nav__link {
+        @apply flex min-h-11 w-full cursor-pointer items-center gap-2.5 rounded-xl border-0 bg-transparent px-3.5 font-sans text-[15px] font-semibold whitespace-nowrap text-ink no-underline transition-colors hover:bg-cream lg:hover:bg-white;
+    }
+
+    .account-nav__link--active {
+        @apply bg-ink text-white hover:bg-ink hover:text-white;
+    }
+
+    .account-nav__link--danger {
+        @apply text-[#C93A22] hover:text-[#C93A22];
+    }
+
+    .account-nav__icon {
+        @apply size-[18px] shrink-0;
+    }
+
+    .account-nav__icon--end {
+        @apply size-4 text-muted;
+    }
+
+    .account-nav__link--space {
+        @apply text-coral-dark;
+    }
+
+    .account-nav__separator {
+        @apply mx-3.5 my-2 h-px shrink-0 bg-sand;
+    }
+
+    .account-nav__label {
+        @apply flex-1 text-left;
+    }
+
+    .account-nav__badge {
+        @apply rounded-full bg-coral px-2 py-0.5 text-xs font-bold text-white;
+    }
+
+    .account-nav__logout {
+        @apply m-0 lg:mt-3;
+    }
+
+    .account-main {
+        @apply flex min-w-0 flex-1 flex-col gap-6;
+    }
+
+    .account-head {
+        @apply flex flex-col gap-1;
+    }
+
+    .account-head__date {
+        @apply text-xs font-semibold tracking-[0.08em] text-muted uppercase;
+    }
+
+    .account-head__title {
+        @apply font-display text-[34px] leading-tight font-extrabold tracking-[-0.03em] md:text-[40px];
+    }
+
+    .account-head__subtitle {
+        @apply text-body;
+    }
+
+    .account-section {
+        @apply flex flex-col gap-3;
+    }
+
+    .account-section__head {
+        @apply flex items-baseline justify-between gap-3;
+    }
+
+    .account-section__title {
+        @apply text-xl font-bold;
+    }
+
+    .account-section__more {
+        @apply text-sm font-semibold whitespace-nowrap;
+    }
+
+    .account-empty {
+        @apply flex flex-wrap items-center justify-between gap-4 rounded-[18px] border border-sand bg-white px-5 py-[18px];
+    }
+
+    .account-empty__text {
+        @apply max-w-[520px] text-body;
+    }
+
+    .account-card {
+        @apply flex flex-col gap-3 rounded-[18px] border border-sand bg-white p-5;
+    }
+
+    .account-card__text {
         @apply text-sm text-body;
     }
 
-    .account-notification__date {
-        @apply text-xs text-muted;
+    .account-card__muted {
+        @apply text-sm text-muted;
     }
 
-    .account-picks {
-        @apply grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4;
+    .account-tabs {
+        @apply flex gap-2 overflow-x-auto;
     }
 
-    .account-rules {
-        @apply m-0 flex list-disc flex-col gap-1.5 pl-5 text-sm text-body;
+    .account-tabs__link {
+        @apply flex min-h-10 shrink-0 items-center rounded-full border-[1.5px] border-sand bg-white px-4 text-sm font-semibold text-ink no-underline transition-colors hover:border-ink;
     }
 
-    .account-stats {
-        @apply grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3.5;
+    .account-tabs__link--active {
+        @apply border-ink bg-ink text-white hover:text-white;
     }
 
-    .account-stat {
-        @apply flex flex-col gap-1 rounded-2xl border border-sand bg-white px-5 py-[18px];
+    .account-status {
+        @apply flex-none rounded-full bg-frost px-[9px] py-1 text-xs font-bold whitespace-nowrap text-muted;
     }
 
-    .account-stat__label,
-    .account-stat__note {
-        @apply text-[13px] text-muted;
+    .account-status--coming,
+    .account-status--done {
+        @apply bg-[#DDF7EC] text-[#0F5B43];
     }
 
-    .account-stat__value {
-        @apply font-display text-[30px] font-extrabold tabular-nums;
+    .account-status--pending,
+    .account-status--sent,
+    .account-status--review,
+    .account-status--answer {
+        @apply bg-[#FFF3D6] text-[#5C3D00];
     }
 
-    .account-stat__value--alert {
-        @apply text-coral-dark;
+    .account-status--noshow,
+    .account-status--cancelled_by_establishment {
+        @apply bg-[#FFE1DA] text-[#8A2414];
     }
 }

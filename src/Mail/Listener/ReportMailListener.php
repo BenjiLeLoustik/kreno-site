@@ -3,8 +3,11 @@
 namespace App\Mail\Listener;
 
 use App\Entity\Report\Report;
+use App\Entity\Report\ReportMessage;
 use App\Entity\User\User;
 use App\Establishment\Helper\CalendarHelper;
+use App\Mail\Enum\MailSubject;
+use App\Mail\Enum\MailText;
 use App\Mail\Presenter\MailContextPresenter;
 use App\Mail\Provider\RecipientProvider;
 use App\Mail\Service\MailService;
@@ -15,10 +18,13 @@ use App\Report\Event\ReportMessagePostedEvent;
 use App\Report\Helper\ReportStatusHelper;
 use App\Report\Service\ReportService;
 use App\Shared\Helper\DateHelper;
+use DateTimeImmutable;
 use NeoPHP\Component\Event\Attribute\AsListener;
 
 class ReportMailListener
 {
+    public const ESTABLISHMENT_DECISIONS = ['warn', 'suspend', 'resolve'];
+
     public function __construct(
         private MailService $mail,
         private RecipientProvider $recipients,
@@ -35,28 +41,25 @@ class ReportMailListener
         $context = $this->context->report($report);
 
         if ($report->getDirection() === ReportDirection::FROM_ESTABLISHMENT) {
-            if ($reporter !== null) {
-                $this->mail->toUser(MailService::PRO, $reporter, sprintf('Signalement %s transmis à Kréno', $context['reference']), 'pro-report-sent', [
-                    'report' => $context,
-                    'reportsUrl' => $this->mail->url('pro_reports'),
-                ]);
-            }
+            $this->confirmToEstablishment($reporter, $context);
 
             return;
         }
 
         if ($reporter !== null) {
-            $this->mail->toUser(MailService::SUPPORT, $reporter, 'Nous avons bien reçu ton signalement', 'report-received', [
+            $subject = MailSubject::REPORT_RECEIVED->text();
+
+            $this->mail->toUser(MailService::SUPPORT, $reporter, $subject, 'report-received', [
                 'report' => $context,
             ]);
         }
 
-        $deadline = $this->reports->replyDeadline($report);
+        $subject = MailSubject::PRO_REPORT_RECEIVED->text(ReportService::REPLY_WINDOW_HOURS);
 
-        $this->mail->send(MailService::PRO, $this->recipients->establishment($report->getEstablishment()), sprintf('Un client a signalé un problème : %d h pour répondre', ReportService::REPLY_WINDOW_HOURS), 'pro-report-received', [
+        $this->sendToEstablishment($report, $subject, 'pro-report-received', [
             'report' => $context,
-            'replyWithin' => sprintf('%d h', ReportService::REPLY_WINDOW_HOURS),
-            'deadline' => $deadline !== null ? sprintf('%s à %s', CalendarHelper::longDate($deadline), DateHelper::time($deadline)) : null,
+            'replyWithin' => MailText::HOURS->text(ReportService::REPLY_WINDOW_HOURS),
+            'deadline' => $this->dateTime($this->reports->replyDeadline($report)),
         ]);
     }
 
@@ -67,7 +70,7 @@ class ReportMailListener
         $report = $message->getReport();
         $author = $message->getAuthor();
 
-        if ($report === null || $author === null || $message->isInternal() || !ReportStatusHelper::isOpen($report)) {
+        if ($report === null || $author === null || !$this->isPublic($message, $report)) {
             return;
         }
 
@@ -77,15 +80,15 @@ class ReportMailListener
         ];
 
         if ($author === $report->getReporter()) {
-            if ($report->getDirection() === ReportDirection::FROM_CUSTOMER) {
-                $this->mail->send(MailService::PRO, $this->recipients->establishment($report->getEstablishment()), sprintf('Nouveau message sur le signalement %s', $context['report']['reference']), 'pro-report-message', $context);
-            }
+            $this->forwardToEstablishment($report, $context);
 
             return;
         }
 
         if ($this->isEstablishmentSide($report, $author) && $report->getReporter() !== null) {
-            $this->mail->toUser(MailService::SUPPORT, $report->getReporter(), sprintf('%s a répondu à ton signalement', $report->getEstablishment()?->getName()), 'report-message', $context);
+            $subject = MailSubject::REPORT_MESSAGE->text($report->getEstablishment()?->getName());
+
+            $this->mail->toUser(MailService::SUPPORT, $report->getReporter(), $subject, 'report-message', $context);
         }
     }
 
@@ -99,26 +102,75 @@ class ReportMailListener
             'decision' => $event->getDecision(),
             'message' => $this->lastMessage($report),
         ];
+        $reference = $context['report']['reference'];
 
         if ($report->getDirection() === ReportDirection::FROM_ESTABLISHMENT) {
-            if ($reporter !== null) {
-                $this->mail->toUser(MailService::PRO, $reporter, sprintf('Signalement %s : décision de Kréno', $context['report']['reference']), 'pro-report-decided', $context + [
-                        'audience' => 'reporter',
-                    ]);
-            }
+            $this->sendDecisionToReporter($reporter, $reference, $context);
 
             return;
         }
 
         if ($reporter !== null) {
-            $this->mail->toUser(MailService::SUPPORT, $reporter, sprintf('Ton signalement %s est traité', $context['report']['reference']), 'report-decided', $context);
+            $subject = MailSubject::REPORT_DECIDED->text($reference);
+
+            $this->mail->toUser(MailService::SUPPORT, $reporter, $subject, 'report-decided', $context);
         }
 
-        if (in_array($event->getDecision(), ['warn', 'suspend', 'resolve'], true)) {
-            $this->mail->send(MailService::PRO, $this->recipients->establishment($report->getEstablishment()), sprintf('Signalement %s : décision de Kréno', $context['report']['reference']), 'pro-report-decided', $context + [
-                    'audience' => 'establishment',
-                ]);
+        if (in_array($event->getDecision(), self::ESTABLISHMENT_DECISIONS, true)) {
+            $subject = MailSubject::PRO_REPORT_DECIDED->text($reference);
+            $context['audience'] = 'establishment';
+
+            $this->sendToEstablishment($report, $subject, 'pro-report-decided', $context);
         }
+    }
+
+    private function confirmToEstablishment(?User $reporter, array $context): void
+    {
+        if ($reporter === null) {
+            return;
+        }
+
+        $subject = MailSubject::PRO_REPORT_SENT->text($context['reference']);
+
+        $this->mail->toUser(MailService::PRO, $reporter, $subject, 'pro-report-sent', [
+            'report' => $context,
+            'reportsUrl' => $this->mail->url('pro_reports'),
+        ]);
+    }
+
+    private function forwardToEstablishment(Report $report, array $context): void
+    {
+        if ($report->getDirection() !== ReportDirection::FROM_CUSTOMER) {
+            return;
+        }
+
+        $subject = MailSubject::PRO_REPORT_MESSAGE->text($context['report']['reference']);
+
+        $this->sendToEstablishment($report, $subject, 'pro-report-message', $context);
+    }
+
+    private function sendDecisionToReporter(?User $reporter, string $reference, array $context): void
+    {
+        if ($reporter === null) {
+            return;
+        }
+
+        $subject = MailSubject::PRO_REPORT_DECIDED->text($reference);
+        $context['audience'] = 'reporter';
+
+        $this->mail->toUser(MailService::PRO, $reporter, $subject, 'pro-report-decided', $context);
+    }
+
+    private function sendToEstablishment(Report $report, string $subject, string $template, array $context): void
+    {
+        $recipients = $this->recipients->establishment($report->getEstablishment());
+
+        $this->mail->send(MailService::PRO, $recipients, $subject, $template, $context);
+    }
+
+    private function isPublic(ReportMessage $message, Report $report): bool
+    {
+        return !$message->isInternal() && ReportStatusHelper::isOpen($report);
     }
 
     private function isEstablishmentSide(Report $report, User $author): bool
@@ -143,5 +195,14 @@ class ReportMailListener
         }
 
         return $last;
+    }
+
+    private function dateTime(?DateTimeImmutable $date): ?string
+    {
+        if ($date === null) {
+            return null;
+        }
+
+        return MailText::DATE_AT_TIME->text(CalendarHelper::longDate($date), DateHelper::time($date));
     }
 }

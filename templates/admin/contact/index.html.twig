@@ -1,0 +1,239 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set admin_section = 'contacts' %}
+{% set query = {
+    status: filters.status != 'new' ? filters.status : null,
+    q: filters.q ?: null,
+    page: filters.page > 1 ? filters.page : null
+}|filter(value => value) %}
+
+{% block title %}
+    Messages reçus · Administration Kréno
+{% endblock %}
+
+{% block content %}
+    <div class="admin-head">
+        <h1 class="admin-title">
+            Messages reçus
+        </h1>
+        <form method="get" action="{{ path('admin_contacts') }}" class="admin-toolbar">
+            <input type="hidden" name="status" value="{{ filters.status }}">
+            <label class="admin-search">
+                <i data-lucide="search" class="admin-nav__icon"></i>
+                <input type="search" name="q" value="{{ filters.q }}" placeholder="E-mail, numéro de réservation" class="admin-search__input" aria-label="Rechercher une demande">
+            </label>
+            <button type="submit" class="admin-button">
+                Rechercher
+            </button>
+        </form>
+    </div>
+
+    <nav class="admin-tabs" aria-label="Statut">
+        {% for status in statuses %}
+            <a href="{{ path('admin_contacts', { status: status.value, q: filters.q ?: null }|filter(value => value)) }}" class="admin-tabs__link{{ status.value == filters.status ? ' admin-tabs__link--active' : '' }}"{{ status.value == filters.status ? ' aria-current="page"' : '' }}>
+                {{ status.label }} · {{ status.count }}
+            </a>
+        {% endfor %}
+        <a href="{{ path('admin_contacts', { status: 'all', q: filters.q ?: null }|filter(value => value)) }}" class="admin-tabs__link{{ filters.status == 'all' ? ' admin-tabs__link--active' : '' }}"{{ filters.status == 'all' ? ' aria-current="page"' : '' }}>
+            Toutes
+        </a>
+    </nav>
+
+    <div class="admin-split">
+        <div class="admin-split__list">
+            {% for contact in contacts %}
+                {% set current = selected and selected.id == contact.id %}
+                <a href="{{ path('admin_contact_show', { id: contact.id }|merge(query)) }}" class="admin-list__item{{ current ? ' admin-list__item--active' : '' }}"{{ current ? ' aria-current="page"' : '' }}>
+                    <span class="admin-list__text">
+                        <b class="admin-list__name">
+                            {{ contact.email }}
+                        </b>
+                        <span class="admin-list__meta">
+                            {{ contact.topic }}
+                            {% if contact.reference %}
+                                · {{ contact.reference }}
+                            {% endif %}
+                        </span>
+                        {% if contact.excerpt %}
+                            <span class="admin-list__meta">
+                                {{ contact.excerpt }}
+                            </span>
+                        {% endif %}
+                        <span class="admin-list__meta">
+                            {{ contact.lastMessageAt|date('d/m à H:i') }}
+                        </span>
+                    </span>
+                    <span class="admin-badge admin-badge--{{ contact.tone }}">
+                        {{ contact.statusLabel }}
+                    </span>
+                </a>
+            {% else %}
+                <p class="admin-list__empty">
+                    {% if filters.status == 'new' %}
+                        Aucun nouveau message. Tout est traité.
+                    {% else %}
+                        Aucune demande pour ce filtre.
+                    {% endif %}
+                </p>
+            {% endfor %}
+            {% if filters.page > 1 or hasNext %}
+                <div class="admin-list__item admin-pagination">
+                    {% if filters.page > 1 %}
+                        <a href="{{ path('admin_contacts', query|merge({ page: filters.page - 1 })) }}">
+                            ← Précédentes
+                        </a>
+                    {% else %}
+                        <span></span>
+                    {% endif %}
+                    <span>
+                        Page {{ filters.page }}
+                    </span>
+                    {% if hasNext %}
+                        <a href="{{ path('admin_contacts', query|merge({ page: filters.page + 1 })) }}">
+                            Suivantes →
+                        </a>
+                    {% else %}
+                        <span></span>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        {% if selected %}
+            <section class="admin-card admin-split__detail">
+                <div class="admin-card__head">
+                    <div class="admin-contact__heading">
+                        <h2 class="admin-detail__title">
+                            {{ selected.topic }}
+                        </h2>
+                        <span class="admin-card__subtitle">
+                            Reçue le {{ selected.createdAt|date('d/m/Y à H:i') }}
+                            {% if selected.closedAt %}
+                                · fermée le {{ selected.closedAt|date('d/m/Y') }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    <span class="admin-badge admin-badge--{{ selected.tone }}">
+                        {{ selected.statusLabel }}
+                    </span>
+                </div>
+
+                <dl class="admin-facts">
+                    <dt class="admin-facts__label">
+                        E-mail
+                    </dt>
+                    <dd class="admin-facts__value admin-contact__email">
+                        <a href="mailto:{{ selected.email }}">
+                            {{ selected.email }}
+                        </a>
+                    </dd>
+                    <dt class="admin-facts__label">
+                        Compte
+                    </dt>
+                    <dd class="admin-facts__value">
+                        {% if selected.user %}
+                            {% if route_exists('admin_user_show') %}
+                                <a href="{{ path('admin_user_show', { id: selected.user.id }) }}">
+                                    {{ selected.user.name }}
+                                </a>
+                            {% else %}
+                                {{ selected.user.name }}
+                            {% endif %}
+                            {% if selected.user.email != selected.email %}
+                                · {{ selected.user.email }}
+                            {% endif %}
+                        {% else %}
+                            Visiteur non connecté
+                        {% endif %}
+                    </dd>
+                    {% if selected.reference %}
+                        <dt class="admin-facts__label">
+                            Réservation
+                        </dt>
+                        <dd class="admin-facts__value">
+                            {% if selected.booking %}
+                                {% if route_exists('admin_booking_show') %}
+                                    <a href="{{ path('admin_booking_show', { id: selected.booking.id }) }}">
+                                        {{ selected.booking.reference }}
+                                    </a>
+                                {% else %}
+                                    {{ selected.booking.reference }}
+                                {% endif %}
+                                · {{ selected.booking.establishment ?: '-' }} · {{ selected.booking.status }}
+                            {% else %}
+                                {{ selected.reference }} · introuvable
+                            {% endif %}
+                        </dd>
+                    {% endif %}
+                </dl>
+
+                {% if selected.booking and selected.booking.customerEmail and selected.booking.customerEmail != selected.email %}
+                    <div class="admin-note admin-note--danger">
+                        La réservation appartient à {{ selected.booking.customerEmail }}, pas à l'auteur du message.
+                    </div>
+                {% endif %}
+
+                <div class="thread">
+                    {% for message in selected.messages %}
+                        <article class="thread__message{{ message.team ? ' thread__message--team' : '' }}">
+                            <div class="thread__head">
+                                <b class="thread__author">
+                                    {{ message.author }}
+                                </b>
+                                {% if message.createdAt %}
+                                    <span class="thread__date">
+                                        {{ message.createdAt|date('d/m/Y à H:i') }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <p class="thread__body">
+                                {{ message.body|nl2br }}
+                            </p>
+                        </article>
+                    {% endfor %}
+                </div>
+
+                {% if selected.open %}
+                    <form method="post" action="{{ path('admin_contact_reply', { id: selected.id }) }}" class="admin-form">
+                        {{ csrf_field('admin_contact')|raw }}
+                        <input type="hidden" name="filterStatus" value="{{ filters.status }}">
+                        <input type="hidden" name="filterQ" value="{{ filters.q }}">
+                        <label class="admin-field">
+                            Réponse
+                            <span class="admin-field__hint">
+                                envoyée par e-mail à {{ selected.email }}, avec un lien pour répondre
+                            </span>
+                            <textarea name="body" rows="5" required minlength="2" maxlength="3000" class="admin-input admin-input--area"></textarea>
+                        </label>
+                        <label class="admin-check">
+                            <input type="checkbox" name="close" value="1" class="admin-check__input">
+                            Fermer la demande après l'envoi
+                        </label>
+                        <div class="admin-actions">
+                            <button type="submit" class="admin-button admin-button--primary">
+                                Envoyer la réponse
+                            </button>
+                        </div>
+                    </form>
+                    <form method="post" action="{{ path('admin_contact_close', { id: selected.id }) }}" class="admin-form--inline">
+                        {{ csrf_field('admin_contact')|raw }}
+                        <input type="hidden" name="filterStatus" value="{{ filters.status }}">
+                        <input type="hidden" name="filterQ" value="{{ filters.q }}">
+                        <button type="submit" class="admin-button">
+                            Fermer sans répondre
+                        </button>
+                    </form>
+                {% else %}
+                    <form method="post" action="{{ path('admin_contact_reopen', { id: selected.id }) }}" class="admin-form--inline">
+                        {{ csrf_field('admin_contact')|raw }}
+                        <input type="hidden" name="filterStatus" value="{{ filters.status }}">
+                        <input type="hidden" name="filterQ" value="{{ filters.q }}">
+                        <button type="submit" class="admin-button">
+                            Rouvrir la demande
+                        </button>
+                    </form>
+                {% endif %}
+            </section>
+        {% endif %}
+    </div>
+{% endblock %}

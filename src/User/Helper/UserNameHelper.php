@@ -15,11 +15,18 @@ class UserNameHelper
     {
         $lastName = (string) $user->getLastName();
 
-        return trim($user->getFirstName() . ($lastName !== '' ? ' ' . mb_substr($lastName, 0, 1) . '.' : ''));
+        if ($lastName === '') {
+            return trim((string) $user->getFirstName());
+        }
+
+        return trim($user->getFirstName() . ' ' . mb_substr($lastName, 0, 1) . '.');
     }
 
     public static function initials(User $user): string
     {
-        return mb_strtoupper(mb_substr((string) $user->getFirstName(), 0, 1) . mb_substr((string) $user->getLastName(), 0, 1));
+        $first = mb_substr((string) $user->getFirstName(), 0, 1);
+        $last = mb_substr((string) $user->getLastName(), 0, 1);
+
+        return mb_strtoupper($first . $last);
     }
 }

@@ -2,14 +2,31 @@
 
 namespace App\Company\Service;
 
-use App\Company\Enum\CompanyRole;
-use App\Company\Enum\MemberStatus;
 use App\Company\Dto\InvitationInput;
 use App\Company\Dto\MemberRoleInput;
+use App\Company\Enum\CompanyRole;
+use App\Company\Enum\MemberStatus;
 use App\Company\Event\InvitationSentEvent;
 use App\Company\Event\MemberJoinedEvent;
 use App\Company\Event\MemberRemovedEvent;
 use App\Company\Event\MemberRoleChangedEvent;
+use App\Company\Exception\AdminGrantForbiddenException;
+use App\Company\Exception\AdminRemovalForbiddenException;
+use App\Company\Exception\AlreadyCompanyMemberException;
+use App\Company\Exception\AlreadyTeamMemberException;
+use App\Company\Exception\CompanyNotFoundException;
+use App\Company\Exception\EstablishmentTeamForbiddenException;
+use App\Company\Exception\ForeignEstablishmentException;
+use App\Company\Exception\ForeignMemberException;
+use App\Company\Exception\InvitationEmailMismatchException;
+use App\Company\Exception\ManagerGrantForbiddenException;
+use App\Company\Exception\MemberEstablishmentRequiredException;
+use App\Company\Exception\MemberOutsideScopeException;
+use App\Company\Exception\OwnerRemovalException;
+use App\Company\Exception\OwnerRoleLockedException;
+use App\Company\Exception\OwnRoleChangeException;
+use App\Company\Exception\SelfRemovalException;
+use App\Company\Exception\SingleOwnerException;
 use App\Company\Helper\RoleHelper;
 use App\Company\Security\Permission;
 use App\Company\Security\PermissionResolver;
@@ -19,10 +36,10 @@ use App\Entity\Company\CompanyInvitation;
 use App\Entity\Company\CompanyMember;
 use App\Entity\Establishment\EstablishmentMember;
 use App\Entity\User\User;
+use App\Establishment\Enum\EstablishmentRole;
 use App\Repository\Company\CompanyEstablishmentRepository;
 use App\Repository\Company\CompanyInvitationRepository;
 use App\Repository\Company\CompanyMemberRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\User\Exception\InvalidTokenException;
 use App\User\Helper\TokenHelper;
 use DateTimeImmutable;
@@ -31,6 +48,8 @@ use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class TeamService
 {
+    public const NO_ROLE = 'none';
+
     private const INVITATION_LIFETIME = '+7 days';
 
     public function __construct(
@@ -45,30 +64,18 @@ class TeamService
 
     public function invite(CompanyMember $actor, InvitationInput $input): CompanyInvitation
     {
-        $company = $actor->getCompany() ?? throw new BusinessRuleException('Entreprise introuvable.');
+        $company = $actor->getCompany() ?? throw new CompanyNotFoundException();
         $email = mb_strtolower(trim($input->email));
         $establishment = $this->resolveEstablishment($company, $input->role, $input->establishmentId);
 
         $this->assertCanGrant($actor, $input->role, $establishment);
-
-        foreach ($company->getMembers() as $member) {
-            if ($member->getUser()?->getEmail() === $email) {
-                throw new BusinessRuleException('{email} fait déjà partie de l\'équipe.', ['email' => $email]);
-            }
-        }
+        $this->assertNotInTeam($company, $email);
 
         $now = new DateTimeImmutable();
         $this->invitations->findPendingForEmail($company, $email, $now)?->setExpiresAt($now);
 
         $token = TokenHelper::generate();
-        $invitation = (new CompanyInvitation())
-            ->setEmail($email)
-            ->setRole(RoleHelper::isCompanyRole($input->role) ? CompanyRole::from($input->role) : null)
-            ->setEstablishment($establishment)
-            ->setEstablishmentRole(RoleHelper::establishmentRole($input->role))
-            ->setInvitedBy($actor->getUser())
-            ->setTokenHash(TokenHelper::hash($token))
-            ->setExpiresAt(new DateTimeImmutable(self::INVITATION_LIFETIME));
+        $invitation = $this->createInvitation($actor, $input->role, $email, $establishment, $token);
 
         $company->addInvitation($invitation);
         $this->orm->persist($invitation);
@@ -81,7 +88,7 @@ class TeamService
 
     public function revoke(CompanyMember $actor, CompanyInvitation $invitation): void
     {
-        $this->assertCanGrant($actor, $invitation->getRole()?->value ?? $invitation->getEstablishmentRole()?->value ?? 'employee', $invitation->getEstablishment());
+        $this->assertCanGrant($actor, $this->invitationRole($invitation), $invitation->getEstablishment());
 
         $invitation->getCompany()?->removeInvitation($invitation);
         $this->orm->remove($invitation);
@@ -90,7 +97,9 @@ class TeamService
 
     public function findInvitation(string $token): CompanyInvitation
     {
-        return $this->invitations->findOneValid(TokenHelper::hash($token), new DateTimeImmutable()) ?? throw new InvalidTokenException();
+        $invitation = $this->invitations->findOneValid(TokenHelper::hash($token), new DateTimeImmutable());
+
+        return $invitation ?? throw new InvalidTokenException();
     }
 
     public function accept(string $token, User $user): CompanyMember
@@ -99,11 +108,11 @@ class TeamService
         $company = $invitation->getCompany() ?? throw new InvalidTokenException();
 
         if (mb_strtolower((string) $user->getEmail()) !== $invitation->getEmail()) {
-            throw new BusinessRuleException('Cette invitation a été envoyée à {email}. Connectez-vous avec cette adresse pour l\'accepter.', ['email' => $invitation->getEmail()]);
+            throw new InvitationEmailMismatchException((string) $invitation->getEmail());
         }
 
         if ($this->members->findOneByCompanyAndUser($company, $user) !== null) {
-            throw new BusinessRuleException('Vous faites déjà partie de {company}.', ['company' => $company->getName()]);
+            throw new AlreadyCompanyMemberException((string) $company->getName());
         }
 
         $member = (new CompanyMember())
@@ -115,13 +124,7 @@ class TeamService
         $company->addMember($member);
         $user->addMembership($member);
         $this->orm->persist($member);
-
-        if ($invitation->getEstablishment() !== null && $invitation->getEstablishmentRole() !== null) {
-            $role = (new EstablishmentMember())->setRole($invitation->getEstablishmentRole());
-            $member->addEstablishmentRole($role);
-            $invitation->getEstablishment()->addMember($role);
-            $this->orm->persist($role);
-        }
+        $this->addInvitedEstablishmentRole($member, $invitation);
 
         $invitation->setAcceptedAt(new DateTimeImmutable());
         $user->setEmailVerifiedAt($user->getEmailVerifiedAt() ?? new DateTimeImmutable());
@@ -137,15 +140,14 @@ class TeamService
         $this->assertSameCompany($actor, $member);
 
         if ($member->getRole() === CompanyRole::OWNER) {
-            throw new BusinessRuleException('Le rôle du propriétaire ne peut pas être modifié.');
+            throw new OwnerRoleLockedException();
         }
 
         if ($member === $actor) {
-            throw new BusinessRuleException('Vous ne pouvez pas modifier votre propre rôle.');
+            throw new OwnRoleChangeException();
         }
 
-        $company = $member->getCompany();
-        $establishment = $this->resolveEstablishment($company, $input->role, $input->establishmentId);
+        $establishment = $this->resolveEstablishment($member->getCompany(), $input->role, $input->establishmentId);
         $this->assertCanGrant($actor, $input->role, $establishment);
 
         $previous = $member->getRole()?->value;
@@ -154,38 +156,31 @@ class TeamService
             $member->setRole(CompanyRole::from($input->role));
         } else {
             $existing = $this->resolver->findEstablishmentRole($member, $establishment);
-            $previous ??= $existing?->getRole()->value ?? 'none';
+            $previous ??= $existing?->getRole()->value ?? self::NO_ROLE;
 
-            if ($member->getRole() === CompanyRole::ADMIN) {
-                $this->assertCanGrant($actor, 'admin', null);
-                $member->setRole(null);
-            }
-
-            if ($existing === null) {
-                $existing = new EstablishmentMember();
-                $member->addEstablishmentRole($existing);
-                $establishment->addMember($existing);
-                $this->orm->persist($existing);
-            }
-
-            $existing->setRole(RoleHelper::establishmentRole($input->role))->setCanManageBookings($input->canManageBookings);
+            $this->demoteAdmin($actor, $member);
+            $this->setEstablishmentRole($member, $establishment, $existing, $input);
         }
 
         $this->orm->flush();
 
         if ($previous !== $input->role) {
-            $this->events->dispatch(new MemberRoleChangedEvent($member, (string) $previous, $input->role, $establishment));
+            $event = new MemberRoleChangedEvent($member, (string) $previous, $input->role, $establishment);
+            $this->events->dispatch($event);
         }
 
         return $member;
     }
 
-    public function removeFromEstablishment(CompanyMember $actor, CompanyMember $member, CompanyEstablishment $establishment): CompanyMember
-    {
+    public function removeFromEstablishment(
+        CompanyMember $actor,
+        CompanyMember $member,
+        CompanyEstablishment $establishment,
+    ): CompanyMember {
         $this->assertSameCompany($actor, $member);
 
         if (!$this->resolver->memberCan($actor, Permission::MEMBERS_MANAGE, $establishment)) {
-            throw new BusinessRuleException('Vous ne pouvez pas gérer l\'équipe de cet établissement.');
+            throw new EstablishmentTeamForbiddenException();
         }
 
         $role = $this->resolver->findEstablishmentRole($member, $establishment);
@@ -205,23 +200,15 @@ class TeamService
         $this->assertSameCompany($actor, $member);
 
         if ($member->getRole() === CompanyRole::OWNER) {
-            throw new BusinessRuleException('Le propriétaire ne peut pas être retiré de l\'entreprise.');
+            throw new OwnerRemovalException();
         }
 
         if ($member === $actor) {
-            throw new BusinessRuleException('Vous ne pouvez pas vous retirer vous-même.');
+            throw new SelfRemovalException();
         }
 
         if (!$this->resolver->isCompanyAdmin($actor)) {
-            foreach ($member->getEstablishmentRoles() as $role) {
-                if (!$this->resolver->memberCan($actor, Permission::MEMBERS_MANAGE, $role->getEstablishment())) {
-                    throw new BusinessRuleException('Ce membre travaille aussi dans un établissement que vous ne gérez pas.');
-                }
-            }
-
-            if ($member->getRole() !== null) {
-                throw new BusinessRuleException('Seuls le propriétaire et les administrateurs peuvent retirer un administrateur.');
-            }
+            $this->assertCanRemoveAsManager($actor, $member);
         }
 
         $this->events->dispatch(new MemberRemovedEvent($member));
@@ -232,46 +219,143 @@ class TeamService
         $this->orm->flush();
     }
 
-    private function resolveEstablishment(?Company $company, string $role, ?int $establishmentId): ?CompanyEstablishment
+    private function assertNotInTeam(Company $company, string $email): void
     {
+        foreach ($company->getMembers() as $member) {
+            if ($member->getUser()?->getEmail() === $email) {
+                throw new AlreadyTeamMemberException($email);
+            }
+        }
+    }
+
+    private function createInvitation(
+        CompanyMember $actor,
+        string $role,
+        string $email,
+        ?CompanyEstablishment $establishment,
+        string $token,
+    ): CompanyInvitation {
+        return (new CompanyInvitation())
+            ->setEmail($email)
+            ->setRole(CompanyRole::tryFrom($role))
+            ->setEstablishment($establishment)
+            ->setEstablishmentRole(RoleHelper::establishmentRole($role))
+            ->setInvitedBy($actor->getUser())
+            ->setTokenHash(TokenHelper::hash($token))
+            ->setExpiresAt(new DateTimeImmutable(self::INVITATION_LIFETIME));
+    }
+
+    private function invitationRole(CompanyInvitation $invitation): string
+    {
+        return $invitation->getRole()?->value
+            ?? $invitation->getEstablishmentRole()?->value
+            ?? EstablishmentRole::EMPLOYEE->value;
+    }
+
+    private function addInvitedEstablishmentRole(CompanyMember $member, CompanyInvitation $invitation): void
+    {
+        $establishment = $invitation->getEstablishment();
+        $role = $invitation->getEstablishmentRole();
+
+        if ($establishment === null || $role === null) {
+            return;
+        }
+
+        $establishmentMember = (new EstablishmentMember())->setRole($role);
+        $member->addEstablishmentRole($establishmentMember);
+        $establishment->addMember($establishmentMember);
+        $this->orm->persist($establishmentMember);
+    }
+
+    private function demoteAdmin(CompanyMember $actor, CompanyMember $member): void
+    {
+        if ($member->getRole() !== CompanyRole::ADMIN) {
+            return;
+        }
+
+        $this->assertCanGrant($actor, CompanyRole::ADMIN->value, null);
+        $member->setRole(null);
+    }
+
+    private function setEstablishmentRole(
+        CompanyMember $member,
+        CompanyEstablishment $establishment,
+        ?EstablishmentMember $existing,
+        MemberRoleInput $input,
+    ): void {
+        if ($existing === null) {
+            $existing = new EstablishmentMember();
+            $member->addEstablishmentRole($existing);
+            $establishment->addMember($existing);
+            $this->orm->persist($existing);
+        }
+
+        $existing
+            ->setRole(RoleHelper::establishmentRole($input->role))
+            ->setCanManageBookings($input->canManageBookings);
+    }
+
+    private function assertCanRemoveAsManager(CompanyMember $actor, CompanyMember $member): void
+    {
+        foreach ($member->getEstablishmentRoles() as $role) {
+            if (!$this->resolver->memberCan($actor, Permission::MEMBERS_MANAGE, $role->getEstablishment())) {
+                throw new MemberOutsideScopeException();
+            }
+        }
+
+        if ($member->getRole() !== null) {
+            throw new AdminRemovalForbiddenException();
+        }
+    }
+
+    private function resolveEstablishment(
+        ?Company $company,
+        string $role,
+        ?int $establishmentId
+    ): ?CompanyEstablishment {
         if (RoleHelper::isCompanyRole($role)) {
             if ($role === CompanyRole::OWNER->value) {
-                throw new BusinessRuleException('Il ne peut y avoir qu\'un seul propriétaire.');
+                throw new SingleOwnerException();
             }
 
             return null;
         }
 
         if ($company === null || $establishmentId === null) {
-            throw new BusinessRuleException('Choisissez l\'établissement de ce membre.');
+            throw new MemberEstablishmentRequiredException();
         }
 
-        return $this->establishments->findOneInCompany($company, $establishmentId) ?? throw new BusinessRuleException('Cet établissement n\'appartient pas à l\'entreprise.');
+        return $this->establishments->findOneInCompany($company, $establishmentId)
+            ?? throw new ForeignEstablishmentException();
     }
 
     private function assertCanGrant(CompanyMember $actor, string $role, ?CompanyEstablishment $establishment): void
     {
         if (RoleHelper::isCompanyRole($role)) {
             if (!$this->resolver->isCompanyAdmin($actor)) {
-                throw new BusinessRuleException('Seuls le propriétaire et les administrateurs peuvent nommer un administrateur.');
+                throw new AdminGrantForbiddenException();
             }
 
             return;
         }
 
-        if ($establishment === null || !$this->resolver->memberCan($actor, Permission::MEMBERS_MANAGE, $establishment)) {
-            throw new BusinessRuleException('Vous ne pouvez pas gérer l\'équipe de cet établissement.');
+        if ($establishment === null) {
+            throw new EstablishmentTeamForbiddenException();
         }
 
-        if ($role === 'manager' && !$this->resolver->isCompanyAdmin($actor)) {
-            throw new BusinessRuleException('Seuls le propriétaire et les administrateurs peuvent nommer un gérant.');
+        if (!$this->resolver->memberCan($actor, Permission::MEMBERS_MANAGE, $establishment)) {
+            throw new EstablishmentTeamForbiddenException();
+        }
+
+        if ($role === EstablishmentRole::MANAGER->value && !$this->resolver->isCompanyAdmin($actor)) {
+            throw new ManagerGrantForbiddenException();
         }
     }
 
     private function assertSameCompany(CompanyMember $actor, CompanyMember $member): void
     {
         if ($actor->getCompany() === null || $actor->getCompany() !== $member->getCompany()) {
-            throw new BusinessRuleException('Ce membre ne fait pas partie de votre entreprise.');
+            throw new ForeignMemberException();
         }
     }
 }

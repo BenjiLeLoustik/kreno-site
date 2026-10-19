@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Company\Enum;
 
+use App\Shared\Helper\Translation;
+
 enum CompanyStatus: string
 {
     case ONBOARDING = 'onboarding';
@@ -15,11 +17,11 @@ enum CompanyStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::ONBOARDING => 'Inscription en cours',
-            self::PENDING_REVIEW => 'En vérification',
-            self::ACTIVE => 'Active',
-            self::REJECTED => 'Refusée',
-            self::SUSPENDED => 'Suspendue',
+            self::ONBOARDING => Translation::translate('Inscription en cours'),
+            self::PENDING_REVIEW => Translation::translate('En vérification'),
+            self::ACTIVE => Translation::translate('Active'),
+            self::REJECTED => Translation::translate('Refusée'),
+            self::SUSPENDED => Translation::translate('Suspendue'),
         };
     }
 }

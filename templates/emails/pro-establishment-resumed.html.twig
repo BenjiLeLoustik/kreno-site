@@ -4,8 +4,21 @@
 
 {% block mailContent %}
 
-    <p>{{ establishment.name }} est de nouveau en ligne sur Kréno.</p>
-    <p>Votre page est à nouveau visible et vous pouvez publier vos créneaux libérés.</p>
-    <p style="{{ styles.actions }}"><a href="{{ slotUrl }}" style="{{ styles.button }}">Publier un créneau</a><a href="{{ dashboardUrl }}" style="{{ styles.buttonSecondary }}">Ouvrir Kréno Pro</a></p>
+    <p>
+        {{ translate('{name} est de nouveau en ligne sur Kréno.', {
+            name: establishment.name,
+        }, domain: 'email') }}
+    </p>
+    <p>
+        {{ translate('Votre page est à nouveau visible et vous pouvez publier vos créneaux libérés.', domain: 'email') }}
+    </p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ slotUrl }}" style="{{ styles.button }}">
+            {{ translate('Publier un créneau', domain: 'email') }}
+        </a>
+        <a href="{{ dashboardUrl }}" style="{{ styles.buttonSecondary }}">
+            {{ translate('Ouvrir Kréno Pro', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

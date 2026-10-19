@@ -1,9 +1,20 @@
 <a href="{{ path('shop_show', { city: shop.city, slug: shop.slug }) }}" class="shop-tile">
-    <b class="shop-tile__name">{{ shop.name }}</b>
-    <span class="shop-tile__meta">{{ shop.locality }}{% if showCategory|default(false) and shop.category %} · {{ shop.category }}{% endif %}</span>
+    <b class="shop-tile__name">
+        {{ shop.name }}
+    </b>
+    <span class="shop-tile__meta">
+        {{ shop.locality }}
+        {% if showCategory|default(false) and shop.category %}
+            · {{ shop.category }}
+        {% endif %}
+    </span>
     {% if shop.free > 0 %}
-        <span class="shop-tile__free shop-tile__free--open">{{ shop.free }} créneau{{ shop.free > 1 ? 'x' : '' }} libre{{ shop.free > 1 ? 's' : '' }}</span>
+        <span class="shop-tile__free shop-tile__free--open">
+            {{ translate('{count, plural, one {# créneau libre} other {# créneaux libres}}', {count: shop.free}) }}
+        </span>
     {% else %}
-        <span class="shop-tile__free">Rien en ce moment</span>
+        <span class="shop-tile__free">
+            {{ translate('Rien en ce moment') }}
+        </span>
     {% endif %}
 </a>

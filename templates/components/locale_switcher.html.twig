@@ -1,0 +1,26 @@
+{% set switcher = locale_switcher() %}
+{% set variant = variant|default('light') %}
+
+{% if switcher.items|length > 1 %}
+    <details class="locale-switcher locale-switcher--{{ variant }}">
+        <summary class="locale-switcher__toggle" aria-label="{{ translate('Langue: {label}', {label: switcher.current.label}) }}">
+            <i data-lucide="globe" class="locale-switcher__icon"></i>
+            <span class="locale-switcher__current">
+                {{ switcher.current.label }}
+            </span>
+            <i data-lucide="chevron-up" class="locale-switcher__chevron"></i>
+        </summary>
+        <ul class="locale-switcher__menu">
+            {% for item in switcher.items %}
+                <li>
+                    <a href="{{ path('locale_switch', { locale: item.code }) }}" class="locale-switcher__link{{ item.current ? ' locale-switcher__link--active' : '' }}" hreflang="{{ item.code }}" lang="{{ item.code }}"{{ item.current ? ' aria-current="true"' : '' }}>
+                        {{ item.label }}
+                        {% if item.current %}
+                            <i data-lucide="check" class="locale-switcher__check"></i>
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </details>
+{% endif %}

@@ -6,14 +6,21 @@ use App\Entity\User\User;
 use App\Entity\User\UserAlert;
 use App\Repository\CategoryRepository;
 use App\Repository\CityRepository;
-use App\Shared\Exception\BusinessRuleException;
 use App\User\Dto\AlertInput;
+use App\User\Exception\AlertLabelRequiredException;
+use App\User\Exception\AlertLimitReachedException;
+use App\User\Exception\AlertTimeRangeException;
+use App\User\Exception\CityNotOpenException;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class AlertService
 {
-    private const MAX_ALERTS = 5;
+    public const MAX_ALERTS = 5;
+
+    private const COORDINATE_DECIMALS = 7;
+
+    private const TIME_DATE = '1970-01-01 ';
 
     public function __construct(
         private OrmManagerInterface $orm,
@@ -25,14 +32,16 @@ class AlertService
     public function create(User $user, AlertInput $input): UserAlert
     {
         if ($user->getAlerts()->count() >= self::MAX_ALERTS) {
-            throw new BusinessRuleException('Vous avez déjà {max} alertes : supprimez-en une pour en créer une nouvelle.', ['max' => self::MAX_ALERTS]);
+            throw new AlertLimitReachedException(self::MAX_ALERTS);
         }
 
-        if ($input->label === null || trim($input->label) === '') {
-            throw new BusinessRuleException('Indiquez le quartier ou l\'adresse de l\'alerte.');
+        $label = trim((string) $input->label);
+
+        if ($label === '') {
+            throw new AlertLabelRequiredException();
         }
 
-        $alert = (new UserAlert())->setLabel(trim($input->label));
+        $alert = (new UserAlert())->setLabel($label);
         $this->apply($alert, $input);
         $user->addAlert($alert);
 
@@ -44,8 +53,10 @@ class AlertService
 
     public function update(UserAlert $alert, AlertInput $input): UserAlert
     {
-        if ($input->label !== null && trim($input->label) !== '') {
-            $alert->setLabel(trim($input->label));
+        $label = trim((string) $input->label);
+
+        if ($label !== '') {
+            $alert->setLabel($label);
         }
 
         $this->apply($alert, $input);
@@ -64,35 +75,19 @@ class AlertService
     private function apply(UserAlert $alert, AlertInput $input): void
     {
         if ($input->citySlug !== null) {
-            $city = $input->citySlug === '' ? null : $this->cities->findOneOpenBySlug($input->citySlug);
-
-            if ($input->citySlug !== '' && $city === null) {
-                throw new BusinessRuleException('Cette ville n\'est pas encore ouverte sur Kréno.');
-            }
-
-            $alert->setCity($city);
+            $this->applyCity($alert, $input->citySlug);
         }
 
         if ($input->latitude !== null && $input->longitude !== null) {
-            $alert->setLatitude(number_format($input->latitude, 7, '.', ''));
-            $alert->setLongitude(number_format($input->longitude, 7, '.', ''));
+            $alert->setLatitude($this->coordinate($input->latitude));
+            $alert->setLongitude($this->coordinate($input->longitude));
         }
 
         if ($input->radiusKm !== null) {
             $alert->setRadiusKm($input->radiusKm);
         }
 
-        if ($input->startTime !== null) {
-            $alert->setStartTime($input->startTime === '' ? null : new DateTimeImmutable('1970-01-01 ' . $input->startTime));
-        }
-
-        if ($input->endTime !== null) {
-            $alert->setEndTime($input->endTime === '' ? null : new DateTimeImmutable('1970-01-01 ' . $input->endTime));
-        }
-
-        if ($alert->getStartTime() !== null && $alert->getEndTime() !== null && $alert->getEndTime() <= $alert->getStartTime()) {
-            throw new BusinessRuleException('L\'heure de fin doit être après l\'heure de début.');
-        }
+        $this->applyTimes($alert, $input);
 
         if ($input->maxPrice !== null) {
             $alert->setMaxPrice($input->maxPrice ?: null);
@@ -103,17 +98,71 @@ class AlertService
         }
 
         if ($input->categorySlugs !== null) {
-            foreach ($alert->getCategories()->toArray() as $category) {
-                $alert->removeCategory($category);
-            }
+            $this->applyCategories($alert, $input->categorySlugs);
+        }
+    }
 
-            foreach ($input->categorySlugs as $slug) {
-                $category = $this->categories->findOneVisibleBySlug((string) $slug);
+    private function applyCity(UserAlert $alert, string $slug): void
+    {
+        if ($slug === '') {
+            $alert->setCity(null);
 
-                if ($category !== null) {
-                    $alert->addCategory($category);
-                }
+            return;
+        }
+
+        $city = $this->cities->findOneOpenBySlug($slug);
+
+        if ($city === null) {
+            throw new CityNotOpenException();
+        }
+
+        $alert->setCity($city);
+    }
+
+    private function applyTimes(UserAlert $alert, AlertInput $input): void
+    {
+        if ($input->startTime !== null) {
+            $alert->setStartTime($this->time($input->startTime));
+        }
+
+        if ($input->endTime !== null) {
+            $alert->setEndTime($this->time($input->endTime));
+        }
+
+        $start = $alert->getStartTime();
+        $end = $alert->getEndTime();
+
+        if ($start !== null && $end !== null && $end <= $start) {
+            throw new AlertTimeRangeException();
+        }
+    }
+
+    private function applyCategories(UserAlert $alert, array $slugs): void
+    {
+        foreach ($alert->getCategories()->toArray() as $category) {
+            $alert->removeCategory($category);
+        }
+
+        foreach ($slugs as $slug) {
+            $category = $this->categories->findOneVisibleBySlug((string) $slug);
+
+            if ($category !== null) {
+                $alert->addCategory($category);
             }
         }
+    }
+
+    private function coordinate(float $value): string
+    {
+        return number_format($value, self::COORDINATE_DECIMALS, '.', '');
+    }
+
+    private function time(string $value): ?DateTimeImmutable
+    {
+        if ($value === '') {
+            return null;
+        }
+
+        return new DateTimeImmutable(self::TIME_DATE . $value);
     }
 }

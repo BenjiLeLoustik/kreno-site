@@ -2,21 +2,30 @@
 
 {% set pro_section = 'reports' %}
 
-{% block title %}Signalements · Espace pro{% endblock %}
+{% block title %}
+    {{ translate('Signalements · Espace pro') }}
+{% endblock %}
 
 {% block content %}
     <div class="pro-head">
         <div class="pro-head__text">
-            <h1 class="pro-title">Signalements</h1>
-            <span class="pro-subtitle">Un problème avec un client, ou un signalement d'un client sur votre établissement.</span>
+            <h1 class="pro-title">
+                {{ translate('Signalements') }}
+            </h1>
+            <span class="pro-subtitle">
+                {{ translate('Un problème avec un client, ou un signalement d\'un client sur votre établissement.') }}
+            </span>
         </div>
     </div>
 
     {% if tabs|length > 1 %}
-        <nav class="pro-tabs" aria-label="Type de signalement">
+        <nav class="pro-tabs" aria-label="{{ translate('Type de signalement') }}">
             {% for item in tabs %}
                 <a href="{{ path('pro_reports', { tab: item.key }) }}" class="pro-tabs__link{{ item.key == tab ? ' pro-tabs__link--active' : '' }}"{{ item.key == tab ? ' aria-current="page"' : '' }}>
-                    {{ item.label }} <span class="pro-tabs__count">{{ item.count }}</span>
+                    {{ item.label }}
+                    <span class="pro-tabs__count">
+                        {{ item.count }}
+                    </span>
                 </a>
             {% endfor %}
         </nav>
@@ -27,38 +36,67 @@
             {% for row in rows %}
                 <a href="{{ path('pro_report_show', { id: row.id }) }}" class="report-item">
                     <span class="report-item__main">
-                        <b>{{ row.title }}</b>
-                        <span class="pro-row__meta">{{ row.reference }}{% if row.when %} · {{ row.when }}{% endif %}</span>
-                        <span class="report-item__detail">{{ row.detail }}</span>
+                        <b>
+                            {{ row.title }}
+                        </b>
+                        <span class="pro-row__meta">
+                            {{ row.reference }}
+                            {% if row.when %}
+                                · {{ row.when }}
+                            {% endif %}
+                        </span>
+                        <span class="report-item__detail">
+                            {{ row.detail }}
+                        </span>
                     </span>
                     <span class="report-item__aside">
-                        <span class="pro-badge{{ row.open ? ' pro-badge--pending' : '' }}">{{ row.status }}</span>
-                        {% if row.replyRemaining ?? null %}<span class="pro-row__meta">Réponse attendue sous {{ row.replyRemaining }}</span>{% endif %}
+                        <span class="pro-badge{{ row.open ? ' pro-badge--pending' : '' }}">
+                            {{ row.status }}
+                        </span>
+                        {% if row.replyRemaining ?? null %}
+                            <span class="pro-row__meta">
+                                {{ translate('Réponse attendue sous {replyRemaining}', {replyRemaining: row.replyRemaining}) }}
+                            </span>
+                        {% endif %}
                     </span>
                 </a>
             {% else %}
-                <p class="pro-subtitle">{{ tab == 'mine' ? 'Vous n\'avez envoyé aucun signalement.' : 'Aucun signalement sur votre établissement.' }}</p>
+                <p class="pro-subtitle">
+                    {% if tab == 'mine' %}
+                        {{ translate('Vous n\'avez encoyé aucun signalement') }}
+                    {% else %}
+                        {{ translate('Aucun signalement sur votre établissement') }}
+                    {% endif %}
+                </p>
             {% endfor %}
         </section>
 
         {% if form %}
             <section class="pro-card pro-columns__aside">
-                <h2 class="pro-card__title">Signaler un problème avec un client</h2>
+                <h2 class="pro-card__title">
+                    {{ translate('Signaler un problème avec un client') }}
+                </h2>
                 {% if form.bookings is empty %}
-                    <p class="pro-subtitle">Aucune réservation passée à signaler.</p>
+                    <p class="pro-subtitle">
+                        {{ translate('Aucune réservation passée à signaler.') }}
+                    </p>
                 {% else %}
                     <form method="post" action="{{ path('pro_report_create') }}" class="pro-form">
                         {{ csrf_field('pro')|raw }}
                         <label class="pro-field">
-                            Réservation
+                            {{ translate('Réservation') }}
                             <select name="bookingId" class="pro-input" required>
                                 {% for booking in form.bookings %}
-                                    <option value="{{ booking.id }}"{{ booking.id == form.bookingId ? ' selected' : '' }}>{{ booking.label }}</option>
+                                    <option value="{{ booking.id }}"{{ booking.id == form.bookingId ? ' selected' : '' }}>
+                                        {{ booking.label }}
+                                    </option>
                                 {% endfor %}
                             </select>
                         </label>
                         <fieldset class="report-reasons">
-                            <legend class="pro-field">Motif</legend>
+                            <legend class="pro-field">
+                                {{ translate('Motif') }}
+                            </legend>
                             {% for reason in form.reasons %}
                                 <label class="settings-check">
                                     <input type="radio" name="reason" value="{{ reason.key }}" class="settings-check__input" required{{ reason.selected ? ' checked' : '' }}>
@@ -67,11 +105,17 @@
                             {% endfor %}
                         </fieldset>
                         <label class="pro-field">
-                            Ce qui s'est passé
+                            {{ translate('Ce qui s\'est passé') }}
                             <textarea name="description" rows="4" required minlength="10" maxlength="2000" class="pro-input pro-input--area"></textarea>
                         </label>
-                        <span class="pro-field__hint">{{ form.notice }}</span>
-                        <div><button type="submit" class="pro-button pro-button--primary">Envoyer le signalement</button></div>
+                        <span class="pro-field__hint">
+                            {{ form.notice }}
+                        </span>
+                        <div>
+                            <button type="submit" class="pro-button pro-button--primary">
+                                {{ translate('Envoyer le signalement') }}
+                            </button>
+                        </div>
                     </form>
                 {% endif %}
             </section>

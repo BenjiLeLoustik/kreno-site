@@ -4,16 +4,33 @@
 
 {% block mailContent %}
 
-    <p>Notre équipe a traité ton signalement {{ report.reference }} concernant {{ report.establishment.name }}.</p>
+    <p>
+        {{ translate('Notre équipe a traité ton signalement {reference} concernant {name}', {
+            reference: report.reference,
+            name: report.establishment.name
+        }, domain: 'email') }}
+    </p>
     {% if decision == 'dismiss' %}
-        <p>Décision : classé sans suite. Après examen, nous n’avons pas retenu de manquement de la part de l’établissement.</p>
+        <p>
+            {{ translate('Décision : classé sans suite. Après examen, nous n’avons pas retenu de manquement de la part de l\'établissement.', domain: 'email') }}
+        </p>
     {% else %}
-        <p>Décision : {{ report.resolution|lower }}. Merci de nous avoir alertés, cela nous aide à garder Kréno fiable pour tout le monde.</p>
+        <p>
+            {{ translate('Décision: {resolution}. Merci de nous avoir alertés, cela nous aide à garder Kréno fiable pour tout le monde.', {resolution: report.resolution|lower}, domain: 'email') }}
+        </p>
     {% endif %}
     {% if message %}
-        <p>Message de l’équipe Kréno :</p>
-        <blockquote style="{{ styles.quote }}">{{ message|nl2br }}</blockquote>
+        <p>
+            {{ translate('Message de l\'équipe Kréno :', domain: 'email') }}
+        </p>
+        <blockquote style="{{ styles.quote }}">
+            {{ message|nl2br }}
+        </blockquote>
     {% endif %}
-    <p style="{{ styles.actions }}"><a href="{{ report.url }}" style="{{ styles.button }}">Voir mon signalement</a></p>
+    <p style="{{ styles.actions }}">
+        <a href="{{ report.url }}" style="{{ styles.button }}">
+            {{ translate('Voir mon signalement', domain: 'email') }}
+        </a>
+    </p>
 
 {% endblock %}

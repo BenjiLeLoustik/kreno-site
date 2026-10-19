@@ -13,6 +13,9 @@
 @import "./admin/report/_index.css";
 @import "./admin/catalog/_index.css";
 @import "./admin/settings/_index.css";
+@import "./admin/app-log/_index.css";
+@import "./admin/contact/_index.css";
+@import "./admin/faq/_index.css";
 @import "./pro/init.css";
 @import "./account/_index.css";
 @import "./account/_bookings.css";
@@ -23,9 +26,14 @@
 @import "./account/_reports.css";
 @import "./account/_report.css";
 @import "./account/_settings.css";
+@import "./account/_messages.css";
 @import "./help/_index.css";
+@import "./contact/_show.css";
 @import "./how-it-works/_index.css";
 @import "./legal/_index.css";
 @import "./invitation/_show.css";
 @import "./errors/_error.css";
 @import "./install/_index.css";
+@import "./review/_index.css";
+@import "./pro/review/_index.css";
+@import "./admin/review/_index.css";

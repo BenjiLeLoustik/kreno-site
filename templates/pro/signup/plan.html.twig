@@ -1,13 +1,25 @@
 {% extends 'layouts/pro-signup.html.twig' %}
 
-{% block title %}Formule · Inscription pro{% endblock %}
+{% block title %}
+    {{ translate('Formule · Inscription pro') }}
+{% endblock %}
 
-{% block heading %}Choisissez votre formule{% endblock %}
+{% block heading %}
+    {{ translate('Choisissez votre formule') }}
+{% endblock %}
 
-{% block lead %}Vous pourrez changer de formule à tout moment depuis votre espace.{% endblock %}
+{% block lead %}
+    {{ translate('Vous pourrez changer de formule à tout moment depuis votre espace.') }}
+{% endblock %}
 
 {% block content %}
-    {% include 'components/period_tabs.html.twig' with { periods: plan.periods, route: 'pro_signup_step', params: { step: 'plan' } } %}
+    {% include 'components/period_tabs.html.twig' with {
+        periods: plan.periods,
+        route: 'pro_signup_step',
+        params: {
+            step: 'plan'
+        }
+    } %}
 
     <form method="post" action="{{ path('pro_signup_plan') }}" class="signup-form">
         {{ csrf_field('pro')|raw }}
@@ -16,12 +28,16 @@
             {% for offer in plan.plans %}
                 <label class="plan-card plan-card--choice">
                     <input type="radio" name="plan" value="{{ offer.code }}" class="plan-card__input" required{{ offer.selected or (plan.selected is null and offer.tag) ? ' checked' : '' }}>
-                    {% include 'components/plan_card.html.twig' with { plan: offer } %}
+                    {% include 'components/plan_card.html.twig' with {
+                        plan: offer
+                    } %}
                 </label>
             {% endfor %}
         </div>
         {% if plan.establishmentsCount > 1 %}
-            <p class="pro-note">Votre entreprise compte {{ plan.establishmentsCount }} établissements : vérifiez le nombre inclus dans la formule.</p>
+            <p class="pro-note">
+                {{ translate('{count, plural, one {Votre entreprise compte # établissement : vérifiez le nombre inclus dans la formule.} other {Votre entreprise compte # établissements : vérifiez le nombre inclus dans la formule.}}', { count: plan.establishmentsCount }) }}
+            </p>
         {% endif %}
         {% include 'pro/signup/_actions.html.twig' %}
     </form>

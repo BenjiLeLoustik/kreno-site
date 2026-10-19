@@ -20,9 +20,12 @@ use App\Billing\Event\SubscriptionStartedEvent;
 use App\Billing\Event\SubscriptionSuspendedEvent;
 use App\Billing\Helper\PeriodHelper;
 use App\Entity\Company\Company;
+use App\Entity\Company\CompanyInvoice;
 use App\Entity\Company\CompanyPayment;
 use App\Entity\Company\CompanySubscription;
+use App\Entity\User\User;
 use App\Establishment\Enum\EstablishmentStatus;
+use App\Mail\Enum\MailSubject;
 use App\Mail\Presenter\MailContextPresenter;
 use App\Mail\Provider\RecipientProvider;
 use App\Mail\Service\MailService;
@@ -32,6 +35,8 @@ use NeoPHP\Component\Event\Attribute\AsListener;
 
 class BillingMailListener
 {
+    public const INCIDENT_STATUSES = [PaymentStatus::FAILED, PaymentStatus::REQUIRES_ACTION];
+
     public function __construct(
         private MailService $mail,
         private RecipientProvider $recipients,
@@ -43,9 +48,11 @@ class BillingMailListener
     public function onSubscriptionStarted(SubscriptionStartedEvent $event): void
     {
         $subscription = $event->getSubscription();
+        $name = $this->displayName($subscription->getCompany());
+        $subject = MailSubject::SUBSCRIPTION_STARTED->text($name);
 
-        $this->sendForSubscription($subscription, sprintf('%s est en ligne, votre abonnement est actif', $this->displayName($subscription->getCompany())), 'pro-subscription-started', [
-            'establishment' => $this->displayName($subscription->getCompany()),
+        $this->sendForSubscription($subscription, $subject, 'pro-subscription-started', [
+            'establishment' => $name,
             'slotUrl' => $this->mail->url('pro_slot_new'),
         ]);
     }
@@ -54,11 +61,11 @@ class BillingMailListener
     public function onSubscriptionChanged(SubscriptionChangedEvent $event): void
     {
         $subscription = $event->getSubscription();
-        $previous = $event->getPrevious();
+        $subject = MailSubject::SUBSCRIPTION_CHANGED->text($subscription->getPlan()?->getName());
 
-        $this->sendForSubscription($subscription, sprintf('Votre formule %s est active', $subscription->getPlan()?->getName()), 'pro-subscription-changed', [
-            'previous' => $previous !== null ? $this->context->subscription($previous) : null,
-            'changedBy' => $subscription->getChangedBy() !== null ? UserNameHelper::fullName($subscription->getChangedBy()) : null,
+        $this->sendForSubscription($subscription, $subject, 'pro-subscription-changed', [
+            'previous' => $this->subscriptionContext($event->getPrevious()),
+            'changedBy' => $this->fullName($subscription->getChangedBy()),
         ]);
     }
 
@@ -66,8 +73,9 @@ class BillingMailListener
     public function onSubscriptionCancelled(SubscriptionCancelledEvent $event): void
     {
         $subscription = $event->getSubscription();
+        $subject = MailSubject::SUBSCRIPTION_CANCELLED->text();
 
-        $this->sendForSubscription($subscription, 'Votre résiliation Kréno Pro est enregistrée', 'pro-subscription-cancelled', [
+        $this->sendForSubscription($subscription, $subject, 'pro-subscription-cancelled', [
             'reason' => $subscription->getCancellationReason(),
         ]);
     }
@@ -75,21 +83,26 @@ class BillingMailListener
     #[AsListener(SubscriptionCancellationRevokedEvent::class)]
     public function onCancellationRevoked(SubscriptionCancellationRevokedEvent $event): void
     {
-        $this->sendForSubscription($event->getSubscription(), 'Votre abonnement Kréno Pro continue', 'pro-subscription-revoked');
+        $subject = MailSubject::SUBSCRIPTION_REVOKED->text();
+
+        $this->sendForSubscription($event->getSubscription(), $subject, 'pro-subscription-revoked');
     }
 
     #[AsListener(SubscriptionPausedEvent::class)]
     public function onSubscriptionPaused(SubscriptionPausedEvent $event): void
     {
         $subscription = $event->getSubscription();
+        $subject = MailSubject::SUBSCRIPTION_PAUSED->text(PeriodHelper::day($subscription->getPausedUntil()));
 
-        $this->sendForSubscription($subscription, sprintf('Votre abonnement Kréno Pro est en pause jusqu’au %s', PeriodHelper::day($subscription->getPausedUntil())), 'pro-subscription-paused');
+        $this->sendForSubscription($subscription, $subject, 'pro-subscription-paused');
     }
 
     #[AsListener(SubscriptionSuspendedEvent::class)]
     public function onSubscriptionSuspended(SubscriptionSuspendedEvent $event): void
     {
-        $this->sendForSubscription($event->getSubscription(), 'Vos créneaux Kréno ne sont plus publiés : paiement en attente', 'pro-subscription-suspended', [
+        $subject = MailSubject::SUBSCRIPTION_SUSPENDED->text();
+
+        $this->sendForSubscription($event->getSubscription(), $subject, 'pro-subscription-suspended', [
             'billingUrl' => $this->mail->url('pro_billing'),
         ]);
     }
@@ -101,20 +114,19 @@ class BillingMailListener
         $context = $this->context->invoice($invoice);
 
         if ($invoice->getType() === InvoiceType::CREDIT_NOTE) {
-            $this->mail->send(MailService::PRO, $this->recipients->billing($invoice->getCompany()), sprintf('Avoir %s sur votre compte Kréno Pro', $invoice->getNumber()), 'pro-credit-note', [
-                'invoice' => $context,
-                'credited' => $invoice->getCreditedInvoice()?->getNumber(),
-            ]);
+            $this->sendCreditNote($invoice, $context);
 
             return;
         }
 
-        if ($invoice->getStatus() === InvoiceStatus::PAID) {
-            $this->mail->send(MailService::PRO, $this->recipients->billing($invoice->getCompany()), sprintf('Votre facture Kréno Pro de %s', $context['month']), 'pro-invoice', [
-                'invoice' => $context,
-                'paymentMethod' => null,
-            ]);
+        if ($invoice->getStatus() !== InvoiceStatus::PAID) {
+            return;
         }
+
+        $this->sendToBilling($invoice->getCompany(), MailSubject::INVOICE->text($context['month']), 'pro-invoice', [
+            'invoice' => $context,
+            'paymentMethod' => null,
+        ]);
     }
 
     #[AsListener(PaymentSucceededEvent::class)]
@@ -134,15 +146,18 @@ class BillingMailListener
             'paidAt' => PeriodHelper::day($payment->getSucceededAt()),
         ];
 
-        if ($payment->getInitiatedBy() !== null || $this->hadIncident($payment)) {
-            $this->mail->send(MailService::PRO, $this->recipients->billing($invoice->getCompany()), sprintf('Paiement reçu : facture %s réglée', $invoice->getNumber()), 'pro-payment-confirmed', $context + [
-                    'subscription' => $invoice->getSubscription() !== null ? $this->context->subscription($invoice->getSubscription()) : null,
-                ]);
+        if ($payment->getInitiatedBy() === null && !$this->hadIncident($payment)) {
+            $subject = MailSubject::INVOICE->text($context['invoice']['month']);
+
+            $this->sendToBilling($invoice->getCompany(), $subject, 'pro-invoice', $context);
 
             return;
         }
 
-        $this->mail->send(MailService::PRO, $this->recipients->billing($invoice->getCompany()), sprintf('Votre facture Kréno Pro de %s', $context['invoice']['month']), 'pro-invoice', $context);
+        $subject = MailSubject::PAYMENT_CONFIRMED->text($invoice->getNumber());
+        $context['subscription'] = $this->subscriptionContext($invoice->getSubscription());
+
+        $this->sendToBilling($invoice->getCompany(), $subject, 'pro-payment-confirmed', $context);
     }
 
     #[AsListener(PaymentFailedEvent::class)]
@@ -155,16 +170,14 @@ class BillingMailListener
             return;
         }
 
-        $subscription = $invoice->getSubscription();
-
-        $this->mail->send(MailService::PRO, $this->recipients->billing($invoice->getCompany()), 'Action requise : votre paiement Kréno Pro a échoué', 'pro-payment-failed', [
+        $this->sendToBilling($invoice->getCompany(), MailSubject::PAYMENT_FAILED->text(), 'pro-payment-failed', [
             'invoice' => $this->context->invoice($invoice),
             'amount' => MoneyHelper::formatExact($payment->getAmount()),
             'paymentMethod' => $this->context->paymentMethod($payment->getPaymentMethod()),
             'failure' => $payment->getFailureMessage(),
             'final' => $event->isFinal(),
             'nextRetryAt' => PeriodHelper::day($payment->getNextRetryAt()),
-            'graceUntil' => PeriodHelper::day($subscription?->getGraceUntil()),
+            'graceUntil' => PeriodHelper::day($invoice->getSubscription()?->getGraceUntil()),
             'billingUrl' => $this->mail->url('pro_billing'),
         ]);
     }
@@ -179,7 +192,9 @@ class BillingMailListener
             return;
         }
 
-        $this->mail->send(MailService::PRO, $this->recipients->billing($invoice->getCompany()), 'Action requise : confirmez votre paiement Kréno Pro', 'pro-payment-action-required', [
+        $subject = MailSubject::PAYMENT_ACTION_REQUIRED->text();
+
+        $this->sendToBilling($invoice->getCompany(), $subject, 'pro-payment-action-required', [
             'invoice' => $this->context->invoice($invoice),
             'amount' => MoneyHelper::formatExact($payment->getAmount()),
             'paymentUrl' => $this->mail->url('pro_billing_payment', ['id' => $payment->getId()]),
@@ -190,11 +205,12 @@ class BillingMailListener
     public function onPaymentMethodAdded(PaymentMethodAddedEvent $event): void
     {
         $method = $event->getPaymentMethod();
+        $subject = MailSubject::PAYMENT_METHOD_ADDED->text();
 
-        $this->mail->send(MailService::PRO, $this->recipients->billing($method->getCompany()), 'Nouveau moyen de paiement enregistré sur Kréno Pro', 'pro-payment-method-added', [
+        $this->sendToBilling($method->getCompany(), $subject, 'pro-payment-method-added', [
             'paymentMethod' => $this->context->paymentMethod($method),
             'default' => $method->isDefaultMethod(),
-            'addedBy' => $method->getAddedBy() !== null ? UserNameHelper::fullName($method->getAddedBy()) : null,
+            'addedBy' => $this->fullName($method->getAddedBy()),
             'addedAt' => PeriodHelper::day($method->getCreatedAt()),
             'billingUrl' => $this->mail->url('pro_billing'),
         ]);
@@ -203,54 +219,109 @@ class BillingMailListener
     #[AsListener(PriceChangeAnnouncedEvent::class)]
     public function onPriceChangeAnnounced(PriceChangeAnnouncedEvent $event): void
     {
-        $subscription = $event->getSubscription();
         $lower = $event->getNewPrice() < $event->getCurrentPrice();
         $effectiveAt = PeriodHelper::day($event->getEffectiveAt());
+        $subject = $this->priceChangeSubject($event, $lower)->text($effectiveAt);
 
-        $subject = match (true) {
-            $event->isCorrection() => sprintf('Mise à jour : nouveau prix de votre abonnement Kréno Pro au %s', $effectiveAt),
-            $lower => sprintf('Bonne nouvelle : votre abonnement baisse le %s', $effectiveAt),
-            default => sprintf('Évolution du prix de votre abonnement Kréno Pro au %s', $effectiveAt),
-        };
-
-        $this->sendForSubscription($subscription, $subject, 'pro-price-change', [
+        $this->sendForSubscription($event->getSubscription(), $subject, 'pro-price-change', [
             'lower' => $lower,
             'currentPrice' => MoneyHelper::format($event->getCurrentPrice()),
             'newPrice' => MoneyHelper::format($event->getNewPrice()),
             'difference' => MoneyHelper::format(abs($event->getNewPrice() - $event->getCurrentPrice())),
             'effectiveAt' => $effectiveAt,
             'newPlan' => $event->getNewPlan()->getName(),
-            'correction' => $event->isCorrection() ? [
-                'newPrice' => MoneyHelper::format((int) $event->getPreviousNewPrice()),
-                'effectiveAt' => PeriodHelper::day($event->getPreviousEffectiveAt()),
-            ] : null,
+            'correction' => $this->correction($event),
         ]);
     }
 
     #[AsListener(PriceChangeCancelledEvent::class)]
     public function onPriceChangeCancelled(PriceChangeCancelledEvent $event): void
     {
-        $subscription = $event->getSubscription();
+        $subject = MailSubject::PRICE_CHANGE_CANCELLED->text();
 
-        $this->sendForSubscription($subscription, 'Annulation : le prix de votre abonnement Kréno Pro ne change pas', 'pro-price-change-cancelled', [
+        $this->sendForSubscription($event->getSubscription(), $subject, 'pro-price-change-cancelled', [
             'announcedPrice' => MoneyHelper::format($event->getAnnouncedPrice()),
             'effectiveAt' => PeriodHelper::day($event->getEffectiveAt()),
         ]);
     }
 
-    private function sendForSubscription(CompanySubscription $subscription, string $subject, string $template, array $context = []): void
+    private function sendCreditNote(CompanyInvoice $invoice, array $context): void
     {
-        $this->mail->send(MailService::PRO, $this->recipients->billing($subscription->getCompany()), $subject, $template, $context + [
-                'subscription' => $this->context->subscription($subscription),
-                'company' => $subscription->getCompany()?->getName(),
-                'billingUrl' => $this->mail->url('pro_billing'),
-            ]);
+        $subject = MailSubject::CREDIT_NOTE->text($invoice->getNumber());
+
+        $this->sendToBilling($invoice->getCompany(), $subject, 'pro-credit-note', [
+            'invoice' => $context,
+            'credited' => $invoice->getCreditedInvoice()?->getNumber(),
+        ]);
+    }
+
+    private function sendForSubscription(
+        CompanySubscription $subscription,
+        string $subject,
+        string $template,
+        array $context = [],
+    ): void {
+        $context += [
+            'subscription' => $this->context->subscription($subscription),
+            'company' => $subscription->getCompany()?->getName(),
+            'billingUrl' => $this->mail->url('pro_billing'),
+        ];
+
+        $this->sendToBilling($subscription->getCompany(), $subject, $template, $context);
+    }
+
+    private function sendToBilling(?Company $company, string $subject, string $template, array $context): void
+    {
+        $this->mail->send(MailService::PRO, $this->recipients->billing($company), $subject, $template, $context);
+    }
+
+    private function priceChangeSubject(PriceChangeAnnouncedEvent $event, bool $lower): MailSubject
+    {
+        if ($event->isCorrection()) {
+            return MailSubject::PRICE_CORRECTION;
+        }
+
+        if ($lower) {
+            return MailSubject::PRICE_DECREASE;
+        }
+
+        return MailSubject::PRICE_INCREASE;
+    }
+
+    private function correction(PriceChangeAnnouncedEvent $event): ?array
+    {
+        if (!$event->isCorrection()) {
+            return null;
+        }
+
+        return [
+            'newPrice' => MoneyHelper::format((int) $event->getPreviousNewPrice()),
+            'effectiveAt' => PeriodHelper::day($event->getPreviousEffectiveAt()),
+        ];
+    }
+
+    private function subscriptionContext(?CompanySubscription $subscription): ?array
+    {
+        if ($subscription === null) {
+            return null;
+        }
+
+        return $this->context->subscription($subscription);
+    }
+
+    private function fullName(?User $user): ?string
+    {
+        if ($user === null) {
+            return null;
+        }
+
+        return UserNameHelper::fullName($user);
     }
 
     private function hadIncident(CompanyPayment $payment): bool
     {
         foreach ($payment->getInvoice()?->getPayments() ?? [] as $other) {
-            if ($other !== $payment && in_array($other->getStatus(), [PaymentStatus::FAILED, PaymentStatus::REQUIRES_ACTION], true)) {
+            if ($other !== $payment && in_array($other->getStatus(), self::INCIDENT_STATUSES, true)) {
                 return true;
             }
         }

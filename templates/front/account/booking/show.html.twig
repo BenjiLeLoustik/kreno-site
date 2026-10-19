@@ -3,61 +3,123 @@
 {% set account_section = 'bookings' %}
 {% set establishment = booking.establishment %}
 
-{% block title %}Réservation {{ booking.reference }} · {{ website().siteName }}{% endblock %}
+{% block title %}
+    Réservation {{ booking.reference }} · {{ website().siteName }}
+    {{ translate('Réservation {reference} · {site}', {
+        reference: booking.reference,
+        site: website().siteName
+    }) }}
+{% endblock %}
 
 {% block account_content %}
     {% include 'components/breadcrumb.html.twig' with { items: [
-        { label: 'Mes réservations', route: 'account_bookings', parameters: {} },
-        { label: 'Réservation ' ~ booking.reference, route: null },
+        {
+            label: translate('Mes réservations'),
+            route: 'account_bookings',
+            parameters: {}
+        },
+        {
+            label: translate('Réservation {reference}', {reference: booking.reference}),
+            route: null
+        },
     ] } %}
 
     <header class="booking-detail__head">
-        <h1 class="account-head__title">{{ booking.what }}{% if establishment %} chez {{ establishment.name }}{% endif %}</h1>
-        <span class="account-status account-status--{{ booking.kind }}">{{ booking.statusLabel }}</span>
+        <h1 class="account-head__title">
+            {{ booking.what }}
+            {% if establishment %}
+                {{ translate('chez {establishmentName}', {establishmentName: establishment.name}) }}
+            {% endif %}
+        </h1>
+        <span class="account-status account-status--{{ booking.kind }}">
+            {{ booking.statusLabel }}
+        </span>
     </header>
 
     <div class="booking-detail">
         <div class="booking-detail__main">
-            {% embed 'components/ticket.html.twig' with { day: booking.date, time: booking.time, duration: booking.duration, modifier: 'large' } %}
+            {% embed 'components/ticket.html.twig' with {
+                day: booking.date,
+                time: booking.time,
+                duration: booking.duration,
+                modifier: 'large'
+            } %}
+
                 {% block ticket_body %}
                     <dl class="booking-facts">
                         {% if establishment %}
-                            <dt class="booking-facts__label">Adresse</dt>
-                            <dd class="booking-facts__value">{{ establishment.address }}</dd>
+                            <dt class="booking-facts__label">
+                                {{ translate('Adresse') }}
+                            </dt>
+                            <dd class="booking-facts__value">
+                                {{ establishment.address }}
+                            </dd>
                         {% endif %}
-                        <dt class="booking-facts__label">Prix sur place</dt>
-                        <dd class="booking-facts__value"><s class="ticket__old">{{ booking.old }}</s> <b class="ticket__price">{{ booking.price }}</b></dd>
+                        <dt class="booking-facts__label">
+                            {{ translate('Prix sur place') }}
+                        </dt>
+                        <dd class="booking-facts__value">
+                            <s class="ticket__old">
+                                {{ booking.old }}
+                            </s>
+                            <b class="ticket__price">
+                                {{ booking.price }}
+                            </b>
+                        </dd>
                         {% if booking.staff %}
-                            <dt class="booking-facts__label">Avec</dt>
-                            <dd class="booking-facts__value">{{ booking.staff }}</dd>
+                            <dt class="booking-facts__label">
+                                {{ translate('Avec') }}
+                            </dt>
+                            <dd class="booking-facts__value">
+                                {{ booking.staff }}
+                            </dd>
                         {% endif %}
-                        <dt class="booking-facts__label">Référence</dt>
-                        <dd class="booking-facts__value booking-facts__value--number">{{ booking.reference }}</dd>
+                        <dt class="booking-facts__label">
+                            {{ translate('Référence') }}
+                        </dt>
+                        <dd class="booking-facts__value booking-facts__value--number">
+                            {{ booking.reference }}
+                        </dd>
                     </dl>
                 {% endblock %}
+
             {% endembed %}
 
             {% if booking.note or booking.cancellationReason %}
                 <section class="account-card">
                     {% if booking.note %}
-                        <h2 class="account-section__title">Votre note</h2>
-                        <p class="account-card__text">{{ booking.note }}</p>
+                        <h2 class="account-section__title">
+                            {{ translate('Votre note') }}
+                        </h2>
+                        <p class="account-card__text">
+                            {{ booking.note }}
+                        </p>
                     {% endif %}
                     {% if booking.cancellationReason %}
-                        <h2 class="account-section__title">Motif d'annulation</h2>
-                        <p class="account-card__text">{{ booking.cancellationReason }}</p>
+                        <h2 class="account-section__title">
+                            {{ translate('Motif d\'annulation') }}
+                        </h2>
+                        <p class="account-card__text">
+                            {{ booking.cancellationReason }}
+                        </p>
                     {% endif %}
                 </section>
             {% endif %}
 
             <section class="account-card">
-                <h2 class="account-section__title">Suivi</h2>
+                <h2 class="account-section__title">
+                    {{ translate('Suivi') }}
+                </h2>
                 <ol class="booking-timeline">
                     {% for step in booking.timeline %}
                         <li class="booking-timeline__step booking-timeline__step--{{ step.tone }}">
                             <span class="booking-timeline__dot" aria-hidden="true"></span>
-                            <span class="booking-timeline__time">{{ step.time ?: '—' }}</span>
-                            <span class="booking-timeline__label">{{ step.label }}</span>
+                            <span class="booking-timeline__time">
+                                {{ step.time ?: '-' }}
+                            </span>
+                            <span class="booking-timeline__label">
+                                {{ step.label }}
+                            </span>
                         </li>
                     {% endfor %}
                 </ol>
@@ -65,31 +127,83 @@
         </div>
 
         <aside class="booking-detail__aside">
+            {% if booking.canReview %}
+                <section class="account-card booking-review">
+                    <h2 class="account-section__title">
+                        {{ translate('Comment s\'est passé ce rendez-vous ?') }}
+                    </h2>
+                    <p class="account-card__muted">
+                        {{ translate("Un avis aide les autres clients à choisir. Possible jusqu'au {date}.", {
+                            date: booking.reviewDeadline|date('d/m/Y')
+                        }) }}
+                    </p>
+                    <a href="{{ path('account_review_new', { reference: booking.reference }) }}" class="btn btn--primary btn--small">
+                        <i data-lucide="star" class="booking-review__icon"></i>
+                        {{ translate('Donner mon avis') }}
+                    </a>
+                </section>
+            {% elseif booking.reviewed %}
+                <section class="account-card booking-review">
+                    <h2 class="account-section__title">
+                        {{ translate('Avis publié') }}
+                    </h2>
+                    <p class="account-card__muted">
+                        {{ translate('Merci pour ce retour.') }}
+                    </p>
+                    <a href="{{ path('account_reviews') }}" class="btn btn--outline btn--small">
+                        {{ translate('Voir mes avis') }}
+                    </a>
+                </section>
+            {% endif %}
             <section class="account-card">
-                <h2 class="account-section__title">Actions</h2>
+                <h2 class="account-section__title">
+                    {{ translate('Actions') }}
+                </h2>
                 {% if booking.kind == 'coming' %}
-                    <a href="{{ path('account_booking_calendar', { reference: booking.reference }) }}" class="btn btn--outline btn--small">Ajouter à mon agenda</a>
+                    <a href="{{ path('account_booking_calendar', { reference: booking.reference }) }}" class="btn btn--outline btn--small">
+                        {{ translate('Ajouter à mon agenda') }}
+                    </a>
                 {% endif %}
                 {% if establishment and establishment.directions %}
-                    <a href="{{ establishment.directions }}" class="btn btn--outline btn--small" target="_blank" rel="noopener">Itinéraire</a>
+                    <a href="{{ establishment.directions }}" class="btn btn--outline btn--small" target="_blank" rel="noopener">
+                        {{ translate('Itinéraire') }}
+                    </a>
                 {% endif %}
                 {% if establishment and establishment.city %}
-                    <a href="{{ path('shop_show', { city: establishment.city, slug: establishment.slug }) }}" class="btn btn--outline btn--small">Voir l'établissement</a>
+                    <a href="{{ path('shop_show', { city: establishment.city, slug: establishment.slug }) }}" class="btn btn--outline btn--small">
+                        {{ translate('Voir l\'établissement') }}
+                    </a>
                 {% endif %}
                 {% if establishment and establishment.phone %}
-                    <a href="tel:{{ establishment.phone|replace({ ' ': '' }) }}" class="btn btn--outline btn--small">Appeler {{ establishment.phone }}</a>
+                    <a href="tel:{{ establishment.phone|replace({ ' ': '' }) }}" class="btn btn--outline btn--small">
+                        {{ translate('Appeler {establishmentPhone}', {establishmentPhone: establishment.phone}) }}
+                    </a>
                 {% endif %}
                 {% if booking.canCancel %}
                     <details class="booking-cancel">
-                        <summary class="booking-cancel__toggle">Annuler la réservation</summary>
+                        <summary class="booking-cancel__toggle">
+                            {{ translate('Annuler la réservation') }}
+                        </summary>
                         <form method="post" action="{{ path('account_booking_cancel', { reference: booking.reference }) }}" class="booking-cancel__form">
                             {{ csrf_field('account')|raw }}
-                            <p class="booking-cancel__text">Annuler le rendez-vous de {{ booking.time }} ?{% if booking.freeCancellationUntil %} C'est gratuit jusqu'à {{ booking.freeCancellationUntil }}.{% endif %}</p>
+                            <p class="booking-cancel__text">
+                                {{ translate('Annuler le rendez-vous de {time}', {time: booking.time}) }}
+                                {% if booking.freeCancellationUntil %}
+                                    {{ translate('C\'est gratuit jusqu\'à {freeCancellationUntil}', {freeCancellationUntil: booking.freeCancellationUntil}) }}
+                                {% endif %}
+                            </p>
                             <label for="cancel-reason" class="form-field">
-                                <span>Motif <span class="booking-cancel__muted">(facultatif)</span></span>
+                                <span>
+                                    {{ translate('Motif') }}
+                                    <span class="booking-cancel__muted">
+                                        {{ translate('(facultatif)') }}
+                                    </span>
+                                </span>
                                 <textarea id="cancel-reason" name="reason" rows="2" maxlength="255" class="form-input booking-cancel__input"></textarea>
                             </label>
-                            <button type="submit" class="btn btn--small booking-cancel__submit">Oui, annuler</button>
+                            <button type="submit" class="btn btn--small booking-cancel__submit">
+                                {{ translate('Oui, annuler') }}
+                            </button>
                         </form>
                     </details>
                 {% endif %}
@@ -97,9 +211,15 @@
 
             {% if booking.canReport %}
                 <section class="account-card">
-                    <h2 class="account-section__title">Un problème ?</h2>
-                    <p class="account-card__muted">Établissement fermé, prix différent, accueil refusé : dites-le nous dans les 48 h.</p>
-                    <a href="{{ path('account_reports', { booking: booking.reference }) }}" class="btn btn--outline btn--small">Signaler un problème</a>
+                    <h2 class="account-section__title">
+                        {{ translate('Un problème ?') }}
+                    </h2>
+                    <p class="account-card__muted">
+                        {{ translate('Établissement fermé, prix différent, accueil refusé : dites-le nous dans les 48 h.') }}
+                    </p>
+                    <a href="{{ path('account_reports', { booking: booking.reference }) }}" class="btn btn--outline btn--small">
+                        {{ translate('Signaler un problème') }}
+                    </a>
                 </section>
             {% endif %}
         </aside>

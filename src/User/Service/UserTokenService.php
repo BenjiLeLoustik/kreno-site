@@ -5,24 +5,15 @@ namespace App\User\Service;
 use App\Entity\User\User;
 use App\Entity\User\UserToken;
 use App\Repository\User\UserTokenRepository;
-use App\Shared\Exception\BusinessRuleException;
+use App\User\Enum\UserTokenType;
+use App\User\Exception\InvalidCodeException;
 use App\User\Exception\InvalidTokenException;
 use App\User\Helper\TokenHelper;
-use App\User\Enum\UserTokenType;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 
 class UserTokenService
 {
-    private const LIFETIMES = [
-        'email_verification' => '+7 days',
-        'password_reset' => '+1 hour',
-        'email_change' => '+1 day',
-        'account_setup' => '+7 days',
-    ];
-
-    private const CODE_LIFETIME = '+30 minutes';
-
     public function __construct(
         private OrmManagerInterface $orm,
         private UserTokenRepository $tokens,
@@ -31,40 +22,30 @@ class UserTokenService
 
     public function create(User $user, UserTokenType $type): string
     {
-        $this->invalidatePending($user, $type);
         $plain = TokenHelper::generate();
 
-        $token = (new UserToken())
-            ->setType($type)
-            ->setTokenHash(TokenHelper::hash($plain))
-            ->setExpiresAt(new DateTimeImmutable(self::LIFETIMES[$type->value]));
-
-        $user->addToken($token);
-        $this->orm->persist($token);
+        $this->store($user, $type, TokenHelper::hash($plain), $type->lifetime());
 
         return $plain;
     }
 
     public function createCode(User $user, UserTokenType $type): string
     {
-        $this->invalidatePending($user, $type);
         $code = TokenHelper::code();
 
-        $token = (new UserToken())
-            ->setType($type)
-            ->setTokenHash(TokenHelper::hash($user->getId() . ':' . $code))
-            ->setExpiresAt(new DateTimeImmutable(self::CODE_LIFETIME));
-
-        $user->addToken($token);
-        $this->orm->persist($token);
+        $this->store($user, $type, $this->codeHash($user, $code), UserTokenType::CODE_LIFETIME);
 
         return $code;
     }
 
     public function consumeCode(User $user, string $code, UserTokenType $type): void
     {
-        $token = $this->tokens->findOneValidForUser($user, TokenHelper::hash($user->getId() . ':' . trim($code)), $type, new DateTimeImmutable())
-            ?? throw new BusinessRuleException('Ce code ne correspond pas ou a expiré. Vérifiez le dernier e-mail reçu, ou demandez-en un nouveau.');
+        $hash = $this->codeHash($user, trim($code));
+        $token = $this->tokens->findOneValidForUser($user, $hash, $type, new DateTimeImmutable());
+
+        if ($token === null) {
+            throw new InvalidCodeException();
+        }
 
         $token->setUsedAt(new DateTimeImmutable());
     }
@@ -89,7 +70,11 @@ class UserTokenService
         $token = $this->find($plainToken, ...$types);
         $token->setUsedAt(new DateTimeImmutable());
 
-        return $token->getUser() ?? throw new InvalidTokenException();
+        if ($token->getUser() === null) {
+            throw new InvalidTokenException();
+        }
+
+        return $token->getUser();
     }
 
     public function purgeExpired(): int
@@ -103,6 +88,24 @@ class UserTokenService
         $this->orm->flush();
 
         return count($expired);
+    }
+
+    private function store(User $user, UserTokenType $type, string $hash, string $lifetime): void
+    {
+        $this->invalidatePending($user, $type);
+
+        $token = (new UserToken())
+            ->setType($type)
+            ->setTokenHash($hash)
+            ->setExpiresAt(new DateTimeImmutable($lifetime));
+
+        $user->addToken($token);
+        $this->orm->persist($token);
+    }
+
+    private function codeHash(User $user, string $code): string
+    {
+        return TokenHelper::hash($user->getId() . ':' . $code);
     }
 
     private function invalidatePending(User $user, UserTokenType $type): void

@@ -2,13 +2,11 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\User\User;
-use App\Repository\User\UserRepository;
 use App\User\Dto\StaffInviteInput;
 use App\User\Dto\StaffRoleInput;
-use App\User\Enum\UserRole;
-use App\User\Helper\StaffRoleHelper;
-use App\User\Presenter\StaffPresenter;
+use App\User\Enum\AdminTeamFlash;
+use App\User\Mapper\StaffRequestMapper;
+use App\User\Provider\AdminTeamPageProvider;
 use App\User\Service\StaffService;
 use NeoPHP\Component\Csrf\Attribute\Csrf;
 use NeoPHP\Component\Http\Response\RedirectResponse;
@@ -20,20 +18,14 @@ class TeamController extends AbstractAdminController
 {
     public function __construct(
         private StaffService $staff,
-        private UserRepository $users,
-        private StaffPresenter $presenter,
+        private AdminTeamPageProvider $pages,
     ) {
     }
 
     #[Route('/admin/team', name: 'admin_team', methods: ['GET'])]
     public function index(): Response
     {
-        $admin = $this->currentAdmin();
-
-        return $this->render('admin/team/index.html.twig', [
-            'members' => $this->presenter->presentAll($this->staff->members(), $admin),
-            'roles' => StaffRoleHelper::choices(),
-        ]);
+        return $this->render('admin/team/index.html.twig', $this->pages->index($this->currentAdmin()));
     }
 
     #[Csrf('admin_team')]
@@ -43,7 +35,10 @@ class TeamController extends AbstractAdminController
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->staff->invite($input, $admin), sprintf('Invitation envoyée à %s.', $input->email));
+            $this->attempt(
+                fn () => $this->staff->invite($input, $admin),
+                AdminTeamFlash::INVITED->text($input->email),
+            );
         }
 
         return $this->redirectToRoute('admin_team');
@@ -54,10 +49,13 @@ class TeamController extends AbstractAdminController
     public function role(int $id, #[MapRequestPayload(validate: false)] StaffRoleInput $input): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $member = $this->findUser($id);
+        $member = $this->pages->member($id);
 
         if (!$this->invalid($input)) {
-            $this->attempt(fn () => $this->staff->changeRole($member, UserRole::from((string) $input->role), $admin), 'Rôle modifié.');
+            $this->attempt(
+                fn () => $this->staff->changeRole($member, StaffRequestMapper::role($input), $admin),
+                AdminTeamFlash::ROLE_CHANGED->text(),
+            );
         }
 
         return $this->redirectToRoute('admin_team');
@@ -68,16 +66,9 @@ class TeamController extends AbstractAdminController
     public function revoke(int $id): RedirectResponse
     {
         $admin = $this->currentAdmin();
-        $member = $this->findUser($id);
-        $this->attempt(fn () => $this->staff->revoke($member, $admin), 'Accès retiré.');
+        $member = $this->pages->member($id);
+        $this->attempt(fn () => $this->staff->revoke($member, $admin), AdminTeamFlash::REVOKED->text());
 
         return $this->redirectToRoute('admin_team');
-    }
-
-    private function findUser(int $id): User
-    {
-        $user = $this->users->find($id);
-
-        return $user instanceof User ? $user : throw $this->createNotFoundException('Membre introuvable.');
     }
 }

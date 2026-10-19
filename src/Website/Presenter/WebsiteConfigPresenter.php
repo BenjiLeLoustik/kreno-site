@@ -8,7 +8,14 @@ use App\Website\Helper\WebsiteVersionHelper;
 
 class WebsiteConfigPresenter
 {
-    private const IDENTITY = ['siteName', 'domain', 'tagline', 'siteDescription', 'seoTitle', 'contactEmail'];
+    private const IDENTITY = [
+        'siteName',
+        'domain',
+        'tagline',
+        'siteDescription',
+        'seoTitle',
+        'contactEmail'
+    ];
 
     public function summary(WebsiteConfig $website): array
     {
@@ -33,17 +40,16 @@ class WebsiteConfigPresenter
 
     public function detail(WebsiteConfig $website, ?WebsiteConfig $live): array
     {
+        $compared = $live;
+
+        if ($live === $website) {
+            $compared = null;
+        }
+
         $identity = [];
 
         foreach (self::IDENTITY as $field) {
-            $value = $website->{'get' . ucfirst($field)}();
-            $liveValue = $live?->{'get' . ucfirst($field)}();
-
-            $identity[$field] = [
-                'value' => $value,
-                'liveValue' => $live === null || $live === $website ? null : $liveValue,
-                'changed' => $live !== null && $live !== $website && $value !== $liveValue,
-            ];
+            $identity[$field] = $this->identityField($website, $compared, $field);
         }
 
         return $this->summary($website) + ['identity' => $identity];
@@ -52,5 +58,27 @@ class WebsiteConfigPresenter
     public function summaries(array $websites): array
     {
         return array_map(fn (WebsiteConfig $website): array => $this->summary($website), $websites);
+    }
+
+    private function identityField(WebsiteConfig $website, ?WebsiteConfig $live, string $field): array
+    {
+        $getter = 'get' . ucfirst($field);
+        $value = $website->{$getter}();
+
+        if ($live === null) {
+            return [
+                'value' => $value,
+                'liveValue' => null,
+                'changed' => false
+            ];
+        }
+
+        $liveValue = $live->{$getter}();
+
+        return [
+            'value' => $value,
+            'liveValue' => $liveValue,
+            'changed' => $value !== $liveValue
+        ];
     }
 }

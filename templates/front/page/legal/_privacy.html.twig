@@ -1,33 +1,81 @@
 <section class="legal-section">
-    <h2 class="legal-section__title">1. Responsable du traitement</h2>
-    <p class="legal-section__text">{{ issuer.name ?: site.siteName }}{% if issuer.address %}, {{ issuer.address }}{% endif %}. Contact : <a href="mailto:{{ supportEmail }}">{{ supportEmail }}</a>.</p>
+    <h2 class="legal-section__title">
+        1. Responsable du traitement
+    </h2>
+    <p class="legal-section__text">
+        {{ issuer.name ?: site.siteName }}
+        {% if issuer.address %}
+            , {{ issuer.address }}
+        {% endif %}
+        . Contact :
+        <a href="mailto:{{ supportEmail }}">
+            {{ supportEmail }}
+        </a>
+        .
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">2. Données collectées</h2>
-    <p class="legal-section__text">Identité et contact : prénom, nom, adresse e-mail, téléphone.</p>
-    <p class="legal-section__text">Réservations, alertes, établissements suivis, signalements et messages échangés avec l'équipe.</p>
-    <p class="legal-section__text">Pour les professionnels : informations sur l'entreprise et l'établissement, moyens de paiement (enregistrés par notre prestataire de paiement, nous ne conservons pas les numéros de carte).</p>
+    <h2 class="legal-section__title">
+        2. Données collectées
+    </h2>
+    <p class="legal-section__text">
+        Identité et contact : prénom, nom, adresse e-mail, téléphone.
+    </p>
+    <p class="legal-section__text">
+        Réservations, alertes, établissements suivis, signalements et messages échangés avec l'équipe.
+    </p>
+    <p class="legal-section__text">
+        Pour les professionnels : informations sur l'entreprise et l'établissement, moyens de paiement (enregistrés par notre prestataire de paiement, nous ne conservons pas les numéros de carte).
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">3. Pourquoi</h2>
-    <p class="legal-section__text">Gérer votre compte et vos réservations, prévenir le professionnel, vous envoyer les alertes que vous avez choisies, traiter les signalements et facturer les professionnels.</p>
+    <h2 class="legal-section__title">
+        3. Pourquoi
+    </h2>
+    <p class="legal-section__text">
+        Gérer votre compte et vos réservations, prévenir le professionnel, vous envoyer les alertes que vous avez choisies, traiter les signalements et facturer les professionnels.
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">4. Destinataires</h2>
-    <p class="legal-section__text">Le professionnel chez qui vous réservez reçoit votre prénom, votre nom et votre téléphone.</p>
-    <p class="legal-section__text"><mark class="legal-todo">À compléter : sous-traitants (hébergement, envoi des e-mails, paiement).</mark></p>
+    <h2 class="legal-section__title">
+        4. Destinataires
+    </h2>
+    <p class="legal-section__text">
+        Le professionnel chez qui vous réservez reçoit votre prénom, votre nom et votre téléphone.
+    </p>
+    <p class="legal-section__text">
+        <mark class="legal-todo">
+            À compléter : sous-traitants (hébergement, envoi des e-mails, paiement).
+        </mark>
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">5. Durée de conservation</h2>
-    <p class="legal-section__text"><mark class="legal-todo">À compléter : durée de conservation par type de données.</mark></p>
+    <h2 class="legal-section__title">
+        5. Durée de conservation
+    </h2>
+    <p class="legal-section__text">
+        <mark class="legal-todo">
+            À compléter : durée de conservation par type de données.
+        </mark>
+    </p>
 </section>
 
 <section class="legal-section">
-    <h2 class="legal-section__title">6. Vos droits</h2>
-    <p class="legal-section__text">Vous disposez d'un droit d'accès, de rectification, de suppression, d'opposition et de portabilité de vos données. Vous pouvez télécharger vos données et supprimer votre compte depuis Mon compte, Réglages.</p>
-    <p class="legal-section__text">Pour toute demande : <a href="mailto:{{ supportEmail }}">{{ supportEmail }}</a>. Vous pouvez aussi saisir la CNIL.</p>
+    <h2 class="legal-section__title">
+        6. Vos droits
+    </h2>
+    <p class="legal-section__text">
+        Vous disposez d'un droit d'accès, de rectification, de suppression, d'opposition et de portabilité de vos données. Vous pouvez télécharger vos données et supprimer votre compte depuis Mon compte, Réglages.
+    </p>
+    <p class="legal-section__text">
+        Pour toute demande :
+        <a href="mailto:{{ supportEmail }}">
+            {{ supportEmail }}
+        </a>
+        . Vous pouvez aussi saisir la CNIL.
+    </p>
 </section>
