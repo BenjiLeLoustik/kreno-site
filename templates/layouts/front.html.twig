@@ -131,11 +131,11 @@
                     now: 'now'|date('Y'),
                     site: site.siteName
                 }) }}
-                {% if site.contactEmail %} ·
-                    <a href="mailto:{{ site.contactEmail }}">
-                        {{ site.contactEmail }}
-                    </a>
-                {% endif %}
+                ·
+                {{ translate('Propulsé par {open}NeoPHP{close}', {
+                    open: '<a href="https://neophp.fr/" target="_blank">',
+                    close: '</a>'
+                })|raw }}
             </span>
             <nav class="site-footer__legal" aria-label="{{ translate('Informations légales') }}">
                 <a href="{{ path('page_legal', { document: 'mentions' }) }}">
