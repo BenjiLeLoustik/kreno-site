@@ -1,7 +1,7 @@
 senders:
-    client: 'Kréno noreply@kreno.neophp.fr'
-    support: 'Kréno noreply@kreno.neophp.fr'
-    pro: 'Kréno Pro noreply@kreno.neophp.fr'
+    client: 'Kréno <noreply@kreno.neophp.fr>'
+    support: 'Kréno <noreply@kreno.neophp.fr>'
+    pro: 'Kréno Pro <noreply@kreno.neophp.fr>'
 
 supportAddress: 'noreply@kreno.neophp.fr'
 moderationAddress: 'noreply@kreno.neophp.fr'
