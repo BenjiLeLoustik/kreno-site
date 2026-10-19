@@ -17,7 +17,7 @@
     {{ translate('Nous vérifions {establishment} avant la mise en ligne. Vous recevrez un e-mail à {email} dès que c\'est fait.', {
         establishment: establishmentName,
         email: emailTag,
-    }) }}
+    })|raw }}
 {% endblock %}
 
 {% block content %}
@@ -44,7 +44,7 @@
                     {{ translate('Vérification par l\'équipe') }}
                 </b>
                 <span class="pro-row__meta">
-                    {{ '{status} · sous 48 h ouvrées en général.', {status: statusLabel} }}
+                    {{ translate('{status} · sous 48 h ouvrées en général.', {status: statusLabel}) }}
                 </span>
             </span>
         </li>
@@ -100,7 +100,7 @@
     <p class="pro-field__hint">
         {{ translate('Un document vous sera peut-être demandé (Kbis ou avis de situation INSEE).') }}
         {% if website().contactEmail %}
-            {{ translate('Une question ? Écrivez à {contactEmail}.', {contactEmail: website().contactEmail()}) }}
+            {{ translate('Une question ? Écrivez à {contactEmail}.', {contactEmail: website().contactEmail}) }}
         {% endif %}
     </p>
 {% endblock %}

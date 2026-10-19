@@ -7958,6 +7958,10 @@
         <source>Il disparaîtra à 14 h 20 s&apos;il n&apos;est pas réservé.</source>
         <target>Il disparaîtra à 14 h 20 s&apos;il n&apos;est pas réservé.</target>
       </trans-unit>
+      <trans-unit id="7e21d730abe67ca8" resname="{status} · sous 48 h ouvrées en général.">
+        <source>{status} · sous 48 h ouvrées en général.</source>
+        <target>{status} · sous 48 h ouvrées en général.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
