@@ -42,9 +42,14 @@ window.ShopPage = {
         this.button.querySelector('[data-shop-follow-label]').textContent = data.label;
 
         const followers = document.querySelector('[data-shop-followers]');
+        const followersText = document.querySelector('[data-shop-followers-text]');
 
-        if (followers) {
-            followers.textContent = `${data.followersCount} abonné${data.followersCount > 1 ? 's' : ''}`;
+        if (followers && followersText) {
+            const template = data.followersCount > 1
+                ? followersText.dataset.labelFollowers
+                : followersText.dataset.labelFollower;
+
+            followers.textContent = template.replaceAll('{count}', String(data.followersCount));
         }
     },
 };

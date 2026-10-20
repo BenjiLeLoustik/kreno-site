@@ -9338,6 +9338,14 @@
         <source>Position indisponible</source>
         <target>Position indisponible</target>
       </trans-unit>
+      <trans-unit id="32a429f426b73682" resname="{count} abonné">
+        <source>{count} abonné</source>
+        <target>{count} abonné</target>
+      </trans-unit>
+      <trans-unit id="c569a554e5e24383" resname="{count} abonnés">
+        <source>{count} abonnés</source>
+        <target>{count} abonnés</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
