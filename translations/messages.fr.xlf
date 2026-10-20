@@ -9330,6 +9330,14 @@
         <source>Vérification indisponible : le code sera contrôlé à l’envoi.</source>
         <target>Vérification indisponible : le code sera contrôlé à l’envoi.</target>
       </trans-unit>
+      <trans-unit id="a46d4f6d4ca41c39" resname="Localisation…">
+        <source>Localisation…</source>
+        <target>Localisation…</target>
+      </trans-unit>
+      <trans-unit id="8a43ecb6beedc7a1" resname="Position indisponible">
+        <source>Position indisponible</source>
+        <target>Position indisponible</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
