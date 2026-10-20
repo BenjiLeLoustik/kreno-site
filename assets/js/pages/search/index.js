@@ -31,7 +31,7 @@ window.SearchPage = {
         button.removeAttribute('hidden');
         button.addEventListener('click', () => {
             const label = button.querySelector('[data-search-locate-label]');
-            label.textContent = 'Localisation…';
+            label.textContent = button.dataset.labelLocating;
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -39,7 +39,7 @@ window.SearchPage = {
                     this.form.requestSubmit();
                 },
                 () => {
-                    label.textContent = 'Position indisponible';
+                    label.textContent = button.dataset.labelLocationError;
                 },
                 { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 },
             );

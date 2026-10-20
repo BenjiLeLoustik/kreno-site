@@ -22,7 +22,12 @@
                 </legend>
                 {% for category in filters.categories %}
                     <label class="search-filters__check">
-                        <input type="checkbox" name="categories[]" value="{{ category.slug }}" class="search-filters__checkbox" data-search-auto{{ category.selected ? ' checked' : '' }}>
+                        <input type="checkbox"
+                               name="categories[]"
+                               value="{{ category.slug }}"
+                               class="search-filters__checkbox"
+                               data-search-auto{{ category.selected ? ' checked' : '' }}
+                        >
                         {{ category.label }}
                     </label>
                 {% endfor %}
@@ -35,7 +40,12 @@
                 <div class="search-filters__chips">
                     {% for window in filters.when %}
                         <label class="search-chip">
-                            <input type="radio" name="when" value="{{ window.key }}" class="search-chip__input" data-search-auto{{ window.selected ? ' checked' : '' }}>
+                            <input type="radio"
+                                   name="when"
+                                   value="{{ window.key }}"
+                                   class="search-chip__input"
+                                   data-search-auto{{ window.selected ? ' checked' : '' }}
+                            >
                             <span class="search-chip__label">
                                 {{ window.label }}
                             </span>
@@ -55,9 +65,13 @@
                     {% for km in distances %}
                         <option value="{{ km }}"{{ filters.distance == km ? ' selected' : '' }}>
                             {% if km < 1 %}
-                                {{ translate('Moins de {meters} m', {meters: km * 1000}) }}
+                                {{ translate('Moins de {meters} m', {
+                                    meters: km * 1000
+                                }) }}
                             {% else %}
-                                {{ translate('Moins de {km} km', {km: km}) }}
+                                {{ translate('Moins de {km} km', {
+                                    km: km
+                                }) }}
                             {% endif %}
                         </option>
                     {% endfor %}
@@ -73,7 +87,12 @@
             <div class="search-bar">
                 <label for="search-where" class="search-bar__field">
                     <i data-lucide="map-pin" class="search-bar__icon" aria-hidden="true"></i>
-                    <select id="search-where" name="where" class="search-bar__input" aria-label="{{ translate('Ville') }}" data-search-city>
+                    <select id="search-where"
+                            name="where"
+                            class="search-bar__input"
+                            aria-label="{{ translate('Ville') }}"
+                            data-search-city
+                    >
                         {% for item in nav.cities %}
                             <option value="{{ item.slug }}"{{ city and city.slug == item.slug ? ' selected' : '' }}>
                                 {{ item.name }}
@@ -81,7 +100,13 @@
                         {% endfor %}
                     </select>
                 </label>
-                <button type="button" class="search-bar__locate{{ located ? ' search-bar__locate--active' : '' }}" data-search-locate hidden>
+                <button type="button"
+                        class="search-bar__locate{{ located ? ' search-bar__locate--active' : '' }}"
+                        data-search-locate
+                        data-label-locating="{{ translate('Localisation…') }}"
+                        data-label-location-error="{{ translate('Position indisponible') }}"
+                        hidden
+                >
                     <i data-lucide="locate-fixed" class="search-bar__icon" aria-hidden="true"></i>
                     <span data-search-locate-label>
                         {% if located %}
@@ -91,8 +116,20 @@
                         {% endif %}
                     </span>
                 </button>
-                <input type="hidden" value="{{ located ? filters.latitude : '' }}" data-search-latitude{% if located %} name="latitude"{% endif %}>
-                <input type="hidden" value="{{ located ? filters.longitude : '' }}" data-search-longitude{% if located %} name="longitude"{% endif %}>
+                <input type="hidden"
+                       value="{{ located ? filters.latitude : '' }}"
+                       data-search-latitude
+                        {% if located %}
+                            name="latitude"
+                        {% endif %}
+                >
+                <input type="hidden"
+                       value="{{ located ? filters.longitude : '' }}"
+                       data-search-longitude
+                        {% if located %}
+                            name="longitude"
+                        {% endif %}
+                >
                 <button type="submit" class="btn btn--primary search-bar__submit">
                     {{ translate('Rechercher') }}
                 </button>
