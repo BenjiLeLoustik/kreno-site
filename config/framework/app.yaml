@@ -25,7 +25,7 @@ security_headers:
         # DENY = never displayed in a frame, SAMEORIGIN = only by this site
         X-Frame-Options: SAMEORIGIN
         Referrer-Policy: strict-origin-when-cross-origin
-        Permissions-Policy: 'camera=(), microphone=(), geolocation=()'
+        Permissions-Policy: 'camera=(), microphone=(), geolocation=(self)'
         # Content Security Policy: test it before enabling it (inline scripts and external CDNs must be allowed)
         # Content-Security-Policy: "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'"
     # HTTPS only: seconds the browser must use HTTPS for this domain (31536000 = 1 year), ~ = disabled
