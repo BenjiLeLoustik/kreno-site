@@ -106,8 +106,13 @@
 
             <form method="post" action="{{ path('admin_catalog_category_delete', { slug: category.slug }) }}">
                 {{ csrf_field('admin_catalog')|raw }}
-                <button type="submit"
-                        class="admin-button admin-button--ghost-danger"{{ establishmentsCount > 0 ? ' disabled title="' ~ translate('Des établissements utilisent cette catégorie') ~ '"' : '' }}
+                <button
+                        type="submit"
+                        class="admin-button admin-button--ghost-danger"
+                        {{ establishmentsCount > 0 ? 'disabled' : '' }}
+                        {% if establishmentsCount > 0 %}
+                            title="{{ translate('Des établissements utilisent cette catégorie') }}"
+                        {% endif %}
                         data-admin-confirm="{{ translate('Supprimer la catégorie {name} ?', {name: category.name}) }}"
                 >
                     {{ translate('Supprimer') }}
