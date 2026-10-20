@@ -3,7 +3,9 @@
 {% set account_section = 'settings' %}
 
 {% block title %}
-    {{ translate('Réglages · {site}', {site: website().siteName}) }}
+    {{ translate('Réglages · {site}', {
+        site: website().siteName
+    }) }}
 {% endblock %}
 
 {% block javascripts %}
@@ -26,15 +28,38 @@
             {{ csrf_field('account')|raw }}
             <label for="profile-first" class="form-field">
                 {{ translate('Prénom') }}
-                <input id="profile-first" type="text" name="firstName" value="{{ profile.firstName }}" required maxlength="80" autocomplete="given-name" class="form-input">
+                <input id="profile-first"
+                       type="text"
+                       name="firstName"
+                       value="{{ profile.firstName }}"
+                       required
+                       maxlength="80"
+                       autocomplete="given-name"
+                       class="form-input"
+                >
             </label>
             <label for="profile-last" class="form-field">
                 {{ translate('Nom') }}
-                <input id="profile-last" type="text" name="lastName" value="{{ profile.lastName }}" maxlength="80" autocomplete="family-name" class="form-input">
+                <input id="profile-last"
+                       type="text"
+                       name="lastName"
+                       value="{{ profile.lastName }}"
+                       maxlength="80"
+                       autocomplete="family-name"
+                       class="form-input"
+                >
             </label>
             <label for="profile-email" class="form-field">
                 {{ translate('E-mail') }}
-                <input id="profile-email" type="email" name="email" value="{{ profile.email }}" required maxlength="180" autocomplete="email" class="form-input">
+                <input id="profile-email"
+                       type="email"
+                       name="email"
+                       value="{{ profile.email }}"
+                       required
+                       maxlength="180"
+                       autocomplete="email"
+                       class="form-input"
+                >
                 {% if not profile.emailVerified %}
                     <span class="settings-form__hint settings-form__hint--warning">
                         {{ translate('Adresse non vérifiée.') }}
@@ -43,7 +68,15 @@
             </label>
             <label for="profile-phone" class="form-field">
                 {{ translate('Téléphone') }}
-                <input id="profile-phone" type="tel" name="phone" value="{{ profile.phone }}" maxlength="20" autocomplete="tel" placeholder="{{ translate('06 00 00 00 00') }}" class="form-input">
+                <input id="profile-phone"
+                       type="tel"
+                       name="phone"
+                       value="{{ profile.phone }}"
+                       maxlength="20"
+                       autocomplete="tel"
+                       placeholder="{{ translate('06 00 00 00 00') }}"
+                       class="form-input"
+                >
             </label>
             <div class="settings-form__actions">
                 <button type="submit" class="btn btn--ink btn--small">
@@ -61,7 +94,13 @@
             {{ csrf_field('account')|raw }}
             <label for="password-current" class="form-field">
                 {{ translate('Mot de passe actuel') }}
-                <input id="password-current" type="password" name="currentPassword" required autocomplete="current-password" class="form-input">
+                <input id="password-current"
+                       type="password"
+                       name="currentPassword"
+                       required
+                       autocomplete="current-password"
+                       class="form-input"
+                >
             </label>
             <div class="settings-form__group">
                 {% include 'front/security/_password_field.html.twig' with {
@@ -72,7 +111,15 @@
             </div>
             <label for="password-confirm" class="form-field">
                 {{ translate('Confirmer le nouveau mot de passe') }}
-                <input id="password-confirm" type="password" name="confirmPassword" required autocomplete="new-password" class="form-input" data-password-confirmation>
+                <input id="password-confirm"
+                       type="password"
+                       name="confirmPassword"
+                       required
+                       autocomplete="new-password"
+                       class="form-input"
+                       data-password-confirmation
+                       data-message-mismatch="{{ translate('Les deux mots de passe ne sont pas identiques.') }}"
+                >
             </label>
             <div class="settings-form__actions">
                 <button type="submit" class="btn btn--ink btn--small">
@@ -89,7 +136,11 @@
         <form method="post" action="{{ path('account_settings_update') }}" class="settings-switch">
             {{ csrf_field('account')|raw }}
             <label class="form-check">
-                <input type="checkbox" name="emailNotifications" value="1" class="form-check__input"{{ profile.emailNotifications ? ' checked' : '' }}>
+                <input type="checkbox"
+                       name="emailNotifications"
+                       value="1"
+                       class="form-check__input"{{ profile.emailNotifications ? ' checked' : '' }}
+                >
                 {{ translate('Recevoir les alertes de créneaux et les nouveautés des établissements suivis par e-mail') }}
             </label>
             <span class="settings-switch__hint">
@@ -132,7 +183,14 @@
                 {{ csrf_field('account')|raw }}
                 <label for="delete-confirmation" class="form-field">
                     {{ translate('Tapez SUPPRIMER pour confirmer') }}
-                    <input id="delete-confirmation" type="text" name="confirmation" required pattern="\s*[Ss][Uu][Pp][Pp][Rr][Ii][Mm][Ee][Rr]\s*" autocomplete="off" class="form-input">
+                    <input id="delete-confirmation"
+                           type="text"
+                           name="confirmation"
+                           required
+                           pattern="\s*[Ss][Uu][Pp][Pp][Rr][Ii][Mm][Ee][Rr]\s*"
+                           autocomplete="off"
+                           class="form-input"
+                    >
                 </label>
                 <div>
                     <button type="submit" class="btn btn--small settings-danger__submit">

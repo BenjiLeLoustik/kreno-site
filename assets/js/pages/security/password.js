@@ -1,32 +1,58 @@
 window.PasswordForm = {
-    labels: ['Trop court', 'Faible', 'Correct', 'Solide'],
+    labels: [],
+    mismatchMessage: '',
 
     init() {
+        const meter = document.querySelector('[data-password-meter]');
         const input = document.querySelector('[data-password-input]');
 
-        if (!input) {
+        if (!meter || !input) {
             return;
         }
 
-        const bars = document.querySelectorAll('[data-password-bar]');
-        const text = document.querySelector('[data-password-text]');
-        const initial = text.textContent;
+        this.loadLabels(meter);
+
+        const bars = meter.querySelectorAll('[data-password-bar]');
+        const text = meter.querySelector('[data-password-text]');
+        const initial = text ? text.textContent.trim() : '';
         const confirmation = document.querySelector('[data-password-confirmation]');
+
+        if (confirmation) {
+            this.mismatchMessage = confirmation.dataset.messageMismatch || '';
+        }
 
         input.addEventListener('input', () => {
             const level = this.level(input.value);
+
             bars.forEach((bar, index) => {
                 bar.dataset.level = index < level ? String(level) : '';
             });
-            text.textContent = level === 0 ? initial : this.labels[level - 1];
-            text.dataset.level = level === 0 ? '' : String(level);
+
+            if (text) {
+                text.textContent = level === 0 ? initial : this.labels[level - 1];
+                text.dataset.level = level === 0 ? '' : String(level);
+            }
         });
 
         if (confirmation) {
-            const check = () => confirmation.setCustomValidity(confirmation.value !== '' && confirmation.value !== input.value ? 'Les deux mots de passe ne sont pas identiques.' : '');
+            const check = () => {
+                const isMismatch = confirmation.value !== '' && confirmation.value !== input.value;
+
+                confirmation.setCustomValidity(isMismatch ? this.mismatchMessage : '');
+            };
+
             input.addEventListener('input', check);
             confirmation.addEventListener('input', check);
         }
+    },
+
+    loadLabels(meter) {
+        this.labels = [
+            meter.dataset.labelEmpty || '',
+            meter.dataset.labelWeak || '',
+            meter.dataset.labelFair || '',
+            meter.dataset.labelStrong || '',
+        ];
     },
 
     level(value) {

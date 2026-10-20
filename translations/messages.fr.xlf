@@ -9298,6 +9298,22 @@
         <source>← Toutes les réservations</source>
         <target>← Toutes les réservations</target>
       </trans-unit>
+      <trans-unit id="aca01a1a3a27d35c" resname="Correct">
+        <source>Correct</source>
+        <target>Correct</target>
+      </trans-unit>
+      <trans-unit id="f72d5287e3272f4c" resname="Faible">
+        <source>Faible</source>
+        <target>Faible</target>
+      </trans-unit>
+      <trans-unit id="d101fbd2c745226f" resname="Solide">
+        <source>Solide</source>
+        <target>Solide</target>
+      </trans-unit>
+      <trans-unit id="a5bd84df7b206bdc" resname="Trop court">
+        <source>Trop court</source>
+        <target>Trop court</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
