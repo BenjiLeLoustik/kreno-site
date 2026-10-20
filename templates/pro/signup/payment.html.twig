@@ -51,7 +51,9 @@
                 <span class="pro-row__meta">
                     {{ selected.quote.priceLabel }} {{ selected.quote.unit }}
                     {% if selected.quote.monthlyEquivalent %}
-                        {{ translate('· soit {monthlyEquivalent}', {monthlyEquivalent: selected.quote.monthlyEquivalent}) }}
+                        {{ translate('· soit {monthlyEquivalent}', {
+                            monthlyEquivalent: selected.quote.monthlyEquivalent
+                        }) }}
                     {% endif %}
                 </span>
             </span>
@@ -68,14 +70,30 @@
         </section>
     {% endif %}
 
-    <form method="post" action="{{ path('pro_signup_payment') }}" class="signup-form" data-stripe-form data-stripe-key="{{ plan.gatewayKey }}" data-stripe-setup="{{ path('pro_signup_payment_setup') }}">
+    <form method="post"
+          action="{{ path('pro_signup_payment') }}"
+          class="signup-form"
+          data-stripe-form
+          data-stripe-key="{{ plan.gatewayKey }}"
+          data-stripe-setup="{{ path('pro_signup_payment_setup') }}"
+    >
         {{ csrf_field('pro')|raw }}
 
         {% if selected and not selected.perBooking %}
-            <div class="signup-promo" data-signup-promo="{{ path('pro_signup_promo') }}">
+            <div class="signup-promo"
+                 data-signup-promo="{{ path('pro_signup_promo') }}"
+                 data-message-promo-unavailable="{{ translate('Vérification indisponible : le code sera contrôlé à l’envoi.') }}"
+            >
                 <label class="pro-field signup-promo__field">
                     {{ translate('Code promo') }}
-                    <input type="text" name="promoCode" value="{{ old.promoCode ?? (selected.promo ? selected.promo.code : '') }}" maxlength="40" class="pro-input" autocomplete="off" data-signup-promo-code>
+                    <input type="text"
+                           name="promoCode"
+                           value="{{ old.promoCode ?? (selected.promo ? selected.promo.code : '') }}"
+                           maxlength="40"
+                           class="pro-input"
+                           autocomplete="off"
+                           data-signup-promo-code
+                    >
                 </label>
                 <input type="hidden" name="plan" value="{{ selected.code }}" data-signup-promo-plan>
                 <input type="hidden" name="period" value="{{ selected.period }}" data-signup-promo-period>
@@ -95,33 +113,78 @@
             <div class="pro-form__row">
                 <label class="pro-field">
                     {{ translate('Raison sociale') }}
-                    <input type="text" name="billing[billingName]" value="{{ billing.billingName }}" required maxlength="160" class="pro-input" data-stripe-name>
+                    <input type="text"
+                           name="billing[billingName]"
+                           value="{{ billing.billingName }}"
+                           required
+                           maxlength="160"
+                           class="pro-input"
+                           data-stripe-name
+                    >
                 </label>
                 <label class="pro-field">
                     {{ translate('E-mail des factures') }}
-                    <input type="email" name="billing[billingEmail]" value="{{ billing.billingEmail }}" required maxlength="180" class="pro-input" data-stripe-email>
+                    <input type="email"
+                           name="billing[billingEmail]"
+                           value="{{ billing.billingEmail }}"
+                           required
+                           maxlength="180"
+                           class="pro-input"
+                           data-stripe-email
+                    >
                 </label>
             </div>
             <label class="pro-field">
                 {{ translate('Adresse') }}
-                <input type="text" name="billing[addressLine1]" value="{{ billing.addressLine1 }}" required maxlength="160" autocomplete="address-line1" class="pro-input">
+                <input type="text"
+                       name="billing[addressLine1]"
+                       value="{{ billing.addressLine1 }}"
+                       required
+                       maxlength="160"
+                       autocomplete="address-line1"
+                       class="pro-input"
+                >
             </label>
             <label class="pro-field">
                 {{ translate('Complément') }}
-                <input type="text" name="billing[addressLine2]" value="{{ billing.addressLine2 }}" maxlength="160" autocomplete="address-line2" class="pro-input">
+                <input type="text"
+                       name="billing[addressLine2]"
+                       value="{{ billing.addressLine2 }}"
+                       maxlength="160"
+                       autocomplete="address-line2"
+                       class="pro-input"
+                >
             </label>
             <div class="pro-form__row settings-row--3">
                 <label class="pro-field">
                     {{ translate('Code postal') }}
-                    <input type="text" name="billing[postalCode]" value="{{ billing.postalCode }}" required pattern="\d{5}" inputmode="numeric" class="pro-input">
+                    <input type="text"
+                           name="billing[postalCode]"
+                           value="{{ billing.postalCode }}"
+                           required
+                           pattern="\d{5}"
+                           inputmode="numeric"
+                           class="pro-input"
+                    >
                 </label>
                 <label class="pro-field">
                     {{ translate('Ville') }}
-                    <input type="text" name="billing[locality]" value="{{ billing.locality }}" required maxlength="100" class="pro-input">
+                    <input type="text"
+                           name="billing[locality]"
+                           value="{{ billing.locality }}"
+                           required
+                           maxlength="100"
+                           class="pro-input"
+                    >
                 </label>
                 <label class="pro-field">
                     {{ translate('N° TVA (facultatif)') }}
-                    <input type="text" name="billing[vatNumber]" value="{{ billing.vatNumber }}" class="pro-input" placeholder="FR00123456789">
+                    <input type="text"
+                           name="billing[vatNumber]"
+                           value="{{ billing.vatNumber }}"
+                           class="pro-input"
+                           placeholder="FR00123456789"
+                    >
                 </label>
             </div>
         </fieldset>
@@ -136,7 +199,9 @@
                 {% if route_exists('page_legal') %}
                     {% set terms = '<a href="' ~ path('page_legal', { document: 'cgv' }) ~ '" target="_blank" rel="noopener">' ~ terms ~ '</a>' %}
                 {% endif %}
-                {{ translate('J\'accepte les {terms} et je certifie être habilité·e à représenter cet établissement.', { terms: terms })|raw }}
+                {{ translate('J\'accepte les {terms} et je certifie être habilité·e à représenter cet établissement.', {
+                    terms: terms
+                })|raw }}
             </span>
         </label>
 

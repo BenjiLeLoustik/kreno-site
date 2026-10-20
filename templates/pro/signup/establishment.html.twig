@@ -17,12 +17,29 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" action="{{ path('pro_signup_establishment') }}" class="signup-form" data-signup-siret="{{ path('pro_signup_siret', { siret: '00000000000000' }) }}">
+    <form method="post"
+          action="{{ path('pro_signup_establishment') }}"
+          class="signup-form"
+          data-signup-siret="{{ path('pro_signup_siret', { siret: '00000000000000' }) }}"
+          data-message-siret-length="{{ translate('Le SIRET contient 14 chiffres.') }}"
+          data-message-siret-not-found="{{ translate('Ce SIRET est introuvable.') }}"
+          data-message-siret-unavailable="{{ translate('La recherche est indisponible : complétez les champs à la main.') }}"
+    >
         {{ csrf_field('pro')|raw }}
         <div class="signup-siret">
             <label class="pro-field signup-siret__field">
                 {{ translate('Numéro SIRET') }}
-                <input type="text" name="siret" value="{{ form.siret }}" required inputmode="numeric" pattern="[0-9 ]{14,17}" maxlength="17" class="pro-input" placeholder="123 456 789 00012" data-signup-siret-input>
+                <input type="text"
+                       name="siret"
+                       value="{{ form.siret }}"
+                       required
+                       inputmode="numeric"
+                       pattern="[0-9 ]{14,17}"
+                       maxlength="17"
+                       class="pro-input"
+                       placeholder="123 456 789 00012"
+                       data-signup-siret-input
+                >
             </label>
             <button type="button" class="pro-button signup-siret__button" data-signup-siret-search hidden>
                 {{ translate('Rechercher') }}
@@ -66,7 +83,16 @@
 
         <label class="pro-field">
             {{ translate('Nom affiché aux clients') }}
-            <input type="text" name="name" value="{{ form.name }}" required minlength="2" maxlength="120" class="pro-input" data-signup-field="name"></label>
+            <input type="text"
+                   name="name"
+                   value="{{ form.name }}"
+                   required
+                   minlength="2"
+                   maxlength="120"
+                   class="pro-input"
+                   data-signup-field="name"
+            >
+        </label>
 
         <fieldset class="signup-fieldset">
             <legend class="signup-legend">
@@ -75,7 +101,12 @@
             <div class="signup-chips">
                 {% for category in categories %}
                     <label class="signup-chip">
-                        <input type="radio" name="categorySlug" value="{{ category.slug }}" class="signup-chip__input" required{{ category.slug == form.categorySlug ? ' checked' : '' }}>
+                        <input type="radio"
+                               name="categorySlug"
+                               value="{{ category.slug }}"
+                               class="signup-chip__input"
+                               required{{ category.slug == form.categorySlug ? ' checked' : '' }}
+                        >
                         {{ category.name }}
                     </label>
                 {% endfor %}
@@ -84,20 +115,48 @@
 
         <label class="pro-field">
             {{ translate('Adresse où se déroulent les rendez-vous') }}
-            <input type="text" name="addressLine1" value="{{ form.addressLine1 }}" required maxlength="160" autocomplete="address-line1" class="pro-input" data-signup-field="address">
+            <input type="text"
+                   name="addressLine1"
+                   value="{{ form.addressLine1 }}"
+                   required maxlength="160"
+                   autocomplete="address-line1"
+                   class="pro-input"
+                   data-signup-field="address"
+            >
         </label>
         <label class="pro-field">
             {{ translate('Complément d\'adresse') }}
-            <input type="text" name="addressLine2" value="{{ form.addressLine2 }}" maxlength="160" autocomplete="address-line2" class="pro-input">
+            <input type="text"
+                   name="addressLine2"
+                   value="{{ form.addressLine2 }}"
+                   maxlength="160"
+                   autocomplete="address-line2"
+                   class="pro-input"
+            >
         </label>
         <div class="pro-form__row settings-row--3">
             <label class="pro-field">
                 {{ translate('Code postal') }}
-                <input type="text" name="postalCode" value="{{ form.postalCode }}" required pattern="\d{5}" inputmode="numeric" class="pro-input" data-signup-field="postalCode">
+                <input type="text"
+                       name="postalCode"
+                       value="{{ form.postalCode }}"
+                       required pattern="\d{5}"
+                       inputmode="numeric"
+                       class="pro-input"
+                       data-signup-field="postalCode"
+                >
             </label>
             <label class="pro-field">
                 {{ translate('Ville affichée') }}
-                <input type="text" name="locality" value="{{ form.locality }}" required maxlength="100" class="pro-input" placeholder="Lyon 3e" data-signup-field="locality">
+                <input type="text"
+                       name="locality"
+                       value="{{ form.locality }}"
+                       required
+                       maxlength="100"
+                       class="pro-input"
+                       placeholder="Lyon 3e"
+                       data-signup-field="locality"
+                >
             </label>
             <label class="pro-field">
                 {{ translate('Ville') }}
@@ -117,10 +176,23 @@
                     {{ translate('transmis au client après réservation') }}
                 </span>
             </span>
-            <input type="tel" name="phone" value="{{ form.phone }}" class="pro-input" placeholder="{{ translate('04 00 00 00 00') }}">
+            <input type="tel"
+                   name="phone"
+                   value="{{ form.phone }}"
+                   class="pro-input"
+                   placeholder="{{ translate('04 00 00 00 00') }}"
+            >
         </label>
-        <input type="hidden" name="latitude" value="{{ form.latitude }}" data-signup-field="latitude">
-        <input type="hidden" name="longitude" value="{{ form.longitude }}" data-signup-field="longitude">
+        <input type="hidden"
+               name="latitude"
+               value="{{ form.latitude }}"
+               data-signup-field="latitude"
+        >
+        <input type="hidden"
+               name="longitude"
+               value="{{ form.longitude }}"
+               data-signup-field="longitude"
+        >
 
         {% include 'pro/signup/_actions.html.twig' %}
     </form>

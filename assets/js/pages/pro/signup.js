@@ -10,15 +10,21 @@ window.ProSignup = {
 
     initPassword() {
         const input = document.querySelector('[data-signup-password]');
+        const meter = document.querySelector('[data-signup-meter]');
 
-        if (!input) {
+        if (!input || !meter) {
             return;
         }
 
-        const bars = document.querySelectorAll('[data-signup-meter-bar]');
-        const text = document.querySelector('[data-signup-meter-text]');
+        const bars = meter.querySelectorAll('[data-signup-meter-bar]');
+        const text = meter.querySelector('[data-signup-meter-text]');
         const initial = text.textContent;
-        const labels = ['Trop court', 'Faible', 'Correct', 'Solide'];
+        const labels = [
+            meter.dataset.labelEmpty || '',
+            meter.dataset.labelWeak || '',
+            meter.dataset.labelFair || '',
+            meter.dataset.labelStrong || '',
+        ];
 
         input.addEventListener('input', () => {
             const value = input.value;
@@ -66,7 +72,7 @@ window.ProSignup = {
             error.hidden = true;
 
             if (siret.length !== 14) {
-                this.showError(error, 'Le SIRET contient 14 chiffres.');
+                this.showError(error, form.dataset.messageSiretLength);
                 return;
             }
 
@@ -81,13 +87,13 @@ window.ProSignup = {
 
                 if (!response.ok || !data.found) {
                     registry.hidden = true;
-                    this.showError(error, data.error || 'Ce SIRET est introuvable.');
+                    this.showError(error, data.error || form.dataset.messageSiretNotFound);
                     return;
                 }
 
                 this.fillRegistry(form, registry, data.establishment);
             } catch {
-                this.showError(error, 'La recherche est indisponible : complétez les champs à la main.');
+                this.showError(error, form.dataset.messageSiretUnavailable);
             } finally {
                 button.disabled = false;
             }
@@ -273,7 +279,7 @@ window.ProSignup = {
                     first.textContent = data.quote.firstLabel;
                 }
             } catch {
-                result.textContent = 'Vérification indisponible : le code sera contrôlé à l’envoi.';
+                result.textContent = box.dataset.messagePromoUnavailable;
             } finally {
                 button.disabled = false;
             }
@@ -286,7 +292,7 @@ window.ProSignup = {
     },
 
     money(cents) {
-        return new Intl.NumberFormat('fr-FR', {
+        return new Intl.NumberFormat(document.documentElement.lang || 'fr-FR', {
             style: 'currency',
             currency: 'EUR',
             minimumFractionDigits: cents % 100 === 0 ? 0 : 2,

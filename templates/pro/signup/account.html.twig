@@ -26,7 +26,11 @@
             <div class="signup-choices">
                 {% for kind in kinds %}
                     <label class="signup-choice">
-                        <input type="radio" name="kind" value="{{ kind.value }}" class="signup-choice__input"{{ kind.value == form.kind ? ' checked' : '' }}>
+                        <input type="radio"
+                               name="kind"
+                               value="{{ kind.value }}"
+                               class="signup-choice__input"{{ kind.value == form.kind ? ' checked' : '' }}
+                        >
                         <b class="signup-choice__title">
                             {{ kind.title }}
                         </b>
@@ -41,32 +45,75 @@
         <div class="pro-form__row">
             <label class="pro-field">
                 {{ translate('Prénom') }}
-                <input type="text" name="firstName" value="{{ form.firstName }}" required maxlength="80" autocomplete="given-name" class="pro-input">
+                <input type="text"
+                       name="firstName"
+                       value="{{ form.firstName }}"
+                       required maxlength="80"
+                       autocomplete="given-name"
+                       class="pro-input"
+                >
             </label>
             <label class="pro-field">
                 {{ translate('Nom') }}
-                <input type="text" name="lastName" value="{{ form.lastName }}" required maxlength="80" autocomplete="family-name" class="pro-input">
+                <input type="text"
+                       name="lastName"
+                       value="{{ form.lastName }}"
+                       required
+                       maxlength="80"
+                       autocomplete="family-name"
+                       class="pro-input"
+                >
             </label>
             <label class="pro-field">
                 {{ translate('E-mail professionnel') }}
-                <input type="email" name="email" value="{{ form.email }}" required maxlength="180" autocomplete="email" class="pro-input"{{ existing ? ' readonly' : '' }}>
+                <input type="email"
+                       name="email"
+                       value="{{ form.email }}"
+                       required
+                       maxlength="180"
+                       autocomplete="email"
+                       class="pro-input"{{ existing ? ' readonly' : '' }}
+                >
             </label>
             <label class="pro-field">
                 {{ translate('Téléphone portable') }}
-                <input type="tel" name="phone" value="{{ form.phone }}" required autocomplete="tel" class="pro-input" placeholder="{{ translate('06 00 00 00 00') }}">
+                <input type="tel"
+                       name="phone"
+                       value="{{ form.phone }}"
+                       required
+                       autocomplete="tel"
+                       class="pro-input"
+                       placeholder="{{ translate('06 00 00 00 00') }}"
+                >
             </label>
         </div>
 
         {% if existing %}
             <p class="pro-note">
-                {{ translate('Vous êtes connecté {email} : votre mot de passe actuel reste inchangé.', {email: form.email}) }}
+                {{ translate('Vous êtes connecté {email} : votre mot de passe actuel reste inchangé.', {
+                    email: form.email
+                }) }}
             </p>
         {% else %}
             <label class="pro-field">
                 {{ translate('Mot de passe') }}
-                <input type="password" name="password" required minlength="12" autocomplete="new-password" class="pro-input" placeholder="{{ translate('12 caractères minimum') }}" data-signup-password>
+                <input type="password"
+                       name="password"
+                       required
+                       minlength="12"
+                       autocomplete="new-password"
+                       class="pro-input"
+                       placeholder="{{ translate('12 caractères minimum') }}"
+                       data-signup-password
+                >
             </label>
-            <div class="signup-meter" data-signup-meter>
+            <div class="signup-meter"
+                 data-signup-meter
+                 data-label-empty="{{ translate('Trop court') }}"
+                 data-label-weak="{{ translate('Faible') }}"
+                 data-label-fair="{{ translate('Correct') }}"
+                 data-label-strong="{{ translate('Solide') }}"
+            >
                 <span class="signup-meter__bars">
                     {% for index in 1..4 %}
                         <span class="signup-meter__bar" data-signup-meter-bar></span>

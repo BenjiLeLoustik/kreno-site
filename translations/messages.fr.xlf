@@ -9314,6 +9314,22 @@
         <source>Trop court</source>
         <target>Trop court</target>
       </trans-unit>
+      <trans-unit id="70c029ac6ef8f89f" resname="Ce SIRET est introuvable.">
+        <source>Ce SIRET est introuvable.</source>
+        <target>Ce SIRET est introuvable.</target>
+      </trans-unit>
+      <trans-unit id="5e4627b16dff6a9c" resname="La recherche est indisponible : complétez les champs à la main.">
+        <source>La recherche est indisponible : complétez les champs à la main.</source>
+        <target>La recherche est indisponible : complétez les champs à la main.</target>
+      </trans-unit>
+      <trans-unit id="8c788bdadaf48d5d" resname="Le SIRET contient 14 chiffres.">
+        <source>Le SIRET contient 14 chiffres.</source>
+        <target>Le SIRET contient 14 chiffres.</target>
+      </trans-unit>
+      <trans-unit id="237748c2c408daf8" resname="Vérification indisponible : le code sera contrôlé à l’envoi.">
+        <source>Vérification indisponible : le code sera contrôlé à l’envoi.</source>
+        <target>Vérification indisponible : le code sera contrôlé à l’envoi.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
