@@ -27,7 +27,11 @@ class CatalogController extends AbstractAdminController
     ) {
     }
 
-    #[Route('/admin/catalog', name: 'admin_catalog_index', methods: ['GET'])]
+    #[Route(
+        path: '/admin/catalog',
+        name: 'admin_catalog_index',
+        methods: ['GET']
+    )]
     public function index(): Response
     {
         $this->currentAdmin();
@@ -35,10 +39,28 @@ class CatalogController extends AbstractAdminController
         return $this->render('admin/catalog/index.html.twig', $this->pages->index());
     }
 
-    #[Csrf('admin_catalog')]
-    #[Route('/admin/catalog/categories', name: 'admin_catalog_category_create', methods: ['POST'])]
-    public function createCategory(#[MapRequestPayload(validate: false)] CategoryInput $input): RedirectResponse
+    #[Route(
+        path: '/admin/catalog/categories/{slug}',
+        name: 'admin_catalog_category_show',
+        methods: ['GET']
+    )]
+    public function showCategory(string $slug): Response
     {
+        $this->currentAdmin();
+
+        return $this->render('admin/catalog/category_show.html.twig', $this->pages->categoryShow($slug));
+    }
+
+    #[Csrf(id: 'admin_catalog')]
+    #[Route(
+        path: '/admin/catalog/categories',
+        name: 'admin_catalog_category_create',
+        methods: ['POST']
+    )]
+    public function createCategory(
+        #[MapRequestPayload(validate: false)]
+        CategoryInput $input
+    ): RedirectResponse {
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
@@ -51,10 +73,16 @@ class CatalogController extends AbstractAdminController
         return $this->redirectToRoute('admin_catalog_index');
     }
 
-    #[Csrf('admin_catalog')]
-    #[Route('/admin/catalog/categories/order', name: 'admin_catalog_category_order', methods: ['POST'])]
-    public function reorderCategories(#[MapRequestPayload(validate: false)] PositionsInput $input): RedirectResponse
-    {
+    #[Csrf(id: 'admin_catalog')]
+    #[Route(
+        path: '/admin/catalog/categories/order',
+        name: 'admin_catalog_category_order',
+        methods: ['POST']
+    )]
+    public function reorderCategories(
+        #[MapRequestPayload(validate: false)]
+        PositionsInput $input
+    ): RedirectResponse {
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
@@ -67,11 +95,16 @@ class CatalogController extends AbstractAdminController
         return $this->redirectToRoute('admin_catalog_index');
     }
 
-    #[Csrf('admin_catalog')]
-    #[Route('/admin/catalog/categories/{slug}', name: 'admin_catalog_category_update', methods: ['POST'])]
+    #[Csrf(id: 'admin_catalog')]
+    #[Route(
+        path: '/admin/catalog/categories/{slug}',
+        name: 'admin_catalog_category_update',
+        methods: ['POST']
+    )]
     public function updateCategory(
         string $slug,
-        #[MapRequestPayload(validate: false)] CategoryInput $input,
+        #[MapRequestPayload(validate: false)]
+        CategoryInput $input,
     ): RedirectResponse {
         $admin = $this->currentAdmin();
         $category = $this->pages->category($slug);
@@ -83,14 +116,16 @@ class CatalogController extends AbstractAdminController
             );
         }
 
-        return $this->redirectToRoute('admin_catalog_index');
+        return $this->redirectToRoute('admin_catalog_category_show', [
+            'slug' => $slug
+        ]);
     }
 
-    #[Csrf('admin_catalog')]
+    #[Csrf(id: 'admin_catalog')]
     #[Route(
-        '/admin/catalog/categories/{slug}/visibility',
+        path: '/admin/catalog/categories/{slug}/visibility',
         name: 'admin_catalog_category_visibility',
-        methods: ['POST'],
+        methods: ['POST']
     )]
     public function toggleCategory(string $slug): RedirectResponse
     {
@@ -105,8 +140,12 @@ class CatalogController extends AbstractAdminController
         return $this->redirectToRoute('admin_catalog_index');
     }
 
-    #[Csrf('admin_catalog')]
-    #[Route('/admin/catalog/categories/{slug}/delete', name: 'admin_catalog_category_delete', methods: ['POST'])]
+    #[Csrf(id: 'admin_catalog')]
+    #[Route(
+        path: '/admin/catalog/categories/{slug}/delete',
+        name: 'admin_catalog_category_delete',
+        methods: ['POST']
+    )]
     public function deleteCategory(string $slug): RedirectResponse
     {
         $admin = $this->currentAdmin();
@@ -119,11 +158,11 @@ class CatalogController extends AbstractAdminController
         return $this->redirectToRoute('admin_catalog_index');
     }
 
-    #[Csrf('admin_catalog')]
+    #[Csrf(id: 'admin_catalog')]
     #[Route(
-        '/admin/catalog/categories/{slug}/suggestions',
+        path: '/admin/catalog/categories/{slug}/suggestions',
         name: 'admin_catalog_suggestion_create',
-        methods: ['POST'],
+        methods: ['POST']
     )]
     public function createSuggestion(
         string $slug,
@@ -139,12 +178,14 @@ class CatalogController extends AbstractAdminController
             );
         }
 
-        return $this->redirectToRoute('admin_catalog_index');
+        return $this->redirectToRoute('admin_catalog_category_show', [
+            'slug' => $slug
+        ]);
     }
 
-    #[Csrf('admin_catalog')]
+    #[Csrf(id: 'admin_catalog')]
     #[Route(
-        '/admin/catalog/suggestions/{id}',
+        path: '/admin/catalog/suggestions/{id}',
         name: 'admin_catalog_suggestion_update',
         methods: ['POST'],
         requirements: ['id' => '\d+'],
@@ -155,6 +196,7 @@ class CatalogController extends AbstractAdminController
     ): RedirectResponse {
         $admin = $this->currentAdmin();
         $suggestion = $this->pages->suggestion($id);
+        $category = $suggestion->getCategory();
 
         if (!$this->invalid($input)) {
             $this->attempt(
@@ -163,32 +205,43 @@ class CatalogController extends AbstractAdminController
             );
         }
 
-        return $this->redirectToRoute('admin_catalog_index');
+        return $this->redirectToRoute('admin_catalog_category_show', [
+            'slug' => $category?->getSlug()
+        ]);
     }
 
-    #[Csrf('admin_catalog')]
+    #[Csrf(id: 'admin_catalog')]
     #[Route(
-        '/admin/catalog/suggestions/{id}/delete',
+        path: '/admin/catalog/suggestions/{id}/delete',
         name: 'admin_catalog_suggestion_delete',
         methods: ['POST'],
-        requirements: ['id' => '\d+'],
+        requirements: ['id' => '\d+']
     )]
     public function deleteSuggestion(int $id): RedirectResponse
     {
         $admin = $this->currentAdmin();
         $suggestion = $this->pages->suggestion($id);
+        $category = $suggestion->getCategory();
         $this->attempt(
             fn () => $this->suggestionService->delete($suggestion, $admin),
             CatalogFlash::SUGGESTION_DELETED->text($suggestion->getName()),
         );
 
-        return $this->redirectToRoute('admin_catalog_index');
+        return $this->redirectToRoute('admin_catalog_category_show', [
+            'slug' => $category?->getSlug()
+        ]);
     }
 
-    #[Csrf('admin_catalog')]
-    #[Route('/admin/catalog/cities', name: 'admin_catalog_city_create', methods: ['POST'])]
-    public function createCity(#[MapRequestPayload(validate: false)] CityInput $input): RedirectResponse
-    {
+    #[Csrf(id: 'admin_catalog')]
+    #[Route(
+        path: '/admin/catalog/cities',
+        name: 'admin_catalog_city_create',
+        methods: ['POST']
+    )]
+    public function createCity(
+        #[MapRequestPayload(validate: false)]
+        CityInput $input
+    ): RedirectResponse {
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
@@ -201,10 +254,16 @@ class CatalogController extends AbstractAdminController
         return $this->redirectToRoute('admin_catalog_index');
     }
 
-    #[Csrf('admin_catalog')]
-    #[Route('/admin/catalog/cities/order', name: 'admin_catalog_city_order', methods: ['POST'])]
-    public function reorderCities(#[MapRequestPayload(validate: false)] PositionsInput $input): RedirectResponse
-    {
+    #[Csrf(id: 'admin_catalog')]
+    #[Route(
+        path: '/admin/catalog/cities/order',
+        name: 'admin_catalog_city_order',
+        methods: ['POST']
+    )]
+    public function reorderCities(
+        #[MapRequestPayload(validate: false)]
+        PositionsInput $input
+    ): RedirectResponse {
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
@@ -217,10 +276,17 @@ class CatalogController extends AbstractAdminController
         return $this->redirectToRoute('admin_catalog_index');
     }
 
-    #[Csrf('admin_catalog')]
-    #[Route('/admin/catalog/cities/{slug}', name: 'admin_catalog_city_update', methods: ['POST'])]
-    public function updateCity(string $slug, #[MapRequestPayload(validate: false)] CityInput $input): RedirectResponse
-    {
+    #[Csrf(id: 'admin_catalog')]
+    #[Route(
+        path: '/admin/catalog/cities/{slug}',
+        name: 'admin_catalog_city_update',
+        methods: ['POST']
+    )]
+    public function updateCity(
+        string $slug,
+        #[MapRequestPayload(validate: false)]
+        CityInput $input
+    ): RedirectResponse {
         $admin = $this->currentAdmin();
         $city = $this->pages->city($slug);
 
@@ -234,8 +300,12 @@ class CatalogController extends AbstractAdminController
         return $this->redirectToRoute('admin_catalog_index');
     }
 
-    #[Csrf('admin_catalog')]
-    #[Route('/admin/catalog/cities/{slug}/status/{status}', name: 'admin_catalog_city_status', methods: ['POST'])]
+    #[Csrf(id: 'admin_catalog')]
+    #[Route(
+        path: '/admin/catalog/cities/{slug}/status/{status}',
+        name: 'admin_catalog_city_status',
+        methods: ['POST']
+    )]
     public function updateCityStatus(string $slug, string $status): RedirectResponse
     {
         $admin = $this->currentAdmin();
@@ -249,8 +319,12 @@ class CatalogController extends AbstractAdminController
         return $this->redirectToRoute('admin_catalog_index');
     }
 
-    #[Csrf('admin_catalog')]
-    #[Route('/admin/catalog/cities/{slug}/delete', name: 'admin_catalog_city_delete', methods: ['POST'])]
+    #[Csrf(id: 'admin_catalog')]
+    #[Route(
+        path: '/admin/catalog/cities/{slug}/delete',
+        name: 'admin_catalog_city_delete',
+        methods: ['POST']
+    )]
     public function deleteCity(string $slug): RedirectResponse
     {
         $admin = $this->currentAdmin();

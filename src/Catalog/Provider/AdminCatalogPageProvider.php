@@ -40,6 +40,17 @@ class AdminCatalogPageProvider
         ];
     }
 
+    public function categoryShow(string $slug): array
+    {
+        $category = $this->category($slug);
+
+        return [
+            'category' => $this->categoryPresenter->detail($category),
+            'establishmentsCount' => $this->establishments->countByCategory($category),
+            'durations' => ServiceSuggestionHelper::DURATIONS,
+        ];
+    }
+
     public function category(string $slug): Category
     {
         $category = $this->categories->findOneBySlug($slug);
