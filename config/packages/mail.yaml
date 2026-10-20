@@ -3,8 +3,8 @@ senders:
     support: 'Kréno <noreply@kreno.neophp.fr>'
     pro: 'Kréno Pro <noreply@kreno.neophp.fr>'
 
-supportAddress: 'noreply@kreno.neophp.fr'
-moderationAddress: 'noreply@kreno.neophp.fr'
+supportAddress: 'support@kreno.neophp.fr'
+moderationAddress: 'moderation@kreno.neophp.fr'
 
 footer:
     legalName: 'KRENO SAS'
