@@ -10,19 +10,19 @@
         <thead>
         <tr>
             <th scope="col" class="admin-table__th">
-                Date
+                {{ translate('Date') }}
             </th>
             <th scope="col" class="admin-table__th">
-                Membre
+                {{ translate('Membre') }}
             </th>
             <th scope="col" class="admin-table__th">
-                Action
+                {{ translate('Action') }}
             </th>
             <th scope="col" class="admin-table__th">
-                Détail
+                {{ translate('Détail') }}
             </th>
             <th scope="col" class="admin-table__th">
-                Version
+                {{ translate('Version') }}
             </th>
         </tr>
         </thead>
@@ -50,7 +50,7 @@
         {% else %}
             <tr>
                 <td colspan="5" class="admin-table__empty">
-                    Aucune activité pour ce filtre.
+                    {{ translate('Aucune activité pour ce filtre.') }}
                 </td>
             </tr>
         {% endfor %}

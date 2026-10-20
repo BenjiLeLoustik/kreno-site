@@ -6,7 +6,7 @@
 } %}
 
 {% block title %}
-    Avis · Administration Kréno
+    {{ translate('Avis · Administration Kréno') }}
 {% endblock %}
 
 {% block content %}
@@ -14,11 +14,11 @@
 
     <div class="admin-head">
         <h1 class="admin-title">
-            Avis
+            {{ translate('Avis') }}
         </h1>
     </div>
 
-    <nav class="admin-tabs" aria-label="Statut">
+    <nav class="admin-tabs" aria-label="{{ translate('Statut') }}">
         {% for item in filters %}
             <a href="{{ path('admin_reviews', { status: item.key }) }}" class="admin-tabs__link{{ item.selected ? ' admin-tabs__link--active' : '' }}"{{ item.selected ? ' aria-current="page"' : '' }}>
                 {{ item.label }}
@@ -57,9 +57,9 @@
             {% else %}
                 <p class="admin-list__empty">
                     {% if filter == 'reported' %}
-                        Aucun avis signalé. Tout est traité.
+                        {{ translate('Aucun avis signalé. Tout est traité.') }}
                     {% else %}
-                        Aucun avis pour ce filtre.
+                        {{ translate('Aucun avis pour ce filtre.') }}
                     {% endif %}
                 </p>
             {% endfor %}
@@ -73,7 +73,7 @@
                             {{ selected.establishment }}
                         </h2>
                         <span class="admin-card__subtitle">
-                            Avis du {{ selected.createdAt|date('d/m/Y à H:i') }}
+                            {{ translate('Avis du {date}', { date: selected.createdAt|date('d/m/Y à H:i') }) }}
                         </span>
                     </div>
                     <span class="admin-badge admin-badge--{{ selected.tone }}">
@@ -97,13 +97,14 @@
                     </blockquote>
                 {% else %}
                     <p class="admin-card__subtitle">
-                        Note sans commentaire.
+                        {{ translate('Note sans commentaire.') }}
                     </p>
                 {% endif %}
 
                 <dl class="admin-facts">
                     <dt class="admin-facts__label">
-                        Client</dt>
+                        {{ translate('Client') }}
+                    </dt>
                     <dd class="admin-facts__value">
                         {{ selected.author }}
                         {% if selected.customerEmail %}
@@ -114,7 +115,7 @@
                         {% endif %}
                     </dd>
                     <dt class="admin-facts__label">
-                        Réservation
+                        {{ translate('Réservation') }}
                     </dt>
                     <dd class="admin-facts__value">
                         {{ selected.reference ?: '-' }}
@@ -124,13 +125,13 @@
                     </dd>
                     {% if selected.moderatedAt %}
                         <dt class="admin-facts__label">
-                            Modération
+                            {{ translate('Modération') }}
                         </dt>
                         <dd class="admin-facts__value">
-                            {{ selected.moderatedAt|date('d/m/Y à H:i') }}
-                            {% if selected.moderatedBy %}
-                                par {{ selected.moderatedBy }}
-                            {% endif %}
+                            {{ translate('{date}{by}', {
+                                date: selected.moderatedAt|date('d/m/Y à H:i'),
+                                by: selected.moderatedBy ? translate(' par {author}', { author: selected.moderatedBy }) : ''
+                            }) }}
                         </dd>
                     {% endif %}
                 </dl>
@@ -140,7 +141,7 @@
                         <article class="thread__message thread__message--team">
                             <div class="thread__head">
                                 <b class="thread__author">
-                                    Réponse de l'établissement
+                                    {{ translate("Réponse de l'établissement") }}
                                 </b>
                                 {% if selected.repliedAt %}
                                     <span class="thread__date">
@@ -158,13 +159,10 @@
                 {% if selected.status == 'reported' and selected.reportReason %}
                     <div class="admin-note">
                         <b>
-                            Signalé
-                            {% if selected.reportedBy %}
-                                par {{ selected.reportedBy }}
-                            {% endif %}
-                            {% if selected.reportedAt %}
-                                le {{ selected.reportedAt|date('d/m/Y à H:i') }}
-                            {% endif %}
+                            {{ translate('Signalé{by}{at}', {
+                                by: selected.reportedBy ? translate(' par {author}', { author: selected.reportedBy }) : '',
+                                at: selected.reportedAt ? translate(' le {date}', { date: selected.reportedAt|date('d/m/Y à H:i') }) : ''
+                            }) }}
                         </b>
                         <br>
                         {{ selected.reportReason }}
@@ -174,7 +172,7 @@
                 {% if selected.status == 'hidden' and selected.moderationNote %}
                     <div class="admin-note admin-note--danger">
                         <b>
-                            Motif du masquage
+                            {{ translate('Motif du masquage') }}
                         </b>
                         <br>
                         {{ selected.moderationNote }}
@@ -186,15 +184,15 @@
                         {{ csrf_field('admin_review')|raw }}
                         <input type="hidden" name="status" value="{{ filter }}">
                         <label class="admin-field">
-                            Masquer l'avis
+                            {{ translate("Masquer l'avis") }}
                             <span class="admin-field__hint">
-                                le motif est envoyé au client
+                                {{ translate('le motif est envoyé au client') }}
                             </span>
-                            <textarea name="reason" rows="3" required maxlength="500" class="admin-input admin-input--area" placeholder="Propos injurieux, informations personnelles, avis sans rapport avec la prestation…"></textarea>
+                            <textarea name="reason" rows="3" required maxlength="500" class="admin-input admin-input--area" placeholder="{{ translate('Propos injurieux, informations personnelles, avis sans rapport avec la prestation…') }}"></textarea>
                         </label>
                         <div class="admin-actions">
                             <button type="submit" class="admin-button admin-button--primary">
-                                Masquer l'avis
+                                {{ translate("Masquer l'avis") }}
                             </button>
                         </div>
                     </form>
@@ -206,9 +204,9 @@
                         <input type="hidden" name="status" value="{{ filter }}">
                         <button type="submit" class="admin-button">
                             {% if selected.status == 'reported' %}
-                                Garder en ligne
+                                {{ translate('Garder en ligne') }}
                             {% else %}
-                                Remettre en ligne
+                                {{ translate('Remettre en ligne') }}
                             {% endif %}
                         </button>
                     </form>

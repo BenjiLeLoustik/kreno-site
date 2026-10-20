@@ -1,17 +1,28 @@
 {% extends 'layouts/admin.html.twig' %}
 
 {% set admin_section = 'bookings' %}
-{% set query = { tab: tab != 'all' ? tab : null, q: q }|filter(value => value) %}
-{% set tones = { coming: 'info', pending: 'warning', done: 'success', noshow: 'danger', cancelled: 'neutral', cancelled_by_establishment: 'danger' } %}
+{% set query = {
+    tab: tab != 'all' ? tab : null,
+    q: q
+}|filter(value => value) %}
+
+{% set tones = {
+    coming: 'info',
+    pending: 'warning',
+    done: 'success',
+    noshow: 'danger',
+    cancelled: 'neutral',
+    cancelled_by_establishment: 'danger'
+} %}
 
 {% block title %}
-    Réservations · Administration Kréno
+    {{ translate('Réservations · Administration Kréno') }}
 {% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <h1 class="admin-title">
-            Réservations
+            {{ translate('Réservations') }}
         </h1>
         <form method="get" action="{{ path('admin_bookings') }}" class="admin-toolbar">
             {% if tab != 'all' %}
@@ -19,16 +30,16 @@
             {% endif %}
             <label class="admin-search">
                 <i data-lucide="search" class="admin-nav__icon"></i>
-                <input type="search" name="q" value="{{ q }}" placeholder="Référence, client ou établissement" class="admin-search__input" aria-label="Rechercher une réservation">
+                <input type="search" name="q" value="{{ q }}" placeholder="{{ translate('Référence, client ou établissement') }}" class="admin-search__input" aria-label="{{ translate('Rechercher une réservation') }}">
             </label>
             <button type="submit" class="admin-button">
-                Rechercher
+                {{ translate('Rechercher') }}
             </button>
         </form>
     </div>
 
     <div class="admin-head">
-        <nav class="admin-tabs" aria-label="Statut">
+        <nav class="admin-tabs" aria-label="{{ translate('Statut') }}">
             {% for item in tabs %}
                 <a href="{{ path('admin_bookings', { tab: item.key != 'all' ? item.key : null, q: q }|filter(value => value)) }}" class="admin-tabs__link{{ item.key == tab ? ' admin-tabs__link--active' : '' }}"{{ item.key == tab ? ' aria-current="page"' : '' }}>
                     {{ item.label }}
@@ -45,22 +56,22 @@
             <thead>
             <tr>
                 <th scope="col" class="admin-table__th">
-                    Référence
+                    {{ translate('Référence') }}
                 </th>
                 <th scope="col" class="admin-table__th">
-                    Client
+                    {{ translate('Client') }}
                 </th>
                 <th scope="col" class="admin-table__th">
-                    Établissement
+                    {{ translate('Établissement') }}
                 </th>
                 <th scope="col" class="admin-table__th">
-                    Créneau
+                    {{ translate('Créneau') }}
                 </th>
                 <th scope="col" class="admin-table__th">
-                    Prix
+                    {{ translate('Prix') }}
                 </th>
                 <th scope="col" class="admin-table__th">
-                    Statut
+                    {{ translate('Statut') }}
                 </th>
             </tr>
             </thead>
@@ -85,7 +96,7 @@
                         {% endif %}
                     </td>
                     <td class="admin-table__td admin-table__td--muted admin-table__td--nowrap">
-                        {{ booking.when ?: '—' }}
+                        {{ booking.when ?: '-' }}
                         {% if booking.what %}
                             · {{ booking.what }}
                         {% endif %}
@@ -102,7 +113,7 @@
             {% else %}
                 <tr>
                     <td colspan="6" class="admin-table__empty">
-                        Aucune réservation pour ce filtre.
+                        {{ translate('Aucune réservation pour ce filtre.') }}
                     </td>
                 </tr>
             {% endfor %}
@@ -114,7 +125,7 @@
         <div class="admin-pagination">
             {% if page > 1 %}
                 <a href="{{ path('admin_bookings', query|merge({ page: page - 1 })) }}" class="admin-button admin-button--small">
-                    ← Précédentes
+                    {{ translate('← Précédentes') }}
                 </a>
             {% else %}
                 <span></span>
@@ -124,7 +135,7 @@
             </span>
             {% if hasNext %}
                 <a href="{{ path('admin_bookings', query|merge({ page: page + 1 })) }}" class="admin-button admin-button--small">
-                    Suivantes →
+                    {{ translate('Suivantes →') }}
                 </a>
             {% else %}
                 <span></span>

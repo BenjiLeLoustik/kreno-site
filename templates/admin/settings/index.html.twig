@@ -3,24 +3,28 @@
 {% set admin_section = 'settings' %}
 
 {% block title %}
-    Réglages et journal · Administration Kréno
+    {{ translate('Réglages et journal · Administration Kréno') }}
 {% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <h1 class="admin-title">
-            Réglages et journal
+            {{ translate('Réglages et journal') }}
         </h1>
         <form method="get" action="{{ path('admin_settings_index') }}" class="admin-toolbar">
-            <select name="version" class="admin-select" aria-label="Version du site" data-admin-auto>
+            <select name="version" class="admin-select" aria-label="{{ translate('Version du site') }}" data-admin-auto>
                 {% for version in versions %}
                     <option value="{{ version.code }}"{{ version.code == selected.code ? ' selected' : '' }}>
-                        {{ version.code }} · {{ version.name }} ({{ version.statusLabel|lower }})
+                        {{ translate('{code} · {name} ({status})', {
+                            code: version.code,
+                            name: version.name,
+                            status: version.statusLabel|lower
+                        }) }}
                     </option>
                 {% endfor %}
             </select>
             <button type="submit" class="admin-button" data-admin-apply>
-                Afficher
+                {{ translate('Afficher') }}
             </button>
         </form>
     </div>
@@ -30,22 +34,25 @@
             <div class="admin-card__head">
                 <div>
                     <h2 class="admin-card__title">
-                        Règles de la plateforme
+                        {{ translate('Règles de la plateforme') }}
                     </h2>
                     <span class="admin-card__subtitle">
-                        Version {{ selected.code }} · {{ selected.statusLabel }}
+                        {{ translate('Version {code} · {status}', {
+                            code: selected.code,
+                            status: selected.statusLabel
+                        }) }}
                     </span>
                 </div>
                 {% if route_exists('admin_website_show') %}
                     <a href="{{ path('admin_website_show', { code: selected.code }) }}" class="admin-button admin-button--small">
-                        Gérer la version
+                        {{ translate('Gérer la version') }}
                     </a>
                 {% endif %}
             </div>
 
             {% if not selected.editable %}
                 <div class="admin-note">
-                    Cette version n'est plus modifiable. Duplique-la depuis « Versions du site » pour changer les règles.
+                    {{ translate("Cette version n'est plus modifiable. Duplique-la depuis « Versions du site » pour changer les règles.") }}
                 </div>
             {% endif %}
 
@@ -68,7 +75,10 @@
                                     </span>
                                     {% if rule.changed %}
                                         <span class="admin-diff">
-                                            En ligne : {{ rule.liveValue }} {{ rule.unit }}
+                                            {{ translate('En ligne : {value} {unit}', {
+                                                value: rule.liveValue,
+                                                unit: rule.unit
+                                            }) }}
                                         </span>
                                     {% endif %}
                                 </label>
@@ -78,13 +88,13 @@
                 {% endfor %}
                 {% if rules.userSummary %}
                     <div class="admin-note">
-                        Ce que voient les clients : {{ rules.userSummary }}
+                        {{ translate('Ce que voient les clients : {summary}', { summary: rules.userSummary }) }}
                     </div>
                 {% endif %}
                 {% if selected.editable %}
                     <div class="admin-actions">
                         <button type="submit" class="admin-button admin-button--primary">
-                            Enregistrer les règles
+                            {{ translate('Enregistrer les règles') }}
                         </button>
                     </div>
                 {% endif %}
@@ -94,11 +104,11 @@
         <section class="admin-card">
             <div class="admin-card__head">
                 <h2 class="admin-card__title">
-                    Équipe Kréno
+                    {{ translate('Équipe Kréno') }}
                 </h2>
                 {% if route_exists('admin_team') %}
                     <a href="{{ path('admin_team') }}" class="admin-button admin-button--small">
-                        Gérer l'équipe
+                        {{ translate("Gérer l'équipe") }}
                     </a>
                 {% endif %}
             </div>
@@ -112,7 +122,7 @@
                             <b>
                                 {{ member.name }}
                                 {% if member.isMe %}
-                                    (vous)
+                                    {{ translate('(vous)') }}
                                 {% endif %}
                             </b>
                             <span class="admin-row__meta">
@@ -121,7 +131,7 @@
                         </span>
                         <span class="admin-badge">
                             {% if member.pending %}
-                                Invité
+                                {{ translate('Invité') }}
                             {% else %}
                                 {{ member.roleLabel }}
                             {% endif %}
@@ -135,10 +145,10 @@
     <section class="admin-card">
         <div class="admin-card__head">
             <h2 class="admin-card__title">
-                Journal d'activité
+                {{ translate("Journal d'activité") }}
             </h2>
             <div class="admin-toolbar">
-                <nav class="admin-tabs" aria-label="Type d'activité">
+                <nav class="admin-tabs" aria-label="{{ translate("Type d'activité") }}">
                     {% for filter in journal.filters %}
                         <a href="{{ path('admin_settings_index', { version: selected.code, group: filter.key != 'all' ? filter.key : null }|filter(value => value)) }}" class="admin-tabs__link{{ filter.selected ? ' admin-tabs__link--active' : '' }}">
                             {{ filter.label }}
@@ -147,7 +157,7 @@
                 </nav>
                 {% if route_exists('admin_log') %}
                     <a href="{{ path('admin_log', { group: journal.group != 'all' ? journal.group : null }|filter(value => value)) }}" class="admin-button admin-button--small">
-                        Tout le journal
+                        {{ translate('Tout le journal') }}
                     </a>
                 {% endif %}
             </div>

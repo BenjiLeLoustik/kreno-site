@@ -34,13 +34,12 @@
 
 {% macro questionFields(question) %}
     <label class="admin-field">
-        Question
+        {{ translate('Question') }}
         <input type="text" name="question" value="{{ question.question ?? '' }}" required minlength="5" maxlength="255" class="admin-input">
     </label>
     <label class="admin-field">
-        Réponse
-        <textarea name="answer" rows="4" required maxlength="5000" class="admin-input admin-input--area">{{ question.answer ?? '' }}
-        </textarea>
+        {{ translate('Réponse') }}
+        <textarea name="answer" rows="4" required maxlength="5000" class="admin-input admin-input--area">{{ question.answer ?? '' }}</textarea>
     </label>
 {% endmacro %}
 
@@ -58,14 +57,14 @@
 {% endmacro %}
 
 {% block title %}
-    FAQ · Administration Kréno
+    {{ translate('FAQ · Administration Kréno') }}
 {% endblock %}
 
 {% block content %}
     {% import _self as faq %}
 
     <h1 class="admin-title">
-        FAQ
+        {{ translate('FAQ') }}
     </h1>
 
     <div class="faq-admin">
@@ -85,7 +84,10 @@
                                     {{ category.name }}
                                 </b>
                                 <span class="admin-row__meta">
-                                    {{ category.slug }} · {{ category.questionsCount }} question{{ category.questionsCount > 1 ? 's' : '' }}
+                                    {{ translate('{slug} · {count, plural, =1 {# question} other {# questions}}', {
+                                        slug: category.slug,
+                                        count: category.questionsCount
+                                    }) }}
                                 </span>
                             </span>
                             <span class="admin-row__actions">
@@ -97,7 +99,7 @@
                                     audience.slugs,
                                     loop.index0,
                                     -1,
-                                    'Monter ' ~ category.name,
+                                    {{ translate('Monter {name}', {name: category.name}) }},
                                     'arrow-up'
                                 ) }}
 
@@ -108,7 +110,7 @@
                                     audience.slugs,
                                     loop.index0,
                                     1,
-                                    'Descendre ' ~ category.name,
+                                    {{ translate('Descendre {name}', {name: category.name}) }},
                                     'arrow-down'
                                 ) }}
 
@@ -124,14 +126,14 @@
                             </span>
                             <details class="admin-disclosure admin-disclosure--full">
                                 <summary class="admin-disclosure__summary">
-                                    Modifier
+                                    {{ translate('Modifier') }}
                                 </summary>
                                 <div class="admin-disclosure__body admin-form">
                                     <form method="post" action="{{ path('admin_faq_category_update', { slug: category.slug }) }}" class="admin-form">
                                         {{ csrf_field('admin_faq')|raw }}
                                         <div class="admin-form__row">
                                             <label class="admin-field">
-                                                Nom
+                                                {{ translate('Nom') }}
                                                 <input type="text" name="name" value="{{ category.name }}" required minlength="2" maxlength="80" class="admin-input">
                                             </label>
                                             {{ faq.audienceSelect(
@@ -141,14 +143,14 @@
                                         </div>
                                         <div class="admin-actions">
                                             <button type="submit" class="admin-button admin-button--primary">
-                                                Enregistrer
+                                                {{ translate('Enregistrer') }}
                                             </button>
                                         </div>
                                     </form>
 
                                     <div class="faq-questions">
                                         <span class="faq-questions__title">
-                                            Questions
+                                            {{ translate('Questions') }}
                                         </span>
                                         {% for question in category.questions %}
                                             <div class="faq-question">
@@ -167,7 +169,7 @@
                                                             category.questionIds,
                                                             loop.index0,
                                                             -1,
-                                                            'Monter la question',
+                                                            translate('Monter la question'),
                                                             'arrow-up'
                                                         ) }}
 
@@ -180,7 +182,7 @@
                                                             category.questionIds,
                                                             loop.index0,
                                                             1,
-                                                            'Descendre la question',
+                                                            translate('Descendre la question'),
                                                             'arrow-down'
                                                         ) }}
 
@@ -190,12 +192,12 @@
                                                                 id: question.id
                                                             },
                                                             question.visible,
-                                                            'la question'
+                                                            translate('la question')
                                                         ) }}
 
                                                         <form method="post" action="{{ path('admin_faq_question_delete', { id: question.id }) }}">
                                                             {{ csrf_field('admin_faq')|raw }}
-                                                            <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger" aria-label="Supprimer la question" data-admin-confirm="Supprimer cette question ?">
+                                                            <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger" aria-label="{{ translate('Supprimer la question') }}" data-admin-confirm="{{ translate('Supprimer cette question ?') }}">
                                                                 <i data-lucide="trash-2" class="admin-nav__icon"></i>
                                                             </button>
                                                         </form>
@@ -203,14 +205,14 @@
                                                 </div>
                                                 <details class="admin-disclosure">
                                                     <summary class="admin-disclosure__summary">
-                                                        Modifier la question
+                                                        {{ translate('Modifier la question') }}
                                                     </summary>
                                                     <form method="post" action="{{ path('admin_faq_question_update', { id: question.id }) }}" class="admin-form admin-disclosure__body">
                                                         {{ csrf_field('admin_faq')|raw }}
                                                         {{ faq.questionFields(question) }}
                                                         <div class="admin-actions">
                                                             <button type="submit" class="admin-button admin-button--primary">
-                                                                Enregistrer
+                                                                {{ translate('Enregistrer') }}
                                                             </button>
                                                         </div>
                                                     </form>
@@ -218,20 +220,20 @@
                                             </div>
                                         {% else %}
                                             <span class="admin-subtitle">
-                                                Aucune question pour le moment.
+                                                {{ translate('Aucune question pour le moment.') }}
                                             </span>
                                         {% endfor %}
 
                                         <details class="admin-disclosure">
                                             <summary class="admin-disclosure__summary">
-                                                Ajouter une question
+                                                {{ translate('Ajouter une question') }}
                                             </summary>
                                             <form method="post" action="{{ path('admin_faq_question_create', { slug: category.slug }) }}" class="admin-form admin-disclosure__body">
                                                 {{ csrf_field('admin_faq')|raw }}
                                                 {{ faq.questionFields({}) }}
                                                 <div class="admin-actions">
                                                     <button type="submit" class="admin-button admin-button--primary">
-                                                        Ajouter
+                                                        {{ translate('Ajouter') }}
                                                     </button>
                                                 </div>
                                             </form>
@@ -240,8 +242,8 @@
 
                                     <form method="post" action="{{ path('admin_faq_category_delete', { slug: category.slug }) }}">
                                         {{ csrf_field('admin_faq')|raw }}
-                                        <button type="submit" class="admin-button admin-button--ghost-danger" data-admin-confirm="Supprimer la rubrique {{ category.name }} et ses {{ category.questionsCount }} question(s) ?">
-                                            Supprimer la rubrique
+                                        <button type="submit" class="admin-button admin-button--ghost-danger" data-admin-confirm="{{ translate('Supprimer la rubrique {name} et ses {questionsCount} question(s) ?', {name: category.name, questionsCount: category.questionsCount}) }}">
+                                            {{ translate('Supprimer la rubrique') }}
                                         </button>
                                     </form>
                                 </div>
@@ -249,7 +251,7 @@
                         </div>
                     {% else %}
                         <p class="admin-subtitle">
-                            Aucune rubrique pour ce public.
+                            {{ translate('Aucune rubrique pour ce public.') }}
                         </p>
                     {% endfor %}
                 </div>
@@ -258,14 +260,14 @@
 
         <section class="admin-card">
             <h2 class="admin-card__title">
-                Nouvelle rubrique
+                {{ translate('Nouvelle rubrique') }}
             </h2>
             <form method="post" action="{{ path('admin_faq_category_create') }}" class="admin-form">
                 {{ csrf_field('admin_faq')|raw }}
                 <div class="admin-form__row">
                     <label class="admin-field">
-                        Nom
-                        <input type="text" name="name" required minlength="2" maxlength="80" placeholder="Réserver" class="admin-input">
+                        {{ translate('Nom') }}
+                        <input type="text" name="name" required minlength="2" maxlength="80" placeholder="{{ translate('Réserver') }}" class="admin-input">
                     </label>
 
                     {{ faq.audienceSelect(
@@ -275,7 +277,7 @@
                 </div>
                 <div class="admin-actions">
                     <button type="submit" class="admin-button admin-button--primary">
-                        Ajouter
+                        {{ translate('Ajouter') }}
                     </button>
                 </div>
             </form>
@@ -283,10 +285,10 @@
 
         <section class="admin-card">
             <h2 class="admin-card__title">
-                Valeurs automatiques
+                {{ translate('Valeurs automatiques') }}
             </h2>
             <span class="admin-subtitle">
-                Ces repères sont remplacés dans les réponses par la valeur des règles de la version en ligne.
+                {{ translate('Ces repères sont remplacés dans les réponses par la valeur des règles de la version en ligne.') }}
             </span>
             <dl class="faq-placeholders">
                 {% for placeholder in placeholders %}

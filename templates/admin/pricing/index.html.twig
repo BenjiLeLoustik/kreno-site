@@ -4,14 +4,14 @@
 {% set editable = selected.editable %}
 
 {% block title %}
-    Tarifs et formules · Administration Kréno
+    {{ translate('Tarifs et formules · Administration Kréno') }}
 {% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <div>
             <h1 class="admin-title">
-                Tarifs et formules
+                {{ translate('Tarifs et formules') }}
             </h1>
             <span class="admin-subtitle">
                 Version {{ selected.code }} · {{ selected.statusLabel }}
@@ -29,7 +29,7 @@
                 {% endfor %}
             </select>
             <button type="submit" class="admin-button" data-admin-apply>
-                Afficher
+                {{ translate('Afficher') }}
             </button>
         </form>
     </div>
@@ -54,18 +54,20 @@
 
     {% if not editable %}
         <div class="admin-note">
-            Cette version n'est plus modifiable. Duplique-la depuis « Versions du site » pour préparer une nouvelle grille tarifaire.
+            {{ translate('Cette version n\'est plus modifiable. Duplique-la depuis « Versions du site » pour préparer une nouvelle grille tarifaire.') }}
         </div>
     {% elseif pricing.changedPlans is not empty %}
         <div class="admin-note">
-            Prix modifiés par rapport à la version en ligne : {{ pricing.changedPlans|join(', ') }}.
+            {{ translate('Prix modifiés par rapport à la version en ligne : {changedPlans}', {
+                changedPlans: pricing.changedPlans|join(', ')
+            }) }}
         </div>
     {% endif %}
 
     <div class="admin-grid">
         <section class="admin-card">
             <h2 class="admin-card__title">
-                Formules
+                {{ translate('Formules') }}
             </h2>
             <div class="admin-rows">
                 {% for plan in pricing.plans %}
@@ -74,48 +76,50 @@
                             <b>
                                 {{ plan.name }}
                                 {% if plan.featured %}
-                                    · mise en avant
+                                    {{ translate('· mise en avant') }}
                                 {% endif %}
                             </b>
                             <span class="admin-row__meta">
                                 {{ plan.priceLabel }} {{ plan.unitLabel }}
                                 {% if plan.trialDays %}
-                                    · essai {{ plan.trialDays }} j
+                                    {{ translate('· essai {trialDays} j', {trialDays: plan.trialDays}) }}
                                 {% endif %}
                                 {% if plan.maxEstablishments %}
-                                    · {{ plan.maxEstablishments }} établissement{{ plan.maxEstablishments > 1 ? 's' : '' }} max
+                                    {{ translate('· {count, plural, =1 {# établissement max} other {# établissements max}}', {
+                                        count: plan.maxEstablishments
+                                    }) }}
                                 {% else %}
-                                    · établissements illimités
+                                    {{ translate('· établissements illimités') }}
                                 {% endif %}
                             </span>
                             {% if plan.changed %}
                                 <span class="admin-diff">
-                                    En ligne : {{ plan.livePriceLabel }}
+                                    {{ translate('En ligne : {livePriceLabel}', {livePriceLabel: plan.livePriceLabel}) }}
                                 </span>
                             {% elseif plan.isNew and selected.status != 'live' %}
                                 <span class="admin-diff">
-                                    Nouvelle formule
+                                    {{ translate('Nouvelle formule') }}
                                 </span>
                             {% endif %}
                         </span>
                         <span class="admin-badge admin-badge--{{ plan.active ? 'success' : 'neutral' }}">
                             {% if plan.active %}
-                                Active
+                                {{ translate('Active') }}
                             {% else %}
-                                Inactive
+                                {{ translate('Inactive') }}
                             {% endif %}
                         </span>
                         {% if editable %}
                             <details class="admin-disclosure admin-disclosure--full">
                                 <summary class="admin-disclosure__summary">
-                                    Modifier
+                                    {{ translate('Modifier') }}
                                 </summary>
                                 <form method="post" action="{{ path('admin_pricing_plan_update', { code: selected.code, planCode: plan.code }) }}" class="admin-form admin-disclosure__body" data-admin-strip>
                                     {{ csrf_field('admin_pricing')|raw }}
                                     {% include 'admin/pricing/_plan_fields.html.twig' with { plan: plan } %}
                                     <div class="admin-actions">
                                         <button type="submit" class="admin-button admin-button--primary">
-                                            Enregistrer
+                                            {{ translate('Enregistrer') }}
                                         </button>
                                     </div>
                                 </form>
@@ -124,25 +128,25 @@
                     </div>
                 {% else %}
                     <p class="admin-subtitle">
-                        Aucune formule.
+                        {{ translate('Aucune formule.') }}
                     </p>
                 {% endfor %}
             </div>
             {% if editable %}
                 <details class="admin-disclosure">
                     <summary class="admin-disclosure__summary">
-                        Ajouter une formule
+                        {{ translate('Ajouter une formule') }}
                     </summary>
                     <form method="post" action="{{ path('admin_pricing_plan_create', { code: selected.code }) }}" class="admin-form admin-disclosure__body" data-admin-strip>
                         {{ csrf_field('admin_pricing')|raw }}
                         <label class="admin-field">
-                            Code
+                            {{ translate('Code') }}
                             <input type="text" name="code" required pattern="[a-z0-9\-]{2,40}" placeholder="premium" class="admin-input">
                         </label>
                         {% include 'admin/pricing/_plan_fields.html.twig' %}
                         <div class="admin-actions">
                             <button type="submit" class="admin-button admin-button--primary">
-                                Ajouter
+                                {{ translate('Ajouter') }}
                             </button>
                         </div>
                     </form>
@@ -153,16 +157,16 @@
         <div class="admin-form">
             <section class="admin-card">
                 <h2 class="admin-card__title">
-                    Changement de prix
+                    {{ translate('Changement de prix') }}
                 </h2>
                 <form method="post" action="{{ path('admin_pricing_policy', { code: selected.code }) }}" class="admin-form">
                     {{ csrf_field('admin_pricing')|raw }}
                     <label class="admin-field">
-                        Nom de la grille
+                        {{ translate('Nom de la grille') }}
                         <input type="text" name="pricingName" value="{{ pricing.pricingName }}" minlength="2" maxlength="120" required class="admin-input"{{ editable ? '' : ' disabled' }}>
                     </label>
                     <label class="admin-field">
-                        Abonnés existants
+                        {{ translate('Abonnés existants') }}
                         <select name="policy" class="admin-input"{{ editable ? '' : ' disabled' }}>
                             {% for policy in policies %}
                                 <option value="{{ policy.value }}"{{ policy.value == pricing.priceChangePolicy ? ' selected' : '' }}>
@@ -172,13 +176,13 @@
                         </select>
                     </label>
                     <label class="admin-field">
-                        Préavis (jours)
+                        {{ translate('Préavis (jours)') }}
                         <input type="number" name="noticeDays" value="{{ pricing.priceChangeNoticeDays }}" min="0" max="90" required class="admin-input"{{ editable ? '' : ' disabled' }}>
                     </label>
                     {% if editable %}
                         <div class="admin-actions">
                             <button type="submit" class="admin-button admin-button--primary">
-                                Enregistrer
+                                {{ translate('Enregistrer') }}
                             </button>
                         </div>
                     {% endif %}
@@ -187,7 +191,7 @@
 
             <section class="admin-card">
                 <h2 class="admin-card__title">
-                    Codes promo
+                    {{ translate('Codes promo') }}
                 </h2>
                 <div class="admin-rows">
                     {% for promo in pricing.promoCodes %}
@@ -196,35 +200,50 @@
                                 <b>{{ promo.code }}</b>
                                 <span class="admin-row__meta">
                                     {% if promo.discountPercent %}
-                                        -{{ promo.discountPercent }} % pendant {{ promo.durationMonths }} mois
+                                        {{ translate('-{percent} % pendant {duration} mois', {
+                                            percent: promo.discountPercent,
+                                            duration: promo.durationMonths
+                                        }) }}
                                     {% endif %}
+
                                     {% if promo.freeMonths %}
-                                        {{ promo.discountPercent ? ' · ' : '' }}{{ promo.freeMonths }} mois offert{{ promo.freeMonths > 1 ? 's' : '' }}
+                                        {{ translate('{hasDiscount, select, true {· } other {}}{count, plural, =1 {# mois offert} other {# mois offerts}}', {
+                                            hasDiscount: promo.discountPercent ? 'true' : 'false',
+                                            count: promo.freeMonths
+                                        }) }}
                                     {% endif %}
-                                    · {{ promo.usesCount }}{{ promo.maxUses ? '/' ~ promo.maxUses : '' }} utilisation{{ promo.usesCount > 1 ? 's' : '' }}
+
+                                    {{ translate('· {uses}{maxUses} {count, plural, =1 {utilisation} other {utilisations}}', {
+                                        uses: promo.usesCount,
+                                        maxUses: promo.maxUses ? '/' ~ promo.maxUses : '',
+                                        count: promo.usesCount
+                                    }) }}
+
                                     {% if promo.endsAt %}
-                                        · jusqu'au {{ promo.endsAt|date('d/m/Y') }}
+                                        {{ translate('· jusqu\'au {date}', {
+                                            date: promo.endsAt|date('d/m/Y')
+                                        }) }}
                                     {% endif %}
                                 </span>
                             </span>
                             <span class="admin-badge admin-badge--{{ promo.status == 'active' ? 'success' : 'neutral' }}">
                                 {% if promo.status == 'active' %}
-                                    Actif
+                                    {{ translate('Actif') }}
                                 {% else %}
-                                    Terminé
+                                    {{ translate('Terminé') }}
                                 {% endif %}
                             </span>
                             {% if editable %}
                                 <details class="admin-disclosure admin-disclosure--full">
                                     <summary class="admin-disclosure__summary">
-                                        Modifier
+                                        {{ translate('Modifier') }}
                                     </summary>
                                     <form method="post" action="{{ path('admin_pricing_promo_update', { code: selected.code, promoCode: promo.code }) }}" class="admin-form admin-disclosure__body" data-admin-strip>
                                         {{ csrf_field('admin_pricing')|raw }}
                                         {% include 'admin/pricing/_promo_fields.html.twig' with { promo: promo } %}
                                         <div class="admin-actions">
                                             <button type="submit" class="admin-button admin-button--primary">
-                                                Enregistrer
+                                                {{ translate('Enregistrer') }}
                                             </button>
                                         </div>
                                     </form>
@@ -233,21 +252,21 @@
                         </div>
                     {% else %}
                         <p class="admin-subtitle">
-                            Aucun code promo.
+                            {{ translate('Aucun code promo.') }}
                         </p>
                     {% endfor %}
                 </div>
                 {% if editable %}
                     <details class="admin-disclosure">
                         <summary class="admin-disclosure__summary">
-                            Créer un code promo
+                            {{ translate('Créer un code promo') }}
                         </summary>
                         <form method="post" action="{{ path('admin_pricing_promo_create', { code: selected.code }) }}" class="admin-form admin-disclosure__body" data-admin-strip>
                             {{ csrf_field('admin_pricing')|raw }}
                             {% include 'admin/pricing/_promo_fields.html.twig' %}
                             <div class="admin-actions">
                                 <button type="submit" class="admin-button admin-button--primary">
-                                    Créer
+                                    {{ translate('Créer') }}
                                 </button>
                             </div>
                         </form>

@@ -3,12 +3,12 @@
 {% set admin_section = 'dashboard' %}
 
 {% block title %}
-    Vue d'ensemble · Administration Kréno
+    {{ translate('Vue d\'ensemble · Administration Kréno') }}
 {% endblock %}
 
 {% block content %}
     <h1 class="admin-title">
-        Vue d'ensemble
+        {{ translate('Vue d\'ensemble') }}
     </h1>
 
     <div class="admin-stats">
@@ -40,11 +40,11 @@
         <section class="admin-panel">
             <div class="admin-panel__head">
                 <h2 class="admin-panel__title">
-                    Pros en attente de vérification
+                    {{ translate('Pros en attente de vérification') }}
                 </h2>
                 {% if is_granted('ROLE_MODERATOR') and route_exists('admin_moderation_index') %}
                     <a href="{{ path('admin_moderation_index') }}" class="admin-panel__more">
-                        Tout voir
+                        {{ translate('Tout voir') }}
                     </a>
                 {% endif %}
             </div>
@@ -74,7 +74,7 @@
                 </div>
             {% else %}
                 <p class="admin-panel__empty">
-                    Aucun pro en attente. Tout est à jour.
+                    {{ translate('Aucun pro en attente. Tout est à jour.') }}
                 </p>
             {% endfor %}
         </section>
@@ -82,11 +82,11 @@
         <section class="admin-panel">
             <div class="admin-panel__head">
                 <h2 class="admin-panel__title">
-                    Signalements ouverts
+                    {{ translate('Signalements ouverts') }}
                 </h2>
                 {% if is_granted('ROLE_MODERATOR') and route_exists('admin_reports') %}
                     <a href="{{ path('admin_reports') }}" class="admin-panel__more">
-                        Tout voir
+                        {{ translate('Tout voir') }}
                     </a>
                 {% endif %}
             </div>
@@ -114,7 +114,7 @@
                 </div>
             {% else %}
                 <p class="admin-panel__empty">
-                    Aucun signalement ouvert.
+                    {{ translate('Aucun signalement ouvert.') }}
                 </p>
             {% endfor %}
         </section>

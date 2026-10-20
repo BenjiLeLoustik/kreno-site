@@ -15,22 +15,22 @@
 } %}
 
 {% block title %}
-    Utilisateurs · Administration Kréno
+    {{ translate('Utilisateurs · Administration Kréno') }}
 {% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <h1 class="admin-title">
-            Utilisateurs
+            {{ translate('Utilisateurs') }}
         </h1>
         <form method="get" action="{{ path('admin_user_index') }}" class="admin-toolbar">
             <label class="admin-search">
                 <i data-lucide="search" class="admin-nav__icon"></i>
-                <input type="search" name="q" value="{{ filters.q }}" placeholder="Nom, e-mail, téléphone" class="admin-search__input" aria-label="Rechercher un utilisateur">
+                <input type="search" name="q" value="{{ filters.q }}" placeholder="{{ translate('Nom, e-mail, téléphone') }}" class="admin-search__input" aria-label="{{ translate('Rechercher un utilisateur') }}">
             </label>
-            <select name="status" class="admin-select" aria-label="Statut" data-admin-auto>
+            <select name="status" class="admin-select" aria-label="{{ translate('Statut') }}" data-admin-auto>
                 <option value="">
-                    Tous les statuts
+                    {{ translate('Tous les statuts') }}
                 </option>
                 {% for status in statuses %}
                     <option value="{{ status.value }}"{{ status.value == filters.status ? ' selected' : '' }}>
@@ -39,7 +39,7 @@
                 {% endfor %}
             </select>
             <button type="submit" class="admin-button">
-                Rechercher
+                {{ translate('Rechercher') }}
             </button>
         </form>
     </div>
@@ -63,24 +63,24 @@
                 </a>
             {% else %}
                 <p class="admin-list__empty">
-                    Aucun utilisateur ne correspond à la recherche.
+                    {{ translate('Aucun utilisateur ne correspond à la recherche.') }}
                 </p>
             {% endfor %}
             {% if filters.page > 1 or hasNext %}
                 <div class="admin-list__item admin-pagination">
                     {% if filters.page > 1 %}
                         <a href="{{ path('admin_user_index', query|merge({ page: filters.page - 1 })) }}">
-                            ← Précédents
+                            {{ translate('← Précédents') }}
                         </a>
                     {% else %}
                         <span></span>
                     {% endif %}
                     <span>
-                        Page {{ filters.page }}
+                        {{ translate('Page {page}', { page: filters.page }) }}
                     </span>
                     {% if hasNext %}
                         <a href="{{ path('admin_user_index', query|merge({ page: filters.page + 1 })) }}">
-                            Suivants →
+                            {{ translate('Suivants →') }}
                         </a>
                     {% else %}
                         <span></span>
@@ -97,13 +97,11 @@
                             {{ selected.fullName }}
                         </h2>
                         <span class="admin-card__subtitle">
-                            Inscrit le {{ selected.createdAt|date('d/m/Y') }}
-                            {% if selected.isPro %}
-                                · compte pro
-                            {% endif %}
-                            {% if selected.roles|filter(role => role starts with 'ROLE_' and role != 'ROLE_USER') is not empty %}
-                                · équipe Kréno
-                            {% endif %}
+                            {{ translate('Inscrit le {date}{isPro}{isTeam}', {
+                                date: selected.createdAt|date('d/m/Y'),
+                                isPro: selected.isPro ? translate(' · compte pro') : '',
+                                isTeam: (selected.roles|filter(role => role starts with 'ROLE_' and role != 'ROLE_USER') is not empty) ? translate(' · équipe Kréno') : ''
+                            }) }}
                         </span>
                     </div>
                     <span class="admin-badge admin-badge--{{ statusTones[selected.status] ?? 'neutral' }}">
@@ -114,7 +112,7 @@
                 <div class="admin-figures">
                     <div class="admin-figure">
                         <span class="admin-figure__label">
-                            Réservations
+                            {{ translate('Réservations') }}
                         </span>
                         <strong class="admin-figure__value">
                             {{ selected.stats.bookings }}
@@ -122,7 +120,7 @@
                     </div>
                     <div class="admin-figure">
                         <span class="admin-figure__label">
-                            Honorées
+                            {{ translate('Honorées') }}
                         </span>
                         <strong class="admin-figure__value">
                             {{ selected.stats.honored }}
@@ -130,7 +128,7 @@
                     </div>
                     <div class="admin-figure">
                         <span class="admin-figure__label">
-                            Annulations
+                            {{ translate('Annulations') }}
                         </span>
                         <strong class="admin-figure__value">
                             {{ selected.stats.cancelled }}
@@ -138,7 +136,7 @@
                     </div>
                     <div class="admin-figure">
                         <span class="admin-figure__label">
-                            Absences
+                            {{ translate('Absences') }}
                         </span>
                         <strong class="admin-figure__value">
                             {{ selected.stats.noShows }}
@@ -148,7 +146,7 @@
 
                 <dl class="admin-facts">
                     <dt class="admin-facts__label">
-                        E-mail
+                        {{ translate('E-mail') }}
                     </dt>
                     <dd class="admin-facts__value">
                         <a href="mailto:{{ selected.email }}">
@@ -157,35 +155,39 @@
                         {% if not selected.emailVerified %}
                             ·
                             <span class="admin-diff">
-                                non vérifié
+                                {{ translate('non vérifié') }}
                             </span>
                         {% endif %}
                     </dd>
                     <dt class="admin-facts__label">
-                        Téléphone
+                        {{ translate('Téléphone') }}
                     </dt>
                     <dd class="admin-facts__value">
                         {{ selected.phone ?: '-' }}
                     </dd>
                     <dt class="admin-facts__label">
-                        Dernière connexion
+                        {{ translate('Dernière connexion') }}
                     </dt>
                     <dd class="admin-facts__value">
                         {% if selected.lastLoginAt %}
-                            {{ selected.lastLoginAt|date('d/m:Y à H:i') }}
+                            {{ selected.lastLoginAt|date('d/m/Y à H:i') }}
                         {% else %}
-                            Jamais
+                            {{ translate('Jamais') }}
                         {% endif %}
                     </dd>
                     <dt class="admin-facts__label">
-                        Absences récentes
+                        {{ translate('Absences récentes') }}
                     </dt>
                     <dd class="admin-facts__value">
-                        {{ selected.stats.recentNoShows }} sur {{ selected.stats.noShowWindowDays }} jours (tolérance : {{ selected.stats.toleratedNoShows }})
+                        {{ translate('{recentNoShows} sur {noShowWindowDays} jours (tolérance : {toleratedNoShows})', {
+                            recentNoShows: selected.stats.recentNoShows,
+                            noShowWindowDays: selected.stats.noShowWindowDays,
+                            toleratedNoShows: selected.stats.toleratedNoShows
+                        }) }}
                     </dd>
                     {% if selected.statusReason %}
                         <dt class="admin-facts__label">
-                            Motif
+                            {{ translate('Motif') }}
                         </dt>
                         <dd class="admin-facts__value">
                             {{ selected.statusReason }}
@@ -193,7 +195,7 @@
                     {% endif %}
                     {% if selected.suspendedUntil %}
                         <dt class="admin-facts__label">
-                            Suspendu jusqu'au
+                            {{ translate("Suspendu jusqu'au") }}
                         </dt>
                         <dd class="admin-facts__value">
                             {{ selected.suspendedUntil|date('d/m/Y à H:i') }}
@@ -204,17 +206,17 @@
                 <div class="admin-actions">
                     {% if route_exists('admin_bookings') %}
                         <a href="{{ path('admin_bookings', { q: selected.email }) }}" class="admin-button">
-                            Voir ses réservations
+                            {{ translate('Voir ses réservations') }}
                         </a>
                     {% endif %}
                     <a href="mailto:{{ selected.email }}" class="admin-button">
-                        Envoyer un e-mail
+                        {{ translate('Envoyer un e-mail') }}
                     </a>
                     {% if selected.status in ['suspended', 'banned'] %}
                         <form method="post" action="{{ path('admin_user_lift', { id: selected.id }) }}">
                             {{ csrf_field('admin_user')|raw }}
                             <button type="submit" class="admin-button admin-button--success">
-                                Réactiver le compte
+                                {{ translate('Réactiver le compte') }}
                             </button>
                         </form>
                     {% endif %}
@@ -223,23 +225,23 @@
                 {% if selected.status == 'active' %}
                     <details class="admin-disclosure">
                         <summary class="admin-disclosure__summary">
-                            Suspendre les réservations
+                            {{ translate('Suspendre les réservations') }}
                         </summary>
                         <form method="post" action="{{ path('admin_user_suspend', { id: selected.id }) }}" class="admin-form admin-disclosure__body">
                             {{ csrf_field('admin_user')|raw }}
                             <div class="admin-form__row">
                                 <label class="admin-field">
-                                    Durée (jours)
+                                    {{ translate('Durée (jours)') }}
                                     <input type="number" name="days" value="{{ suspensionDays }}" min="1" max="365" required class="admin-input">
                                 </label>
                             </div>
                             <label class="admin-field">
-                                Motif (envoyé à l'utilisateur)
+                                {{ translate("Motif (envoyé à l'utilisateur)") }}
                                 <textarea name="reason" rows="2" required minlength="3" maxlength="500" class="admin-input admin-input--area"></textarea>
                             </label>
                             <div class="admin-actions">
                                 <button type="submit" class="admin-button admin-button--warning">
-                                    Suspendre
+                                    {{ translate('Suspendre') }}
                                 </button>
                             </div>
                         </form>
@@ -249,17 +251,17 @@
                 {% if selected.status != 'banned' and is_granted('ROLE_ADMIN') %}
                     <details class="admin-disclosure">
                         <summary class="admin-disclosure__summary">
-                            Bannir définitivement
+                            {{ translate('Bannir définitivement') }}
                         </summary>
                         <form method="post" action="{{ path('admin_user_ban', { id: selected.id }) }}" class="admin-form admin-disclosure__body">
                             {{ csrf_field('admin_user')|raw }}
                             <label class="admin-field">
-                                Motif
+                                {{ translate('Motif') }}
                                 <textarea name="reason" rows="2" required minlength="3" maxlength="500" class="admin-input admin-input--area"></textarea>
                             </label>
                             <div class="admin-actions">
-                                <button type="submit" class="admin-button admin-button--danger" data-admin-confirm="Bannir {{ selected.fullName }} définitivement ?">
-                                    Bannir
+                                <button type="submit" class="admin-button admin-button--danger" data-admin-confirm="{{ translate('Bannir {name} définitivement ?', { name: selected.fullName }) }}">
+                                    {{ translate('Bannir') }}
                                 </button>
                             </div>
                         </form>

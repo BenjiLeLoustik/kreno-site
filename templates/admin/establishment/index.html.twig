@@ -4,22 +4,22 @@
 {% set query = filters|filter(value => value and value != 'all') %}
 
 {% block title %}
-    Établissements · Administration Kréno
+    {{ translate('Établissements · Administration Kréno') }}
 {% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <h1 class="admin-title">
-            Établissements
+            {{ translate('Établissements') }}
         </h1>
         <form method="get" action="{{ path('admin_establishments') }}" class="admin-toolbar">
             <label class="admin-search">
                 <i data-lucide="search" class="admin-nav__icon"></i>
-                <input type="search" name="q" value="{{ filters.q }}" placeholder="Nom, SIRET, ville" class="admin-search__input" aria-label="Rechercher un établissement">
+                <input type="search" name="q" value="{{ filters.q }}" placeholder="{{ translate('Nom, SIRET, ville') }}" class="admin-search__input" aria-label="Rechercher un établissement">
             </label>
-            <select name="category" class="admin-select" aria-label="Catégorie" data-admin-auto>
+            <select name="category" class="admin-select" aria-label="{{ translate('Catégorie') }}" data-admin-auto>
                 <option value="">
-                    Toutes catégories
+                    {{ translate('Toutes catégories') }}
                 </option>
                 {% for category in categories %}
                     <option value="{{ category.slug }}"{{ category.slug == filters.category ? ' selected' : '' }}>
@@ -29,7 +29,7 @@
             </select>
             <select name="city" class="admin-select" aria-label="Ville" data-admin-auto>
                 <option value="">
-                    Toutes villes
+                    {{ translate('Toutes villes') }}
                 </option>
                 {% for city in cities %}
                     <option value="{{ city.slug }}"{{ city.slug == filters.city ? ' selected' : '' }}>
@@ -45,7 +45,7 @@
                 {% endfor %}
             </select>
             <button type="submit" class="admin-button" data-admin-apply>
-                Filtrer
+                {{ translate('Filtrer') }}
             </button>
         </form>
     </div>
@@ -71,7 +71,7 @@
                 </a>
             {% else %}
                 <p class="admin-list__empty">
-                    Aucun établissement pour ces filtres.
+                    {{ translate('Aucun établissement pour ces filtres.') }}
                 </p>
             {% endfor %}
         </div>
@@ -101,7 +101,7 @@
 
                 <div class="admin-figures">
                     <div class="admin-figure"><span class="admin-figure__label">
-                            Créneaux / {{ selected.stats.days }} j
+                            {{ translate('Créneaux / {days} j', {days: selected.stats.days}) }}
                         </span>
                         <strong class="admin-figure__value">
                             {{ selected.stats.slots }}
@@ -109,7 +109,7 @@
                     </div>
                     <div class="admin-figure">
                         <span class="admin-figure__label">
-                            Remplissage
+                            {{ translate('Remplissage') }}
                         </span>
                         <strong class="admin-figure__value">
                             {{ selected.stats.fill }}
@@ -117,7 +117,7 @@
                     </div>
                     <div class="admin-figure">
                         <span class="admin-figure__label">
-                            Remise moyenne
+                            {{ translate('Remise moyenne') }}
                         </span>
                         <strong class="admin-figure__value">
                             {{ selected.stats.discount }}
@@ -125,7 +125,7 @@
                     </div>
                     <div class="admin-figure">
                         <span class="admin-figure__label">
-                            Signalements
+                            {{ translate('Signalements') }}
                         </span>
                         <strong class="admin-figure__value">
                             {{ selected.stats.reports }}
@@ -133,7 +133,7 @@
                     </div>
                     <div class="admin-figure">
                         <span class="admin-figure__label">
-                            Abonnés
+                            {{ translate('Abonnés') }}
                         </span>
                         <strong class="admin-figure__value">
                             {{ selected.stats.followers }}
@@ -143,18 +143,18 @@
 
                 <dl class="admin-facts">
                     <dt class="admin-facts__label">
-                        Adresse
+                        {{ translate('Adresse') }}
                     </dt>
                     <dd class="admin-facts__value">
                         {{ selected.address ?: '-' }}
                     </dd>
                     <dt class="admin-facts__label">
-                        Entreprise
+                        {{ translate('Entreprise') }}
                     </dt>
                     <dd class="admin-facts__value">
-                        {{ selected.company ? (selected.company.legalName ?: selected.company.name) : '—' }}</dd>
+                        {{ selected.company ? (selected.company.legalName ?: selected.company.name) : '-' }}</dd>
                     <dt class="admin-facts__label">
-                        Responsable
+                        {{ translate('Responsable') }}
                     </dt>
                     <dd class="admin-facts__value">
                         {% if selected.owner %}
@@ -170,49 +170,51 @@
                         {% endif %}
                     </dd>
                     <dt class="admin-facts__label">
-                        Formule
+                        {{ translate('Formule') }}
                     </dt>
                     <dd class="admin-facts__value">
                         {{ selected.plan ?: '-' }}
                     </dd>
                     <dt class="admin-facts__label">
-                        SIRET
+                        {{ translate('SIRET') }}
                     </dt>
                     <dd class="admin-facts__value">
                         {{ selected.siretLabel ?: '-' }}
                         {% if selected.verified %}
-                            · vérifié le {{ selected.verifiedAt|date('d/m/Y') }}
+                            {{ translate('· vérifié le {verifiedAt}', {verifiedAt: selected.verifiedAt|date('d/m/Y')}) }}
                         {% endif %}
                     </dd>
                 </dl>
 
                 {% if selected.stats.openReports > 0 %}
                     <div class="admin-note admin-note--danger">
-                        {{ selected.stats.openReports }} signalement{{ selected.stats.openReports > 1 ? 's' : '' }} ouvert{{ selected.stats.openReports > 1 ? 's' : '' }} sur cet établissement.
+                        {{ translate('{count, plural, =1 {# signalement ouvert sur cet établissement.} other {# signalements ouverts sur cet établissement.}}', {
+                            count: selected.stats.openReports
+                        }) }}
                     </div>
                 {% endif %}
 
                 <div class="admin-actions">
                     {% if selected.city and not selected.suspended %}
                         <a href="{{ path('shop_show', { city: selected.city.slug, slug: selected.slug }) }}" class="admin-button" target="_blank" rel="noopener">
-                            Voir la page publique
+                            {{ translate('Voir la page publique') }}
                         </a>
                     {% endif %}
                     {% if route_exists('admin_reports') %}
                         <a href="{{ path('admin_reports', { status: 'all' }) }}" class="admin-button">
-                            Signalements
+                            {{ translate('Signalements') }}
                         </a>
                     {% endif %}
                     {% if selected.company and is_granted('ROLE_ADMIN') and route_exists('admin_billing_company') %}
                         <a href="{{ path('admin_billing_company', { id: selected.company.id }) }}" class="admin-button">
-                            Facturation
+                            {{ translate('Facturation') }}
                         </a>
                     {% endif %}
                     {% if selected.canResume %}
                         <form method="post" action="{{ path('admin_establishment_resume', { id: selected.id }) }}">
                             {{ csrf_field('admin_establishment')|raw }}
                             <button type="submit" class="admin-button admin-button--success">
-                                Remettre en ligne
+                                {{ translate('Remettre en ligne') }}
                             </button>
                         </form>
                     {% endif %}
@@ -221,17 +223,17 @@
                 {% if selected.canSuspend %}
                     <details class="admin-disclosure">
                         <summary class="admin-disclosure__summary">
-                            Suspendre l'établissement
+                            {{ translate('Suspendre l\'établissement') }}
                         </summary>
                         <form method="post" action="{{ path('admin_establishment_suspend', { id: selected.id }) }}" class="admin-form admin-disclosure__body">
                             {{ csrf_field('admin_establishment')|raw }}
                             <label class="admin-field">
-                                Motif (envoyé au pro)
+                                {{ translate('Motif (envoyé au pro)') }}
                                 <textarea name="reason" rows="2" required minlength="5" maxlength="500" class="admin-input admin-input--area"></textarea>
                             </label>
                             <div class="admin-actions">
-                                <button type="submit" class="admin-button admin-button--danger" data-admin-confirm="Suspendre {{ selected.name }} ? Ses créneaux ne seront plus visibles.">
-                                    Suspendre
+                                <button type="submit" class="admin-button admin-button--danger" data-admin-confirm="{{ translate('Suspendre {selectedName} ? Ses créneaux ne seront plus visibles.', {selectedName: selected.name}) }}">
+                                    {{ translate('Suspendre') }}
                                 </button>
                             </div>
                         </form>

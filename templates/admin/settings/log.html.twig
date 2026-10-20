@@ -8,26 +8,26 @@
 }|filter(value => value) %}
 
 {% block title %}
-    Journal d'activité · Administration Kréno
+    {{ translate("Journal d'activité · Administration Kréno") }}
 {% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <div>
             <a href="{{ path('admin_settings_index') }}" class="admin-subtitle">
-                ← Réglages et journal
+                {{ translate('← Réglages et journal') }}
             </a>
             <h1 class="admin-title">
-                Journal d'activité
+                {{ translate("Journal d'activité") }}
             </h1>
         </div>
         <span class="admin-subtitle">
-            {{ journal.total }} entrée{{ journal.total > 1 ? 's' : '' }}
+            {{ translate('{count, plural, =1 {# entrée} other {# entrées}}', { count: journal.total }) }}
         </span>
     </div>
 
     <form method="get" action="{{ path('admin_log') }}" class="admin-toolbar">
-        <nav class="admin-tabs" aria-label="Type d'activité">
+        <nav class="admin-tabs" aria-label="{{ translate("Type d'activité") }}">
             {% for filter in journal.filters %}
                 <a href="{{ path('admin_log', query|merge({ group: filter.key != 'all' ? filter.key : null })|filter(value => value)) }}" class="admin-tabs__link{{ filter.selected ? ' admin-tabs__link--active' : '' }}">
                     {{ filter.label }}
@@ -39,20 +39,20 @@
         {% endif %}
         <label class="admin-search">
             <i data-lucide="search" class="admin-nav__icon"></i>
-            <input type="search" name="q" value="{{ journal.q }}" placeholder="Rechercher dans le journal" class="admin-search__input" aria-label="Rechercher dans le journal">
+            <input type="search" name="q" value="{{ journal.q }}" placeholder="{{ translate('Rechercher dans le journal') }}" class="admin-search__input" aria-label="{{ translate('Rechercher dans le journal') }}">
         </label>
-        <select name="version" class="admin-select" aria-label="Version" data-admin-auto>
+        <select name="version" class="admin-select" aria-label="{{ translate('Version') }}" data-admin-auto>
             <option value="">
-                Toutes les versions
+                {{ translate('Toutes les versions') }}
             </option>
             {% for version in versions %}
                 <option value="{{ version.code }}"{{ version.code == journal.version ? ' selected' : '' }}>
-                    {{ version.code }} · {{ version.name }}
+                    {{ translate('{code} · {name}', { code: version.code, name: version.name }) }}
                 </option>
             {% endfor %}
         </select>
         <button type="submit" class="admin-button">
-            Filtrer
+            {{ translate('Filtrer') }}
         </button>
     </form>
 
@@ -62,17 +62,17 @@
         <div class="admin-pagination">
             {% if journal.page > 1 %}
                 <a href="{{ path('admin_log', query|merge({ page: journal.page - 1 })) }}" class="admin-button admin-button--small">
-                    ← Plus récentes
+                    {{ translate('← Plus récentes') }}
                 </a>
             {% else %}
                 <span></span>
             {% endif %}
             <span>
-                Page {{ journal.page }} sur {{ journal.pages }}
+                {{ translate('Page {page} sur {pages}', { page: journal.page, pages: journal.pages }) }}
             </span>
             {% if journal.page < journal.pages %}
                 <a href="{{ path('admin_log', query|merge({ page: journal.page + 1 })) }}" class="admin-button admin-button--small">
-                    Plus anciennes →
+                    {{ translate('Plus anciennes →') }}
                 </a>
             {% else %}
                 <span></span>

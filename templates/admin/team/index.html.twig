@@ -3,17 +3,17 @@
 {% set admin_section = 'settings' %}
 
 {% block title %}
-    Équipe Kréno · Administration Kréno
+    {{ translate('Équipe Kréno · Administration Kréno') }}
 {% endblock %}
 
 {% block content %}
     <div class="admin-head">
         <div>
             <a href="{{ path('admin_settings_index') }}" class="admin-subtitle">
-                ← Réglages et journal
+                {{ translate('← Réglages et journal') }}
             </a>
             <h1 class="admin-title">
-                Équipe Kréno
+                {{ translate('Équipe Kréno') }}
             </h1>
         </div>
     </div>
@@ -21,7 +21,7 @@
     <div class="admin-grid">
         <section class="admin-card">
             <h2 class="admin-card__title">
-                Membres
+                {{ translate('Membres') }}
             </h2>
             <div class="admin-rows">
                 {% for member in members %}
@@ -33,16 +33,14 @@
                             <b>
                                 {{ member.name }}
                                 {% if member.isMe %}
-                                    (vous)
+                                    {{ translate('(vous)') }}
                                 {% endif %}
                             </b>
                             <span class="admin-row__meta">
-                                {{ member.email }} ·
-                                {% if member.pending %}
-                                    invitation en attente
-                                {% else %}
-                                    dernière connexion {{ member.lastLogin }}
-                                {% endif %}
+                                {{ translate('{email} · {loginInfo}', {
+                                    email: member.email,
+                                    loginInfo: member.pending ? translate('invitation en attente') : translate('dernière connexion {date}', { date: member.lastLogin })
+                                }) }}
                             </span>
                         </span>
                         {% if member.isMe %}
@@ -53,7 +51,7 @@
                             <span class="admin-row__actions">
                                 <form method="post" action="{{ path('admin_team_role', { id: member.id }) }}" class="admin-form admin-form--inline">
                                     {{ csrf_field('admin_team')|raw }}
-                                    <select name="role" class="admin-select" aria-label="Rôle de {{ member.name }}" data-admin-auto>
+                                    <select name="role" class="admin-select" aria-label="{{ translate('Rôle de {name}', { name: member.name }) }}" data-admin-auto>
                                         {% for role in roles %}
                                             <option value="{{ role.value }}"{{ role.value == member.role ? ' selected' : '' }}>
                                                 {{ role.label }}
@@ -61,13 +59,13 @@
                                         {% endfor %}
                                     </select>
                                     <button type="submit" class="admin-button admin-button--small" data-admin-apply>
-                                        Changer
+                                        {{ translate('Changer') }}
                                     </button>
                                 </form>
                                 <form method="post" action="{{ path('admin_team_revoke', { id: member.id }) }}">
                                     {{ csrf_field('admin_team')|raw }}
-                                    <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger" data-admin-confirm="Retirer l'accès de {{ member.name }} ?">
-                                        Retirer
+                                    <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger" data-admin-confirm="{{ translate("Retirer l'accès de {name} ?", { name: member.name }) }}">
+                                        {{ translate('Retirer') }}
                                     </button>
                                 </form>
                             </span>
@@ -79,26 +77,26 @@
 
         <section class="admin-card">
             <h2 class="admin-card__title">
-                Inviter un membre
+                {{ translate('Inviter un membre') }}
             </h2>
             <form method="post" action="{{ path('admin_team_invite') }}" class="admin-form">
                 {{ csrf_field('admin_team')|raw }}
                 <div class="admin-form__row">
                     <label class="admin-field">
-                        Prénom
+                        {{ translate('Prénom') }}
                         <input type="text" name="firstName" required maxlength="80" class="admin-input">
                     </label>
                     <label class="admin-field">
-                        Nom
+                        {{ translate('Nom') }}
                         <input type="text" name="lastName" maxlength="80" class="admin-input">
                     </label>
                 </div>
                 <label class="admin-field">
-                    E-mail
+                    {{ translate('E-mail') }}
                     <input type="email" name="email" required maxlength="180" class="admin-input">
                 </label>
                 <label class="admin-field">
-                    Rôle
+                    {{ translate('Rôle') }}
                     <select name="role" class="admin-input" required>
                         {% for role in roles %}
                             <option value="{{ role.value }}"{{ role.value == 'ROLE_SUPPORT' ? ' selected' : '' }}>
@@ -107,12 +105,12 @@
                         {% endfor %}
                     </select>
                     <span class="admin-field__hint">
-                        Support : réservations. Modération : pros, signalements, utilisateurs. Admin : tout.
+                        {{ translate('Support : réservations. Modération : pros, signalements, utilisateurs. Admin : tout.') }}
                     </span>
                 </label>
                 <div class="admin-actions">
                     <button type="submit" class="admin-button admin-button--primary">
-                        Envoyer l'invitation
+                        {{ translate("Envoyer l'invitation") }}
                     </button>
                 </div>
             </form>

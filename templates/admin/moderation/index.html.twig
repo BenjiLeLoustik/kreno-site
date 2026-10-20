@@ -2,13 +2,13 @@
 
 {% set admin_section = 'moderation' %}
 {% set checkLabels = {
-    siretMatchesCompany: 'SIRET cohérent avec l\'entreprise',
-    hasAddress: 'Adresse renseignée',
-    hasPhotosAndDescription: 'Photos et description renseignées',
+    siretMatchesCompany: translate('SIRET cohérent avec l\'entreprise'),
+    hasAddress: translate('Adresse renseignée'),
+    hasPhotosAndDescription: translate('Photos et description renseignées'),
 } %}
 
 {% block title %}
-    Modération des pros · Administration Kréno
+    {{ translate('Modération des pros · Administration Kréno') }}
 {% endblock %}
 
 {% block javascripts %}
@@ -17,14 +17,22 @@
 
 {% block content %}
     <h1 class="admin-title">
-        Modération des pros
+        {{ translate('Modération des pros') }}
     </h1>
 
     <div class="moderation">
         <div class="moderation-list">
             {% for group in [
-                { title: 'À vérifier', items: pending, empty: 'Aucun établissement à vérifier pour le moment.' },
-                { title: 'Décisions récentes', items: recent, empty: null },
+                {
+                    title: translate('À vérifier'),
+                    items: pending,
+                    empty: translate('Aucun établissement à vérifier pour le moment.')
+                },
+                {
+                    title: translate('Décisions récentes'),
+                    items: recent,
+                    empty: null
+                },
             ] %}
                 {% if group.items is not empty or group.empty %}
                     <div class="moderation-list__group">
@@ -75,7 +83,9 @@
                         </h2>
                         {% if selected.submittedAt %}
                             <span class="moderation-detail__muted">
-                                Envoyé le {{ selected.submittedAt|date('d/m/Y à H:i') }}
+                                {{ translate('Envoyé le {submittedAt}', {
+                                    submittedAt: selected.submittedAt|date('d/m/Y, H:i')
+                                }) }}
                             </span>
                         {% endif %}
                     </div>
@@ -86,37 +96,37 @@
 
                 <dl class="moderation-facts">
                     <dt class="moderation-facts__label">
-                        Activité
+                        {{ translate('Activité') }}
                     </dt>
                     <dd class="moderation-facts__value">
-                        {{ selected.category ? selected.category.name : '—' }}
+                        {{ selected.category ? selected.category.name : '-' }}
                     </dd>
                     <dt class="moderation-facts__label">
-                        Adresse
+                        {{ translate('Adresse') }}
                     </dt>
                     <dd class="moderation-facts__value">
-                        {{ selected.address ?: '—' }}
+                        {{ selected.address ?: '-' }}
                     </dd>
                     <dt class="moderation-facts__label">
-                        SIRET
+                        {{ translate('SIRET') }}
                     </dt>
                     <dd class="moderation-facts__value moderation-facts__value--number">
                         {{ selected.siretLabel ?: '-' }}
                         {% if selected.apeCode %}
-                            · APE {{ selected.apeCode }}
+                            {{ translate('· APE {apeCode}', {apeCode: selected.apeCode}) }}
                         {% endif %}
                     </dd>
                     {% if selected.company %}
                         <dt class="moderation-facts__label">
-                            Entreprise
+                            {{ translate('Entreprise') }}
                         </dt>
                         <dd class="moderation-facts__value">
                             {{ selected.company.legalName ?: selected.company.name }}
-                            · SIREN {{ selected.company.siren }}
+                            {{ translate('· SIREN {siren}', {siren: selected.company.siren}) }}
                         </dd>
                     {% endif %}
                     <dt class="moderation-facts__label">
-                        Responsable
+                        {{ translate('Responsable') }}
                     </dt>
                     <dd class="moderation-facts__value">
                         {% if selected.owner %}
@@ -130,20 +140,23 @@
                                 {% endif %}
                             </span>
                         {% else %}
-                            —
+                            -
                         {% endif %}
                     </dd>
                     <dt class="moderation-facts__label">
-                        Formule
+                        {{ translate('Formule') }}
                     </dt>
                     <dd class="moderation-facts__value">
                         {{ selected.plan ?: '-' }}
                     </dd>
                     <dt class="moderation-facts__label">
-                        Fiche
+                        {{ translate('Fiche') }}
                     </dt>
                     <dd class="moderation-facts__value">
-                        {{ selected.servicesCount }} prestation{{ selected.servicesCount > 1 ? 's' : '' }} · {{ selected.imagesCount }} photo{{ selected.imagesCount > 1 ? 's' : '' }}
+                        {{ translate('{services, plural, =1 {# prestation} other {# prestations}} · {photos, plural, =1 {# photo} other {# photos}}', {
+                            services: selected.servicesCount,
+                            photos: selected.imagesCount
+                        }) }}
                     </dd>
                 </dl>
 
@@ -155,7 +168,7 @@
 
                 <div class="moderation-checks">
                     <b class="moderation-checks__title">
-                        Vérifications
+                        {{ translate('Vérifications') }}
                     </b>
                     {% for key, label in checkLabels %}
                         {% set ok = selected.checks[key] ?? false %}
@@ -165,7 +178,7 @@
                             </span>
                             {{ label }}
                             <span class="sr-only">
-                                : {{ ok ? 'oui' : 'non' }}
+                                : {{ ok ? translate('oui') : translate('non') }}
                             </span>
                         </span>
                     {% endfor %}
@@ -175,7 +188,7 @@
                     <form method="post" action="{{ path('admin_moderation_approve', { id: selected.id }) }}" class="moderation-form">
                         {{ csrf_field('admin_moderation')|raw }}
                         <label for="moderation-reason" class="moderation-form__field">
-                            Motif en cas de refus
+                            {{ translate('Motif en cas de refus') }}
                             <select id="moderation-reason" name="reason" class="moderation-form__input">
                                 {% for reason in rejectionReasons %}
                                     <option value="{{ reason.value }}">
@@ -187,19 +200,19 @@
                         <label for="moderation-message" class="moderation-form__field">
                             Message au pro
                             <span class="moderation-detail__muted">
-                                (facultatif, pour un refus ou un justificatif)
+                                {{ translate('(facultatif, pour un refus ou un justificatif)') }}
                             </span>
                             <textarea id="moderation-message" name="message" rows="3" maxlength="2000" class="moderation-form__input moderation-form__input--area"></textarea>
                         </label>
                         <div class="moderation-form__actions">
                             <button type="submit" class="moderation-button moderation-button--approve">
-                                Valider et mettre en ligne
+                                {{ translate('Valider et mettre en ligne') }}
                             </button>
-                            <button type="submit" formaction="{{ path('admin_moderation_reject', { id: selected.id }) }}" class="moderation-button moderation-button--reject" data-confirm="Refuser {{ selected.name }} ? Le pro sera prévenu par e-mail.">
-                                Refuser
+                            <button type="submit" formaction="{{ path('admin_moderation_reject', { id: selected.id }) }}" class="moderation-button moderation-button--reject" data-confirm="{{ translate('Refuser {name} ? Le pro sera prévenu par e-mail.', {name: selected.name}) }}">
+                                {{ translate('Refuser') }}
                             </button>
                             <button type="submit" formaction="{{ path('admin_moderation_request_document', { id: selected.id }) }}" class="moderation-button">
-                                Demander un justificatif
+                                {{ translate('Demander un justificatif') }}
                             </button>
                         </div>
                     </form>
@@ -214,11 +227,11 @@
                             </span>
                         {% elseif selected.verifiedAt %}
                             <span>
-                                Validé le {{ selected.verifiedAt|date('d/m/Y à H:i') }}.
+                                {{ translate('Validé le {verifiedAt}', {verifiedAt: selected.verifiedAt|date('d/m/Y, H:i')}) }}
                             </span>
                         {% else %}
                             <span>
-                                Statut actuel : {{ selected.statusLabel }}.
+                                {{ translate('Statut actuel : {label}.', {label: selected.statusLabel}) }}
                             </span>
                         {% endif %}
                     </div>

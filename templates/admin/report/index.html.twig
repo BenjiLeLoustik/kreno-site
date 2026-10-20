@@ -3,14 +3,30 @@
 {% set admin_section = 'reports' %}
 {% set query = { status: filter, direction: direction }|filter(value => value) %}
 {% set decisions = selected ? [
-    { value: 'dismiss', label: 'Classer sans suite', modifier: 'neutral' },
-    { value: 'resolve', label: 'Marquer comme traité', modifier: 'neutral' },
-    { value: 'warn', label: 'Envoyer un avertissement', modifier: 'warn' },
-    { value: 'suspend', label: selected.suspendLabel, modifier: 'danger' },
+    {
+        value: 'dismiss',
+        label: translate('Classer sans suite'),
+        modifier: 'neutral'
+    },
+    {
+        value: 'resolve',
+        label: translate('Marquer comme traité'),
+        modifier: 'neutral'
+    },
+    {
+        value: 'warn',
+        label: translate('Envoyer un avertissement'),
+        modifier: 'warn'
+    },
+    {
+        value: 'suspend',
+        label: selected.suspendLabel,
+        modifier: 'danger'
+    },
 ] : [] %}
 
 {% block title %}
-    Signalements · Administration Kréno
+    {{ translate('Signalements · Administration Kréno') }}
 {% endblock %}
 
 {% block javascripts %}
@@ -20,15 +36,15 @@
 {% block content %}
     <div class="report-head">
         <h1 class="admin-title">
-            Signalements
+            {{ translate('Signalements') }}
         </h1>
         <span class="report-head__count">
-            {{ openCount }} ouvert{{ openCount > 1 ? 's' : '' }}
+            {{ translate('{count, plural, =1 {# ouvert} other {# ouverts}}', { count: openCount }) }}
         </span>
     </div>
 
     <form method="get" action="{{ path('admin_reports') }}" class="report-filters" data-report-filters>
-        <nav class="report-tabs" aria-label="Statut">
+        <nav class="report-tabs" aria-label="{{ translate('Statut') }}">
             {% for item in filters %}
                 <a href="{{ path('admin_reports', { status: item.key, direction: direction }|filter(value => value)) }}" class="report-tabs__link{{ item.key == filter ? ' report-tabs__link--active' : '' }}"{{ item.key == filter ? ' aria-current="page"' : '' }}>
                     {{ item.label }}
@@ -36,9 +52,9 @@
             {% endfor %}
         </nav>
         <input type="hidden" name="status" value="{{ filter }}">
-        <select name="direction" class="report-filters__select" aria-label="Origine" data-report-auto>
+        <select name="direction" class="report-filters__select" aria-label="{{ translate('Origine') }}" data-report-auto>
             <option value="">
-                Toutes les origines
+                {{ translate('Toutes les origines') }}
             </option>
             {% for item in directions %}
                 <option value="{{ item.key }}"{{ item.key == direction ? ' selected' : '' }}>
@@ -47,7 +63,7 @@
             {% endfor %}
         </select>
         <button type="submit" class="report-filters__apply" data-report-apply>
-            Filtrer
+            {{ translate('Filtrer') }}
         </button>
     </form>
 
@@ -56,22 +72,22 @@
             <thead>
             <tr>
                 <th scope="col" class="report-table__th">
-                    Motif
+                    {{ translate('Motif') }}
                 </th>
                 <th scope="col" class="report-table__th">
-                    Concerne
+                    {{ translate('Concerne') }}
                 </th>
                 <th scope="col" class="report-table__th">
-                    Signalé par
+                    {{ translate('Signalé par') }}
                 </th>
                 <th scope="col" class="report-table__th">
-                    Date
+                    {{ translate('Date') }}
                 </th>
                 <th scope="col" class="report-table__th">
-                    Priorité
+                    {{ translate('Priorité') }}
                 </th>
                 <th scope="col" class="report-table__th">
-                    Statut
+                    {{ translate('Statut') }}
                 </th>
             </tr>
             </thead>
@@ -81,7 +97,7 @@
                 <tr class="report-table__row{{ current ? ' report-table__row--active' : '' }}">
                     <td class="report-table__td">
                         <a href="{{ path('admin_report_show', { id: row.id }|merge(query)) }}" class="report-table__link"{{ current ? ' aria-current="true"' : '' }}>
-                            {{ row.reasonLabel ?: 'Signalement' }}
+                            {{ row.reasonLabel ?: translate('Signalement') }}
                         </a>
                     </td>
                     <td class="report-table__td">
@@ -107,7 +123,7 @@
             {% else %}
                 <tr>
                     <td colspan="6" class="report-table__empty">
-                        Aucun signalement pour ce filtre.
+                        {{ translate('Aucun signalement pour ce filtre.') }}
                     </td>
                 </tr>
             {% endfor %}
@@ -120,7 +136,7 @@
             <div class="report-detail__main">
                 <div class="report-detail__head">
                     <h2 class="report-detail__title">
-                        {{ selected.reasonLabel ?: 'Signalement' }}
+                        {{ selected.reasonLabel ?: translate('Signalement') }}
                         {% if selected.target %}
                             · {{ selected.target }}
                         {% endif %}
@@ -130,11 +146,12 @@
                     </span>
                 </div>
                 <span class="report-detail__meta">
-                    {{ selected.reference }}
-                    {% if selected.booking %}
-                        · Réservation {{ selected.booking.reference }} ({{ selected.booking.price }})
-                    {% endif %}
-                    · signalé par {{ selected.by ?: '-' }}, {{ selected.date }}
+                    {{ translate('{ref}{booking} · signalé par {by}, {date}', {
+                        ref: selected.reference,
+                        booking: selected.booking ? translate(' · Réservation {bookingRef} ({price})', { bookingRef: selected.booking.reference, price: selected.booking.price }) : '',
+                        by: selected.by ?: '-',
+                        date: selected.date
+                    }) }}
                 </span>
                 {% if selected.message %}
                     <blockquote class="report-detail__quote">
@@ -143,7 +160,7 @@
                 {% endif %}
                 <span class="report-detail__history">
                     <b>
-                        Historique :
+                        {{ translate('Historique :') }}
                     </b>
                     {{ selected.history }}
                 </span>
@@ -157,14 +174,14 @@
                 {% if selected.messages is not empty %}
                     <div class="report-thread">
                         <b class="report-thread__title">
-                            Échanges
+                            {{ translate('Échanges') }}
                         </b>
                         {% for message in selected.messages %}
                             <div class="report-thread__item{{ message.internal ? ' report-thread__item--internal' : '' }}">
                                 <span class="report-thread__author">
                                     {{ message.author }}
                                     {% if message.internal %}
-                                        · note interne
+                                        · {{ translate('note interne') }}
                                     {% endif %}
                                     {% if message.createdAt %}
                                         <span class="report-thread__date">
@@ -183,25 +200,25 @@
                 <form method="post" action="{{ path('admin_report_note', { id: selected.id }) }}" class="report-note">
                     {{ csrf_field('admin_report')|raw }}
                     <label for="report-note" class="moderation-form__field">
-                        Note interne
-                        <textarea id="report-note" name="body" rows="2" required minlength="2" maxlength="2000" class="moderation-form__input moderation-form__input--area" placeholder="Visible uniquement par l'équipe Kréno"></textarea>
+                        {{ translate('Note interne') }}
+                        <textarea id="report-note" name="body" rows="2" required minlength="2" maxlength="2000" class="moderation-form__input moderation-form__input--area" placeholder="{{ translate("Visible uniquement par l'équipe Kréno") }}"></textarea>
                     </label>
                     <button type="submit" class="moderation-button report-note__submit">
-                        Ajouter la note
+                        {{ translate('Ajouter la note') }}
                     </button>
                 </form>
             </div>
 
             <div class="report-detail__aside">
                 <b class="report-detail__aside-title">
-                    Décision
+                    {{ translate('Décision') }}
                 </b>
                 {% if selected.canDecide %}
                     {% if selected.kind == 'sent' %}
                         <form method="post" action="{{ path('admin_report_review', { id: selected.id }) }}">
                             {{ csrf_field('admin_report')|raw }}
                             <button type="submit" class="report-decision report-decision--neutral">
-                                Prendre en charge
+                                {{ translate('Prendre en charge') }}
                             </button>
                         </form>
                     {% endif %}
@@ -209,17 +226,17 @@
                         {{ csrf_field('admin_report')|raw }}
                         <input type="hidden" name="days" value="30">
                         <label for="report-message" class="moderation-form__field">
-                            Message aux deux parties
+                            {{ translate('Message aux deux parties') }}
                             <textarea id="report-message" name="message" rows="3" required minlength="5" maxlength="1000" class="moderation-form__input moderation-form__input--area"></textarea>
                         </label>
                         {% for decision in decisions %}
-                            <button type="submit" name="decision" value="{{ decision.value }}" class="report-decision report-decision--{{ decision.modifier }}"{% if decision.value == 'suspend' %} data-confirm="{{ decision.label }} ?"{% endif %}>
+                            <button type="submit" name="decision" value="{{ decision.value }}" class="report-decision report-decision--{{ decision.modifier }}"{% if decision.value == 'suspend' %} data-confirm="{{ translate('{label} ?', { label: decision.label }) }}"{% endif %}>
                                 {{ decision.label }}
                             </button>
                         {% endfor %}
                     </form>
                     <span class="report-detail__hint">
-                        Les deux parties sont prévenues par e-mail de la décision.
+                        {{ translate('Les deux parties sont prévenues par e-mail de la décision.') }}
                     </span>
                 {% else %}
                     <div class="moderation-decision">
@@ -230,11 +247,11 @@
                         {% if selected.handledBy %}
                             <br>
                             <span class="report-detail__hint">
-                            Traité par {{ selected.handledBy }}
-                            {% if selected.handledAt %}
-                                le {{ selected.handledAt|date('d/m/Y') }}
-                            {% endif %}
-                            .</span>
+                            {{ translate('Traité par {handledBy}{handledAt}.', {
+                                handledBy: selected.handledBy,
+                                handledAt: selected.handledAt ? translate(' le {date}', { date: selected.handledAt|date('d/m/Y') }) : ''
+                            }) }}
+                            </span>
                         {% endif %}
                     </div>
                 {% endif %}
