@@ -1,0 +1,58 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% set admin_section = 'faq' %}
+
+{% block title %}
+    {{ translate('Modifier la question · FAQ · Administration Kréno') }}
+{% endblock %}
+
+{% block content %}
+    <a href="{{ path('admin_faq_category_show', { slug: category.slug }) }}" class="admin-back">
+        {{ translate('← {name}', {name: category.name}) }}
+    </a>
+
+    <h1 class="admin-title">
+        {{ translate('Modifier la question') }}
+    </h1>
+
+    <section class="admin-card">
+        <form method="post" action="{{ path('admin_faq_question_update', { id: question.id }) }}" class="admin-form">
+            {{ csrf_field('admin_faq')|raw }}
+            <label class="admin-field">
+                {{ translate('Question') }}
+                <input type="text"
+                       name="question"
+                       value="{{ question.question }}"
+                       required
+                       minlength="5"
+                       maxlength="255"
+                       class="admin-input"
+                >
+            </label>
+            <label class="admin-field">
+                {{ translate('Réponse') }}
+                <textarea name="answer"
+                          rows="4"
+                          required
+                          maxlength="5000"
+                          class="admin-input admin-input--area"
+                >{{ question.answer }}</textarea>
+            </label>
+            <div class="admin-actions">
+                <button type="submit" class="admin-button admin-button--primary">
+                    {{ translate('Enregistrer') }}
+                </button>
+            </div>
+        </form>
+
+        <form method="post" action="{{ path('admin_faq_question_delete', { id: question.id }) }}">
+            {{ csrf_field('admin_faq')|raw }}
+            <button type="submit"
+                    class="admin-button admin-button--ghost-danger"
+                    data-admin-confirm="{{ translate('Supprimer cette question ?') }}"
+            >
+                {{ translate('Supprimer') }}
+            </button>
+        </form>
+    </section>
+{% endblock %}

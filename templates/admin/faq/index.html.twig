@@ -26,26 +26,20 @@
 {% macro switch(route, parameters, visible, label) %}
     <form method="post" action="{{ path(route, parameters) }}">
         {{ csrf_field('admin_faq')|raw }}
-        <button type="submit" class="faq-switch{{ visible ? ' faq-switch--on' : '' }}" role="switch" aria-checked="{{ visible ? 'true' : 'false' }}" aria-label="{{ visible ? 'Masquer' : 'Afficher' }} {{ label }}">
+        <button type="submit"
+                class="faq-switch{{ visible ? ' faq-switch--on' : '' }}"
+                role="switch"
+                aria-checked="{{ visible ? 'true' : 'false' }}"
+                aria-label="{{ visible ? translate('Masquer') : translate('Afficher') }} {{ label }}"
+        >
             <span class="faq-switch__knob"></span>
         </button>
     </form>
 {% endmacro %}
 
-{% macro questionFields(question) %}
-    <label class="admin-field">
-        {{ translate('Question') }}
-        <input type="text" name="question" value="{{ question.question ?? '' }}" required minlength="5" maxlength="255" class="admin-input">
-    </label>
-    <label class="admin-field">
-        {{ translate('Réponse') }}
-        <textarea name="answer" rows="4" required maxlength="5000" class="admin-input admin-input--area">{{ question.answer ?? '' }}</textarea>
-    </label>
-{% endmacro %}
-
 {% macro audienceSelect(choices, selected) %}
     <label class="admin-field">
-        Public
+        {{ translate('Public') }}
         <select name="audience" class="admin-input">
             {% for choice in choices %}
                 <option value="{{ choice.value }}"{{ choice.value == selected ? ' selected' : '' }}>
@@ -99,7 +93,7 @@
                                     audience.slugs,
                                     loop.index0,
                                     -1,
-                                    {{ translate('Monter {name}', {name: category.name}) }},
+                                    translate('Monter {name}', {name: category.name}),
                                     'arrow-up'
                                 ) }}
 
@@ -110,7 +104,7 @@
                                     audience.slugs,
                                     loop.index0,
                                     1,
-                                    {{ translate('Descendre {name}', {name: category.name}) }},
+                                    translate('Descendre {name}', {name: category.name}),
                                     'arrow-down'
                                 ) }}
 
@@ -123,131 +117,11 @@
                                     category.name
                                 ) }}
 
-                            </span>
-                            <details class="admin-disclosure admin-disclosure--full">
-                                <summary class="admin-disclosure__summary">
+                                <a href="{{ path('admin_faq_category_show', { slug: category.slug }) }}"
+                                   class="admin-button admin-button--small">
                                     {{ translate('Modifier') }}
-                                </summary>
-                                <div class="admin-disclosure__body admin-form">
-                                    <form method="post" action="{{ path('admin_faq_category_update', { slug: category.slug }) }}" class="admin-form">
-                                        {{ csrf_field('admin_faq')|raw }}
-                                        <div class="admin-form__row">
-                                            <label class="admin-field">
-                                                {{ translate('Nom') }}
-                                                <input type="text" name="name" value="{{ category.name }}" required minlength="2" maxlength="80" class="admin-input">
-                                            </label>
-                                            {{ faq.audienceSelect(
-                                                audienceChoices,
-                                                category.audience
-                                            ) }}
-                                        </div>
-                                        <div class="admin-actions">
-                                            <button type="submit" class="admin-button admin-button--primary">
-                                                {{ translate('Enregistrer') }}
-                                            </button>
-                                        </div>
-                                    </form>
-
-                                    <div class="faq-questions">
-                                        <span class="faq-questions__title">
-                                            {{ translate('Questions') }}
-                                        </span>
-                                        {% for question in category.questions %}
-                                            <div class="faq-question">
-                                                <div class="faq-question__head">
-                                                    <span class="faq-question__label{{ question.visible ? '' : ' faq-question__label--hidden' }}">
-                                                        {{ question.question }}
-                                                    </span>
-                                                    <span class="admin-row__actions">
-
-                                                        {{ faq.order(
-                                                            'admin_faq_question_order',
-                                                            {
-                                                                slug: category.slug
-                                                            },
-                                                            'ids',
-                                                            category.questionIds,
-                                                            loop.index0,
-                                                            -1,
-                                                            translate('Monter la question'),
-                                                            'arrow-up'
-                                                        ) }}
-
-                                                        {{ faq.order(
-                                                            'admin_faq_question_order',
-                                                            {
-                                                                slug: category.slug
-                                                            },
-                                                            'ids',
-                                                            category.questionIds,
-                                                            loop.index0,
-                                                            1,
-                                                            translate('Descendre la question'),
-                                                            'arrow-down'
-                                                        ) }}
-
-                                                        {{ faq.switch(
-                                                            'admin_faq_question_visibility',
-                                                            {
-                                                                id: question.id
-                                                            },
-                                                            question.visible,
-                                                            translate('la question')
-                                                        ) }}
-
-                                                        <form method="post" action="{{ path('admin_faq_question_delete', { id: question.id }) }}">
-                                                            {{ csrf_field('admin_faq')|raw }}
-                                                            <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger" aria-label="{{ translate('Supprimer la question') }}" data-admin-confirm="{{ translate('Supprimer cette question ?') }}">
-                                                                <i data-lucide="trash-2" class="admin-nav__icon"></i>
-                                                            </button>
-                                                        </form>
-                                                    </span>
-                                                </div>
-                                                <details class="admin-disclosure">
-                                                    <summary class="admin-disclosure__summary">
-                                                        {{ translate('Modifier la question') }}
-                                                    </summary>
-                                                    <form method="post" action="{{ path('admin_faq_question_update', { id: question.id }) }}" class="admin-form admin-disclosure__body">
-                                                        {{ csrf_field('admin_faq')|raw }}
-                                                        {{ faq.questionFields(question) }}
-                                                        <div class="admin-actions">
-                                                            <button type="submit" class="admin-button admin-button--primary">
-                                                                {{ translate('Enregistrer') }}
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </details>
-                                            </div>
-                                        {% else %}
-                                            <span class="admin-subtitle">
-                                                {{ translate('Aucune question pour le moment.') }}
-                                            </span>
-                                        {% endfor %}
-
-                                        <details class="admin-disclosure">
-                                            <summary class="admin-disclosure__summary">
-                                                {{ translate('Ajouter une question') }}
-                                            </summary>
-                                            <form method="post" action="{{ path('admin_faq_question_create', { slug: category.slug }) }}" class="admin-form admin-disclosure__body">
-                                                {{ csrf_field('admin_faq')|raw }}
-                                                {{ faq.questionFields({}) }}
-                                                <div class="admin-actions">
-                                                    <button type="submit" class="admin-button admin-button--primary">
-                                                        {{ translate('Ajouter') }}
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </details>
-                                    </div>
-
-                                    <form method="post" action="{{ path('admin_faq_category_delete', { slug: category.slug }) }}">
-                                        {{ csrf_field('admin_faq')|raw }}
-                                        <button type="submit" class="admin-button admin-button--ghost-danger" data-admin-confirm="{{ translate('Supprimer la rubrique {name} et ses {questionsCount} question(s) ?', {name: category.name, questionsCount: category.questionsCount}) }}">
-                                            {{ translate('Supprimer la rubrique') }}
-                                        </button>
-                                    </form>
-                                </div>
-                            </details>
+                                </a>
+                            </span>
                         </div>
                     {% else %}
                         <p class="admin-subtitle">
@@ -267,7 +141,14 @@
                 <div class="admin-form__row">
                     <label class="admin-field">
                         {{ translate('Nom') }}
-                        <input type="text" name="name" required minlength="2" maxlength="80" placeholder="{{ translate('Réserver') }}" class="admin-input">
+                        <input type="text"
+                               name="name"
+                               required
+                               minlength="2"
+                               maxlength="80"
+                               placeholder="{{ translate('Réserver') }}"
+                               class="admin-input"
+                        >
                     </label>
 
                     {{ faq.audienceSelect(

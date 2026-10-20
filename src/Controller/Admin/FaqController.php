@@ -25,7 +25,11 @@ class FaqController extends AbstractAdminController
     ) {
     }
 
-    #[Route('/admin/faq', name: 'admin_faq_index', methods: ['GET'])]
+    #[Route(
+        path: '/admin/faq',
+        name: 'admin_faq_index',
+        methods: ['GET']
+    )]
     public function index(): Response
     {
         $this->currentAdmin();
@@ -33,10 +37,41 @@ class FaqController extends AbstractAdminController
         return $this->render('admin/faq/index.html.twig', $this->pages->index());
     }
 
-    #[Csrf('admin_faq')]
-    #[Route('/admin/faq/categories', name: 'admin_faq_category_create', methods: ['POST'])]
-    public function createCategory(#[MapRequestPayload(validate: false)] FaqCategoryInput $input): RedirectResponse
+    #[Route(
+        path: '/admin/faq/categories/{slug}',
+        name: 'admin_faq_category_show',
+        methods: ['GET']
+    )]
+    public function showCategory(string $slug): Response
     {
+        $this->currentAdmin();
+
+        return $this->render('admin/faq/category_show.html.twig', $this->pages->categoryShow($slug));
+    }
+
+    #[Route(
+        path: '/admin/faq/questions/{id}',
+        name: 'admin_faq_question_show',
+        methods: ['GET'],
+        requirements: ['id' => '\d+'],
+    )]
+    public function showQuestion(int $id): Response
+    {
+        $this->currentAdmin();
+
+        return $this->render('admin/faq/question_show.html.twig', $this->pages->questionShow($id));
+    }
+
+    #[Csrf(id: 'admin_faq')]
+    #[Route(
+        path: '/admin/faq/categories',
+        name: 'admin_faq_category_create',
+        methods: ['POST']
+    )]
+    public function createCategory(
+        #[MapRequestPayload(validate: false)]
+        FaqCategoryInput $input
+    ): RedirectResponse {
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
@@ -49,10 +84,16 @@ class FaqController extends AbstractAdminController
         return $this->redirectToRoute('admin_faq_index');
     }
 
-    #[Csrf('admin_faq')]
-    #[Route('/admin/faq/categories/order', name: 'admin_faq_category_order', methods: ['POST'])]
-    public function reorderCategories(#[MapRequestPayload(validate: false)] PositionsInput $input): RedirectResponse
-    {
+    #[Csrf(id: 'admin_faq')]
+    #[Route(
+        path: '/admin/faq/categories/order',
+        name: 'admin_faq_category_order',
+        methods: ['POST']
+    )]
+    public function reorderCategories(
+        #[MapRequestPayload(validate: false)]
+        PositionsInput $input
+    ): RedirectResponse {
         $admin = $this->currentAdmin();
 
         if (!$this->invalid($input)) {
@@ -65,11 +106,16 @@ class FaqController extends AbstractAdminController
         return $this->redirectToRoute('admin_faq_index');
     }
 
-    #[Csrf('admin_faq')]
-    #[Route('/admin/faq/categories/{slug}', name: 'admin_faq_category_update', methods: ['POST'])]
+    #[Csrf(id: 'admin_faq')]
+    #[Route(
+        path: '/admin/faq/categories/{slug}',
+        name: 'admin_faq_category_update',
+        methods: ['POST']
+    )]
     public function updateCategory(
         string $slug,
-        #[MapRequestPayload(validate: false)] FaqCategoryInput $input,
+        #[MapRequestPayload(validate: false)]
+        FaqCategoryInput $input,
     ): RedirectResponse {
         $admin = $this->currentAdmin();
         $category = $this->pages->category($slug);
@@ -81,11 +127,17 @@ class FaqController extends AbstractAdminController
             );
         }
 
-        return $this->redirectToRoute('admin_faq_index');
+        return $this->redirectToRoute('admin_faq_category_show', [
+            'slug' => $slug
+        ]);
     }
 
-    #[Csrf('admin_faq')]
-    #[Route('/admin/faq/categories/{slug}/visibility', name: 'admin_faq_category_visibility', methods: ['POST'])]
+    #[Csrf(id: 'admin_faq')]
+    #[Route(
+        path: '/admin/faq/categories/{slug}/visibility',
+        name: 'admin_faq_category_visibility',
+        methods: ['POST']
+    )]
     public function toggleCategory(string $slug): RedirectResponse
     {
         $admin = $this->currentAdmin();
@@ -99,8 +151,12 @@ class FaqController extends AbstractAdminController
         return $this->redirectToRoute('admin_faq_index');
     }
 
-    #[Csrf('admin_faq')]
-    #[Route('/admin/faq/categories/{slug}/delete', name: 'admin_faq_category_delete', methods: ['POST'])]
+    #[Csrf(id: 'admin_faq')]
+    #[Route(
+        path: '/admin/faq/categories/{slug}/delete',
+        name: 'admin_faq_category_delete',
+        methods: ['POST']
+    )]
     public function deleteCategory(string $slug): RedirectResponse
     {
         $admin = $this->currentAdmin();
@@ -113,8 +169,12 @@ class FaqController extends AbstractAdminController
         return $this->redirectToRoute('admin_faq_index');
     }
 
-    #[Csrf('admin_faq')]
-    #[Route('/admin/faq/categories/{slug}/questions', name: 'admin_faq_question_create', methods: ['POST'])]
+    #[Csrf(id: 'admin_faq')]
+    #[Route(
+        path: '/admin/faq/categories/{slug}/questions',
+        name: 'admin_faq_question_create',
+        methods: ['POST']
+    )]
     public function createQuestion(
         string $slug,
         #[MapRequestPayload(validate: false)] FaqQuestionInput $input,
@@ -129,14 +189,21 @@ class FaqController extends AbstractAdminController
             );
         }
 
-        return $this->redirectToRoute('admin_faq_index');
+        return $this->redirectToRoute('admin_faq_category_show', [
+            'slug' => $slug
+        ]);
     }
 
-    #[Csrf('admin_faq')]
-    #[Route('/admin/faq/categories/{slug}/questions/order', name: 'admin_faq_question_order', methods: ['POST'])]
+    #[Csrf(id: 'admin_faq')]
+    #[Route(
+        path: '/admin/faq/categories/{slug}/questions/order',
+        name: 'admin_faq_question_order',
+        methods: ['POST']
+    )]
     public function reorderQuestions(
         string $slug,
-        #[MapRequestPayload(validate: false)] FaqOrderInput $input,
+        #[MapRequestPayload(validate: false)]
+        FaqOrderInput $input,
     ): RedirectResponse {
         $admin = $this->currentAdmin();
         $category = $this->pages->category($slug);
@@ -148,19 +215,22 @@ class FaqController extends AbstractAdminController
             );
         }
 
-        return $this->redirectToRoute('admin_faq_index');
+        return $this->redirectToRoute('admin_faq_category_show', [
+            'slug' => $slug
+        ]);
     }
 
-    #[Csrf('admin_faq')]
+    #[Csrf(id: 'admin_faq')]
     #[Route(
-        '/admin/faq/questions/{id}',
+        path: '/admin/faq/questions/{id}',
         name: 'admin_faq_question_update',
         methods: ['POST'],
         requirements: ['id' => '\d+'],
     )]
     public function updateQuestion(
         int $id,
-        #[MapRequestPayload(validate: false)] FaqQuestionInput $input,
+        #[MapRequestPayload(validate: false)]
+        FaqQuestionInput $input,
     ): RedirectResponse {
         $admin = $this->currentAdmin();
         $question = $this->pages->question($id);
@@ -172,12 +242,14 @@ class FaqController extends AbstractAdminController
             );
         }
 
-        return $this->redirectToRoute('admin_faq_index');
+        return $this->redirectToRoute('admin_faq_question_show', [
+            'id' => $id
+        ]);
     }
 
-    #[Csrf('admin_faq')]
+    #[Csrf(id: 'admin_faq')]
     #[Route(
-        '/admin/faq/questions/{id}/visibility',
+        path: '/admin/faq/questions/{id}/visibility',
         name: 'admin_faq_question_visibility',
         methods: ['POST'],
         requirements: ['id' => '\d+'],
@@ -192,12 +264,14 @@ class FaqController extends AbstractAdminController
             FaqFlash::questionVisibility($visible)->text(),
         );
 
-        return $this->redirectToRoute('admin_faq_index');
+        return $this->redirectToRoute('admin_faq_category_show', [
+            'slug' => $question->getCategory()->getSlug()
+        ]);
     }
 
-    #[Csrf('admin_faq')]
+    #[Csrf(id: 'admin_faq')]
     #[Route(
-        '/admin/faq/questions/{id}/delete',
+        path: '/admin/faq/questions/{id}/delete',
         name: 'admin_faq_question_delete',
         methods: ['POST'],
         requirements: ['id' => '\d+'],
@@ -206,8 +280,11 @@ class FaqController extends AbstractAdminController
     {
         $admin = $this->currentAdmin();
         $question = $this->pages->question($id);
+        $category = $question->getCategory();
         $this->attempt(fn () => $this->questionService->delete($question, $admin), FaqFlash::QUESTION_DELETED->text());
 
-        return $this->redirectToRoute('admin_faq_index');
+        return $this->redirectToRoute('admin_faq_category_show', [
+            'slug' => $category?->getSlug()
+        ]);
     }
 }

@@ -30,6 +30,35 @@ class AdminFaqPageProvider
         ];
     }
 
+    public function categoryShow(string $slug): array
+    {
+        $category = $this->category($slug);
+
+        return [
+            'category' => $this->presenter->adminCategory($category),
+            'audienceChoices' => FaqAudience::choices(),
+        ];
+    }
+
+    public function questionShow(int $id): array
+    {
+        $question = $this->question($id);
+        $category = $question->getCategory();
+
+        return [
+            'question' => [
+                'id' => $question->getId(),
+                'question' => $question->getQuestion(),
+                'answer' => $question->getAnswer(),
+                'visible' => $question->isVisible(),
+            ],
+            'category' => [
+                'slug' => $category?->getSlug(),
+                'name' => $category?->getName(),
+            ],
+        ];
+    }
+
     public function category(string $slug): FaqCategory
     {
         $category = $this->categories->findOneBySlug($slug);
