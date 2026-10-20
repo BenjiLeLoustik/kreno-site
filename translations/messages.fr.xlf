@@ -9346,6 +9346,10 @@
         <source>{count} abonnés</source>
         <target>{count} abonnés</target>
       </trans-unit>
+      <trans-unit id="901943a0cad17ff6" resname="Copié ✓">
+        <source>Copié ✓</source>
+        <target>Copié ✓</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

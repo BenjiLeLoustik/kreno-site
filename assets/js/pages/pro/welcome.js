@@ -10,7 +10,7 @@ window.WelcomePage = {
         button.addEventListener('click', async () => {
             try {
                 await navigator.clipboard.writeText(field.value);
-                button.textContent = 'Copié ✓';
+                button.textContent = button.dataset.labelCopied;
             } catch {
                 field.select();
             }

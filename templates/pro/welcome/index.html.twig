@@ -34,10 +34,18 @@
                 {% endif %}
             </h2>
             <span class="pro-subtitle">
-                {{ translate('{done} sur {total}', { done: welcome.done, total: welcome.total }) }}
+                {{ translate('{done} sur {total}', {
+                    done: welcome.done,
+                    total: welcome.total
+                }) }}
             </span>
         </div>
-        <span class="welcome-progress" role="progressbar" aria-valuenow="{{ welcome.progress }}" aria-valuemin="0" aria-valuemax="100">
+        <span class="welcome-progress"
+              role="progressbar"
+              aria-valuenow="{{ welcome.progress }}"
+              aria-valuemin="0"
+              aria-valuemax="100"
+        >
             <span class="welcome-progress__fill" style="--value: {{ welcome.progress }};"></span>
         </span>
 
@@ -59,7 +67,8 @@
                             {{ task.text }}
                         </span>
                     </span>
-                    <a href="{{ task.url }}" class="pro-button pro-button--small{{ task.done ? '' : ' pro-button--primary' }}">
+                    <a href="{{ task.url }}"
+                       class="pro-button pro-button--small{{ task.done ? '' : ' pro-button--primary' }}">
                         {{ task.cta }}
                     </a>
                 </li>
@@ -76,8 +85,17 @@
                 {{ translate('Partagez-la à vos clients : ils pourront vous suivre et être prévenus dès qu\'un créneau se libère.') }}
             </p>
             <div class="welcome-share">
-                <input type="text" value="{{ welcome.shareUrl }}" readonly class="pro-input" aria-label="{{ translate('Adresse de votre page') }}" data-welcome-share>
-                <button type="button" class="pro-button" data-welcome-copy>
+                <input type="text"
+                       value="{{ welcome.shareUrl }}"
+                       readonly class="pro-input"
+                       aria-label="{{ translate('Adresse de votre page') }}"
+                       data-welcome-share
+                >
+                <button type="button"
+                        class="pro-button"
+                        data-welcome-copy
+                        data-label-copied="{{ translate('Copié ✓') }}"
+                >
                     {{ translate('Copier') }}
                 </button>
                 <a href="{{ welcome.shareUrl }}" class="pro-button" target="_blank" rel="noopener">
