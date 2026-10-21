@@ -12,6 +12,7 @@ use App\Entity\City;
 use App\Repository\CategoryRepository;
 use App\Repository\CityRepository;
 use App\Repository\Company\CompanyEstablishmentRepository;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class CatalogPageProvider
 {
@@ -22,19 +23,22 @@ class CatalogPageProvider
         private CityPageProvider $cityPage,
         private CityPresenter $cityPresenter,
         private CategoryPresenter $categoryPresenter,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
     public function switchTarget(string $citySlug, string $categorySlug): array
     {
         $city = $this->cities->findOneOpenBySlug($citySlug);
-        $category = $this->categories->findOneVisibleBySlug($categorySlug);
+        $category = $this->visibleCategory($categorySlug);
 
         if ($city !== null && $category !== null) {
+            $categorySummary = $this->categoryPresenter->summary($category);
+
             return [
                 'city_category_show', [
                     'city' => $city->getSlug(),
-                    'category' => $category->getSlug()
+                    'category' => $categorySummary['slug']
                 ]
             ];
         }
@@ -49,10 +53,12 @@ class CatalogPageProvider
         }
 
         if ($category !== null) {
+            $categorySummary = $this->categoryPresenter->summary($category);
+
             return [
                 'category_show',
                 [
-                    'slug' => $category->getSlug()
+                    'slug' => $categorySummary['slug']
                 ]
             ];
         }
@@ -83,15 +89,16 @@ class CatalogPageProvider
     {
         $city = $this->openCity($citySlug);
         $category = $this->visibleCategory($categorySlug);
+        $categoryDetail = $this->categoryPresenter->detail($category);
 
         return [
             'breadcrumb' => [
                 $this->crumb(CatalogText::HOME->text(), 'home_index'),
                 $this->crumb($city->getName(), 'city_show', ['slug' => $city->getSlug()]),
-                $this->crumb($category->getName()),
+                $this->crumb($categoryDetail['name']),
             ],
             'city' => $this->cityPresenter->detail($city),
-            'category' => $this->categoryPresenter->detail($category),
+            'category' => $categoryDetail,
             'page' => $this->cityPage->build($city, $category, $this->district($district)),
             'categories' => $this->categoriesIn($city, $category),
             'otherCities' => $this->otherCities($city),
@@ -101,13 +108,14 @@ class CatalogPageProvider
     public function category(string $slug): array
     {
         $category = $this->visibleCategory($slug);
+        $categoryDetail = $this->categoryPresenter->detail($category);
 
         return [
             'breadcrumb' => [
                 $this->crumb(CatalogText::HOME->text(), 'home_index'),
-                $this->crumb($category->getName()),
+                $this->crumb($categoryDetail['name']),
             ],
-            'category' => $this->categoryPresenter->detail($category),
+            'category' => $categoryDetail,
             'cities' => $this->citiesFor($category),
             'otherCategories' => $this->categoryPresenter->summaries($this->otherCategories($category)),
         ];
@@ -126,7 +134,10 @@ class CatalogPageProvider
 
     private function visibleCategory(string $slug): Category
     {
-        $category = $this->categories->findOneVisibleBySlug($slug);
+        $category = $this->categories->findOneVisibleBySlug(
+            $slug,
+            $this->translation->getLocale()
+        );
 
         if ($category === null) {
             throw new CategoryNotFoundException($slug);
@@ -159,7 +170,7 @@ class CatalogPageProvider
     {
         $categories = [];
 
-        foreach ($this->categories->findVisible() as $category) {
+        foreach ($this->categories->findVisible($this->translation->getLocale()) as $category) {
             $categories[] = $this->categoryPresenter->summary($category) + [
                     'establishmentsCount' => $this->establishments->countByCategory($category, $city, true),
                     'current' => $category === $current,
@@ -199,7 +210,7 @@ class CatalogPageProvider
     {
         $categories = [];
 
-        foreach ($this->categories->findVisible() as $category) {
+        foreach ($this->categories->findVisible($this->translation->getLocale()) as $category) {
             if ($category !== $current) {
                 $categories[] = $category;
             }

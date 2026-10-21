@@ -43,6 +43,7 @@ use DateTimeImmutable;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
 use NeoPHP\Package\Security\Hasher\UserPasswordHasher;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class ProSignupService
 {
@@ -57,6 +58,7 @@ class ProSignupService
         private CompanyRegistryGateway $registry,
         private WebsiteProvider $website,
         private EventManagerInterface $events,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -232,7 +234,10 @@ class ProSignupService
             throw new CategoryRequiredException();
         }
 
-        return $this->categories->findOneVisibleBySlug($slug) ?? throw new CategoryRequiredException();
+        return $this->categories->findOneVisibleBySlug(
+            $slug,
+            $this->translation->getLocale()
+        ) ?? throw new CategoryRequiredException();
     }
 
     private function draftEstablishment(Company $company): CompanyEstablishment

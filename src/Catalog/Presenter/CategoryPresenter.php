@@ -7,23 +7,33 @@ namespace App\Catalog\Presenter;
 use App\Entity\Category;
 use App\Entity\CategoryServiceSuggestion;
 use App\Shared\Helper\MoneyHelper;
+use App\Shared\Service\TranslatableResolver;
 
 class CategoryPresenter
 {
+    public function __construct(
+        private TranslatableResolver $resolver,
+    ) {
+    }
+
     public function summary(Category $category): array
     {
+        $translation = $this->resolver->category($category);
+
         return [
             'id' => $category->getId(),
-            'name' => $category->getName(),
-            'slug' => $category->getSlug(),
+            'name' => $translation?->getName(),
+            'slug' => $translation?->getSlug(),
             'icon' => $category->getIcon(),
         ];
     }
 
     public function detail(Category $category): array
     {
+        $translation = $this->resolver->category($category);
+
         return $this->summary($category) + [
-                'description' => $category->getDescription(),
+                'description' => $translation?->getDescription(),
                 'visible' => $category->isVisible(),
                 'position' => $category->getPosition(),
                 'suggestions' => $this->suggestions($category),

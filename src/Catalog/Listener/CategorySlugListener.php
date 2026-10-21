@@ -2,8 +2,8 @@
 
 namespace App\Catalog\Listener;
 
-use App\Entity\Category;
-use App\Repository\CategoryRepository;
+use App\Entity\CategoryTranslation;
+use App\Repository\CategoryTranslationRepository;
 use App\Shared\Helper\StringHelper;
 use NeoPHP\Component\Event\Attribute\AsListener;
 use NeoPHP\Package\Orm\Event\PrePersistEvent;
@@ -11,23 +11,31 @@ use NeoPHP\Package\Orm\Event\PrePersistEvent;
 class CategorySlugListener
 {
     public function __construct(
-        private CategoryRepository $categories
+        private CategoryTranslationRepository $translations
     ) {
     }
 
     #[AsListener]
     public function onPrePersist(PrePersistEvent $event): void
     {
-        $category = $event->getEntity();
+        $translation = $event->getEntity();
 
-        if (!$category instanceof Category || ($category->getSlug() !== null && $category->getSlug() !== '')) {
+        if (!$translation instanceof CategoryTranslation) {
             return;
         }
 
-        $category->setSlug(
+        if ($translation->getSlug() !== null && $translation->getSlug() !== '') {
+            return;
+        }
+
+        $translation->setSlug(
             StringHelper::uniqueSlug(
-                (string) $category->getName(),
-                fn (string $slug): bool => $this->categories->slugExists($slug)
+                (string) $translation->getName(),
+                fn (string $slug): bool => $this->translations->slugExists(
+                    $slug,
+                    $translation->getLocale(),
+                    $translation->getId()
+                )
             )
         );
     }

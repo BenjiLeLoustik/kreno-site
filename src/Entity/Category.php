@@ -6,28 +6,19 @@ namespace App\Entity;
 
 use App\Entity\Company\CompanyEstablishment;
 use App\Entity\Trait\PositionTrait;
-use App\Entity\Trait\SlugTrait;
 use App\Repository\CategoryRepository;
 use NeoPHP\Package\Orm\Collection\ArrayCollection;
 use NeoPHP\Package\Orm\Contract\CollectionInterface;
 use NeoPHP\Package\Orm\Mapping as ORM;
 
 #[ORM\Entity(repository: CategoryRepository::class)]
-#[ORM\Index(columns: ['slug'], unique: true)]
 #[ORM\Index(columns: ['visible', 'position'])]
 class Category extends AbstractBaseEntity
 {
-    use SlugTrait;
     use PositionTrait;
-
-    #[ORM\Column(length: 80)]
-    private ?string $name = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $icon = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $description = null;
 
     #[ORM\Column]
     private bool $visible = true;
@@ -38,22 +29,14 @@ class Category extends AbstractBaseEntity
     #[ORM\OneToMany(CategoryServiceSuggestion::class, mappedBy: 'category', cascade: ['persist', 'remove'], orphanRemoval: true, orderBy: ['position' => 'ASC'])]
     private CollectionInterface $serviceSuggestions;
 
+    #[ORM\OneToMany(CategoryTranslation::class, mappedBy: 'category', cascade: ['persist', 'remove'], orphanRemoval: true, orderBy: ['locale' => 'ASC'])]
+    private CollectionInterface $translations;
+
     public function __construct()
     {
         $this->establishments = new ArrayCollection();
         $this->serviceSuggestions = new ArrayCollection();
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
+        $this->translations = new ArrayCollection();
     }
 
     public function getIcon(): ?string
@@ -64,18 +47,6 @@ class Category extends AbstractBaseEntity
     public function setIcon(?string $icon): static
     {
         $this->icon = $icon;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
 
         return $this;
     }
@@ -135,6 +106,30 @@ class Category extends AbstractBaseEntity
     {
         if ($this->serviceSuggestions->removeElement($suggestion) && $suggestion->getCategory() === $this) {
             $suggestion->setCategory(null);
+        }
+
+        return $this;
+    }
+
+    public function getTranslations(): CollectionInterface
+    {
+        return $this->translations;
+    }
+
+    public function addTranslation(CategoryTranslation $translation): static
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+            $translation->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTranslation(CategoryTranslation $translation): static
+    {
+        if ($this->translations->removeElement($translation) && $translation->getCategory() === $this) {
+            $translation->setCategory(null);
         }
 
         return $this;

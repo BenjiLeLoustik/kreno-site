@@ -13,6 +13,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\CityRepository;
 use App\Repository\Establishment\EstablishmentSlotRepository;
 use DateTimeImmutable;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class SlotSearchService
 {
@@ -20,6 +21,7 @@ class SlotSearchService
         private EstablishmentSlotRepository $slots,
         private CityRepository $cities,
         private CategoryRepository $categories,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -77,7 +79,10 @@ class SlotSearchService
         $categories = [];
 
         foreach (array_unique($slugs) as $slug) {
-            $category = $this->categories->findOneVisibleBySlug((string) $slug);
+            $category = $this->categories->findOneVisibleBySlug(
+                (string) $slug,
+                $this->translation->getLocale()
+            );
 
             if ($category !== null) {
                 $categories[$category->getId()] = $category;
@@ -136,7 +141,7 @@ class SlotSearchService
     private static function byDiscount(SlotMatch $a, SlotMatch $b): int
     {
         $left = [$b->getSlot()->getDiscount(), $a->getSlot()->getStartsAt()];
-        $right = [$a->getSlot()->getDiscount(), $b->getSlot()->getStartsAt()];
+        $right = [$a->getSlot()->getDiscount(), $a->getSlot()->getStartsAt()];
 
         return $left <=> $right;
     }

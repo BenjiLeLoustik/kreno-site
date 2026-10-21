@@ -15,18 +15,22 @@ use App\Entity\City;
 use App\Establishment\Helper\ServiceSuggestionHelper;
 use App\Repository\CategoryRepository;
 use App\Repository\CategoryServiceSuggestionRepository;
+use App\Repository\CategoryTranslationRepository;
 use App\Repository\CityRepository;
 use App\Repository\Company\CompanyEstablishmentRepository;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class AdminCatalogPageProvider
 {
     public function __construct(
         private CityRepository $cities,
         private CategoryRepository $categories,
+        private CategoryTranslationRepository $translations,
         private CategoryServiceSuggestionRepository $suggestions,
         private CompanyEstablishmentRepository $establishments,
         private CityPresenter $cityPresenter,
         private CategoryPresenter $categoryPresenter,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -40,12 +44,17 @@ class AdminCatalogPageProvider
         ];
     }
 
-    public function categoryShow(string $slug): array
+    public function categoryShow(string $slug, ?string $locale = null): array
     {
         $category = $this->category($slug);
+        $locale = $this->translation->matchLocale($locale ?? $this->translation->getLocale())
+            ?? $this->translation->getLocale();
 
         return [
             'category' => $this->categoryPresenter->detail($category),
+            'translation' => $this->translations->findOneByCategoryAndLocale($category, $locale),
+            'locale' => $locale,
+            'locales' => $this->translation->getLocales(),
             'establishmentsCount' => $this->establishments->countByCategory($category),
             'durations' => ServiceSuggestionHelper::DURATIONS,
         ];
@@ -53,7 +62,7 @@ class AdminCatalogPageProvider
 
     public function category(string $slug): Category
     {
-        $category = $this->categories->findOneBySlug($slug);
+        $category = $this->categories->findOneByAnySlug($slug);
 
         if ($category === null) {
             throw new CategoryNotFoundException($slug);

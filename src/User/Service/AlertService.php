@@ -13,6 +13,7 @@ use App\User\Exception\AlertTimeRangeException;
 use App\User\Exception\CityNotOpenException;
 use DateTimeImmutable;
 use NeoPHP\Package\Orm\OrmManagerInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class AlertService
 {
@@ -26,6 +27,7 @@ class AlertService
         private OrmManagerInterface $orm,
         private CityRepository $cities,
         private CategoryRepository $categories,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -144,7 +146,10 @@ class AlertService
         }
 
         foreach ($slugs as $slug) {
-            $category = $this->categories->findOneVisibleBySlug((string) $slug);
+            $category = $this->categories->findOneVisibleBySlug(
+                (string) $slug,
+                $this->translation->getLocale()
+            );
 
             if ($category !== null) {
                 $alert->addCategory($category);

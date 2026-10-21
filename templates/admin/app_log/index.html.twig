@@ -52,8 +52,8 @@
                             {{ log.message }}
                         </span>
                         <span class="admin-list__meta">
-                            {{ translate('{occurences} fois · dernière le {lastSeenAt}', {
-                                occurences: log.occurences,
+                            {{ translate('{occurrences} fois · dernière le {lastSeenAt}', {
+                                occurrences: log.occurrences,
                                 lastSeenAt: log.lastSeenAt|date('d/m, H:i')
                             }) }}
                         </span>

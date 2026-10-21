@@ -33,6 +33,7 @@ use App\Shared\Helper\CoordinateHelper;
 use App\Website\Provider\WebsiteProvider;
 use NeoPHP\Component\Event\EventManagerInterface;
 use NeoPHP\Package\Orm\OrmManagerInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class EstablishmentRegistrationService
 {
@@ -61,6 +62,7 @@ class EstablishmentRegistrationService
         private ProSignupService $signup,
         private WebsiteProvider $website,
         private EventManagerInterface $events,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -211,7 +213,10 @@ class EstablishmentRegistrationService
             return;
         }
 
-        $category = $this->categories->findOneVisibleBySlug($slug) ?? throw new UnknownCategoryException();
+        $category = $this->categories->findOneVisibleBySlug(
+            $slug,
+            $this->translation->getLocale()
+        ) ?? throw new UnknownCategoryException();
         $establishment->setCategory($category);
     }
 

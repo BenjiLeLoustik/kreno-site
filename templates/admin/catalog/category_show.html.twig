@@ -5,15 +5,7 @@
 {% macro suggestionFields(suggestion, durations) %}
     <label class="admin-field catalog-suggestion__name">
         {{ translate('Prestation') }}
-        <input type="text"
-               name="name"
-               value="{{ suggestion.name ?? '' }}"
-               required
-               minlength="2"
-               maxlength="120"
-               placeholder="{{ translate('Coupe + brushing') }}"
-               class="admin-input"
-        >
+        <input type="text" name="name" value="{{ suggestion.name ?? '' }}" required minlength="2" maxlength="120" placeholder="{{ translate('Coupe + brushing') }}" class="admin-input">
     </label>
     <label class="admin-field">
         {{ translate('Durée') }}
@@ -27,19 +19,12 @@
     </label>
     <label class="admin-field">
         {{ translate('Prix (€)') }}
-        <input type="number"
-               name="price"
-               value="{{ suggestion.priceInput ?? '' }}"
-               min="0"
-               step="0.01"
-               required
-               class="admin-input"
-        >
+        <input type="number" name="price" value="{{ suggestion.priceInput ?? '' }}" min="0" step="0.01" required class="admin-input">
     </label>
 {% endmacro %}
 
 {% block title %}
-    {{ translate('{name} · Catégories · Administration Kréno', {name: category.name}) }}
+    {{ translate('{name} · Catégories · Administration Kréno', {name: category.name ?? category.slug}) }}
 {% endblock %}
 
 {% block content %}
@@ -50,13 +35,54 @@
     </a>
 
     <h1 class="admin-title">
-        {{ category.name }}
+        {{ category.name ?? category.slug }}
     </h1>
+
+    <nav class="admin-tabs" aria-label="{{ translate('Langue') }}">
+        {% for code in locales %}
+            <a href="{{ path('admin_catalog_category_show', { slug: category.slug, locale: code }) }}" class="admin-tabs__link{{ code == locale ? ' admin-tabs__link--active' : '' }}"{{ code == locale ? ' aria-current="page"' : '' }}>
+                {{ code|upper }}
+            </a>
+        {% endfor %}
+    </nav>
 
     <div class="admin-grid">
         <section class="admin-card">
             <h2 class="admin-card__title">
-                {{ translate('Informations') }}
+                {{ translate('Traduction · {locale}', {locale: locale|upper}) }}
+            </h2>
+
+            {% if translation %}
+                <span class="admin-subtitle">
+                    {{ translate('Slug : {slug}', {slug: translation.slug}) }}
+                </span>
+            {% else %}
+                <span class="admin-subtitle">
+                    {{ translate('Aucune traduction pour cette langue. Elle sera créée à l’enregistrement.') }}
+                </span>
+            {% endif %}
+
+            <form method="post" action="{{ path('admin_catalog_category_update', { slug: category.slug, locale: locale }) }}" class="admin-form" data-admin-strip>
+                {{ csrf_field('admin_catalog')|raw }}
+                <label class="admin-field">
+                    {{ translate('Nom') }}
+                    <input type="text" name="name" value="{{ translation?.name ?? '' }}" required minlength="2" maxlength="80" class="admin-input">
+                </label>
+                <label class="admin-field">
+                    {{ translate('Description') }}
+                    <textarea name="description" rows="2" class="admin-input admin-input--area">{{ translation?.description ?? '' }}</textarea>
+                </label>
+                <div class="admin-actions">
+                    <button type="submit" class="admin-button admin-button--primary">
+                        {{ translation ? translate('Enregistrer') : translate('Créer la traduction') }}
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section class="admin-card">
+            <h2 class="admin-card__title">
+                {{ translate('Informations communes') }}
             </h2>
             <span class="admin-subtitle">
                 {{ translate('{slug} · {count, plural, =1 {# pro} other {# pros}}', {
@@ -65,56 +91,16 @@
                 }) }}
             </span>
 
-            <form method="post" action="{{ path('admin_catalog_category_update', { slug: category.slug }) }}"
-                  class="admin-form" data-admin-strip>
+            <form method="post" action="{{ path('admin_catalog_category_visibility', { slug: category.slug }) }}">
                 {{ csrf_field('admin_catalog')|raw }}
-                <div class="admin-form__row">
-                    <label class="admin-field">
-                        {{ translate('Nom') }}
-                        <input type="text"
-                               name="name"
-                               value="{{ category.name }}"
-                               required
-                               minlength="2"
-                               maxlength="80"
-                               class="admin-input"
-                        >
-                    </label>
-                    <label class="admin-field">
-                        {{ translate('Icône Lucide') }}
-                        <input type="text"
-                               name="icon"
-                               value="{{ category.icon }}"
-                               pattern="[a-z0-9-]{2,50}"
-                               class="admin-input"
-                        >
-                    </label>
-                </div>
-                <label class="admin-field">
-                    {{ translate('Description') }}
-                    <textarea name="description"
-                              rows="2"
-                              class="admin-input admin-input--area"
-                    >{{ category.description }}</textarea>
-                </label>
-                <div class="admin-actions">
-                    <button type="submit" class="admin-button admin-button--primary">
-                        {{ translate('Enregistrer') }}
-                    </button>
-                </div>
+                <button type="submit" class="catalog-switch{{ category.visible ? ' catalog-switch--on' : '' }}" role="switch" aria-checked="{{ category.visible ? 'true' : 'false' }}" aria-label="{{ category.visible ? translate('Masquer') : translate('Afficher') }} {{ category.name }}">
+                    <span class="catalog-switch__knob"></span>
+                </button>
             </form>
 
             <form method="post" action="{{ path('admin_catalog_category_delete', { slug: category.slug }) }}">
                 {{ csrf_field('admin_catalog')|raw }}
-                <button
-                        type="submit"
-                        class="admin-button admin-button--ghost-danger"
-                        {{ establishmentsCount > 0 ? 'disabled' : '' }}
-                        {% if establishmentsCount > 0 %}
-                            title="{{ translate('Des établissements utilisent cette catégorie') }}"
-                        {% endif %}
-                        data-admin-confirm="{{ translate('Supprimer la catégorie {name} ?', {name: category.name}) }}"
-                >
+                <button type="submit" class="admin-button admin-button--ghost-danger"{{ establishmentsCount > 0 ? ' disabled' : '' }}{% if establishmentsCount > 0 %} title="{{ translate('Des établissements utilisent cette catégorie') }}"{% endif %} data-admin-confirm="{{ translate('Supprimer la catégorie {name} ?', {name: category.name ?? category.slug}) }}">
                     {{ translate('Supprimer') }}
                 </button>
             </form>
@@ -131,23 +117,16 @@
             <div class="catalog-suggestions">
                 {% for suggestion in category.suggestions %}
                     <div class="catalog-suggestion">
-                        <form method="post"
-                              action="{{ path('admin_catalog_suggestion_update', { id: suggestion.id }) }}"
-                              class="catalog-suggestion__form"
-                        >
+                        <form method="post" action="{{ path('admin_catalog_suggestion_update', { id: suggestion.id }) }}" class="catalog-suggestion__form">
                             {{ csrf_field('admin_catalog')|raw }}
                             {{ catalog.suggestionFields(suggestion, durations) }}
                             <button type="submit" class="admin-button admin-button--small">
                                 {{ translate('Enregistrer') }}
                             </button>
                         </form>
-                        <form method="post"
-                              action="{{ path('admin_catalog_suggestion_delete', { id: suggestion.id }) }}">
+                        <form method="post" action="{{ path('admin_catalog_suggestion_delete', { id: suggestion.id }) }}">
                             {{ csrf_field('admin_catalog')|raw }}
-                            <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger"
-                                    aria-label="{{ translate('Supprimer {name}', {name: suggestion.name}) }}"
-                                    data-admin-confirm="{{ translate('Supprimer la suggestion {suggestionName} ?', {suggestionName: suggestion.name}) }}"
-                            >
+                            <button type="submit" class="admin-button admin-button--small admin-button--ghost-danger" aria-label="{{ translate('Supprimer {name}', {name: suggestion.name}) }}" data-admin-confirm="{{ translate('Supprimer la suggestion {suggestionName} ?', {suggestionName: suggestion.name}) }}">
                                 <i data-lucide="trash-2" class="admin-nav__icon"></i>
                             </button>
                         </form>
@@ -158,10 +137,7 @@
                     </span>
                 {% endfor %}
 
-                <form method="post"
-                      action="{{ path('admin_catalog_suggestion_create', { slug: category.slug }) }}"
-                      class="catalog-suggestion__form"
-                >
+                <form method="post" action="{{ path('admin_catalog_suggestion_create', { slug: category.slug }) }}" class="catalog-suggestion__form">
                     {{ csrf_field('admin_catalog')|raw }}
                     {{ catalog.suggestionFields({}, durations) }}
                     <button type="submit" class="admin-button admin-button--small admin-button--primary">
