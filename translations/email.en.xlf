@@ -1,0 +1,1127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="en" datatype="plaintext" original="email">
+    <body>
+      <trans-unit id="9d319d38651a5088" resname="(introuvable)">
+        <source>(introuvable)</source>
+        <target>(not found)</target>
+      </trans-unit>
+      <trans-unit id="99d40bd6b0a15712" resname="Attention : la réservation appartient à {customer}">
+        <source>Attention : la réservation appartient à {customer}</source>
+        <target>Note: the booking belongs to {customer}</target>
+      </trans-unit>
+      <trans-unit id="35a738896772d7bb" resname="Bienvenue sur Kréno ! Tu peux désormais réserver en quelques secondes les créneaux libérés par les établissements près de chez toi, à prix réduit.">
+        <source>Bienvenue sur Kréno ! Tu peux désormais réserver en quelques secondes les créneaux libérés par les établissements près de chez toi, à prix réduit.</source>
+        <target>Welcome to Kréno! You can now book, in just a few seconds, the slots freed up by businesses near you, at a reduced price.</target>
+      </trans-unit>
+      <trans-unit id="59ed8e2c5af9d6b7" resname="Ce lien est valable {expiresIn}">
+        <source>Ce lien est valable {expiresIn}</source>
+        <target>This link is valid for {expiresIn}</target>
+      </trans-unit>
+      <trans-unit id="4d8b33f26febf284" resname="Ce lien est valable {expiresIn}. Passé ce délai, utilisez">
+        <source>Ce lien est valable {expiresIn}. Passé ce délai, utilisez</source>
+        <target>This link is valid for {expiresIn}. After that, use</target>
+      </trans-unit>
+      <trans-unit id="5362cc602b3d073b" resname="Choisir mon mot de passe">
+        <source>Choisir mon mot de passe</source>
+        <target>Choose my password</target>
+      </trans-unit>
+      <trans-unit id="7675508bb43e94fb" resname="Compte :">
+        <source>Compte :</source>
+        <target>Account:</target>
+      </trans-unit>
+      <trans-unit id="0cf318286bb5a80a" resname="Compte : visiteur non connecté">
+        <source>Compte : visiteur non connecté</source>
+        <target>Account: visitor not logged in</target>
+      </trans-unit>
+      <trans-unit id="8898df4f9daf997f" resname="Confirmer mon adresse e-mail">
+        <source>Confirmer mon adresse e-mail</source>
+        <target>Confirm my email address</target>
+      </trans-unit>
+      <trans-unit id="738e43543b7611c5" resname="Connectez-vous avec votre compte habituel pour accéder à l’administration.">
+        <source>Connectez-vous avec votre compte habituel pour accéder à l’administration.</source>
+        <target>Log in with your usual account to access the administration.</target>
+      </trans-unit>
+      <trans-unit id="2e4045ba3cb07ce2" resname="Créer une alerte">
+        <source>Créer une alerte</source>
+        <target>Create an alert</target>
+      </trans-unit>
+      <trans-unit id="96260f5986adef70" resname="E-mail :">
+        <source>E-mail :</source>
+        <target>Email:</target>
+      </trans-unit>
+      <trans-unit id="6672e62025c33e6a" resname="Gérer mes alertes">
+        <source>Gérer mes alertes</source>
+        <target>Manage my alerts</target>
+      </trans-unit>
+      <trans-unit id="1bd3b5da1811c7a1" resname="Le client a répondu à sa demande le {sentAt}">
+        <source>Le client a répondu à sa demande le {sentAt}</source>
+        <target>The customer replied to their request on {sentAt}</target>
+      </trans-unit>
+      <trans-unit id="a2aec4606fbe5dbe" resname="Les créneaux partent vite : premier arrivé, premier servi.">
+        <source>Les créneaux partent vite : premier arrivé, premier servi.</source>
+        <target>Slots go fast: first come, first served.</target>
+      </trans-unit>
+      <trans-unit id="77637a38043b1f1b" resname="Ne plus recevoir ces e-mails">
+        <source>Ne plus recevoir ces e-mails</source>
+        <target>Stop receiving these emails</target>
+      </trans-unit>
+      <trans-unit id="5a9a19e744b48301" resname="Nouveau message reçu depuis le formulaire d&apos;aide le {sentAt}">
+        <source>Nouveau message reçu depuis le formulaire d&apos;aide le {sentAt}</source>
+        <target>New message received from the help form on {sentAt}</target>
+      </trans-unit>
+      <trans-unit id="3b6a77d224e3add9" resname="Ouvrir l’administration">
+        <source>Ouvrir l’administration</source>
+        <target>Open the administration</target>
+      </trans-unit>
+      <trans-unit id="737155f0b198859b" resname="Pour accéder à l’administration, choisissez d’abord votre mot de passe :">
+        <source>Pour accéder à l’administration, choisissez d’abord votre mot de passe :</source>
+        <target>To access the administration, first choose your password:</target>
+      </trans-unit>
+      <trans-unit id="db0b21af3042a591" resname="Pour activer ton compte, confirme ton adresse e-mail :">
+        <source>Pour activer ton compte, confirme ton adresse e-mail :</source>
+        <target>To activate your account, confirm your email address:</target>
+      </trans-unit>
+      <trans-unit id="8b36e76ce19089db" resname="Pour ne rater aucun bon plan, crée une alerte : on te prévient dès qu’un créneau correspond à tes envies.">
+        <source>Pour ne rater aucun bon plan, crée une alerte : on te prévient dès qu’un créneau correspond à tes envies.</source>
+        <target>To never miss a deal, create an alert: we&apos;ll let you know as soon as a slot matches what you&apos;re looking for.</target>
+      </trans-unit>
+      <trans-unit id="085561eb7a89bc80" resname="Répondre depuis l’administration">
+        <source>Répondre depuis l’administration</source>
+        <target>Reply from the administration</target>
+      </trans-unit>
+      <trans-unit id="567b160376e21aec" resname="Réponse à cet e-mail écrit directement à {email}">
+        <source>Réponse à cet e-mail écrit directement à {email}</source>
+        <target>Replying to this email writes directly to {email}</target>
+      </trans-unit>
+      <trans-unit id="0941b7f664c06196" resname="Réservation :">
+        <source>Réservation :</source>
+        <target>Booking:</target>
+      </trans-unit>
+      <trans-unit id="30f8eac26cc98bdf" resname="Réserver ce créneau">
+        <source>Réserver ce créneau</source>
+        <target>Book this slot</target>
+      </trans-unit>
+      <trans-unit id="aa05697d11b0e6c1" resname="Sujet :">
+        <source>Sujet :</source>
+        <target>Subject:</target>
+      </trans-unit>
+      <trans-unit id="0d45d95c9d31a0a6" resname="Un créneau correspond à ton alerte « {label} » ({description}) :">
+        <source>Un créneau correspond à ton alerte « {label} » ({description}) :</source>
+        <target>A slot matches your alert “{label}” ({description}):</target>
+      </trans-unit>
+      <trans-unit id="63d04b38d53e018c" resname="Une réponse envoyée depuis l’administration reste dans l’historique de la demande. Répondre à cet e-mail écrit directement à {email}, sans garder de trace.">
+        <source>Une réponse envoyée depuis l’administration reste dans l’historique de la demande. Répondre à cet e-mail écrit directement à {email}, sans garder de trace.</source>
+        <target>A reply sent from the administration stays in the request history. Replying to this email writes directly to {email}, without keeping a record.</target>
+      </trans-unit>
+      <trans-unit id="2b447cd46ecd2450" resname="Voir les créneaux du moment">
+        <source>Voir les créneaux du moment</source>
+        <target>See current slots</target>
+      </trans-unit>
+      <trans-unit id="2fb054391b4a63af" resname="mot de passe oublié">
+        <source>mot de passe oublié</source>
+        <target>forgot password</target>
+      </trans-unit>
+      <trans-unit id="d42983cfc0f4ea04" resname="{day} à {time}">
+        <source>{day} à {time}</source>
+        <target>{day} at {time}</target>
+      </trans-unit>
+      <trans-unit id="71793ec0460cfa35" resname="{establishment}, que tu suis, vient de libérer un créneau :">
+        <source>{establishment}, que tu suis, vient de libérer un créneau :</source>
+        <target>{establishment}, which you follow, has just freed up a slot:</target>
+      </trans-unit>
+      <trans-unit id="1fb1779e9bc81b09" resname="{inviter} vous a ajouté à l&apos;équipe Kréno avec le rôle « {role} ».">
+        <source>{inviter} vous a ajouté à l&apos;équipe Kréno avec le rôle « {role} ».</source>
+        <target>{inviter} added you to the Kréno team with the role “{role}”.</target>
+      </trans-unit>
+      <trans-unit id="f62af85187780012" resname="{price} au lieu de {originalPrice} ({discount})">
+        <source>{price} au lieu de {originalPrice} ({discount})</source>
+        <target>{price} instead of {originalPrice} ({discount})</target>
+      </trans-unit>
+      <trans-unit id="3304aefaaa3609ad" resname="· statut :">
+        <source>· statut :</source>
+        <target>· status:</target>
+      </trans-unit>
+      <trans-unit id="477e94121ca48f03" resname="Établissement :">
+        <source>Établissement :</source>
+        <target>Business:</target>
+      </trans-unit>
+      <trans-unit id="21443de4a06d9c7d" resname="Ancienne formule : {plan} ({price} HT, {period}">
+        <source>Ancienne formule : {plan} ({price} HT, {period}</source>
+        <target>Previous plan: {plan} ({price} excl. VAT, {period}</target>
+      </trans-unit>
+      <trans-unit id="c70715b12ec97a08" resname="Aucune commission sur vos réservations">
+        <source>Aucune commission sur vos réservations</source>
+        <target>No commission on your bookings</target>
+      </trans-unit>
+      <trans-unit id="efaf41f36e4e9c61" resname="Bonne nouvelle : la résiliation est annulée, votre abonnement {plan} pour {company} continue.">
+        <source>Bonne nouvelle : la résiliation est annulée, votre abonnement {plan} pour {company} continue.</source>
+        <target>Good news: the cancellation has been withdrawn, your {plan} subscription for {company} continues.</target>
+      </trans-unit>
+      <trans-unit id="9b0e8a58528f9ef4" resname="Ce code est valable {expiresIn}. Saisissez-le sur la page d&apos;inscription : {open}reprendre mon inscription{close}">
+        <source>Ce code est valable {expiresIn}. Saisissez-le sur la page d&apos;inscription : {open}reprendre mon inscription{close}</source>
+        <target>This code is valid for {expiresIn}. Enter it on the sign-up page: {open}resume my sign-up{close}</target>
+      </trans-unit>
+      <trans-unit id="68da600870841d12" resname="Ce lien est valable {expiresIn}. Si tu n&apos;es pas à l’origine de cette demande, ignore simplement cet e-mail : ton mot de passe reste inchangé.">
+        <source>Ce lien est valable {expiresIn}. Si tu n&apos;es pas à l’origine de cette demande, ignore simplement cet e-mail : ton mot de passe reste inchangé.</source>
+        <target>This link is valid for {expiresIn}. If you didn&apos;t make this request, simply ignore this email: your password remains unchanged.</target>
+      </trans-unit>
+      <trans-unit id="4a5b1d29b72b3406" resname="Changement effectué par {changedBy}.">
+        <source>Changement effectué par {changedBy}.</source>
+        <target>Change made by {changedBy}.</target>
+      </trans-unit>
+      <trans-unit id="035af7577aff24c8" resname="Choisir un nouveau mot de passe">
+        <source>Choisir un nouveau mot de passe</source>
+        <target>Choose a new password</target>
+      </trans-unit>
+      <trans-unit id="8931bfaddb9c5ef6" resname="Connectez-vous avec votre compte habituel pour accéder à l&apos;administration.">
+        <source>Connectez-vous avec votre compte habituel pour accéder à l&apos;administration.</source>
+        <target>Log in with your usual account to access the administration.</target>
+      </trans-unit>
+      <trans-unit id="e05d399210960a72" resname="Début : ">
+        <source>Début : </source>
+        <target>Start: </target>
+      </trans-unit>
+      <trans-unit id="a77804ced4d667a3" resname="Décision : classé sans suite. Après examen, nous n’avons pas retenu de manquement de la part de l&apos;établissement.">
+        <source>Décision : classé sans suite. Après examen, nous n’avons pas retenu de manquement de la part de l&apos;établissement.</source>
+        <target>Decision: closed with no further action. After review, we did not find any failure on the part of the business.</target>
+      </trans-unit>
+      <trans-unit id="c4cd6c6f2cf19e8b" resname="Décision: {resolution}. Merci de nous avoir alertés, cela nous aide à garder Kréno fiable pour tout le monde.">
+        <source>Décision: {resolution}. Merci de nous avoir alertés, cela nous aide à garder Kréno fiable pour tout le monde.</source>
+        <target>Decision: {resolution}. Thank you for letting us know, it helps us keep Kréno reliable for everyone.</target>
+      </trans-unit>
+      <trans-unit id="f73900102f381d4b" resname="Formule :">
+        <source>Formule :</source>
+        <target>Plan:</target>
+      </trans-unit>
+      <trans-unit id="452e7a75c02ab4db" resname="L&apos;abonnement reprendra automatiquement à cette date, au même tarif.">
+        <source>L&apos;abonnement reprendra automatiquement à cette date, au même tarif.</source>
+        <target>The subscription will resume automatically on that date, at the same price.</target>
+      </trans-unit>
+      <trans-unit id="8b296ebf838a59fa" resname="L&apos;établissement a 72 h pour te répondre. Notre équipe suit l&apos;échange et prendra une décision si besoin. Tu seras prévenu par e-mail à chaque étape.">
+        <source>L&apos;établissement a 72 h pour te répondre. Notre équipe suit l&apos;échange et prendra une décision si besoin. Tu seras prévenu par e-mail à chaque étape.</source>
+        <target>The business has 72 hours to reply to you. Our team follows the exchange and will make a decision if needed. You&apos;ll be notified by email at each step.</target>
+      </trans-unit>
+      <trans-unit id="b2aba0bd5366c74b" resname="La résiliation de votre abonnement {plan} pour {company} est enregistrée.">
+        <source>La résiliation de votre abonnement {plan} pour {company} est enregistrée.</source>
+        <target>The cancellation of your {plan} subscription for {company} has been recorded.</target>
+      </trans-unit>
+      <trans-unit id="03e909dc65e63e4c" resname="Malgré nos relances, un paiement de votre abonnement {plan} reste impayé. Les créneaux de {company} ne sont plus publiés sur Kréno.">
+        <source>Malgré nos relances, un paiement de votre abonnement {plan} reste impayé. Les créneaux de {company} ne sont plus publiés sur Kréno.</source>
+        <target>Despite our reminders, a payment for your {plan} subscription remains unpaid. {company}&apos;s slots are no longer published on Kréno.</target>
+      </trans-unit>
+      <trans-unit id="b0f96abe8b91b796" resname="Message de l&apos;équipe Kréno :">
+        <source>Message de l&apos;équipe Kréno :</source>
+        <target>Message from the Kréno team:</target>
+      </trans-unit>
+      <trans-unit id="f11446ec347978f0" resname="Mon abonnement">
+        <source>Mon abonnement</source>
+        <target>My subscription</target>
+      </trans-unit>
+      <trans-unit id="5e559c16c2e6451c" resname="Motif :">
+        <source>Motif :</source>
+        <target>Reason:</target>
+      </trans-unit>
+      <trans-unit id="ab0bbb1e6398c5f7" resname="Motif indiqué :">
+        <source>Motif indiqué :</source>
+        <target>Reason given:</target>
+      </trans-unit>
+      <trans-unit id="16e5b2ffe66c5848" resname="Notre équipe a traité ton signalement {reference} concernant {name}">
+        <source>Notre équipe a traité ton signalement {reference} concernant {name}</source>
+        <target>Our team has processed your report {reference} about {name}</target>
+      </trans-unit>
+      <trans-unit id="86b34685a325a01a" resname="Nous avons bien reçu ton signalement {reference}.">
+        <source>Nous avons bien reçu ton signalement {reference}.</source>
+        <target>We have received your report {reference}.</target>
+      </trans-unit>
+      <trans-unit id="e926c0d8f6f4b886" resname="Nouvelle formule : {plan} ({price}) HT, {period}">
+        <source>Nouvelle formule : {plan} ({price}) HT, {period}</source>
+        <target>New plan: {plan} ({price}) excl. VAT, {period}</target>
+      </trans-unit>
+      <trans-unit id="6aa1fa6b6e1e7220" resname="Pendant la pause, vous n&apos;êtes pas prélevé et vous ne pouvez pas publier de créneaux. Votre page et vos informations sont conservées.">
+        <source>Pendant la pause, vous n&apos;êtes pas prélevé et vous ne pouvez pas publier de créneaux. Votre page et vos informations sont conservées.</source>
+        <target>During the pause, you are not charged and you cannot publish slots. Your page and your information are kept.</target>
+      </trans-unit>
+      <trans-unit id="62798324112497a9" resname="Pour accéder à l&apos;administration, choisissez d’abord votre mot de passe :">
+        <source>Pour accéder à l&apos;administration, choisissez d’abord votre mot de passe :</source>
+        <target>To access the administration, first choose your password:</target>
+      </trans-unit>
+      <trans-unit id="ece73117fd8271c2" resname="Prix : {price} HT">
+        <source>Prix : {price} HT</source>
+        <target>Price: {price} excl. VAT</target>
+      </trans-unit>
+      <trans-unit id="ce57965010c6105c" resname="Prix : {price} HT ({period})">
+        <source>Prix : {price} HT ({period})</source>
+        <target>Price: {price} excl. VAT ({period})</target>
+      </trans-unit>
+      <trans-unit id="564d5b866ffc9055" resname="Prochaine échéance :">
+        <source>Prochaine échéance :</source>
+        <target>Next payment date:</target>
+      </trans-unit>
+      <trans-unit id="74c320fd2891afe9" resname="Publier un créneau">
+        <source>Publier un créneau</source>
+        <target>Publish a slot</target>
+      </trans-unit>
+      <trans-unit id="3433e13562f3db2a" resname="Rendez-vous : {service}, {day} à {time}">
+        <source>Rendez-vous : {service}, {day} à {time}</source>
+        <target>Appointment: {service}, {day} at {time}</target>
+      </trans-unit>
+      <trans-unit id="5d6ecf92b54befda" resname="Réglez la facture en attente pour retrouver immédiatement l&apos;accès à la publication. Vous pouvez aussi mettre à jour votre moyen de paiement.">
+        <source>Réglez la facture en attente pour retrouver immédiatement l&apos;accès à la publication. Vous pouvez aussi mettre à jour votre moyen de paiement.</source>
+        <target>Pay the outstanding invoice to immediately regain access to publishing. You can also update your payment method.</target>
+      </trans-unit>
+      <trans-unit id="c09ebda4cbc2f9b2" resname="Régulariser ma situation">
+        <source>Régulariser ma situation</source>
+        <target>Settle my account</target>
+      </trans-unit>
+      <trans-unit id="f5035786f11a45e7" resname="Répondre depuis l&apos;administration">
+        <source>Répondre depuis l&apos;administration</source>
+        <target>Reply from the administration</target>
+      </trans-unit>
+      <trans-unit id="de3dbc112a51e666" resname="Si vous n&apos;êtes pas à l&apos;origine de cette demande, ignorez cet e-mail.">
+        <source>Si vous n&apos;êtes pas à l&apos;origine de cette demande, ignorez cet e-mail.</source>
+        <target>If you didn&apos;t make this request, ignore this email.</target>
+      </trans-unit>
+      <trans-unit id="f3ff8db102b406bb" resname="Suivre mon signalement">
+        <source>Suivre mon signalement</source>
+        <target>Track my report</target>
+      </trans-unit>
+      <trans-unit id="a0fab383da4c95fc" resname="Tu as demandé à réinitialiser ton mot de passe Kréno.">
+        <source>Tu as demandé à réinitialiser ton mot de passe Kréno.</source>
+        <target>You asked to reset your Kréno password.</target>
+      </trans-unit>
+      <trans-unit id="6ea3845b1b6403ef" resname="Une réponse envoyée depuis l&apos;administration reste dans l&apos;historique de la demande. Répondre à cet e-mail écrit directement à {email}, sans garder de trace.">
+        <source>Une réponse envoyée depuis l&apos;administration reste dans l&apos;historique de la demande. Répondre à cet e-mail écrit directement à {email}, sans garder de trace.</source>
+        <target>A reply sent from the administration stays in the request history. Replying to this email writes directly to {email}, without keeping a record.</target>
+      </trans-unit>
+      <trans-unit id="8da5c0cbbd15d3cb" resname="Voici votre code de vérification pour finaliser l&apos;inscription de {company} sur Kréno Pro">
+        <source>Voici votre code de vérification pour finaliser l&apos;inscription de {company} sur Kréno Pro</source>
+        <target>Here is your verification code to complete the sign-up of {company} on Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="6c07ad7a2c23bc0d" resname="Voir mon signalement">
+        <source>Voir mon signalement</source>
+        <target>View my report</target>
+      </trans-unit>
+      <trans-unit id="dc104e6af615c43b" resname="Vos factures seront disponibles dans votre espace facturation.">
+        <source>Vos factures seront disponibles dans votre espace facturation.</source>
+        <target>Your invoices will be available in your billing area.</target>
+      </trans-unit>
+      <trans-unit id="c2be9f93322cf10a" resname="Votre abonnement reste actif jusqu&apos;au {cancelAt}. Vous pouvez publier des créneaux jusqu&apos;à cette date; Aucun prélèvement ne sera effectué ensuite.">
+        <source>Votre abonnement reste actif jusqu&apos;au {cancelAt}. Vous pouvez publier des créneaux jusqu&apos;à cette date; Aucun prélèvement ne sera effectué ensuite.</source>
+        <target>Your subscription remains active until {cancelAt}. You can publish slots until that date; no further payments will be taken after that.</target>
+      </trans-unit>
+      <trans-unit id="cedcc21ae10b8d57" resname="Votre abonnement {plan} pour {company} est en pause jusqu&apos;au {pausedUntil}">
+        <source>Votre abonnement {plan} pour {company} est en pause jusqu&apos;au {pausedUntil}</source>
+        <target>Your {plan} subscription for {company} is paused until {pausedUntil}</target>
+      </trans-unit>
+      <trans-unit id="53ca66d3d7ec95e4" resname="Votre nouvelle formule est active pour {company}">
+        <source>Votre nouvelle formule est active pour {company}</source>
+        <target>Your new plan is active for {company}</target>
+      </trans-unit>
+      <trans-unit id="d4cc542ac0cfc167" resname="Vous changez d’avis ? Vous pouvez annuler la résiliation à tout moment avant cette date.">
+        <source>Vous changez d’avis ? Vous pouvez annuler la résiliation à tout moment avant cette date.</source>
+        <target>Changed your mind? You can withdraw the cancellation at any time before that date.</target>
+      </trans-unit>
+      <trans-unit id="4e3f74b1c289e274" resname="{establishment} est en ligne et votre abonnement est actif">
+        <source>{establishment} est en ligne et votre abonnement est actif</source>
+        <target>{establishment} is online and your subscription is active</target>
+      </trans-unit>
+      <trans-unit id="e805c8a096bb8baf" resname="{name} a répondu à ton signalement {reference}">
+        <source>{name} a répondu à ton signalement {reference}</source>
+        <target>{name} replied to your report {reference}</target>
+      </trans-unit>
+      <trans-unit id="54e2980e6d2f726f" resname="Facturation">
+        <source>Facturation</source>
+        <target>Billing</target>
+      </trans-unit>
+      <trans-unit id="b4594802ac442f22" resname="Un éventuel ajustement au prorata apparaîtra sur votre prochaine facture.">
+        <source>Un éventuel ajustement au prorata apparaîtra sur votre prochaine facture.</source>
+        <target>Any prorated adjustment will appear on your next invoice.</target>
+      </trans-unit>
+      <trans-unit id="de958dd74c6cf25e" resname="Avant :">
+        <source>Avant :</source>
+        <target>Before:</target>
+      </trans-unit>
+      <trans-unit id="20bf448f86a890dc" resname="Ce lien est valide {expiresIn}. Si vous n&apos;êtes pas à l&apos;origine de cette demande, ignoez cet e-mail : votre mot de passe reste inchangé.">
+        <source>Ce lien est valide {expiresIn}. Si vous n&apos;êtes pas à l&apos;origine de cette demande, ignoez cet e-mail : votre mot de passe reste inchangé.</source>
+        <target>This link is valid for {expiresIn}. If you didn&apos;t make this request, ignore this email: your password remains unchanged.</target>
+      </trans-unit>
+      <trans-unit id="bd5025c22716c18d" resname="Décision :">
+        <source>Décision :</source>
+        <target>Decision:</target>
+      </trans-unit>
+      <trans-unit id="8161f6121f7c4704" resname="En attendant, vous pouvez compléter votre page : photos, horaires, description.">
+        <source>En attendant, vous pouvez compléter votre page : photos, horaires, description.</source>
+        <target>In the meantime, you can complete your page: photos, opening hours, description.</target>
+      </trans-unit>
+      <trans-unit id="1be1aaabfb7a6bdc" resname="Le client a ajouté un message au signalement {reference} :">
+        <source>Le client a ajouté un message au signalement {reference} :</source>
+        <target>The customer added a message to report {reference}:</target>
+      </trans-unit>
+      <trans-unit id="85bba33567c77bf6" resname="Maintenant :">
+        <source>Maintenant :</source>
+        <target>Now:</target>
+      </trans-unit>
+      <trans-unit id="794b3c0d6c718fba" resname="Merci ! L&apos;inscription de {name} est complète">
+        <source>Merci ! L&apos;inscription de {name} est complète</source>
+        <target>Thank you! The sign-up of {name} is complete</target>
+      </trans-unit>
+      <trans-unit id="94d6b30899335fec" resname="Message de l’équipe Kréno :">
+        <source>Message de l’équipe Kréno :</source>
+        <target>Message from the Kréno team:</target>
+      </trans-unit>
+      <trans-unit id="550b79692f088a6d" resname="Message du client :">
+        <source>Message du client :</source>
+        <target>Message from the customer:</target>
+      </trans-unit>
+      <trans-unit id="0ae6d29a1e195389" resname="Notre équipe a rendu sa décision sur le signalement {reference} concernant {establishment}.">
+        <source>Notre équipe a rendu sa décision sur le signalement {reference} concernant {establishment}.</source>
+        <target>Our team has made its decision on report {reference} about {establishment}.</target>
+      </trans-unit>
+      <trans-unit id="0db6fc90b5fef4ec" resname="Notre équipe a traité votre signalement {reference}.">
+        <source>Notre équipe a traité votre signalement {reference}.</source>
+        <target>Our team has processed your report {reference}.</target>
+      </trans-unit>
+      <trans-unit id="739b7ddeb883d7ff" resname="Notre équipe vérifie vos informations (SIRET, adresse, prestations) sous {delay}. Vous receverez un e-mail dès que votre établissement sera en ligne.">
+        <source>Notre équipe vérifie vos informations (SIRET, adresse, prestations) sous {delay}. Vous receverez un e-mail dès que votre établissement sera en ligne.</source>
+        <target>Our team checks your information (SIRET, address, services) within {delay}. You&apos;ll receive an email as soon as your business is online.</target>
+      </trans-unit>
+      <trans-unit id="890d3ac396ecd665" resname="Nous comptons sur vous pour que les prochains rendez-vous se passent au mieux. Les signalements répétés peuvent entraîner la suspension de l&apos;établissement.">
+        <source>Nous comptons sur vous pour que les prochains rendez-vous se passent au mieux. Les signalements répétés peuvent entraîner la suspension de l&apos;établissement.</source>
+        <target>We count on you to make sure upcoming appointments go as smoothly as possible. Repeated reports may lead to the business being suspended.</target>
+      </trans-unit>
+      <trans-unit id="d6ab3c13cf769377" resname="Nous l&apos;examinons et vous tiendrons informé de notre décision.">
+        <source>Nous l&apos;examinons et vous tiendrons informé de notre décision.</source>
+        <target>We are looking into it and will keep you informed of our decision.</target>
+      </trans-unit>
+      <trans-unit id="9ee5d810f0465d08" resname="Nous n&apos;avons pas pu valider l&apos;inscription de {establishment} sur Kréno.">
+        <source>Nous n&apos;avons pas pu valider l&apos;inscription de {establishment} sur Kréno.</source>
+        <target>We were unable to approve the sign-up of {establishment} on Kréno.</target>
+      </trans-unit>
+      <trans-unit id="24dfe81d1d40b748" resname="Ouvrir Kréno Pro">
+        <source>Ouvrir Kréno Pro</source>
+        <target>Open Kréno Pro</target>
+      </trans-unit>
+      <trans-unit id="80e24e1fa36359f2" resname="Précisions de notre équipe :">
+        <source>Précisions de notre équipe :</source>
+        <target>Details from our team:</target>
+      </trans-unit>
+      <trans-unit id="d8d2c3bb64b7c60e" resname="Rendez-vous : {service}, {day} à {time} (réf. {reference})">
+        <source>Rendez-vous : {service}, {day} à {time} (réf. {reference})</source>
+        <target>Appointment: {service}, {day} at {time} (ref. {reference})</target>
+      </trans-unit>
+      <trans-unit id="ed642a2e9b563b14" resname="Rendez-vous : {service}, {day} à {time} ({customerName})">
+        <source>Rendez-vous : {service}, {day} à {time} ({customerName})</source>
+        <target>Appointment: {service}, {day} at {time} ({customerName})</target>
+      </trans-unit>
+      <trans-unit id="0fd77f3b22c3382d" resname="Si vous pouvez corriger ce point, reprenez votre inscription :">
+        <source>Si vous pouvez corriger ce point, reprenez votre inscription :</source>
+        <target>If you can fix this, resume your sign-up:</target>
+      </trans-unit>
+      <trans-unit id="7b58cad86443d36c" resname="Suivre le signalement">
+        <source>Suivre le signalement</source>
+        <target>Track the report</target>
+      </trans-unit>
+      <trans-unit id="7a5a553e19b5d2e6" resname="Tous mes signalements">
+        <source>Tous mes signalements</source>
+        <target>All my reports</target>
+      </trans-unit>
+      <trans-unit id="48747dec3ef33880" resname="Un client a signalé un problème concernant {establishment} (signalement {reference}">
+        <source>Un client a signalé un problème concernant {establishment} (signalement {reference}</source>
+        <target>A customer reported a problem about {establishment} (report {reference}</target>
+      </trans-unit>
+      <trans-unit id="0ed26899465f7922" resname="Une question ? Répondez à cet e-mail ou écrivez-nous à {supportEmail}.">
+        <source>Une question ? Répondez à cet e-mail ou écrivez-nous à {supportEmail}.</source>
+        <target>A question? Reply to this email or write to us at {supportEmail}.</target>
+      </trans-unit>
+      <trans-unit id="27f6cc10a13def3a" resname="Voir le signalement">
+        <source>Voir le signalement</source>
+        <target>View the report</target>
+      </trans-unit>
+      <trans-unit id="3ee42ba2f087f706" resname="Vos accès sont mis à jour dès maintenant.">
+        <source>Vos accès sont mis à jour dès maintenant.</source>
+        <target>Your access is updated right away.</target>
+      </trans-unit>
+      <trans-unit id="3b164969ffaf25cd" resname="Votre rôle chez {company} a changé :">
+        <source>Votre rôle chez {company} a changé :</source>
+        <target>Your role at {company} has changed:</target>
+      </trans-unit>
+      <trans-unit id="7837aaf2f84cefca" resname="Votre rôle chez {company} pour {establishment} a changé :">
+        <source>Votre rôle chez {company} pour {establishment} a changé :</source>
+        <target>Your role at {company} for {establishment} has changed:</target>
+      </trans-unit>
+      <trans-unit id="248f3ad7aa64bf44" resname="Votre signalement {reference} a bien été transmis ) l&apos;équipe Kréno">
+        <source>Votre signalement {reference} a bien été transmis ) l&apos;équipe Kréno</source>
+        <target>Your report {reference} has been sent to the Kréno team</target>
+      </trans-unit>
+      <trans-unit id="155971ddf688e3c5" resname="Vous avez demandé à réinitialiser votre mot de passe Kréno Pro.">
+        <source>Vous avez demandé à réinitialiser votre mot de passe Kréno Pro.</source>
+        <target>You asked to reset your Kréno Pro password.</target>
+      </trans-unit>
+      <trans-unit id="b9de4e138604136e" resname="Vous avez replyWithin pour donner votre version. Passé ce délai, notre équipe tranchera sur la base des éléments disponibles.">
+        <source>Vous avez replyWithin pour donner votre version. Passé ce délai, notre équipe tranchera sur la base des éléments disponibles.</source>
+        <target>You have replyWithin to give your side of the story. After that, our team will decide based on the information available.</target>
+      </trans-unit>
+      <trans-unit id="715d00e32194d011" resname="classé sans suite.">
+        <source>classé sans suite.</source>
+        <target>closed with no further action.</target>
+      </trans-unit>
+      <trans-unit id="79c78d9919ccf769" resname="modifier mon inscription">
+        <source>modifier mon inscription</source>
+        <target>edit my sign-up</target>
+      </trans-unit>
+      <trans-unit id="26c2d0cb895f0052" resname="Répondre au signalement">
+        <source>Répondre au signalement</source>
+        <target>Reply to the report</target>
+      </trans-unit>
+      <trans-unit id="f6e10f22dd7cec0c" resname="Vous avez {replyWithin} pour donner votre version, soit jusqu&apos;au {deadline}. Passé ce délai, notre équipe tranchera sur la base des éléments disponibles.">
+        <source>Vous avez {replyWithin} pour donner votre version, soit jusqu&apos;au {deadline}. Passé ce délai, notre équipe tranchera sur la base des éléments disponibles.</source>
+        <target>You have {replyWithin} to give your side of the story, i.e. until {deadline}. After that, our team will decide based on the information available.</target>
+      </trans-unit>
+      <trans-unit id="6bb4975abf5bbc99" resname="Vous avez {replyWithin} pour donner votre version. Passé ce délai, notre équipe tranchera sur la base des éléments disponibles.">
+        <source>Vous avez {replyWithin} pour donner votre version. Passé ce délai, notre équipe tranchera sur la base des éléments disponibles.</source>
+        <target>You have {replyWithin} to give your side of the story. After that, our team will decide based on the information available.</target>
+      </trans-unit>
+      <trans-unit id="d43c76fd6e5c6395" resname="Répondre ou voir l&apos;échange">
+        <source>Répondre ou voir l&apos;échange</source>
+        <target>Reply or view the conversation</target>
+      </trans-unit>
+      <trans-unit id="e5c2e074b54cf86f" resname="(expire {expiry}">
+        <source>(expire {expiry}</source>
+        <target>(expires {expiry}</target>
+      </trans-unit>
+      <trans-unit id="65b647f5401e2249" resname="(soit {difference} de moins)">
+        <source>(soit {difference} de moins)</source>
+        <target>({difference} less)</target>
+      </trans-unit>
+      <trans-unit id="cb5be5cc6a43df06" resname="Ajouté par {by} le {addedAt}">
+        <source>Ajouté par {by} le {addedAt}</source>
+        <target>Added by {by} on {addedAt}</target>
+      </trans-unit>
+      <trans-unit id="fff779abed6ff3a5" resname="Appliqué à partir du {effectiveAt}, lors de votre prochaine échéance">
+        <source>Appliqué à partir du {effectiveAt}, lors de votre prochaine échéance</source>
+        <target>Applied from {effectiveAt}, on your next payment date</target>
+      </trans-unit>
+      <trans-unit id="f3b09c7ab215faf0" resname="Bonne nouvelle : le prix de votre formule {newPlan} baisse.">
+        <source>Bonne nouvelle : le prix de votre formule {newPlan} baisse.</source>
+        <target>Good news: the price of your {newPlan} plan is going down.</target>
+      </trans-unit>
+      <trans-unit id="9bbf05a4d419f962" resname="Ce change est annulé : votre abonnement reste à {price} HT ({period})">
+        <source>Ce change est annulé : votre abonnement reste à {price} HT ({period})</source>
+        <target>This change is cancelled: your subscription stays at {price} excl. VAT ({period})</target>
+      </trans-unit>
+      <trans-unit id="52b7d74a3ebc8341" resname="Il sera utilisé pour vos prochains prélèvements.">
+        <source>Il sera utilisé pour vos prochains prélèvements.</source>
+        <target>It will be used for your next payments.</target>
+      </trans-unit>
+      <trans-unit id="4224873cb29f6217" resname="Le prix de votre formule {newPlan} évolue.">
+        <source>Le prix de votre formule {newPlan} évolue.</source>
+        <target>The price of your {newPlan} plan is changing.</target>
+      </trans-unit>
+      <trans-unit id="1e42a49e65baf22d" resname="Nous vous avions annoncé que le prix de votre abonnement {plan} passerait à {price} HT à partir du {effectiveAt}">
+        <source>Nous vous avions annoncé que le prix de votre abonnement {plan} passerait à {price} HT à partir du {effectiveAt}</source>
+        <target>We had informed you that the price of your {plan} subscription would change to {price} excl. VAT from {effectiveAt}</target>
+      </trans-unit>
+      <trans-unit id="3c9ae2ab8843d468" resname="Nouveau prix : {newPrice} HT">
+        <source>Nouveau prix : {newPrice} HT</source>
+        <target>New price: {newPrice} excl. VAT</target>
+      </trans-unit>
+      <trans-unit id="400c6d32dfccbf0a" resname="Prix actuel: {price} HT ({period})">
+        <source>Prix actuel: {price} HT ({period})</source>
+        <target>Current price: {price} excl. VAT ({period})</target>
+      </trans-unit>
+      <trans-unit id="e8da93903aa255a3" resname="Si vous n&apos;êtes pas à l&apos;origine de cet ajout, contactez-nous en répondant à cet e-mail.">
+        <source>Si vous n&apos;êtes pas à l&apos;origine de cet ajout, contactez-nous en répondant à cet e-mail.</source>
+        <target>If you didn&apos;t add it, contact us by replying to this email.</target>
+      </trans-unit>
+      <trans-unit id="06f015f1bdbf9a16" resname="Un nouveau moyen de paiement a été enregistré sur votre compte Kréno Pro :">
+        <source>Un nouveau moyen de paiement a été enregistré sur votre compte Kréno Pro :</source>
+        <target>A new payment method has been saved on your Kréno Pro account:</target>
+      </trans-unit>
+      <trans-unit id="6e2742fd9e1dd66a" resname="Vous n&apos;avez rien à faire : la baisse s&apos;appliquera automatiquement.">
+        <source>Vous n&apos;avez rien à faire : la baisse s&apos;appliquera automatiquement.</source>
+        <target>You don&apos;t need to do anything: the decrease will apply automatically.</target>
+      </trans-unit>
+      <trans-unit id="562b40656702ca88" resname="Vous n&apos;avez rien à faire pour conserver votre formule. Si ce nouveau tarif ne vous convient pas, vous pouvez changer de formule ou résilier avant cette date, sans frais.">
+        <source>Vous n&apos;avez rien à faire pour conserver votre formule. Si ce nouveau tarif ne vous convient pas, vous pouvez changer de formule ou résilier avant cette date, sans frais.</source>
+        <target>You don&apos;t need to do anything to keep your plan. If this new price doesn&apos;t suit you, you can change plans or cancel before that date, at no cost.</target>
+      </trans-unit>
+      <trans-unit id="4819eda81b9f89af" resname="(soit {difference} de plus)">
+        <source>(soit {difference} de plus)</source>
+        <target>({difference} more)</target>
+      </trans-unit>
+      <trans-unit id="1648bf09158edb78" resname="Vous n’avez rien à faire.">
+        <source>Vous n’avez rien à faire.</source>
+        <target>You don&apos;t need to do anything.</target>
+      </trans-unit>
+      <trans-unit id="85334674bb39c712" resname="(expire {expiry})">
+        <source>(expire {expiry})</source>
+        <target>(expires {expiry})</target>
+      </trans-unit>
+      <trans-unit id="cf7d0473ec2cae95" resname="Accepter l’invitation">
+        <source>Accepter l’invitation</source>
+        <target>Accept the invitation</target>
+      </trans-unit>
+      <trans-unit id="c88431f6a632c72f" resname="Adresse :">
+        <source>Adresse :</source>
+        <target>Address:</target>
+      </trans-unit>
+      <trans-unit id="c2a7f0f0729b193a" resname="Ajouter à mon agenda">
+        <source>Ajouter à mon agenda</source>
+        <target>Add to my calendar</target>
+      </trans-unit>
+      <trans-unit id="004128025bfaef0f" resname="Annulation gratuit jusqu&apos;au {cancellationUntil}.">
+        <source>Annulation gratuit jusqu&apos;au {cancellationUntil}.</source>
+        <target>Free cancellation until {cancellationUntil}.</target>
+      </trans-unit>
+      <trans-unit id="a6f075d975193f8a" resname="Après le rendez-vous, pensez à indiquer s’il a été honoré.">
+        <source>Après le rendez-vous, pensez à indiquer s’il a été honoré.</source>
+        <target>After the appointment, remember to indicate whether it was attended.</target>
+      </trans-unit>
+      <trans-unit id="da940d9536be3082" resname="Attention : en cas de nouvelle absence, ton compte pourra être suspendu.">
+        <source>Attention : en cas de nouvelle absence, ton compte pourra être suspendu.</source>
+        <target>Note: if you miss another appointment, your account may be suspended.</target>
+      </trans-unit>
+      <trans-unit id="404590aa24dca1d4" resname="Aucun montant n’est à régler.">
+        <source>Aucun montant n’est à régler.</source>
+        <target>There is nothing to pay.</target>
+      </trans-unit>
+      <trans-unit id="7b2b4ee06bcc89cd" resname="Aujourd&apos;hui à {time}">
+        <source>Aujourd&apos;hui à {time}</source>
+        <target>Today at {time}</target>
+      </trans-unit>
+      <trans-unit id="64c735c0d871150e" resname="Avoir n°{number} du {issuedAt}">
+        <source>Avoir n°{number} du {issuedAt}</source>
+        <target>Credit note no. {number} of {issuedAt}</target>
+      </trans-unit>
+      <trans-unit id="5512b28103254f48" resname="Bonne nouvelle : {name} est validé et en ligne sur Kréno.">
+        <source>Bonne nouvelle : {name} est validé et en ligne sur Kréno.</source>
+        <target>Good news: {name} has been approved and is online on Kréno.</target>
+      </trans-unit>
+      <trans-unit id="d4cc141cf490fb45" resname="Catégorie :">
+        <source>Catégorie :</source>
+        <target>Category:</target>
+      </trans-unit>
+      <trans-unit id="45ca42602dc45bd7" resname="Ce lien est valable {expiresIn}. Passé ce délai, utilise {open}mot de passe oublié{close} pour en recevoir un nouveau.">
+        <source>Ce lien est valable {expiresIn}. Passé ce délai, utilise {open}mot de passe oublié{close} pour en recevoir un nouveau.</source>
+        <target>This link is valid for {expiresIn}. After that, use {open}forgot password{close} to receive a new one.</target>
+      </trans-unit>
+      <trans-unit id="45de63f0bb8e3f33" resname="Ce montant sera déduit de vos prochaines factures ou remboursé sur votre moyen de paiement.">
+        <source>Ce montant sera déduit de vos prochaines factures ou remboursé sur votre moyen de paiement.</source>
+        <target>This amount will be deducted from your next invoices or refunded to your payment method.</target>
+      </trans-unit>
+      <trans-unit id="634900cd76aec726" resname="Ces créneaux pourraient te plaire :">
+        <source>Ces créneaux pourraient te plaire :</source>
+        <target>You might like these slots:</target>
+      </trans-unit>
+      <trans-unit id="9fc23d0dcf7f724c" resname="Cette invitation est valable jusqu&apos;au {expiresAt}.">
+        <source>Cette invitation est valable jusqu&apos;au {expiresAt}.</source>
+        <target>This invitation is valid until {expiresAt}.</target>
+      </trans-unit>
+      <trans-unit id="835af7bfd43fcc90" resname="Cette suspension est automatique : elle s’applique selon les règles de la plateforme, notamment en cas d’absences répétées à des rendez-vous.">
+        <source>Cette suspension est automatique : elle s’applique selon les règles de la plateforme, notamment en cas d’absences répétées à des rendez-vous.</source>
+        <target>This suspension is automatic: it applies according to the platform rules, in particular in the event of repeated missed appointments.</target>
+      </trans-unit>
+      <trans-unit id="b88b6dad7e731198" resname="Changer de moyen de paiement">
+        <source>Changer de moyen de paiement</source>
+        <target>Change payment method</target>
+      </trans-unit>
+      <trans-unit id="006a03058f566d75" resname="Choisis ton mot de passe pour y accéder :">
+        <source>Choisis ton mot de passe pour y accéder :</source>
+        <target>Choose your password to access it:</target>
+      </trans-unit>
+      <trans-unit id="feb59b7dfef1dc40" resname="Client :">
+        <source>Client :</source>
+        <target>Customer:</target>
+      </trans-unit>
+      <trans-unit id="bd7a42f323350be2" resname="Comme ce n’est pas la première fois, ton compte est suspendu jusqu’au {date}. Tu ne peux pas réserver pendant cette période.">
+        <source>Comme ce n’est pas la première fois, ton compte est suspendu jusqu’au {date}. Tu ne peux pas réserver pendant cette période.</source>
+        <target>As this is not the first time, your account is suspended until {date}. You cannot book during this period.</target>
+      </trans-unit>
+      <trans-unit id="f483230d9953f517" resname="Comme ce n’est pas la première fois, ton compte est suspendu. Tu ne peux pas réserver pendant cette période.">
+        <source>Comme ce n’est pas la première fois, ton compte est suspendu. Tu ne peux pas réserver pendant cette période.</source>
+        <target>As this is not the first time, your account is suspended. You cannot book during this period.</target>
+      </trans-unit>
+      <trans-unit id="f1c06081ef0aac4e" resname="Confirmer le paiement">
+        <source>Confirmer le paiement</source>
+        <target>Confirm the payment</target>
+      </trans-unit>
+      <trans-unit id="a35a4b857339e137" resname="C’est bien toi ? Alors tout est en ordre.">
+        <source>C’est bien toi ? Alors tout est en ordre.</source>
+        <target>Was it you? Then everything is in order.</target>
+      </trans-unit>
+      <trans-unit id="651079c5ad19022d" resname="C’est réservé ! Voici ton rendez-vous :">
+        <source>C’est réservé ! Voici ton rendez-vous :</source>
+        <target>It&apos;s booked! Here is your appointment:</target>
+      </trans-unit>
+      <trans-unit id="c3b1b2db2ce8ac89" resname="C’était notre dernière tentative automatique.">
+        <source>C’était notre dernière tentative automatique.</source>
+        <target>This was our last automatic attempt.</target>
+      </trans-unit>
+      <trans-unit id="8e73ccee8a83ee7b" resname="Date :">
+        <source>Date :</source>
+        <target>Date:</target>
+      </trans-unit>
+      <trans-unit id="614665ad6eb9c27a" resname="Désolés : {name} a dû annuler ton rendez-vous.">
+        <source>Désolés : {name} a dû annuler ton rendez-vous.</source>
+        <target>Sorry: {name} had to cancel your appointment.</target>
+      </trans-unit>
+      <trans-unit id="02372cdf9b74f04d" resname="D’autres créneaux t’attendent : {open}voir les créneaux du moment{close}">
+        <source>D’autres créneaux t’attendent : {open}voir les créneaux du moment{close}</source>
+        <target>More slots are waiting for you: {open}see current slots{close}</target>
+      </trans-unit>
+      <trans-unit id="80716e189dddee2f" resname="Entreprise :">
+        <source>Entreprise :</source>
+        <target>Company:</target>
+      </trans-unit>
+      <trans-unit id="f393afece4a5f94c" resname="Facture n°{number} du {issuedAt}">
+        <source>Facture n°{number} du {issuedAt}</source>
+        <target>Invoice no. {number} of {issuedAt}</target>
+      </trans-unit>
+      <trans-unit id="cf885c00c4181822" resname="Kréno Pro permet de publier les créneaux libérés de l&apos;établissement et de suivre les réservations des clients.">
+        <source>Kréno Pro permet de publier les créneaux libérés de l&apos;établissement et de suivre les réservations des clients.</source>
+        <target>Kréno Pro lets you publish the business&apos;s freed-up slots and track customer bookings.</target>
+      </trans-unit>
+      <trans-unit id="3553b3352fcea05e" resname="L&apos;équipe Kréno a répondu à ta demande « {topic} ».">
+        <source>L&apos;équipe Kréno a répondu à ta demande « {topic} ».</source>
+        <target>The Kréno team replied to your request “{topic}”.</target>
+      </trans-unit>
+      <trans-unit id="fc184fb3dcb7f45e" resname="Le créneau n’a pas pu être remis en ligne (trop proche de l’heure du rendez-vous). Vous pouvez en {open}publier un nouveau{close}.">
+        <source>Le créneau n’a pas pu être remis en ligne (trop proche de l’heure du rendez-vous). Vous pouvez en {open}publier un nouveau{close}.</source>
+        <target>The slot could not be put back online (too close to the appointment time). You can {open}publish a new one{close}.</target>
+      </trans-unit>
+      <trans-unit id="02dade7a8d7cd54b" resname="Le mot de passe de ton compte Kréno a été modifié le {changedAt}.">
+        <source>Le mot de passe de ton compte Kréno a été modifié le {changedAt}.</source>
+        <target>The password of your Kréno account was changed on {changedAt}.</target>
+      </trans-unit>
+      <trans-unit id="fb465ffd99af5d9d" resname="Le mot de passe de votre compte Kréno a été modifié le {changedAt}.">
+        <source>Le mot de passe de votre compte Kréno a été modifié le {changedAt}.</source>
+        <target>The password of your Kréno account was changed on {changedAt}.</target>
+      </trans-unit>
+      <trans-unit id="b6259f1de379bc3b" resname="Le paiement de la facture n°{number} ({amount} TTC) a échoué.">
+        <source>Le paiement de la facture n°{number} ({amount} TTC) a échoué.</source>
+        <target>The payment of invoice no. {number} ({amount} incl. VAT) failed.</target>
+      </trans-unit>
+      <trans-unit id="1dcd8651d10c15a6" resname="Les clients de {city} peuvent désormais vous trouver et vous suivre. Publiez votre premier créneau libéré pour recevoir vos premières réservations.">
+        <source>Les clients de {city} peuvent désormais vous trouver et vous suivre. Publiez votre premier créneau libéré pour recevoir vos premières réservations.</source>
+        <target>Customers in {city} can now find and follow you. Publish your first freed-up slot to receive your first bookings.</target>
+      </trans-unit>
+      <trans-unit id="699c7cbc56f15297" resname="Les créneaux Kréno sont libérés à la dernière minute : une absence fait perdre ce créneau à l&apos;établissement et aux autres clients.">
+        <source>Les créneaux Kréno sont libérés à la dernière minute : une absence fait perdre ce créneau à l&apos;établissement et aux autres clients.</source>
+        <target>Kréno slots are released at the last minute: a no-show means the business and other customers lose that slot.</target>
+      </trans-unit>
+      <trans-unit id="14673f4c52111f04" resname="L’équipe {site} a répondu à ta demande « {topic} » :">
+        <source>L’équipe {site} a répondu à ta demande « {topic} » :</source>
+        <target>The {site} team replied to your request “{topic}”:</target>
+      </trans-unit>
+      <trans-unit id="a3b00b5ee17b5921" resname="L’équipe {site} a répondu à ta demande « {topic} » concernant la réservation {reference} :">
+        <source>L’équipe {site} a répondu à ta demande « {topic} » concernant la réservation {reference} :</source>
+        <target>The {site} team replied to your request “{topic}” about booking {reference}:</target>
+      </trans-unit>
+      <trans-unit id="ce420fb22d64ee72" resname="L’établissement a été prévenu. Rien ne t’a été facturé.">
+        <source>L’établissement a été prévenu. Rien ne t’a été facturé.</source>
+        <target>The business has been notified. You have not been charged anything.</target>
+      </trans-unit>
+      <trans-unit id="0b59e7bb44c4be19" resname="Merci d’avoir utilisé {site}. Tu seras toujours le bienvenu : {link}">
+        <source>Merci d’avoir utilisé {site}. Tu seras toujours le bienvenu : {link}</source>
+        <target>Thank you for using {site}. You will always be welcome: {link}</target>
+      </trans-unit>
+      <trans-unit id="d8da546cfdadb65a" resname="Message de l’établissement :">
+        <source>Message de l’établissement :</source>
+        <target>Message from the business:</target>
+      </trans-unit>
+      <trans-unit id="ebe684fe60a64839" resname="Montant : {amount} TTC">
+        <source>Montant : {amount} TTC</source>
+        <target>Amount: {amount} incl. VAT</target>
+      </trans-unit>
+      <trans-unit id="308c6dc864e69a6f" resname="Motif indiqué : « {cancellationReason} »">
+        <source>Motif indiqué : « {cancellationReason} »</source>
+        <target>Reason given: “{cancellationReason}”</target>
+      </trans-unit>
+      <trans-unit id="2b8c1da52f7778ef" resname="Moyen de paiement :">
+        <source>Moyen de paiement :</source>
+        <target>Payment method:</target>
+      </trans-unit>
+      <trans-unit id="cadbc1a0353da068" resname="Moyen de paiement utilisé : {paymentMethod}">
+        <source>Moyen de paiement utilisé : {paymentMethod}</source>
+        <target>Payment method used: {paymentMethod}</target>
+      </trans-unit>
+      <trans-unit id="82c1184a2d4e19bf" resname="Nom :">
+        <source>Nom :</source>
+        <target>Name:</target>
+      </trans-unit>
+      <trans-unit id="e114d49a7026feb0" resname="Note du client :">
+        <source>Note du client :</source>
+        <target>Customer note:</target>
+      </trans-unit>
+      <trans-unit id="27cbc611dece969d" resname="Nous réessaierons automatique le {nextRetry}. Vous pouvez aussi régler dès maintenant.">
+        <source>Nous réessaierons automatique le {nextRetry}. Vous pouvez aussi régler dès maintenant.</source>
+        <target>We will automatically try again on {nextRetry}. You can also pay right now.</target>
+      </trans-unit>
+      <trans-unit id="cf7c15630ec1d242" resname="Paiement reçu, merci ! La facture n°{number} est réglée.">
+        <source>Paiement reçu, merci ! La facture n°{number} est réglée.</source>
+        <target>Payment received, thank you! Invoice no. {number} is paid.</target>
+      </trans-unit>
+      <trans-unit id="f3e28baa03d1480c" resname="Pendant cette période, tu ne peux pas réserver de nouveau créneau. Tes réservations passées restent consultables.">
+        <source>Pendant cette période, tu ne peux pas réserver de nouveau créneau. Tes réservations passées restent consultables.</source>
+        <target>During this period, you cannot book a new slot. Your past bookings remain available.</target>
+      </trans-unit>
+      <trans-unit id="8df30830f0c48df6" resname="Pendant la suspension, votre page n’est plus visible et vous ne pouvez plus publier de créneaux. Les réservations déjà confirmées sont maintenues.">
+        <source>Pendant la suspension, votre page n’est plus visible et vous ne pouvez plus publier de créneaux. Les réservations déjà confirmées sont maintenues.</source>
+        <target>During the suspension, your page is no longer visible and you can no longer publish slots. Bookings already confirmed are kept.</target>
+      </trans-unit>
+      <trans-unit id="4c4a82cd6760f941" resname="Petit rappel : ton rendez-vous, c’est dans une heure.">
+        <source>Petit rappel : ton rendez-vous, c’est dans une heure.</source>
+        <target>Quick reminder: your appointment is in one hour.</target>
+      </trans-unit>
+      <trans-unit id="7a589e8692e51fbe" resname="Pour finaliser la vérification de {name}, nous avons besoin d&apos;un justificatif.">
+        <source>Pour finaliser la vérification de {name}, nous avons besoin d&apos;un justificatif.</source>
+        <target>To complete the verification of {name}, we need a supporting document.</target>
+      </trans-unit>
+      <trans-unit id="337a2d1507e21885" resname="Pour nous répondre, utilise le bouton ci-dessus : ta réponse arrivera directement dans ta demande.">
+        <source>Pour nous répondre, utilise le bouton ci-dessus : ta réponse arrivera directement dans ta demande.</source>
+        <target>To reply to us, use the button above: your reply will go straight into your request.</target>
+      </trans-unit>
+      <trans-unit id="5699561f0241aeed" resname="Pour ta réservation, nous avons créé ton compte Kréno. Il te permet de retrouver tes rendez-vous, de les annuler et de recevoir tes rappels.">
+        <source>Pour ta réservation, nous avons créé ton compte Kréno. Il te permet de retrouver tes rendez-vous, de les annuler et de recevoir tes rappels.</source>
+        <target>For your booking, we created your Kréno account. It lets you find your appointments, cancel them and receive your reminders.</target>
+      </trans-unit>
+      <trans-unit id="55b27b48a7d455d2" resname="Pour échanger avec notre équipe, écrivez-nous à {supportEmail}.">
+        <source>Pour échanger avec notre équipe, écrivez-nous à {supportEmail}.</source>
+        <target>To talk with our team, write to us at {supportEmail}.</target>
+      </trans-unit>
+      <trans-unit id="59f5b4f09408724e" resname="Prix : {price} (au lieu de {originalPrice}), réglé sur place">
+        <source>Prix : {price} (au lieu de {originalPrice}), réglé sur place</source>
+        <target>Price: {price} (instead of {originalPrice}), paid on site</target>
+      </trans-unit>
+      <trans-unit id="b1570881bd3ea99d" resname="Période :">
+        <source>Période :</source>
+        <target>Period:</target>
+      </trans-unit>
+      <trans-unit id="e8743fae8a56f4ad" resname="Raison indiquée par la banque : {failure}">
+        <source>Raison indiquée par la banque : {failure}</source>
+        <target>Reason given by the bank: {failure}</target>
+      </trans-unit>
+      <trans-unit id="0c6970001934db51" resname="Rien ne t’a été facturé.">
+        <source>Rien ne t’a été facturé.</source>
+        <target>You have not been charged anything.</target>
+      </trans-unit>
+      <trans-unit id="220e95eaf2e38b60" resname="Référence :">
+        <source>Référence :</source>
+        <target>Reference:</target>
+      </trans-unit>
+      <trans-unit id="5195764f997525c2" resname="Régler la facture">
+        <source>Régler la facture</source>
+        <target>Pay the invoice</target>
+      </trans-unit>
+      <trans-unit id="98ab92b298a915c9" resname="Réglée le {paidAt} par {paymentMethod}.">
+        <source>Réglée le {paidAt} par {paymentMethod}.</source>
+        <target>Paid on {paidAt} by {paymentMethod}.</target>
+      </trans-unit>
+      <trans-unit id="0c478ba232ce3f14" resname="Répondez simplement à cet e-mail en joignant le document, ou envoyez-le à {replyEmail}">
+        <source>Répondez simplement à cet e-mail en joignant le document, ou envoyez-le à {replyEmail}</source>
+        <target>Simply reply to this email with the document attached, or send it to {replyEmail}</target>
+      </trans-unit>
+      <trans-unit id="cf584f13391feee3" resname="SIRET :">
+        <source>SIRET :</source>
+        <target>SIRET:</target>
+      </trans-unit>
+      <trans-unit id="6c19dbb2a3d21e1a" resname="Sans cette confirmation, le paiement ne peut pas aboutir.">
+        <source>Sans cette confirmation, le paiement ne peut pas aboutir.</source>
+        <target>Without this confirmation, the payment cannot go through.</target>
+      </trans-unit>
+      <trans-unit id="9b51e4b779749ced" resname="Sans règlement avant le {until}, vos créneaux ne seront plus publiés.">
+        <source>Sans règlement avant le {until}, vos créneaux ne seront plus publiés.</source>
+        <target>Without payment before {until}, your slots will no longer be published.</target>
+      </trans-unit>
+      <trans-unit id="5c7230362fcb621d" resname="Si ce n’est pas toi, {open}réinitialise ton mot de passe{close} tout de suite et écris-nous à {email}.">
+        <source>Si ce n’est pas toi, {open}réinitialise ton mot de passe{close} tout de suite et écris-nous à {email}.</source>
+        <target>If it wasn&apos;t you, {open}reset your password{close} right away and write to us at {email}.</target>
+      </trans-unit>
+      <trans-unit id="cbc0efd32a0586e6" resname="Si vous êtes à l’origine de ce changement, vous n’avez rien à faire.">
+        <source>Si vous êtes à l’origine de ce changement, vous n’avez rien à faire.</source>
+        <target>If you made this change, you don&apos;t need to do anything.</target>
+      </trans-unit>
+      <trans-unit id="4607a2596de3593d" resname="Sinon, {open}réinitialisez votre mot de passe{close} immédiatement et contactez-nous à {email}.">
+        <source>Sinon, {open}réinitialisez votre mot de passe{close} immédiatement et contactez-nous à {email}.</source>
+        <target>Otherwise, {open}reset your password{close} immediately and contact us at {email}.</target>
+      </trans-unit>
+      <trans-unit id="57c1456e12cf6491" resname="Sur la facture n°{credited}">
+        <source>Sur la facture n°{credited}</source>
+        <target>On invoice no. {credited}</target>
+      </trans-unit>
+      <trans-unit id="ae5f52a291954779" resname="TVA">
+        <source>TVA</source>
+        <target>VAT</target>
+      </trans-unit>
+      <trans-unit id="447ff33a3706baea" resname="Ta note pour l&apos;établissement :">
+        <source>Ta note pour l&apos;établissement :</source>
+        <target>Your note for the business:</target>
+      </trans-unit>
+      <trans-unit id="7dc379152fe229dc" resname="Ta réservation est bien annulée :">
+        <source>Ta réservation est bien annulée :</source>
+        <target>Your booking has been cancelled:</target>
+      </trans-unit>
+      <trans-unit id="cbf6732b3e36dbdf" resname="Tes données personnelles seront effacées dans les délais prévus par notre politique de confidentialité.">
+        <source>Tes données personnelles seront effacées dans les délais prévus par notre politique de confidentialité.</source>
+        <target>Your personal data will be deleted within the time limits set out in our privacy policy.</target>
+      </trans-unit>
+      <trans-unit id="9e4bfcaaba98f25d" resname="Ton compte Kréno est supprimé. Tes réservations à venir ont été annulées et les établissements concernés ont été prévenus.">
+        <source>Ton compte Kréno est supprimé. Tes réservations à venir ont été annulées et les établissements concernés ont été prévenus.</source>
+        <target>Your Kréno account has been deleted. Your upcoming bookings have been cancelled and the businesses concerned have been notified.</target>
+      </trans-unit>
+      <trans-unit id="f06299e871cb4028" resname="Ton compte {site} est suspendu jusqu’au {date}.">
+        <source>Ton compte {site} est suspendu jusqu’au {date}.</source>
+        <target>Your {site} account is suspended until {date}.</target>
+      </trans-unit>
+      <trans-unit id="826ff9cc20d8fa45" resname="Ton compte {site} est suspendu.">
+        <source>Ton compte {site} est suspendu.</source>
+        <target>Your {site} account is suspended.</target>
+      </trans-unit>
+      <trans-unit id="58e661f441cf125a" resname="Ton message :">
+        <source>Ton message :</source>
+        <target>Your message:</target>
+      </trans-unit>
+      <trans-unit id="f1587f7b08731bfb" resname="Total HT">
+        <source>Total HT</source>
+        <target>Total excl. VAT</target>
+      </trans-unit>
+      <trans-unit id="7324c65710823973" resname="Total TTC">
+        <source>Total TTC</source>
+        <target>Total incl. VAT</target>
+      </trans-unit>
+      <trans-unit id="4d5c3ebb34ab0cfa" resname="Toutes les réservations">
+        <source>Toutes les réservations</source>
+        <target>All bookings</target>
+      </trans-unit>
+      <trans-unit id="4363cf151b61964b" resname="Tu penses qu&apos;il s&apos;agit d&apos;une erreur ? Écris-nous à {supportEmail}.">
+        <source>Tu penses qu&apos;il s&apos;agit d&apos;une erreur ? Écris-nous à {supportEmail}.</source>
+        <target>Think this is a mistake? Write to us at {supportEmail}.</target>
+      </trans-unit>
+      <trans-unit id="d46fa24666524052" resname="Tu règles directement sur place.">
+        <source>Tu règles directement sur place.</source>
+        <target>You pay directly on site.</target>
+      </trans-unit>
+      <trans-unit id="171b9f5d919b48e8" resname="Tu étais bien présent ou tu avais prévenu ? Tu peux contester depuis {open}tes signalements{close} ou nous écrire à {email}.">
+        <source>Tu étais bien présent ou tu avais prévenu ? Tu peux contester depuis {open}tes signalements{close} ou nous écrire à {email}.</source>
+        <target>Were you actually there, or had you let them know? You can dispute it from {open}your reports{close} or write to us at {email}.</target>
+      </trans-unit>
+      <trans-unit id="a3d7357117ed62d1" resname="Téléphone :">
+        <source>Téléphone :</source>
+        <target>Phone:</target>
+      </trans-unit>
+      <trans-unit id="5e60244974b75d44" resname="Un avoir a été émis sur votre compte Kréno Pro.">
+        <source>Un avoir a été émis sur votre compte Kréno Pro.</source>
+        <target>A credit note has been issued on your Kréno Pro account.</target>
+      </trans-unit>
+      <trans-unit id="73c4e04f3303e92c" resname="Un empêchement ? Préviens l’établissement au {phone}. Une absence non prévenue peut entraîner la suspension de ton compte.">
+        <source>Un empêchement ? Préviens l’établissement au {phone}. Une absence non prévenue peut entraîner la suspension de ton compte.</source>
+        <target>Can&apos;t make it? Let the business know at {phone}. A no-show without notice may lead to your account being suspended.</target>
+      </trans-unit>
+      <trans-unit id="4314b8f5096eb69e" resname="Un empêchement ? Préviens l’établissement. Une absence non prévenue peut entraîner la suspension de ton compte.">
+        <source>Un empêchement ? Préviens l’établissement. Une absence non prévenue peut entraîner la suspension de ton compte.</source>
+        <target>Can&apos;t make it? Let the business know. A no-show without notice may lead to your account being suspended.</target>
+      </trans-unit>
+      <trans-unit id="ad599071d198f8d2" resname="Un empêchement ? Tu peux encore annuler gratuitement depuis {open}ta réservation{close}.">
+        <source>Un empêchement ? Tu peux encore annuler gratuitement depuis {open}ta réservation{close}.</source>
+        <target>Can&apos;t make it? You can still cancel for free from {open}your booking{close}.</target>
+      </trans-unit>
+      <trans-unit id="1a8130130bfd5f38" resname="Un imprévu ? Tu peux joindre l&apos;établissement au {phone}">
+        <source>Un imprévu ? Tu peux joindre l&apos;établissement au {phone}</source>
+        <target>Something came up? You can reach the business at {phone}</target>
+      </trans-unit>
+      <trans-unit id="18c59a248fea7189" resname="Un nouvel établissement attend sa validation :">
+        <source>Un nouvel établissement attend sa validation :</source>
+        <target>A new business is awaiting approval:</target>
+      </trans-unit>
+      <trans-unit id="16edc7a748641ea0" resname="Voir la conversation et répondre">
+        <source>Voir la conversation et répondre</source>
+        <target>View the conversation and reply</target>
+      </trans-unit>
+      <trans-unit id="66a0a99e2d683205" resname="Voir la facture">
+        <source>Voir la facture</source>
+        <target>View the invoice</target>
+      </trans-unit>
+      <trans-unit id="67cc9c390467d3eb" resname="Voir la réservation">
+        <source>Voir la réservation</source>
+        <target>View the booking</target>
+      </trans-unit>
+      <trans-unit id="86f67c253b282d0b" resname="Voir les réservations">
+        <source>Voir les réservations</source>
+        <target>View bookings</target>
+      </trans-unit>
+      <trans-unit id="7e0485e38e103d16" resname="Voir l’avoir">
+        <source>Voir l’avoir</source>
+        <target>View the credit note</target>
+      </trans-unit>
+      <trans-unit id="c1c7e8e68bc673db" resname="Voir ma réservation">
+        <source>Voir ma réservation</source>
+        <target>View my booking</target>
+      </trans-unit>
+      <trans-unit id="226d62f357423e8c" resname="Voir mes réservations">
+        <source>Voir mes réservations</source>
+        <target>View my bookings</target>
+      </trans-unit>
+      <trans-unit id="03db5d9cfd1d8c20" resname="Voir tous les créneaux du moment">
+        <source>Voir tous les créneaux du moment</source>
+        <target>See all current slots</target>
+      </trans-unit>
+      <trans-unit id="150ea6b3409744aa" resname="Votre abonnement {plan} est à jour, prochaine échéance le {date}.">
+        <source>Votre abonnement {plan} est à jour, prochaine échéance le {date}.</source>
+        <target>Your {plan} subscription is up to date, next payment on {date}.</target>
+      </trans-unit>
+      <trans-unit id="d76285f9efb82f60" resname="Votre abonnement {plan} est à jour.">
+        <source>Votre abonnement {plan} est à jour.</source>
+        <target>Your {plan} subscription is up to date.</target>
+      </trans-unit>
+      <trans-unit id="2de2b2bdfc1e84d6" resname="Votre accès à {company} sur Kréno Pro a été retiré par un administrateur de l&apos;entreprise.">
+        <source>Votre accès à {company} sur Kréno Pro a été retiré par un administrateur de l&apos;entreprise.</source>
+        <target>Your access to {company} on Kréno Pro has been removed by a company administrator.</target>
+      </trans-unit>
+      <trans-unit id="a0107c64d664f93e" resname="Votre banque demande une confirmation pour le paiement de la facture n°{number} ({amount}) TTC">
+        <source>Votre banque demande une confirmation pour le paiement de la facture n°{number} ({amount}) TTC</source>
+        <target>Your bank is asking for confirmation of the payment of invoice no. {number} ({amount}) incl. VAT</target>
+      </trans-unit>
+      <trans-unit id="6253165bf5d9aa57" resname="Votre créneau a trouvé preneur !">
+        <source>Votre créneau a trouvé preneur !</source>
+        <target>Your slot has been booked!</target>
+      </trans-unit>
+      <trans-unit id="55c1903a61db2e1b" resname="Votre facture {site} Pro de {month} est disponible.">
+        <source>Votre facture {site} Pro de {month} est disponible.</source>
+        <target>Your {site} Pro invoice for {month} is available.</target>
+      </trans-unit>
+      <trans-unit id="575ae84fd7cf0395" resname="Votre facture {site} Pro est disponible.">
+        <source>Votre facture {site} Pro est disponible.</source>
+        <target>Your {site} Pro invoice is available.</target>
+      </trans-unit>
+      <trans-unit id="bf997e7a315e911e" resname="Votre page est à nouveau visible et vous pouvez publier vos créneaux libérés.">
+        <source>Votre page est à nouveau visible et vous pouvez publier vos créneaux libérés.</source>
+        <target>Your page is visible again and you can publish your freed-up slots.</target>
+      </trans-unit>
+      <trans-unit id="7783255bd0f88425" resname="Votre établissement sera mis en ligne dès réception et vérification.">
+        <source>Votre établissement sera mis en ligne dès réception et vérification.</source>
+        <target>Your business will go online as soon as it has been received and checked.</target>
+      </trans-unit>
+      <trans-unit id="f23c744522f59e8d" resname="Vous ne connaissez pas {inviter} ? Ignoez simplement cet e-mail.">
+        <source>Vous ne connaissez pas {inviter} ? Ignoez simplement cet e-mail.</source>
+        <target>Don&apos;t know {inviter}? Simply ignore this email.</target>
+      </trans-unit>
+      <trans-unit id="88a1a0da48a6d3d2" resname="Vous ne pouvez plus consulter ni gérer ses créneaux et réservations. Votre compte personnel reste actif.">
+        <source>Vous ne pouvez plus consulter ni gérer ses créneaux et réservations. Votre compte personnel reste actif.</source>
+        <target>You can no longer view or manage its slots and bookings. Your personal account remains active.</target>
+      </trans-unit>
+      <trans-unit id="7b227ea5a12ab604" resname="Vous pensez qu’il s’agit d’une erreur ? Rapprochez-vous de l’entreprise ou écrivez-nous à {supportEmail}">
+        <source>Vous pensez qu’il s’agit d’une erreur ? Rapprochez-vous de l’entreprise ou écrivez-nous à {supportEmail}</source>
+        <target>Think this is a mistake? Contact the company or write to us at {supportEmail}</target>
+      </trans-unit>
+      <trans-unit id="efd57081343e443c" resname="Vous pouvez modifier son rôle ou retirer son accès à tout moment depuis la gestion de l’équipe.">
+        <source>Vous pouvez modifier son rôle ou retirer son accès à tout moment depuis la gestion de l’équipe.</source>
+        <target>You can change their role or remove their access at any time from team management.</target>
+      </trans-unit>
+      <trans-unit id="7bf81c10b4706c1a" resname="{customerName} a annulé son rendez-vous :">
+        <source>{customerName} a annulé son rendez-vous :</source>
+        <target>{customerName} cancelled their appointment:</target>
+      </trans-unit>
+      <trans-unit id="070a808361e7213b" resname="{establishment} · {service}, {day} à {time}, {price} ({discount})">
+        <source>{establishment} · {service}, {day} à {time}, {price} ({discount})</source>
+        <target>{establishment} · {service}, {day} at {time}, {price} ({discount})</target>
+      </trans-unit>
+      <trans-unit id="4f7c71e78844c116" resname="{inviter} vos invite à rejoindre {target} sur Krénà Pro en tant que {role}">
+        <source>{inviter} vos invite à rejoindre {target} sur Krénà Pro en tant que {role}</source>
+        <target>{inviter} invites you to join {target} on Kréno Pro as {role}</target>
+      </trans-unit>
+      <trans-unit id="acfb7637c4eea1c8" resname="{member} ({email}) a accepté son invitation et rejoint {company} sur Kréno Pro en tant que {role}">
+        <source>{member} ({email}) a accepté son invitation et rejoint {company} sur Kréno Pro en tant que {role}</source>
+        <target>{member} ({email}) accepted their invitation and joined {company} on Kréno Pro as {role}</target>
+      </trans-unit>
+      <trans-unit id="41a2ddace4806b40" resname="{name} est de nouveau en ligne sur Kréno.">
+        <source>{name} est de nouveau en ligne sur Kréno.</source>
+        <target>{name} is back online on Kréno.</target>
+      </trans-unit>
+      <trans-unit id="9c1d1d6a0234360d" resname="{name} est suspendu sur Kréno.">
+        <source>{name} est suspendu sur Kréno.</source>
+        <target>{name} is suspended on Kréno.</target>
+      </trans-unit>
+      <trans-unit id="e34ac4e97cc7f007" resname="{name} nous a signalé ton absence au rendez-vous suivant :">
+        <source>{name} nous a signalé ton absence au rendez-vous suivant :</source>
+        <target>{name} reported that you missed the following appointment:</target>
+      </trans-unit>
+      <trans-unit id="932fdbc3a2eb4f56" resname="{price} au lieu de {originalPrice} (tu économises {saved})">
+        <source>{price} au lieu de {originalPrice} (tu économises {saved})</source>
+        <target>{price} instead of {originalPrice} (you save {saved})</target>
+      </trans-unit>
+      <trans-unit id="cc91bda351ff7b52" resname="{price}, à réfler sur place">
+        <source>{price}, à réfler sur place</source>
+        <target>{price}, to be paid on site</target>
+      </trans-unit>
+      <trans-unit id="1610caafd5dbc226" resname="À traiter dans l’admin, section « Modération des pros ».">
+        <source>À traiter dans l’admin, section « Modération des pros ».</source>
+        <target>To be handled in the admin, “Pro moderation” section.</target>
+      </trans-unit>
+      <trans-unit id="9e986d71339165f8" resname="Le créneau est automatiquement remis en ligne : il peut encore trouver preneur.">
+        <source>Le créneau est automatiquement remis en ligne : il peut encore trouver preneur.</source>
+        <target>The slot is automatically put back online: it can still be booked.</target>
+      </trans-unit>
+      <trans-unit id="5019dc5c39d8e310" resname="Bonjour {firstName},">
+        <source>Bonjour {firstName},</source>
+        <target>Hello {firstName},</target>
+      </trans-unit>
+      <trans-unit id="3b7b8d1ded17ac4c" resname="Bonjour {firstname},">
+        <source>Bonjour {firstname},</source>
+        <target>Hello {firstname},</target>
+      </trans-unit>
+      <trans-unit id="73c0105572f376d9" resname="Bonjour,">
+        <source>Bonjour,</source>
+        <target>Hello,</target>
+      </trans-unit>
+      <trans-unit id="26a5e68ec221d420" resname="Bonne journée,">
+        <source>Bonne journée,</source>
+        <target>Have a nice day,</target>
+      </trans-unit>
+      <trans-unit id="50b729062f7ad47c" resname="Cet e-mail t&apos;a été envoyé par Kréno. Tu peux gérer tes notifications depuis ton espace client.">
+        <source>Cet e-mail t&apos;a été envoyé par Kréno. Tu peux gérer tes notifications depuis ton espace client.</source>
+        <target>This email was sent to you by Kréno. You can manage your notifications from your customer area.</target>
+      </trans-unit>
+      <trans-unit id="2cfd5ac283161d22" resname="Cet e-mail vous a été envoyé par Kréno Pro dans le cadre de votre activité professionnelle.">
+        <source>Cet e-mail vous a été envoyé par Kréno Pro dans le cadre de votre activité professionnelle.</source>
+        <target>This email was sent to you by Kréno Pro as part of your professional activity.</target>
+      </trans-unit>
+      <trans-unit id="9d6338a61512e866" resname="E-mail automatique envoyé par la plateforme Kréno.">
+        <source>E-mail automatique envoyé par la plateforme Kréno.</source>
+        <target>Automatic email sent by the Kréno platform.</target>
+      </trans-unit>
+      <trans-unit id="35d410ef21066fc7" resname="L&apos;équipe Kréno Pro">
+        <source>L&apos;équipe Kréno Pro</source>
+        <target>The Kréno Pro team</target>
+      </trans-unit>
+      <trans-unit id="2745c9ebaa785831" resname="Les créneaux libérés près de chez toi">
+        <source>Les créneaux libérés près de chez toi</source>
+        <target>Freed-up slots near you</target>
+      </trans-unit>
+      <trans-unit id="96e7b969b18e309e" resname="L’espace des établissements">
+        <source>L’espace des établissements</source>
+        <target>The business area</target>
+      </trans-unit>
+      <trans-unit id="e45388e50023e3f3" resname="L’équipe Kréno">
+        <source>L’équipe Kréno</source>
+        <target>The Kréno team</target>
+      </trans-unit>
+      <trans-unit id="5ad067e8fb7d99a1" resname="Message automatique de la plateforme Kréno.">
+        <source>Message automatique de la plateforme Kréno.</source>
+        <target>Automatic message from the Kréno platform.</target>
+      </trans-unit>
+      <trans-unit id="e8b49088fe29424e" resname="interne">
+        <source>interne</source>
+        <target>internal</target>
+      </trans-unit>
+      <trans-unit id="28222c6e7a4c8ea9" resname="À très vite,">
+        <source>À très vite,</source>
+        <target>See you soon,</target>
+      </trans-unit>
+      <trans-unit id="4567c3efd2adb2b8" resname="Équipe interne">
+        <source>Équipe interne</source>
+        <target>Internal team</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

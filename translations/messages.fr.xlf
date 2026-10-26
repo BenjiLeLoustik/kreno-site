@@ -9350,6 +9350,90 @@
         <source>Copié ✓</source>
         <target>Copié ✓</target>
       </trans-unit>
+      <trans-unit id="a407254955e58378" resname="Ajouter une question · {locale}">
+        <source>Ajouter une question · {locale}</source>
+        <target>Ajouter une question · {locale}</target>
+      </trans-unit>
+      <trans-unit id="920dc205136f3fb6" resname="Aucune traduction pour cette langue. Elle sera créée à l’enregistrement.">
+        <source>Aucune traduction pour cette langue. Elle sera créée à l’enregistrement.</source>
+        <target>Aucune traduction pour cette langue. Elle sera créée à l’enregistrement.</target>
+      </trans-unit>
+      <trans-unit id="42f235de1f0a57ae" resname="Créer la traduction">
+        <source>Créer la traduction</source>
+        <target>Créer la traduction</target>
+      </trans-unit>
+      <trans-unit id="952da9cb9d75ed69" resname="Des établissements utilisent cette catégorie">
+        <source>Des établissements utilisent cette catégorie</source>
+        <target>Des établissements utilisent cette catégorie</target>
+      </trans-unit>
+      <trans-unit id="e57ad9d806f1f4d3" resname="Informations communes">
+        <source>Informations communes</source>
+        <target>Informations communes</target>
+      </trans-unit>
+      <trans-unit id="5f6baab4dbe152fc" resname="Langue">
+        <source>Langue</source>
+        <target>Langue</target>
+      </trans-unit>
+      <trans-unit id="132a09dee784f7b5" resname="Modifier la question · FAQ · Administration Kréno">
+        <source>Modifier la question · FAQ · Administration Kréno</source>
+        <target>Modifier la question · FAQ · Administration Kréno</target>
+      </trans-unit>
+      <trans-unit id="591935b15b1c88e2" resname="Public">
+        <source>Public</source>
+        <target>Public</target>
+      </trans-unit>
+      <trans-unit id="b095dbe280ed6cef" resname="Question sans traduction">
+        <source>Question sans traduction</source>
+        <target>Question sans traduction</target>
+      </trans-unit>
+      <trans-unit id="eba91a8daff39364" resname="Rubrique · {locale}">
+        <source>Rubrique · {locale}</source>
+        <target>Rubrique · {locale}</target>
+      </trans-unit>
+      <trans-unit id="df2c9298eaebf628" resname="Slug : {slug}">
+        <source>Slug : {slug}</source>
+        <target>Slug : {slug}</target>
+      </trans-unit>
+      <trans-unit id="4612e539c4198e01" resname="Supprimer la catégorie {name} ?">
+        <source>Supprimer la catégorie {name} ?</source>
+        <target>Supprimer la catégorie {name} ?</target>
+      </trans-unit>
+      <trans-unit id="807c8d51756d690a" resname="Supprimer {name}">
+        <source>Supprimer {name}</source>
+        <target>Supprimer {name}</target>
+      </trans-unit>
+      <trans-unit id="4785aaa10601e08f" resname="Traduction · {locale}">
+        <source>Traduction · {locale}</source>
+        <target>Traduction · {locale}</target>
+      </trans-unit>
+      <trans-unit id="e600fb76a7f6c094" resname="{name} · Catégories · Administration Kréno">
+        <source>{name} · Catégories · Administration Kréno</source>
+        <target>{name} · Catégories · Administration Kréno</target>
+      </trans-unit>
+      <trans-unit id="3011d83718ee76c3" resname="{name} · FAQ · Administration Kréno">
+        <source>{name} · FAQ · Administration Kréno</source>
+        <target>{name} · FAQ · Administration Kréno</target>
+      </trans-unit>
+      <trans-unit id="dfc31645371d67a4" resname="{occurrences} fois · dernière le {lastSeenAt}">
+        <source>{occurrences} fois · dernière le {lastSeenAt}</source>
+        <target>{occurrences} fois · dernière le {lastSeenAt}</target>
+      </trans-unit>
+      <trans-unit id="d5840d2e5a4102e4" resname="{slug} · {count, plural, =1 {# pro} other {# pros}}">
+        <source>{slug} · {count, plural, =1 {# pro} other {# pros}}</source>
+        <target>{slug} · {count, plural, =1 {# pro} other {# pros}}</target>
+      </trans-unit>
+      <trans-unit id="efbd87e3ab8669c1" resname="← Catégories et villes">
+        <source>← Catégories et villes</source>
+        <target>← Catégories et villes</target>
+      </trans-unit>
+      <trans-unit id="1a580a149dd634c5" resname="← FAQ">
+        <source>← FAQ</source>
+        <target>← FAQ</target>
+      </trans-unit>
+      <trans-unit id="f44f15017564247e" resname="← {name}">
+        <source>← {name}</source>
+        <target>← {name}</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
