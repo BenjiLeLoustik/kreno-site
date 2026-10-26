@@ -15,14 +15,34 @@
         {{ translate('Modifier la question') }}
     </h1>
 
+    <nav class="admin-tabs" aria-label="{{ translate('Langue') }}">
+        {% for code in locales %}
+            <a href="{{ path('admin_faq_question_show', { id: question.id, locale: code }) }}"
+               class="admin-tabs__link{{ code == locale ? ' admin-tabs__link--active' : '' }}"
+                    {{ code == locale ? 'aria-current="page"' : '' }}
+            >
+                {{ code|upper }}
+            </a>
+        {% endfor %}
+    </nav>
+
     <section class="admin-card">
-        <form method="post" action="{{ path('admin_faq_question_update', { id: question.id }) }}" class="admin-form">
+        <h2 class="admin-card__title">
+            {{ translate('Traduction · {locale}', {locale: locale|upper}) }}
+        </h2>
+        {% if not translation %}
+            <span class="admin-subtitle">
+                {{ translate('Aucune traduction pour cette langue. Elle sera créée à l’enregistrement.') }}
+            </span>
+        {% endif %}
+
+        <form method="post" action="{{ path('admin_faq_question_update', { id: question.id, locale: locale }) }}" class="admin-form">
             {{ csrf_field('admin_faq')|raw }}
             <label class="admin-field">
                 {{ translate('Question') }}
                 <input type="text"
                        name="question"
-                       value="{{ question.question }}"
+                       value="{{ translation.question ?? '' }}"
                        required
                        minlength="5"
                        maxlength="255"
@@ -36,11 +56,11 @@
                           required
                           maxlength="5000"
                           class="admin-input admin-input--area"
-                >{{ question.answer }}</textarea>
+                >{{ translation.answer ?? '' }}</textarea>
             </label>
             <div class="admin-actions">
                 <button type="submit" class="admin-button admin-button--primary">
-                    {{ translate('Enregistrer') }}
+                    {{ translation ? translate('Enregistrer') : translate('Créer la traduction') }}
                 </button>
             </div>
         </form>

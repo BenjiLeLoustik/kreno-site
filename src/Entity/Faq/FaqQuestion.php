@@ -5,6 +5,8 @@ namespace App\Entity\Faq;
 use App\Entity\AbstractBaseEntity;
 use App\Entity\Trait\PositionTrait;
 use App\Repository\Faq\FaqQuestionRepository;
+use NeoPHP\Package\Orm\Collection\ArrayCollection;
+use NeoPHP\Package\Orm\Contract\CollectionInterface;
 use NeoPHP\Package\Orm\Mapping as ORM;
 
 #[ORM\Entity(repository: FaqQuestionRepository::class)]
@@ -16,14 +18,22 @@ class FaqQuestion extends AbstractBaseEntity
     #[ORM\ManyToOne(FaqCategory::class, inversedBy: 'questions', nullable: false, onDelete: 'CASCADE')]
     private ?FaqCategory $category = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $question = null;
-
-    #[ORM\Column(type: 'text')]
-    private ?string $answer = null;
-
     #[ORM\Column]
     private bool $visible = true;
+
+    #[ORM\OneToMany(
+        FaqQuestionTranslation::class,
+        mappedBy: 'faqQuestion',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true,
+        orderBy: ['locale' => 'ASC'],
+    )]
+    private CollectionInterface $translations;
+
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
 
     public function getCategory(): ?FaqCategory
     {
@@ -37,30 +47,6 @@ class FaqQuestion extends AbstractBaseEntity
         return $this;
     }
 
-    public function getQuestion(): ?string
-    {
-        return $this->question;
-    }
-
-    public function setQuestion(string $question): static
-    {
-        $this->question = $question;
-
-        return $this;
-    }
-
-    public function getAnswer(): ?string
-    {
-        return $this->answer;
-    }
-
-    public function setAnswer(string $answer): static
-    {
-        $this->answer = $answer;
-
-        return $this;
-    }
-
     public function isVisible(): bool
     {
         return $this->visible;
@@ -69,6 +55,30 @@ class FaqQuestion extends AbstractBaseEntity
     public function setVisible(bool $visible): static
     {
         $this->visible = $visible;
+
+        return $this;
+    }
+
+    public function getTranslations(): CollectionInterface
+    {
+        return $this->translations;
+    }
+
+    public function addTranslation(FaqQuestionTranslation $translation): static
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+            $translation->setFaqQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTranslation(FaqQuestionTranslation $translation): static
+    {
+        if ($this->translations->removeElement($translation) && $translation->getFaqQuestion() === $this) {
+            $translation->setFaqQuestion(null);
+        }
 
         return $this;
     }

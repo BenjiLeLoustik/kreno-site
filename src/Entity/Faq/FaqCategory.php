@@ -4,7 +4,6 @@ namespace App\Entity\Faq;
 
 use App\Entity\AbstractBaseEntity;
 use App\Entity\Trait\PositionTrait;
-use App\Entity\Trait\SlugTrait;
 use App\Faq\Enum\FaqAudience;
 use App\Repository\Faq\FaqCategoryRepository;
 use NeoPHP\Package\Orm\Collection\ArrayCollection;
@@ -12,15 +11,10 @@ use NeoPHP\Package\Orm\Contract\CollectionInterface;
 use NeoPHP\Package\Orm\Mapping as ORM;
 
 #[ORM\Entity(repository: FaqCategoryRepository::class)]
-#[ORM\Index(columns: ['slug'], unique: true)]
 #[ORM\Index(columns: ['audience', 'visible', 'position'])]
 class FaqCategory extends AbstractBaseEntity
 {
-    use SlugTrait;
     use PositionTrait;
-
-    #[ORM\Column(length: 80)]
-    private ?string $name = null;
 
     #[ORM\Column]
     private FaqAudience $audience = FaqAudience::CLIENT;
@@ -37,21 +31,19 @@ class FaqCategory extends AbstractBaseEntity
     )]
     private CollectionInterface $questions;
 
+    #[ORM\OneToMany(
+        FaqCategoryTranslation::class,
+        mappedBy: 'category',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true,
+        orderBy: ['locale' => 'ASC'],
+    )]
+    private CollectionInterface $translations;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
+        $this->translations = new ArrayCollection();
     }
 
     public function getAudience(): FaqAudience
@@ -97,6 +89,30 @@ class FaqCategory extends AbstractBaseEntity
     {
         if ($this->questions->removeElement($question) && $question->getCategory() === $this) {
             $question->setCategory(null);
+        }
+
+        return $this;
+    }
+
+    public function getTranslations(): CollectionInterface
+    {
+        return $this->translations;
+    }
+
+    public function addTranslation(FaqCategoryTranslation $translation): static
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations->add($translation);
+            $translation->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTranslation(FaqCategoryTranslation $translation): static
+    {
+        if ($this->translations->removeElement($translation) && $translation->getCategory() === $this) {
+            $translation->setCategory(null);
         }
 
         return $this;

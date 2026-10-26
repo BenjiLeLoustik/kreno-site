@@ -74,7 +74,7 @@
 {% endmacro %}
 
 {% block title %}
-    {{ translate('{name} · FAQ · Administration Kréno', {name: category.name}) }}
+    {{ translate('{name} · FAQ · Administration Kréno', {name: category.name ?? category.slug}) }}
 {% endblock %}
 
 {% block content %}
@@ -85,23 +85,38 @@
     </a>
 
     <h1 class="admin-title">
-        {{ category.name }}
+        {{ category.name ?? category.slug }}
     </h1>
+
+    <nav class="admin-tabs" aria-label="{{ translate('Langue') }}">
+        {% for code in locales %}
+            <a href="{{ path('admin_faq_category_show', { slug: category.slug, locale: code }) }}"
+               class="admin-tabs__link{{ code == locale ? ' admin-tabs__link--active' : '' }}"
+                    {{ code == locale ? 'aria-current="page"' : '' }}
+            >
+                {{ code|upper }}
+            </a>
+        {% endfor %}
+    </nav>
 
     <div class="admin-grid">
         <section class="admin-card">
             <h2 class="admin-card__title">
-                {{ translate('Rubrique') }}
+                {{ translate('Rubrique · {locale}', {locale: locale|upper}) }}
             </h2>
             <span class="admin-subtitle">
-                {{ translate('{slug} · {count, plural, =1 {# question} other {# questions}}', {
-                    slug: category.slug,
-                    count: category.questionsCount
-                }) }}
+                {% if translation %}
+                    {{ translate('{slug} · {count, plural, =1 {# question} other {# questions}}', {
+                        slug: translation.slug,
+                        count: category.questionsCount
+                    }) }}
+                {% else %}
+                    {{ translate('Aucune traduction pour cette langue. Elle sera créée à l’enregistrement.') }}
+                {% endif %}
             </span>
 
             <form method="post"
-                  action="{{ path('admin_faq_category_update', { slug: category.slug }) }}"
+                  action="{{ path('admin_faq_category_update', { slug: category.slug, locale: locale }) }}"
                   class="admin-form"
             >
                 {{ csrf_field('admin_faq')|raw }}
@@ -110,7 +125,7 @@
                         {{ translate('Nom') }}
                         <input type="text"
                                name="name"
-                               value="{{ category.name }}"
+                               value="{{ translation.name ?? '' }}"
                                required
                                minlength="2"
                                maxlength="80"
@@ -124,7 +139,7 @@
                 </div>
                 <div class="admin-actions">
                     <button type="submit" class="admin-button admin-button--primary">
-                        {{ translate('Enregistrer') }}
+                        {{ translation ? translate('Enregistrer') : translate('Créer la traduction') }}
                     </button>
                 </div>
             </form>
@@ -133,7 +148,7 @@
                 {{ csrf_field('admin_faq')|raw }}
                 <button type="submit"
                         class="admin-button admin-button--ghost-danger"
-                        data-admin-confirm="{{ translate('Supprimer la rubrique {name} et ses {questionsCount} question(s) ?', {name: category.name, questionsCount: category.questionsCount}) }}"
+                        data-admin-confirm="{{ translate('Supprimer la rubrique {name} et ses {questionsCount} question(s) ?', {name: category.name ?? category.slug, questionsCount: category.questionsCount}) }}"
                 >
                     {{ translate('Supprimer la rubrique') }}
                 </button>
@@ -149,7 +164,7 @@
                     <div class="admin-row">
                         <span class="admin-row__main">
                             <b class="faq-question__label{{ question.visible ? '' : ' faq-question__label--hidden' }}">
-                                {{ question.question }}
+                                {{ question.question ?? translate('Question sans traduction') }}
                             </b>
                         </span>
                         <span class="admin-row__actions">
@@ -188,7 +203,7 @@
                                 translate('la question')
                             ) }}
 
-                            <a href="{{ path('admin_faq_question_show', { id: question.id }) }}"
+                            <a href="{{ path('admin_faq_question_show', { id: question.id, locale: locale }) }}"
                                class="admin-button admin-button--small">
                                 {{ translate('Modifier') }}
                             </a>
@@ -214,10 +229,10 @@
 
             <details class="admin-disclosure">
                 <summary class="admin-disclosure__summary">
-                    {{ translate('Ajouter une question') }}
+                    {{ translate('Ajouter une question · {locale}', {locale: locale|upper}) }}
                 </summary>
                 <form method="post"
-                      action="{{ path('admin_faq_question_create', { slug: category.slug }) }}"
+                      action="{{ path('admin_faq_question_create', { slug: category.slug, locale: locale }) }}"
                       class="admin-form admin-disclosure__body"
                 >
                     {{ csrf_field('admin_faq')|raw }}

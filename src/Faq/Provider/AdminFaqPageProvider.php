@@ -11,6 +11,8 @@ use App\Faq\Exception\FaqQuestionNotFoundException;
 use App\Faq\Presenter\FaqPresenter;
 use App\Repository\Faq\FaqCategoryRepository;
 use App\Repository\Faq\FaqQuestionRepository;
+use App\Shared\Service\TranslatableResolver;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class AdminFaqPageProvider
 {
@@ -18,6 +20,8 @@ class AdminFaqPageProvider
         private FaqCategoryRepository $categories,
         private FaqQuestionRepository $questions,
         private FaqPresenter $presenter,
+        private TranslatableResolver $resolver,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -30,38 +34,52 @@ class AdminFaqPageProvider
         ];
     }
 
-    public function categoryShow(string $slug): array
+    public function categoryShow(string $slug, ?string $locale = null): array
     {
         $category = $this->category($slug);
+        $locale = $this->locale($locale);
+        $translation = $this->resolver->exact($category->getTranslations(), $locale);
 
         return [
             'category' => $this->presenter->adminCategory($category),
+            'translation' => $translation === null ? null : [
+                'name' => $translation->getName(),
+                'slug' => $translation->getSlug(),
+            ],
+            'locale' => $locale,
+            'locales' => $this->translation->getLocales(),
             'audienceChoices' => FaqAudience::choices(),
         ];
     }
 
-    public function questionShow(int $id): array
+    public function questionShow(int $id, ?string $locale = null): array
     {
         $question = $this->question($id);
         $category = $question->getCategory();
+        $locale = $this->locale($locale);
+        $translation = $this->resolver->exact($question->getTranslations(), $locale);
 
         return [
             'question' => [
                 'id' => $question->getId(),
-                'question' => $question->getQuestion(),
-                'answer' => $question->getAnswer(),
                 'visible' => $question->isVisible(),
             ],
+            'translation' => $translation === null ? null : [
+                'question' => $translation->getName(),
+                'answer' => $translation->getAnswer(),
+            ],
+            'locale' => $locale,
+            'locales' => $this->translation->getLocales(),
             'category' => [
-                'slug' => $category?->getSlug(),
-                'name' => $category?->getName(),
+                'slug' => $this->slug($category),
+                'name' => $this->name($category),
             ],
         ];
     }
 
     public function category(string $slug): FaqCategory
     {
-        $category = $this->categories->findOneBySlug($slug);
+        $category = $this->categories->findOneByAnySlugOrId($slug);
 
         if ($category === null) {
             throw new FaqCategoryNotFoundException($slug);
@@ -79,6 +97,30 @@ class AdminFaqPageProvider
         }
 
         return $question;
+    }
+
+    public function name(?FaqCategory $category): ?string
+    {
+        if ($category === null) {
+            return null;
+        }
+
+        return $this->resolver->faqCategory($category)?->getName();
+    }
+
+    public function slug(?FaqCategory $category): ?string
+    {
+        if ($category === null) {
+            return null;
+        }
+
+        return $this->resolver->faqCategory($category)?->getSlug() ?? (string) $category->getId();
+    }
+
+    public function locale(?string $locale): string
+    {
+        return $this->translation->matchLocale($locale ?? $this->translation->getLocale())
+            ?? $this->translation->getLocale();
     }
 
     private function audiences(): array

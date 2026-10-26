@@ -2,8 +2,8 @@
 
 namespace App\Faq\Listener;
 
-use App\Entity\Faq\FaqCategory;
-use App\Repository\Faq\FaqCategoryRepository;
+use App\Entity\Faq\FaqCategoryTranslation;
+use App\Repository\Faq\FaqCategoryTranslationRepository;
 use App\Shared\Helper\StringHelper;
 use NeoPHP\Component\Event\Attribute\AsListener;
 use NeoPHP\Package\Orm\Event\PrePersistEvent;
@@ -11,24 +11,28 @@ use NeoPHP\Package\Orm\Event\PrePersistEvent;
 class FaqCategorySlugListener
 {
     public function __construct(
-        private FaqCategoryRepository $categories,
+        private FaqCategoryTranslationRepository $translations,
     ) {
     }
 
     #[AsListener]
     public function onPrePersist(PrePersistEvent $event): void
     {
-        $category = $event->getEntity();
+        $translation = $event->getEntity();
 
-        if (!$category instanceof FaqCategory || ($category->getSlug() ?? '') !== '') {
+        if (!$translation instanceof FaqCategoryTranslation || ($translation->getSlug() ?? '') !== '') {
             return;
         }
 
-        $category->setSlug(StringHelper::uniqueSlug((string) $category->getName(), $this->slugExists(...)));
-    }
-
-    private function slugExists(string $slug): bool
-    {
-        return $this->categories->slugExists($slug);
+        $translation->setSlug(
+            StringHelper::uniqueSlug(
+                (string) $translation->getName(),
+                fn (string $slug): bool => $this->translations->slugExists(
+                    $slug,
+                    $translation->getLocale(),
+                    $translation->getId()
+                )
+            )
+        );
     }
 }

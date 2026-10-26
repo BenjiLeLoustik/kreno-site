@@ -4,11 +4,15 @@ namespace App\Faq\Service;
 
 use App\Entity\Faq\FaqCategory;
 use App\Entity\Faq\FaqQuestion;
+use App\Entity\Faq\FaqQuestionTranslation;
 use App\Entity\User\User;
 use App\Faq\Dto\FaqQuestionInput;
 use App\Log\Enum\ActivityType;
 use App\Log\Service\ActivityLogger;
+use App\Repository\Faq\FaqQuestionTranslationRepository;
+use App\Shared\Service\TranslatableResolver;
 use NeoPHP\Package\Orm\OrmManagerInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class FaqQuestionService
 {
@@ -26,26 +30,47 @@ class FaqQuestionService
 
     public function __construct(
         private OrmManagerInterface $orm,
+        private FaqQuestionTranslationRepository $translations,
+        private TranslatableResolver $resolver,
+        private TranslationManagerInterface $translation,
         private ActivityLogger $logger,
     ) {
     }
 
-    public function add(FaqCategory $category, FaqQuestionInput $input, ?User $actor = null): FaqQuestion
-    {
+    public function add(
+        FaqCategory $category,
+        FaqQuestionInput $input,
+        ?User $actor = null,
+        ?string $locale = null,
+    ): FaqQuestion {
         $question = (new FaqQuestion())->setPosition($category->getQuestions()->count());
-        $this->apply($question, $input);
+        $translation = (new FaqQuestionTranslation())->setLocale($locale ?? $this->translation->getLocale());
+        $this->apply($translation, $input);
+        $question->addTranslation($translation);
         $category->addQuestion($question);
         $this->orm->persist($question);
-        $this->log(self::LOG_CREATED, $question, $actor);
+        $this->log(self::LOG_CREATED, $question, $translation->getName(), $actor);
         $this->orm->flush();
 
         return $question;
     }
 
-    public function update(FaqQuestion $question, FaqQuestionInput $input, ?User $actor = null): FaqQuestion
-    {
-        $this->apply($question, $input);
-        $this->log(self::LOG_UPDATED, $question, $actor);
+    public function update(
+        FaqQuestion $question,
+        FaqQuestionInput $input,
+        ?User $actor = null,
+        ?string $locale = null,
+    ): FaqQuestion {
+        $locale ??= $this->translation->getLocale();
+        $translation = $this->translations->findOneByQuestionAndLocale($question, $locale);
+
+        if ($translation === null) {
+            $translation = (new FaqQuestionTranslation())->setLocale($locale);
+            $question->addTranslation($translation);
+        }
+
+        $this->apply($translation, $input);
+        $this->log(self::LOG_UPDATED, $question, $translation->getName(), $actor);
         $this->orm->flush();
 
         return $question;
@@ -58,7 +83,7 @@ class FaqQuestionService
         }
 
         $question->setVisible($visible);
-        $this->log($this->visibilityLog($visible), $question, $actor);
+        $this->log($this->visibilityLog($visible), $question, $this->text($question), $actor);
         $this->orm->flush();
 
         return $question;
@@ -66,7 +91,7 @@ class FaqQuestionService
 
     public function delete(FaqQuestion $question, ?User $actor = null): void
     {
-        $this->log(self::LOG_DELETED, $question, $actor);
+        $this->log(self::LOG_DELETED, $question, $this->text($question), $actor);
         $question->getCategory()?->removeQuestion($question);
         $this->orm->remove($question);
         $this->orm->flush();
@@ -82,21 +107,28 @@ class FaqQuestionService
             }
         }
 
-        $this->logger->log(ActivityType::FAQ, sprintf(self::LOG_REORDERED, $category->getName()), $actor);
+        $message = sprintf(self::LOG_REORDERED, $this->resolver->faqCategory($category)?->getName());
+        $this->logger->log(ActivityType::FAQ, $message, $actor);
         $this->orm->flush();
     }
 
-    private function apply(FaqQuestion $question, FaqQuestionInput $input): void
+    private function apply(FaqQuestionTranslation $translation, FaqQuestionInput $input): void
     {
-        $question
-            ->setQuestion(trim((string) $input->question))
+        $translation
+            ->setName(trim((string) $input->question))
             ->setAnswer(trim((string) $input->answer));
     }
 
-    private function log(string $pattern, FaqQuestion $question, ?User $actor): void
+    private function text(FaqQuestion $question): ?string
     {
-        $message = sprintf($pattern, $question->getCategory()?->getName(), $question->getQuestion());
-        $this->logger->log(ActivityType::FAQ, $message, $actor);
+        return $this->resolver->faqQuestion($question)?->getName();
+    }
+
+    private function log(string $pattern, FaqQuestion $question, ?string $text, ?User $actor): void
+    {
+        $category = $question->getCategory();
+        $name = $category === null ? null : $this->resolver->faqCategory($category)?->getName();
+        $this->logger->log(ActivityType::FAQ, sprintf($pattern, $name, $text), $actor);
     }
 
     private function visibilityLog(bool $visible): string

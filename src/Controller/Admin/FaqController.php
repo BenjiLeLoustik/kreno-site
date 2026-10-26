@@ -11,6 +11,7 @@ use App\Faq\Provider\AdminFaqPageProvider;
 use App\Faq\Service\FaqCategoryService;
 use App\Faq\Service\FaqQuestionService;
 use NeoPHP\Component\Csrf\Attribute\Csrf;
+use NeoPHP\Component\Http\Request\Request;
 use NeoPHP\Component\Http\Response\RedirectResponse;
 use NeoPHP\Component\Http\Response\Response;
 use NeoPHP\Component\Routing\Attribute\Route;
@@ -42,11 +43,12 @@ class FaqController extends AbstractAdminController
         name: 'admin_faq_category_show',
         methods: ['GET']
     )]
-    public function showCategory(string $slug): Response
+    public function showCategory(Request $request, string $slug): Response
     {
         $this->currentAdmin();
+        $locale = $this->pages->locale($request->query->getString('locale') ?: null);
 
-        return $this->render('admin/faq/category_show.html.twig', $this->pages->categoryShow($slug));
+        return $this->render('admin/faq/category_show.html.twig', $this->pages->categoryShow($slug, $locale));
     }
 
     #[Route(
@@ -55,11 +57,12 @@ class FaqController extends AbstractAdminController
         methods: ['GET'],
         requirements: ['id' => '\d+'],
     )]
-    public function showQuestion(int $id): Response
+    public function showQuestion(Request $request, int $id): Response
     {
         $this->currentAdmin();
+        $locale = $this->pages->locale($request->query->getString('locale') ?: null);
 
-        return $this->render('admin/faq/question_show.html.twig', $this->pages->questionShow($id));
+        return $this->render('admin/faq/question_show.html.twig', $this->pages->questionShow($id, $locale));
     }
 
     #[Csrf(id: 'admin_faq')]
@@ -113,22 +116,25 @@ class FaqController extends AbstractAdminController
         methods: ['POST']
     )]
     public function updateCategory(
+        Request $request,
         string $slug,
         #[MapRequestPayload(validate: false)]
         FaqCategoryInput $input,
     ): RedirectResponse {
         $admin = $this->currentAdmin();
+        $locale = $this->pages->locale($request->query->getString('locale') ?: null);
         $category = $this->pages->category($slug);
 
         if (!$this->invalid($input)) {
             $this->attempt(
-                fn () => $this->categoryService->update($category, $input, $admin),
+                fn () => $this->categoryService->update($category, $input, $admin, $locale),
                 FaqFlash::CATEGORY_UPDATED->text($input->name),
             );
         }
 
         return $this->redirectToRoute('admin_faq_category_show', [
-            'slug' => $slug
+            'slug' => $this->pages->slug($category) ?? $slug,
+            'locale' => $locale,
         ]);
     }
 
@@ -145,7 +151,7 @@ class FaqController extends AbstractAdminController
         $visible = !$category->isVisible();
         $this->attempt(
             fn () => $this->categoryService->setVisible($category, $visible, $admin),
-            FaqFlash::categoryVisibility($visible)->text($category->getName()),
+            FaqFlash::categoryVisibility($visible)->text($this->pages->name($category)),
         );
 
         return $this->redirectToRoute('admin_faq_index');
@@ -163,7 +169,7 @@ class FaqController extends AbstractAdminController
         $category = $this->pages->category($slug);
         $this->attempt(
             fn () => $this->categoryService->delete($category, $admin),
-            FaqFlash::CATEGORY_DELETED->text($category->getName()),
+            FaqFlash::CATEGORY_DELETED->text($this->pages->name($category)),
         );
 
         return $this->redirectToRoute('admin_faq_index');
@@ -176,21 +182,24 @@ class FaqController extends AbstractAdminController
         methods: ['POST']
     )]
     public function createQuestion(
+        Request $request,
         string $slug,
         #[MapRequestPayload(validate: false)] FaqQuestionInput $input,
     ): RedirectResponse {
         $admin = $this->currentAdmin();
+        $locale = $this->pages->locale($request->query->getString('locale') ?: null);
         $category = $this->pages->category($slug);
 
         if (!$this->invalid($input)) {
             $this->attempt(
-                fn () => $this->questionService->add($category, $input, $admin),
-                FaqFlash::QUESTION_CREATED->text($category->getName()),
+                fn () => $this->questionService->add($category, $input, $admin, $locale),
+                FaqFlash::QUESTION_CREATED->text($this->pages->name($category)),
             );
         }
 
         return $this->redirectToRoute('admin_faq_category_show', [
-            'slug' => $slug
+            'slug' => $slug,
+            'locale' => $locale,
         ]);
     }
 
@@ -228,22 +237,25 @@ class FaqController extends AbstractAdminController
         requirements: ['id' => '\d+'],
     )]
     public function updateQuestion(
+        Request $request,
         int $id,
         #[MapRequestPayload(validate: false)]
         FaqQuestionInput $input,
     ): RedirectResponse {
         $admin = $this->currentAdmin();
+        $locale = $this->pages->locale($request->query->getString('locale') ?: null);
         $question = $this->pages->question($id);
 
         if (!$this->invalid($input)) {
             $this->attempt(
-                fn () => $this->questionService->update($question, $input, $admin),
+                fn () => $this->questionService->update($question, $input, $admin, $locale),
                 FaqFlash::QUESTION_UPDATED->text(),
             );
         }
 
         return $this->redirectToRoute('admin_faq_question_show', [
-            'id' => $id
+            'id' => $id,
+            'locale' => $locale,
         ]);
     }
 
@@ -265,7 +277,7 @@ class FaqController extends AbstractAdminController
         );
 
         return $this->redirectToRoute('admin_faq_category_show', [
-            'slug' => $question->getCategory()->getSlug()
+            'slug' => $this->pages->slug($question->getCategory())
         ]);
     }
 
@@ -284,7 +296,7 @@ class FaqController extends AbstractAdminController
         $this->attempt(fn () => $this->questionService->delete($question, $admin), FaqFlash::QUESTION_DELETED->text());
 
         return $this->redirectToRoute('admin_faq_category_show', [
-            'slug' => $category?->getSlug()
+            'slug' => $this->pages->slug($category)
         ]);
     }
 }

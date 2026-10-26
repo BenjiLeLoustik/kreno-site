@@ -5,11 +5,18 @@ namespace App\Faq\Presenter;
 use App\Entity\Faq\FaqCategory;
 use App\Entity\Faq\FaqQuestion;
 use App\Faq\Enum\FaqPlaceholder;
+use App\Shared\Service\TranslatableResolver;
 
 class FaqPresenter
 {
+    public function __construct(
+        private TranslatableResolver $resolver,
+    ) {
+    }
+
     public function adminCategory(FaqCategory $category): array
     {
+        $translation = $this->resolver->faqCategory($category);
         $questions = [];
 
         foreach ($category->getQuestions() as $question) {
@@ -17,8 +24,8 @@ class FaqPresenter
         }
 
         return [
-            'slug' => $category->getSlug(),
-            'name' => $category->getName(),
+            'slug' => $translation?->getSlug() ?? (string) $category->getId(),
+            'name' => $translation?->getName(),
             'audience' => $category->getAudience()->value,
             'visible' => $category->isVisible(),
             'questionsCount' => count($questions),
@@ -35,9 +42,11 @@ class FaqPresenter
             return null;
         }
 
+        $translation = $this->resolver->faqCategory($category);
+
         return [
-            'key' => $category->getSlug(),
-            'label' => $category->getName(),
+            'key' => $translation?->getSlug(),
+            'label' => $translation?->getName(),
             'items' => $items
         ];
     }
@@ -47,10 +56,12 @@ class FaqPresenter
         $items = [];
 
         foreach ($category->getQuestions() as $question) {
-            if ($question->isVisible()) {
+            $translation = $this->resolver->faqQuestion($question);
+
+            if ($question->isVisible() && $translation !== null) {
                 $items[] = [
-                    'question' => $question->getQuestion(),
-                    'answer' => FaqPlaceholder::replace((string) $question->getAnswer(), $rules),
+                    'question' => $translation->getName(),
+                    'answer' => FaqPlaceholder::replace((string) $translation->getAnswer(), $rules),
                 ];
             }
         }
@@ -60,10 +71,12 @@ class FaqPresenter
 
     private function adminQuestion(FaqQuestion $question): array
     {
+        $translation = $this->resolver->faqQuestion($question);
+
         return [
             'id' => $question->getId(),
-            'question' => $question->getQuestion(),
-            'answer' => $question->getAnswer(),
+            'question' => $translation?->getName(),
+            'answer' => $translation?->getAnswer(),
             'visible' => $question->isVisible(),
         ];
     }

@@ -12,22 +12,55 @@ class FaqCategoryRepository extends AbstractRepository
 
     public function findForAudience(FaqAudience $audience): array
     {
-        return $this->findBy(['audience' => $audience], ['position' => 'ASC', 'name' => 'ASC']);
+        return $this->findBy(['audience' => $audience], ['position' => 'ASC']);
     }
 
-    public function findVisibleForAudience(FaqAudience $audience): array
+    public function findVisibleForAudience(FaqAudience $audience, string $locale): array
     {
-        return $this->findBy(['audience' => $audience, 'visible' => true], ['position' => 'ASC', 'name' => 'ASC']);
+        return $this->createQueryBuilder('c')
+            ->join('c.translations', 't')
+            ->where('c.audience = :audience')
+            ->andWhere('c.visible = :visible')
+            ->andWhere('t.locale = :locale')
+            ->setParameter('audience', $audience)
+            ->setParameter('visible', true)
+            ->setParameter('locale', $locale)
+            ->orderBy('c.position', 'ASC')
+            ->addOrderBy('t.name', 'ASC')
+            ->getResult();
     }
 
-    public function findOneBySlug(string $slug): ?FaqCategory
+    public function findOneBySlug(string $slug, string $locale): ?FaqCategory
     {
-        return $this->findOneBy(['slug' => $slug]);
+        return $this->createQueryBuilder('c')
+            ->join('c.translations', 't')
+            ->where('t.slug = :slug')
+            ->andWhere('t.locale = :locale')
+            ->setParameter('slug', $slug)
+            ->setParameter('locale', $locale)
+            ->getOneOrNullResult();
     }
 
-    public function slugExists(string $slug): bool
+    public function findOneByAnySlug(string $slug): ?FaqCategory
     {
-        return $this->count(['slug' => $slug]) > 0;
+        return $this->createQueryBuilder('c')
+            ->join('c.translations', 't')
+            ->where('t.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
+    }
+
+    public function findOneByAnySlugOrId(string $slug): ?FaqCategory
+    {
+        $category = $this->findOneByAnySlug($slug);
+
+        if ($category === null && ctype_digit($slug)) {
+            /** @var FaqCategory */
+            return $this->find((int)$slug);
+        }
+
+        return $category;
     }
 
     public function nextPosition(FaqAudience $audience): int
