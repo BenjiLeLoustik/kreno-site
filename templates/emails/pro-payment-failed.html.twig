@@ -32,7 +32,7 @@
         </p>
     {% elseif nextRetryAt %}
         <p>
-            {{ translate('Nous réessaierons automatique le {nextRetry}. Vous pouvez aussi régler dès maintenant.', {nextRetry: nextRetryAt}, domain: 'email') }}
+            {{ translate('Nous réessaierons automatiquement le {nextRetry}. Vous pouvez aussi régler dès maintenant.', {nextRetry: nextRetryAt}, domain: 'email') }}
         </p>
     {% endif %}
     <p style="{{ styles.actions }}">

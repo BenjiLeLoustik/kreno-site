@@ -5,7 +5,7 @@
 {% block mailContent %}
 
     <p>
-        {{ translate('Un client a signalé un problème concernant {establishment} (signalement {reference}', {
+        {{ translate('Un client a signalé un problème concernant {establishment} (signalement {reference})', {
             establishment: report.establishment,
             reference: report.reference
         }, domain: 'email') }}

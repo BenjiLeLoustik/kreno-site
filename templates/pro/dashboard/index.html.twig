@@ -28,7 +28,7 @@
 
     {% if establishment.status == 'rejected' and establishment.rejectionReason %}
         <div class="pro-flash pro-flash--error">
-            {{ translate('Votre établissement a été regusé: {rejectionReason}', {rejectionReason: establishment.rejectionReason}) }}
+            {{ translate('Votre établissement a été refusé: {rejectionReason}', {rejectionReason: establishment.rejectionReason}) }}
         </div>
     {% endif %}
 

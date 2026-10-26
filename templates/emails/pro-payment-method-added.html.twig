@@ -11,7 +11,7 @@
         <li style="{{ styles.item }}">
             {{ paymentMethod.label }}
             {% if paymentMethod.expiry %}
-                {{ translate('(expire {expiry}', {expiry: paymentMethod.expiry}, domain: 'email') }}
+                {{ translate('(expire {expiry})', {expiry: paymentMethod.expiry}, domain: 'email') }}
             {% endif %}
         </li>
         {% if addedBy %}

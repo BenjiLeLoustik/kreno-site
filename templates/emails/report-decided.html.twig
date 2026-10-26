@@ -16,7 +16,7 @@
         </p>
     {% else %}
         <p>
-            {{ translate('Décision: {resolution}. Merci de nous avoir alertés, cela nous aide à garder Kréno fiable pour tout le monde.', {resolution: report.resolution|lower}, domain: 'email') }}
+            {{ translate('Décision : {resolution}. Merci de nous avoir alertés, cela nous aide à garder Kréno fiable pour tout le monde.', {resolution: report.resolution|lower}, domain: 'email') }}
         </p>
     {% endif %}
     {% if message %}

@@ -11,15 +11,15 @@
     <ul style="{{ styles.list }}">
         {% if previous %}
             <li style="{{ styles.item }}">
-                {{ translate('Ancienne formule : {plan} ({price} HT, {period}', {
-                    plan: previous.plan
+                {{ translate('Ancienne formule : {plan} ({price} HT, {period})', {
+                    plan: previous.plan,
                     price: previous.price,
                     period: previous.period|lower
                 }, domain: 'email') }}
             </li>
         {% endif %}
         <li style="{{ styles.item }}">
-            {{ translate('Nouvelle formule : {plan} ({price}) HT, {period}', {
+            {{ translate('Nouvelle formule : {plan} ({price} HT, {period})', {
                 plan: subscription.plan,
                 price: subscription.price,
                 period: subscription.period|lower

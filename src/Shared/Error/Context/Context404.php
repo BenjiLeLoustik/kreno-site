@@ -35,7 +35,7 @@ class Context404 extends AbstractErrorContext
 
     public function getMessage(): string
     {
-        return Translation::translate('La page de vous cherchez n\'existe pas ou plus. Un créneau réservé ou expiré disparaît aussi du site.');
+        return Translation::translate('La page que vous cherchez n\'existe pas ou plus. Un créneau réservé ou expiré disparaît aussi du site.');
     }
 
 }

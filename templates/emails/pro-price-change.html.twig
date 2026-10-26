@@ -15,7 +15,7 @@
     {% endif %}
     <ul style="{{ styles.list }}">
         <li style="{{ styles.item }}">
-            {{ translate('Prix actuel: {price} HT ({period})', {
+            {{ translate('Prix actuel : {price} HT ({period})', {
                 price: currentPrice,
                 period: subscription.period|lower
             }, domain: 'email') }}
