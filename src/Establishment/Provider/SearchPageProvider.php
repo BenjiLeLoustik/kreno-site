@@ -13,6 +13,7 @@ use App\Establishment\Presenter\SlotPresenter;
 use App\Establishment\Service\SlotSearchService;
 use App\Repository\CategoryRepository;
 use DateTimeImmutable;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class SearchPageProvider
 {
@@ -21,6 +22,7 @@ class SearchPageProvider
         private CategoryRepository $categories,
         private SlotPresenter $slotPresenter,
         private CityPresenter $cityPresenter,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -70,7 +72,7 @@ class SearchPageProvider
         $selected = array_map(static fn (Category $category): ?string => $category->getSlug(), $selectedCategories);
         $categories = [];
 
-        foreach ($this->categories->findVisible() as $category) {
+        foreach ($this->categories->findVisible($this->translation->getLocale()) as $category) {
             $categories[] = [
                 'slug' => $category->getSlug(),
                 'label' => $category->getName(),

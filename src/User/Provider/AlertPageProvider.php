@@ -10,6 +10,7 @@ use App\Repository\User\UserAlertRepository;
 use App\User\Exception\AlertNotFoundException;
 use App\User\Presenter\AlertPresenter;
 use App\User\Service\AlertService;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class AlertPageProvider
 {
@@ -18,6 +19,7 @@ class AlertPageProvider
         private AlertPresenter $presenter,
         private CategoryRepository $categories,
         private CityRepository $cities,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -49,7 +51,7 @@ class AlertPageProvider
     {
         $categories = [];
 
-        foreach ($this->categories->findVisible() as $category) {
+        foreach ($this->categories->findVisible($this->translation->getLocale()) as $category) {
             $categories[] = [
                 'name' => $category->getName(),
                 'slug' => $category->getSlug()

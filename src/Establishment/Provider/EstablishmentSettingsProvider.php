@@ -14,6 +14,7 @@ use App\Establishment\Presenter\EstablishmentPagePresenter;
 use App\Repository\CategoryRepository;
 use App\Repository\CityRepository;
 use App\Repository\Establishment\EstablishmentClosureRepository;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class EstablishmentSettingsProvider
 {
@@ -27,6 +28,7 @@ class EstablishmentSettingsProvider
         private EstablishmentPagePresenter $pagePresenter,
         private CityPresenter $cityPresenter,
         private CategoryPresenter $categoryPresenter,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -39,7 +41,7 @@ class EstablishmentSettingsProvider
                 'services' => $this->resolver->memberCan($member, Permission::SERVICES_MANAGE, $establishment),
                 'team' => $this->resolver->memberCan($member, Permission::MEMBERS_MANAGE, $establishment),
             ],
-            'categories' => $this->categoryPresenter->summaries($this->categories->findVisible()),
+            'categories' => $this->categoryPresenter->summaries($this->categories->findVisible($this->translation->getLocale())),
             'cities' => $this->cityPresenter->summaries($this->cities->findAvailableForPros()),
             'rangesPerDay' => self::RANGES_PER_DAY,
         ];

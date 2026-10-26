@@ -15,6 +15,7 @@ use App\Entity\Company\CompanyMember;
 use App\Establishment\Exception\EstablishmentNotFoundException;
 use App\Repository\CategoryRepository;
 use App\Repository\CityRepository;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class CompanyPageProvider
 {
@@ -27,6 +28,7 @@ class CompanyPageProvider
         private TeamPresenter $teamPresenter,
         private CityPresenter $cityPresenter,
         private CategoryPresenter $categoryPresenter,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -40,7 +42,7 @@ class CompanyPageProvider
             'administrators' => $this->administrators($member, $company),
             'managers' => $this->managers($company),
             'cities' => $this->cityPresenter->summaries($this->cities->findAvailableForPros()),
-            'categories' => $this->categoryPresenter->summaries($this->categories->findVisible()),
+            'categories' => $this->categoryPresenter->summaries($this->categories->findVisible($this->translation->getLocale())),
         ];
     }
 

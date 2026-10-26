@@ -18,6 +18,7 @@ use App\Repository\CityRepository;
 use App\Shared\Exception\BusinessRuleException;
 use App\Website\Provider\WebsiteProvider;
 use NeoPHP\Component\Session\SessionManagerInterface;
+use NeoPHP\Package\Translation\TranslationManagerInterface;
 
 class ProSignupPageProvider
 {
@@ -55,6 +56,7 @@ class ProSignupPageProvider
         private CityPresenter $cityPresenter,
         private CategoryPresenter $categoryPresenter,
         private EstablishmentPagePresenter $pagePresenter,
+        private TranslationManagerInterface $translation,
     ) {
     }
 
@@ -207,7 +209,7 @@ class ProSignupPageProvider
     {
         return [
             'form' => $old + $this->establishmentForm($this->flow->draft($user)),
-            'categories' => $this->categoryPresenter->summaries($this->categories->findVisible()),
+            'categories' => $this->categoryPresenter->summaries($this->categories->findVisible($this->translation->getLocale())),
             'cities' => $this->cityPresenter->summaries($this->cities->findAvailableForPros()),
         ];
     }

@@ -73,6 +73,10 @@ class AdminEstablishmentPageProvider
             return null;
         }
 
+        if ($repository instanceof CategoryRepository) {
+            return $repository->findOneByAnySlug($slug);
+        }
+
         return $repository->findOneBySlug($slug);
     }
 
